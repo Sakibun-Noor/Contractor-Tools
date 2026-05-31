@@ -35,27 +35,23 @@ body {
 /* Dark section hero banners */
 .section-hero {
   position: relative;
-  padding: 4.5rem 0 3rem;
-  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+  padding: 5rem 0 4rem;
+  background: linear-gradient(135deg, #0B1220 0%, #111C32 50%, #0B1220 100%);
   overflow: hidden;
   text-align: center;
+  border-bottom: 1px solid rgba(148,163,184,0.08);
 }
 .section-hero::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 50% 80% at 20% 10%, rgba(59,130,246,0.15), transparent),
-    radial-gradient(ellipse 40% 60% at 80% 90%, rgba(99,102,241,0.12), transparent);
+    radial-gradient(ellipse 60% 70% at 15% 15%, rgba(59,130,246,0.18), transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 85%, rgba(99,102,241,0.14), transparent 60%),
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: auto, auto, 36px 36px, 36px 36px;
   pointer-events: none;
-}
-.section-hero::after {
-  content: "";
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 60px;
-  background: var(--bg);
-  clip-path: ellipse(55% 100% at 50% 100%);
 }
 .section-hero > * { position: relative; z-index: 1; }
 .section-hero .chip {
@@ -63,18 +59,28 @@ body {
   color: #93C5FD;
   border-color: rgba(255,255,255,0.12);
 }
+.section-hero h1,
 .section-hero h2 {
-  color: #F1F5F9;
+  color: #F8FAFC;
   margin-top: 1rem;
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(2rem, 4.2vw, 3rem);
   font-weight: 800;
   letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 .section-hero p {
   color: #94A3B8;
-  margin-top: 0.75rem;
+  margin-top: 0.9rem;
   font-size: 1.05rem;
+  line-height: 1.6;
 }
+.section-hero .breadcrumb-light {
+  color: #94A3B8;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.section-hero .breadcrumb-light a { color: #CBD5E1; transition: color .15s ease; }
+.section-hero .breadcrumb-light a:hover { color: #93C5FD; }
 
 /* ─── Hero (Main) ─── */
 .hero {
@@ -103,18 +109,9 @@ body {
   z-index: 0;
 }
 .hero > * { position: relative; z-index: 1; }
-
-/* Curved bottom edge on hero */
-.hero-curve {
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  z-index: 2;
-}
-.hero-curve svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
+/* Clean bottom edge — subtle gradient fade, no SVG wave */
+.hero::before { /* keep image */ }
+.hero { border-bottom: 1px solid rgba(15,23,42,0.06); }
 
 /* ─── Tool icon fallback ─── */
 .icon-fallback {
