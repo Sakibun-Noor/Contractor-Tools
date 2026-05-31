@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deryck — A reference of 300 essential contractor tools</title>
+  <title>The Contractor Technology Directory — Search 300+ contractor tools</title>
   <meta name="description" content="Browse 300 essential tools used across six contracting trades. Clear explanations and direct links — no rankings, just what each tool actually does.">
   <link rel="canonical" href="https://deryck.example.com/index.html">
-  <meta property="og:title" content="Deryck — A reference of 300 essential contractor tools">
+  <meta property="og:title" content="The Contractor Technology Directory — Search 300+ contractor tools">
   <meta property="og:description" content="Browse 300 essential tools used across six contracting trades. Clear explanations and direct links — no rankings, just what each tool actually does.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://deryck.example.com/index.html">
@@ -16,16 +16,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="assets/style.css">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Deryck","url":"https://deryck.example.com","description":"A curated reference of 300 essential contractor tools across six trades."}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"The Contractor Technology Directory","url":"https://deryck.example.com","description":"Search contractor software, apps, vendors, and resources by trade, category, or company."}</script>
 </head>
 <body class="bg-white">
 <header class="sticky top-0 z-50 bg-white/85 backdrop-blur border-b border-slate-200">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
-    <a href="index.html" class="flex items-center gap-2 font-bold text-xl tracking-tight">
-      <span class="inline-flex items-center justify-center w-8 h-8 rounded-md bg-slate-900 text-white text-sm font-bold">D</span>
-      <span>Deryck</span>
+    <a href="index.html" class="flex items-center gap-2 font-bold text-lg tracking-tight flex-shrink-0">
+      <span class="inline-flex items-center justify-center w-8 h-8 rounded-md bg-slate-900 text-white text-sm font-bold">C</span>
+      <span class="hidden sm:inline">The Contractor Technology Directory</span>
+      <span class="sm:hidden">TCTD</span>
     </a>
-    <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600">
+    <div class="search-wrapper flex-1 max-w-md mx-4 relative" id="search-wrapper">
+      <div class="search-input-container">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="tool-search" class="search-input" placeholder="Search 300+ tools..." autocomplete="off" />
+        <kbd class="search-kbd hidden sm:inline-flex">/</kbd>
+      </div>
+      <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
+    <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600 flex-shrink-0">
       <a href="directory/" class="hover:text-blue-600 transition">Directory</a>
       <a href="best/" class="hover:text-blue-600 transition">Best Of</a>
       <a href="compare/" class="hover:text-blue-600 transition">Compare</a>
@@ -33,7 +42,7 @@
       <a href="workflow/" class="hover:text-blue-600 transition">Workflows</a>
       <a href="quiz/" class="hover:text-blue-600 transition">Find My Stack</a>
     </nav>
-    <a href="directory/" class="lg:hidden text-sm font-medium text-blue-600">Browse</a>
+    <a href="directory/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
   </div>
 </header>
 <section class="hero">
@@ -43,7 +52,7 @@
       The contractor operations search engine.
     </h1>
     <p class="mt-5 text-lg md:text-xl text-slate-200 max-w-2xl">
-      Compare 300 contractor platforms head-to-head, look up pricing, find alternatives, and learn how high-performing teams run their estimating, dispatching, and project workflows.
+      Search contractor software, apps, vendors, and resources by trade, category, or company.
     </p>
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="quiz/" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg shadow-blue-900/30 transition">
@@ -197,10 +206,10 @@
   <div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-3 gap-10">
     <div>
       <div class="flex items-center gap-2 font-bold text-xl">
-        <span class="inline-flex items-center justify-center w-8 h-8 rounded-md bg-slate-900 text-white text-sm font-bold">D</span>
-        <span>Deryck</span>
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-md bg-slate-900 text-white text-sm font-bold">C</span>
+        <span>The Contractor Technology Directory</span>
       </div>
-      <p class="mt-3 text-sm text-slate-600 max-w-sm">A curated reference of 300 essential contractor tools across six trades. Discover what each tool does and link directly to the official source.</p>
+      <p class="mt-3 text-sm text-slate-600 max-w-sm">Search contractor software, apps, vendors, and resources by trade, category, or company.</p>
     </div>
     <div>
       <h4 class="text-sm font-semibold text-slate-900 mb-3">Categories</h4>
@@ -215,15 +224,122 @@
     </div>
     <div>
       <h4 class="text-sm font-semibold text-slate-900 mb-3">About</h4>
-      <p class="text-sm text-slate-600">Deryck is an informational directory. We do not rank or endorse any product; each entry describes what a tool is used for, so you can decide what fits your workflow.</p>
+      <p class="text-sm text-slate-600">The Contractor Technology Directory is an informational directory. We do not rank or endorse any product; each entry describes what a tool is used for, so you can decide what fits your workflow.</p>
     </div>
   </div>
   <div class="border-t border-slate-200">
     <div class="max-w-7xl mx-auto px-6 py-5 text-xs text-slate-500 flex flex-col md:flex-row items-center justify-between gap-2">
-      <span>&copy; 2026 Deryck. All trademarks are property of their respective owners.</span>
+      <span>&copy; 2026 The Contractor Technology Directory. All trademarks are property of their respective owners.</span>
       <span>6 categories &middot; 300 tools indexed</span>
     </div>
   </div>
 </footer>
+<script>
+(function() {
+  let tools = [];
+  let loaded = false;
+
+  // Load tools data
+  fetch('data/tools.json')
+    .then(r => r.json())
+    .then(data => {
+      const seen = new Set();
+      data.categories.forEach(cat => {
+        cat.tools.forEach(t => {
+          const key = t.slug;
+          if (!seen.has(key)) {
+            seen.add(key);
+            tools.push({
+              name: t.name,
+              slug: t.slug,
+              category: cat.slug,
+              description: t.description,
+              domain: t.domain
+            });
+          }
+        });
+      });
+      tools.sort((a, b) => a.name.localeCompare(b.name));
+      loaded = true;
+    });
+
+  const input = document.getElementById('tool-search');
+  const dropdown = document.getElementById('search-dropdown');
+  const wrapper = document.getElementById('search-wrapper');
+  let activeIdx = -1;
+
+  function highlight(text, query) {
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return text;
+    return text.slice(0, idx) + '<mark>' + text.slice(idx, idx + query.length) + '</mark>' + text.slice(idx + query.length);
+  }
+
+  function render(matches, query) {
+    if (!matches.length) {
+      dropdown.innerHTML = '<div class="search-empty">No tools found for \u201c' + query + '\u201d</div>';
+      dropdown.classList.add('open');
+      return;
+    }
+    dropdown.innerHTML = matches.slice(0, 12).map((t, i) =>
+      '<a href="tool/' + t.category + '/' + t.slug + '.html" class="search-item' + (i === activeIdx ? ' active' : '') + '" data-idx="' + i + '">' +
+        '<div class="search-item-icon">' + t.name.charAt(0).toUpperCase() + '</div>' +
+        '<div class="search-item-info">' +
+          '<div class="search-item-name">' + highlight(t.name, query) + '</div>' +
+          '<div class="search-item-desc">' + t.description.slice(0, 70) + (t.description.length > 70 ? '...' : '') + '</div>' +
+        '</div>' +
+      '</a>'
+    ).join('');
+    if (matches.length > 12) {
+      dropdown.innerHTML += '<div class="search-more">+ ' + (matches.length - 12) + ' more results</div>';
+    }
+    dropdown.classList.add('open');
+  }
+
+  function search(query) {
+    if (!loaded || !query) { dropdown.classList.remove('open'); dropdown.innerHTML = ''; activeIdx = -1; return; }
+    const q = query.toLowerCase();
+    const matches = tools.filter(t => t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q));
+    // Sort: starts-with first
+    matches.sort((a, b) => {
+      const aStarts = a.name.toLowerCase().startsWith(q) ? 0 : 1;
+      const bStarts = b.name.toLowerCase().startsWith(q) ? 0 : 1;
+      return aStarts - bStarts || a.name.localeCompare(b.name);
+    });
+    activeIdx = -1;
+    render(matches, query);
+  }
+
+  input.addEventListener('input', () => search(input.value.trim()));
+  input.addEventListener('focus', () => { if (input.value.trim()) search(input.value.trim()); });
+
+  // Keyboard navigation
+  input.addEventListener('keydown', (e) => {
+    const items = dropdown.querySelectorAll('.search-item');
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx + 1, items.length - 1); updateActive(items); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); activeIdx = Math.max(activeIdx - 1, -1); updateActive(items); }
+    else if (e.key === 'Enter' && activeIdx >= 0) { e.preventDefault(); items[activeIdx].click(); }
+    else if (e.key === 'Escape') { dropdown.classList.remove('open'); input.blur(); }
+  });
+
+  function updateActive(items) {
+    items.forEach((el, i) => el.classList.toggle('active', i === activeIdx));
+    if (activeIdx >= 0 && items[activeIdx]) items[activeIdx].scrollIntoView({ block: 'nearest' });
+  }
+
+  // Close on click outside
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) { dropdown.classList.remove('open'); }
+  });
+
+  // Keyboard shortcut: / to focus search
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== input && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      input.focus();
+    }
+  });
+})();
+</script>
 </body>
 </html>
