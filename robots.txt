@@ -1,0 +1,4 @@
+﻿User-agent: *
+Allow: /
+Sitemap: https://deryck.example.com/sitemap.xml
+
