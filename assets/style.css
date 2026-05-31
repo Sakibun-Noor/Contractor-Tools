@@ -82,6 +82,85 @@ body {
 .section-hero .breadcrumb-light a { color: #CBD5E1; transition: color .15s ease; }
 .section-hero .breadcrumb-light a:hover { color: #93C5FD; }
 
+/* Image-backed hero variant — used on category pages */
+.section-hero-image {
+  position: relative;
+  padding: 6rem 0 5rem;
+  overflow: hidden;
+  text-align: center;
+  isolation: isolate;
+  border-bottom: 1px solid rgba(148,163,184,0.08);
+}
+.section-hero-image .hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.45) saturate(1.1);
+  transform: scale(1.04);
+}
+.section-hero-image::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(11,18,32,0.55) 0%, rgba(11,18,32,0.7) 55%, rgba(11,18,32,0.9) 100%),
+    radial-gradient(ellipse 60% 60% at 20% 80%, rgba(59,130,246,0.22), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 85% 15%, rgba(99,102,241,0.18), transparent 60%);
+  z-index: 1;
+  pointer-events: none;
+}
+.section-hero-image > * { position: relative; z-index: 2; }
+.section-hero-image .chip {
+  background: rgba(255,255,255,0.1);
+  color: #BFDBFE;
+  border-color: rgba(255,255,255,0.18);
+  backdrop-filter: blur(6px);
+}
+.section-hero-image h1 {
+  color: #F8FAFC;
+  margin-top: 1rem;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-shadow: 0 2px 24px rgba(0,0,0,0.45);
+}
+.section-hero-image p {
+  color: #CBD5E1;
+  margin-top: 1.1rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.35);
+}
+.section-hero-image .breadcrumb-light {
+  color: #CBD5E1;
+  font-size: 0.85rem;
+}
+.section-hero-image .breadcrumb-light a { color: #E2E8F0; transition: color .15s ease; }
+.section-hero-image .breadcrumb-light a:hover { color: #93C5FD; }
+.section-hero-image .hero-meta {
+  margin-top: 1.25rem;
+  display: inline-flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: #94A3B8;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.section-hero-image .hero-meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.section-hero-image .hero-meta span::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: #3B82F6;
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(59,130,246,0.7);
+}
+
 /* ─── Hero (Main) ─── */
 .hero {
   position: relative;
