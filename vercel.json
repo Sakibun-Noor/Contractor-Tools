@@ -1,0 +1,39 @@
+{
+  "redirects": [
+    {
+      "source": "/category/top-50-plumbing-contractor-tools.html",
+      "destination": "/trades/plumbing/",
+      "permanent": true
+    },
+    {
+      "source": "/category/top-50-mechanical-contractor-tools.html",
+      "destination": "/trades/mechanical/",
+      "permanent": true
+    },
+    {
+      "source": "/category/top-50-commercial-contractor-software.html",
+      "destination": "/trades/commercial-gc/",
+      "permanent": true
+    },
+    {
+      "source": "/category/top-50-construction-estimating-tools.html",
+      "destination": "/estimating-takeoff/",
+      "permanent": true
+    },
+    {
+      "source": "/category/top-50-contractor-crm-tools.html",
+      "destination": "/crm-sales/",
+      "permanent": true
+    },
+    {
+      "source": "/category/top-50-contractor-tools.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/category/(.*)",
+      "destination": "/categories/",
+      "permanent": true
+    }
+  ]
+}
