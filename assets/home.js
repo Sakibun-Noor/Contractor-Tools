@@ -84,6 +84,11 @@
   window.renderToolCard = function (t, base) {
     base = base || "";
     var pm = PRICE_META[t.p] || PRICE_META["$100-$500/mo"];
+    // If we have researched pricing detail, prefer the real starting price as the badge
+    var pd = (window.PRICING_DETAIL || {})[t.s];
+    if (pd && pd.startsAt) {
+      pm = { cls: pm.cls, label: pd.startsAt };
+    }
     var tags = [];
     (t.tr || []).slice(0,2).forEach(function(tr){ tags.push('<span class="tag">'+esc(tradeLabel(tr))+'</span>'); });
     (t.u || []).slice(0, tags.length ? 1 : 2).forEach(function(u){ tags.push('<span class="tag">'+esc(u.replace(/([a-z])([A-Z])/g,'$1 $2'))+'</span>'); });
