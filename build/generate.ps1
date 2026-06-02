@@ -157,10 +157,13 @@ foreach ($m in $tax.tradeCategoryMap) {
   $counts.combo++
 }
 
-# Hub indexes + homepage
+# Hub indexes
 Save-Html "trades/index.html" (Build-TradesIndex)
 Save-Html "categories/index.html" (Build-CategoriesIndex)
-Save-Html "index.html" (Build-Homepage)
+# NOTE: index.html (homepage) is now the Claude-design build using assets/home.css
+# + assets/home.js + assets/tools-data.js. It is intentionally NOT regenerated here
+# so the generator can't clobber it. Re-enable Build-Homepage only if reverting.
+# Save-Html "index.html" (Build-Homepage)
 
 Write-Output ("Generated -> category: {0}  subcategory: {1}  trade: {2}  combo: {3}" -f $counts.category,$counts.subcategory,$counts.trade,$counts.combo)
 Write-Output "Also generated: trades/index, categories/index, homepage"

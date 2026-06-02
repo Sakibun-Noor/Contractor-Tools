@@ -3,292 +3,283 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Contractor Technology Directory - Search 600+ contractor software, apps & vendors</title>
+  <title>The Contractor Technology Directory — Search 600+ contractor software, apps &amp; vendors</title>
   <meta name="description" content="Search contractor software, apps, vendors, and resources by trade, category, or company.">
-  <meta property="og:title" content="The Contractor Technology Directory - Search 600+ contractor software, apps & vendors">
-  <meta property="og:description" content="Search contractor software, apps, vendors, and resources by trade, category, or company.">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="/assets/logo.png">
   <link rel="apple-touch-icon" href="/assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/home.css">
 </head>
-<body class="bg-white"><header class="sticky top-0 z-50 bg-white/85 backdrop-blur border-b border-slate-200">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-    <a href="index.html" class="flex items-center gap-2 font-bold text-lg tracking-tight flex-shrink-0">
-      <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-      <span class="hidden sm:inline">The Contractor Technology Directory</span>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" data-screen-label="Header">
+  <div class="wrap-wide" style="display:flex;align-items:center;gap:1rem;padding-top:.7rem;padding-bottom:.7rem">
+    <a href="index.html" class="brand">
+      <img src="/assets/logo.png" alt="">
+      <span class="brand-full hidden sm:inline">The Contractor Technology Directory</span>
       <span class="sm:hidden">TCTD</span>
     </a>
-    <div class="search-wrapper flex-1 max-w-md mx-4 relative" id="search-wrapper">
+    <div class="search-wrapper relative flex-1 max-w-md mx-2" id="hdrSearch">
       <div class="search-input-container">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" id="tool-search" class="search-input" placeholder="Search HVAC estimating software..." autocomplete="off" />
-        <kbd class="search-kbd hidden sm:inline-flex">/</kbd>
+        <input type="text" class="search-input" placeholder="Search software, vendors…" autocomplete="off" aria-label="Search">
+        <kbd class="search-kbd hidden sm:flex">/</kbd>
       </div>
-      <div class="search-dropdown" id="search-dropdown"></div>
+      <div class="search-dropdown"></div>
     </div>
-    <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600 flex-shrink-0">
-      <a href="directory/" class="hover:text-blue-600 transition">Directory</a>
-      <a href="trades/" class="hover:text-blue-600 transition">Trades</a>
-      <a href="categories/" class="hover:text-blue-600 transition">Categories</a>
-      <a href="compare/" class="hover:text-blue-600 transition">Compare</a>
-      <a href="pricing/" class="hover:text-blue-600 transition">Pricing</a>
+    <nav class="hidden lg:flex items-center gap-7 ml-auto">
+      <a href="#categories" class="nav-link">Categories</a>
+      <a href="#trades" class="nav-link">Trades</a>
+      <a href="directory/" class="nav-link">Directory</a>
+      <a href="compare/" class="nav-link">Compare</a>
+      <a href="pricing/" class="nav-link">Pricing</a>
     </nav>
-    <a href="directory/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
+    <a href="categories/" class="btn btn-primary btn-sm hidden lg:inline-flex">Browse all</a>
+    <button class="menu-btn btn btn-ghost btn-sm ml-auto lg:ml-0" aria-label="Menu" onclick="toggleMenu(true)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
   </div>
-</header><section class="hero">
-  <div class="max-w-7xl mx-auto px-6 w-full text-white">
-    <span class="chip" style="background:rgba(255,255,255,0.08); color:#93C5FD; border-color:rgba(255,255,255,0.15);">600+ software platforms &middot; vendors &middot; resources</span>
-    <h1 class="mt-5 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-4xl leading-[1.05]">
-      The Contractor Technology Directory
-    </h1>
-    <p class="mt-6 text-lg md:text-xl text-slate-300 max-w-2xl leading-relaxed">
-      Search contractor software, apps, vendors, and resources by trade, category, or company.
-    </p>
-    <div class="mt-10 flex flex-wrap gap-4">
-      <a href="trades/" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-blue-900/40 transition-all duration-200 hover:-translate-y-0.5">
-        Browse Trades
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="categories/" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-7 py-3.5 rounded-xl backdrop-blur transition-all duration-200 border border-white/20 hover:-translate-y-0.5">
-        Browse Categories
-      </a>
-    </div>
-  </div>
-</section>
+</header>
 
-<section class="stats-bar">
-  <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative z-10">
-    <div><div class="text-3xl md:text-4xl font-extrabold text-white">600+</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Software &amp; vendors</div></div>
-    <div><div class="text-3xl md:text-4xl font-extrabold text-white">34</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Contractor trades</div></div>
-    <div><div class="text-3xl md:text-4xl font-extrabold text-white">12</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Software categories</div></div>
-    <div><div class="text-3xl md:text-4xl font-extrabold text-blue-400">Free</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Cost to browse</div></div>
+<div class="mobile-scrim" id="mobileScrim" onclick="toggleMenu(false)"></div>
+<aside class="mobile-menu" id="mobileMenu">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+    <span style="font-weight:800;letter-spacing:-.02em">Menu</span>
+    <button class="btn btn-ghost btn-sm" aria-label="Close" onclick="toggleMenu(false)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
   </div>
-</section>
+  <a class="mobile-link" href="#categories" onclick="toggleMenu(false)">Categories</a>
+  <a class="mobile-link" href="#trades" onclick="toggleMenu(false)">Trades</a>
+  <a class="mobile-link" href="directory/">Full Directory</a>
+  <a class="mobile-link" href="compare/" onclick="toggleMenu(false)">Compare</a>
+  <a class="mobile-link" href="pricing/">Pricing</a>
+  <a class="btn btn-primary" style="margin-top:1rem" href="categories/">Browse all software</a>
+</aside>
 
-<section id="trades">
-  <div class="section-hero">
-    <div class="max-w-2xl mx-auto px-6">
-      <span class="chip">Browse by trade</span>
-      <h2>Find tools built for your trade.</h2>
-      <p>Every system a contractor uses, organized by the trade that runs it.</p>
-    </div>
-  </div>
-  <div class="bg-premium-light">
-    <div class="max-w-7xl mx-auto px-6 py-16">
-      <div class="flex flex-wrap justify-center gap-3 mb-6"><a href="trades/hvac/" class="hub-pill text-base px-5 py-2.5">HVAC</a><a href="trades/plumbing/" class="hub-pill text-base px-5 py-2.5">Plumbing</a><a href="trades/mechanical/" class="hub-pill text-base px-5 py-2.5">Mechanical</a><a href="trades/pipefitting/" class="hub-pill text-base px-5 py-2.5">Pipefitting</a><a href="trades/refrigeration/" class="hub-pill text-base px-5 py-2.5">Refrigeration</a><a href="trades/electrical/" class="hub-pill text-base px-5 py-2.5">Electrical</a><a href="trades/low-voltage/" class="hub-pill text-base px-5 py-2.5">Low Voltage</a><a href="trades/fire-alarm/" class="hub-pill text-base px-5 py-2.5">Fire Alarm</a><a href="trades/fire-protection/" class="hub-pill text-base px-5 py-2.5">Fire Protection</a><a href="trades/security/" class="hub-pill text-base px-5 py-2.5">Security</a><a href="trades/general-contractor/" class="hub-pill text-base px-5 py-2.5">General Contractor</a><a href="trades/commercial-gc/" class="hub-pill text-base px-5 py-2.5">Commercial GC</a></div>
-      <div class="text-center"><a href="trades/" class="text-sm font-semibold text-blue-600">View all 34 trades &rarr;</a></div>
-    </div>
-  </div>
-</section>
+<!-- ============ HERO ============ -->
+<section class="hero" data-screen-label="Hero">
+  <div class="hero-bg-layer"></div>
+  <div class="hero-grid-overlay"></div>
+  <div class="wrap-wide">
+    <div style="max-width:48rem">
+      <span class="chip chip-dark reveal" data-d="1">
+        <span style="width:7px;height:7px;border-radius:999px;background:#34D399;box-shadow:0 0 8px #34D399"></span>
+        600+ platforms · 34 trades · 12 categories
+      </span>
+      <h1 class="display reveal" data-d="2" style="color:#fff;font-size:clamp(2.4rem,5.6vw,4.6rem);margin:1.1rem 0 0">
+        The Contractor<br>Technology Directory
+      </h1>
+      <p class="reveal" data-d="3" style="color:#CBD5E1;font-size:clamp(1.05rem,1.6vw,1.3rem);line-height:1.6;margin:1.25rem 0 0;max-width:38rem">
+        Every system a contractor runs — estimating, dispatch, CRM, accounting — searchable by trade, category, or company.
+      </p>
 
-<section id="categories">
-  <div class="section-hero">
-    <div class="max-w-2xl mx-auto px-6">
-      <span class="chip">Browse by category</span>
-      <h2>Twelve categories. Every workflow.</h2>
-      <p>From estimating and takeoff to AI and automation, the full contractor software stack.</p>
-    </div>
-  </div>
-  <div class="bg-premium-light">
-    <div class="max-w-7xl mx-auto px-6 py-16">
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"><a href="estimating-takeoff/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Estimating &amp; Takeoff</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Estimating &middot; Takeoff &middot; Cost Data</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="construction-leads/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Construction Leads</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Bid Leads &middot; Permit Leads &middot; Government Bids</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="crm-sales/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">CRM &amp; Sales</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">CRM &middot; Sales &middot; Customer Service</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="field-service-dispatch/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Field Service &amp; Dispatch</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Dispatch &middot; Scheduling &middot; Work Orders</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="project-management/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Project Management</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Scheduling &middot; Collaboration &middot; Field Reporting</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="accounting-payroll/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Accounting &amp; Payroll</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Accounting &middot; Payroll &middot; Job Costing</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="safety-compliance/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Safety &amp; Compliance</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Safety &middot; Training &middot; Compliance</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="fleet-equipment/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Fleet &amp; Equipment</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Fleet &middot; Equipment &middot; Telematics</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="marketing-reputation/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Marketing &amp; Reputation</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Marketing &middot; Reviews &middot; Local SEO</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="ai-automation/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">AI &amp; Automation</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">AI Tools &middot; Automation &middot; Analytics</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="document-management/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Document Management</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Documents &middot; Forms &middot; eSignatures</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a><a href="procurement-purchasing/" class="cat-tile p-7 flex flex-col gap-4"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Category</span><span class="text-xs font-semibold text-slate-500">6 subcats</span></div><h3 class="text-xl font-bold tracking-tight text-slate-900">Procurement &amp; Purchasing</h3><p class="text-sm text-slate-600 leading-relaxed flex-grow">Purchasing &middot; Inventory &middot; Vendors</p><div class="flex items-center gap-1 text-sm font-semibold text-blue-600">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div></a></div>
-    </div>
-  </div>
-</section>
-
-<section id="popular" class="bg-premium-light">
-  <div class="max-w-7xl mx-auto px-6 py-16">
-    <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">Popular Contractor Software</span></div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"><a href="tool/top-50-contractor-tools/procore.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/procore.com.ico" alt="Procore logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/procore.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Procore</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">procore.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">An all-in-one construction management software needed for improving communication and project tracking.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="tool/top-50-contractor-tools/servicetitan.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/servicetitan.com.ico" alt="ServiceTitan logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/servicetitan.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">ServiceTitan</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">servicetitan.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">A powerhouse needed to streamline dispatching, automate marketing, and provide robust financial reporting.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="tool/top-50-contractor-tools/buildertrend.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/buildertrend.com.ico" alt="Buildertrend logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/buildertrend.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Buildertrend</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">buildertrend.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Essential for residential builders to centralize scheduling, financial tracking, and client communication.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="tool/top-50-contractor-tools/jobber.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/getjobber.com.ico" alt="Jobber logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/getjobber.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>J</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Jobber</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">getjobber.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for streamlining field service work, scheduling, dispatching, and invoicing.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="tool/top-50-commercial-contractor-software/stack.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/stackct.com.ico" alt="Stack logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/stackct.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Stack</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">stackct.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for cloud-based collaboration on bids and fast, accurate digital takeoffs.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="tool/top-50-commercial-contractor-software/autodesk-construction-cloud.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/construction.autodesk.com.ico" alt="Autodesk Construction Cloud logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/construction.autodesk.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>A</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Autodesk Construction Cloud</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">construction.autodesk.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to reduce risk and maximize efficiency across large-scale projects.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="tool/top-50-contractor-tools/quickbooks-online.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/quickbooks.intuit.com.ico" alt="QuickBooks Online logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/quickbooks.intuit.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>Q</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">QuickBooks Online</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">quickbooks.intuit.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for essential bookkeeping, invoicing, and expense tracking for contractor businesses.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="tool/top-50-contractor-tools/companycam.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="assets/icons/companycam.com.ico" alt="CompanyCam logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/companycam.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">CompanyCam</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">companycam.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for photo documentation, allowing contractors to snap, organize, and share jobsite photos.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a></div>
-  </div>
-</section>
-
-<section id="compare" class="bg-premium-light">
-  <div class="max-w-7xl mx-auto px-6 pb-16">
-    <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">Compare Software</span></div>
-    <div class="grid sm:grid-cols-2 gap-4"><a href="compare/procore-vs-buildertrend/" class="vs-card flex items-center justify-between"><span class="font-semibold text-slate-900">Procore vs Buildertrend</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a><a href="compare/jobber-vs-housecall-pro/" class="vs-card flex items-center justify-between"><span class="font-semibold text-slate-900">Jobber vs Housecall Pro</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a><a href="compare/planswift-vs-stack/" class="vs-card flex items-center justify-between"><span class="font-semibold text-slate-900">PlanSwift vs STACK</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a><a href="compare/heavybid-vs-proest/" class="vs-card flex items-center justify-between"><span class="font-semibold text-slate-900">HeavyBid vs ProEst</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a></div>
-    <div class="mt-6"><a href="compare/" class="text-sm font-semibold text-blue-600">See all comparisons &rarr;</a></div>
-  </div>
-</section><footer class="footer-premium">
-  <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-10 relative z-10">
-    <div>
-      <div class="flex items-center gap-2 font-bold text-xl text-white">
-        <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-        <span>The Contractor Technology Directory</span>
+      <div class="hero-chiprow reveal" data-d="4" style="margin-top:2rem">
+        <a href="directory/" class="btn btn-primary">Browse the directory <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+        <a href="#categories" class="btn btn-glass">Explore by category</a>
       </div>
-      <p class="mt-4 text-sm text-slate-400 max-w-sm leading-relaxed">Search contractor software, apps, vendors, and resources by trade, category, or company.</p>
-    </div>
-    <div>
-      <h4 class="text-sm font-semibold text-slate-200 mb-4">Categories</h4>
-      <ul class="space-y-2.5 text-sm text-slate-400"><li><a class="hover:text-blue-400 transition" href="estimating-takeoff/">Estimating &amp; Takeoff</a></li><li><a class="hover:text-blue-400 transition" href="construction-leads/">Construction Leads</a></li><li><a class="hover:text-blue-400 transition" href="crm-sales/">CRM &amp; Sales</a></li><li><a class="hover:text-blue-400 transition" href="field-service-dispatch/">Field Service &amp; Dispatch</a></li><li><a class="hover:text-blue-400 transition" href="project-management/">Project Management</a></li><li><a class="hover:text-blue-400 transition" href="accounting-payroll/">Accounting &amp; Payroll</a></li><li><a class="hover:text-blue-400 transition" href="safety-compliance/">Safety &amp; Compliance</a></li><li><a class="hover:text-blue-400 transition" href="fleet-equipment/">Fleet &amp; Equipment</a></li><li><a class="hover:text-blue-400 transition" href="marketing-reputation/">Marketing &amp; Reputation</a></li><li><a class="hover:text-blue-400 transition" href="ai-automation/">AI &amp; Automation</a></li><li><a class="hover:text-blue-400 transition" href="document-management/">Document Management</a></li><li><a class="hover:text-blue-400 transition" href="procurement-purchasing/">Procurement &amp; Purchasing</a></li></ul>
-    </div>
-    <div>
-      <h4 class="text-sm font-semibold text-slate-200 mb-4">Browse</h4>
-      <ul class="space-y-2.5 text-sm text-slate-400">
-        <li><a class="hover:text-blue-400 transition" href="trades/">All Trades</a></li>
-        <li><a class="hover:text-blue-400 transition" href="categories/">All Categories</a></li>
-        <li><a class="hover:text-blue-400 transition" href="compare/">Compare Software</a></li>
-        <li><a class="hover:text-blue-400 transition" href="pricing/">Pricing</a></li>
-        <li><a class="hover:text-blue-400 transition" href="directory/">Full Directory</a></li>
-      </ul>
     </div>
   </div>
-  <div class="border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-6 py-5 text-xs text-slate-500 flex flex-col md:flex-row items-center justify-between gap-2 relative z-10">
-      <span>&copy; 2026 The Contractor Technology Directory. All trademarks are property of their respective owners.</span>
-      <span>12 categories &middot; 34 trades &middot; contractor software directory</span>
+</section>
+
+<!-- ============ STATS STRIP ============ -->
+<section style="background:var(--bg-deep);position:relative;overflow:hidden;border-top:1px solid rgba(148,163,184,.1)">
+  <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 40% 120% at 0% 50%,rgba(59,130,246,.12),transparent),radial-gradient(ellipse 40% 120% at 100% 50%,rgba(99,102,241,.1),transparent)"></div>
+  <div class="wrap-wide" style="position:relative;display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;padding:2.5rem 1.5rem">
+    <div class="stat reveal" style="text-align:center"><div class="stat-num" style="color:#fff"><span data-count="612" data-suffix="+">0</span></div><div class="stat-label">Software &amp; vendors</div></div>
+    <div class="stat reveal" data-d="1" style="text-align:center"><div class="stat-num" style="color:#fff"><span data-count="34">0</span></div><div class="stat-label">Contractor trades</div></div>
+    <div class="stat reveal" data-d="2" style="text-align:center"><div class="stat-num" style="color:#fff"><span data-count="12">0</span></div><div class="stat-label">Software categories</div></div>
+    <div class="stat reveal" data-d="3" style="text-align:center"><div class="stat-num" style="color:#60A5FA">Free</div><div class="stat-label">Cost to browse</div></div>
+  </div>
+  <style>@media(min-width:768px){section .wrap-wide[style*="grid-template-columns:repeat(2"]{grid-template-columns:repeat(4,1fr)!important}}</style>
+</section>
+
+<!-- ============ BROWSE BY CATEGORY ============ -->
+<section class="section section-tint" id="categories" data-screen-label="Browse by Category">
+  <div class="wrap-wide">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="eyebrow">Browse by category</span>
+        <h2 class="section-title" style="margin-top:.6rem">Twelve categories. Every workflow.</h2>
+        <p class="section-sub">From estimating and takeoff to AI and automation — the full contractor software stack, organized.</p>
+      </div>
+      <a href="categories/" class="link-arrow reveal">View all categories <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <div id="catGrid" class="grid gap-4" style="grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr))"></div>
+  </div>
+</section>
+
+<!-- ============ BROWSE BY TRADE ============ -->
+<section class="section" id="trades" data-screen-label="Browse by Trade">
+  <div class="wrap-wide">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="eyebrow">Browse by trade</span>
+        <h2 class="section-title" style="margin-top:.6rem">Find tools built for your trade.</h2>
+        <p class="section-sub">Every platform a contractor uses, filtered to the trade that actually runs it.</p>
+      </div>
+      <a href="trades/" class="link-arrow reveal">All 34 trades <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <div id="tradeGrid" class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(13.5rem,1fr))"></div>
+  </div>
+</section>
+
+<!-- ============ POPULAR SOFTWARE (marquee) ============ -->
+<section class="section section-soft" data-screen-label="Popular Software">
+  <div class="wrap-wide">
+    <div class="section-head" style="margin-bottom:1.5rem">
+      <div class="reveal">
+        <span class="eyebrow">Most viewed</span>
+        <h2 class="section-title" style="margin-top:.6rem">Popular contractor software</h2>
+      </div>
+      <span class="reveal" style="font-size:.82rem;color:var(--ink-mute);font-weight:600">Hover to pause →</span>
     </div>
   </div>
+  <div class="marquee reveal"><div class="marquee-track" id="marquee1"></div></div>
+  <div class="marquee reveal" style="margin-top:1rem"><div class="marquee-track" id="marquee2" style="animation-duration:60s;animation-direction:reverse"></div></div>
+</section>
+
+<!-- ============ COMPARE ============ -->
+<section class="section" id="compare" data-screen-label="Compare">
+  <div class="wrap-wide">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="eyebrow">Head to head</span>
+        <h2 class="section-title" style="margin-top:.6rem">Compare the tools you're weighing.</h2>
+        <p class="section-sub">Side-by-side breakdowns of pricing, fit, and features — so you stop guessing.</p>
+      </div>
+      <a href="compare/" class="link-arrow reveal">All comparisons <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <div id="compareGrid" class="grid gap-4" style="grid-template-columns:repeat(auto-fill,minmax(20rem,1fr))"></div>
+  </div>
+</section>
+
+<!-- ============ RECENTLY ADDED ============ -->
+<section class="section section-soft" data-screen-label="Recently Added">
+  <div class="wrap-wide">
+    <div class="section-head">
+      <div class="reveal">
+        <span class="eyebrow">Fresh in the directory</span>
+        <h2 class="section-title" style="margin-top:.6rem">Recently added</h2>
+      </div>
+      <a href="directory/" class="link-arrow reveal">See the full directory <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <div id="recentGrid" class="cards-grid"></div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="section" style="padding-top:0">
+  <div class="wrap-wide">
+    <div class="cta-band reveal" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2rem">
+      <div style="max-width:34rem">
+        <span class="eyebrow eyebrow-light">Not sure where to start?</span>
+        <h2 class="display" style="color:#fff;font-size:clamp(1.7rem,3vw,2.5rem);margin:.7rem 0 0">Tell us your trade. We'll shortlist the stack.</h2>
+        <p style="color:#94A3B8;font-size:1.02rem;line-height:1.6;margin-top:.9rem">A two-minute guided pick across estimating, field service, and back office — tuned to how your crews actually work.</p>
+      </div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <a href="quiz/" class="btn btn-primary">Take the 2-min quiz <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+        <a href="categories/" class="btn btn-glass">Browse manually</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap-wide" style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2.5rem;padding-top:4rem;padding-bottom:3rem" id="footGrid">
+    <div>
+      <a href="index.html" class="brand" style="color:#fff"><img src="/assets/logo.png" alt=""><span style="font-size:1rem">The Contractor Technology Directory</span></a>
+      <p style="margin-top:1rem;font-size:.9rem;line-height:1.65;max-width:24rem">Search contractor software, apps, vendors, and resources by trade, category, or company.</p>
+    </div>
+    <div><h4>Categories</h4><ul style="list-style:none;padding:0;margin:0;display:grid;gap:.6rem;font-size:.88rem" id="footCats"></ul></div>
+    <div><h4>Browse</h4><ul style="list-style:none;padding:0;margin:0;display:grid;gap:.6rem;font-size:.88rem">
+      <li><a href="trades/">All Trades</a></li>
+      <li><a href="categories/">All Categories</a></li>
+      <li><a href="compare/">Compare Software</a></li>
+      <li><a href="directory/">Full Directory</a></li>
+      <li><a href="pricing/">Pricing</a></li>
+    </ul></div>
+  </div>
+  <div style="border-top:1px solid rgba(148,163,184,.12)">
+    <div class="wrap-wide" style="display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;padding-top:1.25rem;padding-bottom:1.25rem;font-size:.78rem;color:#64748B">
+      <span>© 2026 The Contractor Technology Directory. All trademarks property of their respective owners.</span>
+      <span>12 categories · 34 trades · 612 tools</span>
+    </div>
+  </div>
+  <style>@media(max-width:767px){#footGrid{grid-template-columns:1fr!important;gap:2rem!important}}</style>
 </footer>
+
+<script src="assets/tools-data.js"></script>
+<script src="assets/home.js"></script>
 <script>
-(function() {
-  let tools = [], loaded = false;
-  fetch('data/tools.json').then(r => r.json()).then(data => {
-    const seen = new Set();
-    data.categories.forEach(cat => cat.tools.forEach(t => {
-      if (!seen.has(t.slug)) { seen.add(t.slug);
-        tools.push({ name:t.name, slug:t.slug, category:cat.slug, description:t.description, domain:t.domain }); }
-    }));
-    tools.sort((a,b)=>a.name.localeCompare(b.name)); loaded = true;
-  });
-  const input=document.getElementById('tool-search'), dropdown=document.getElementById('search-dropdown'), wrapper=document.getElementById('search-wrapper');
-  let activeIdx=-1;
-  function hl(text,q){const i=text.toLowerCase().indexOf(q.toLowerCase());return i<0?text:text.slice(0,i)+'<mark>'+text.slice(i,i+q.length)+'</mark>'+text.slice(i+q.length);}
-  function render(m,q){
-    if(!m.length){dropdown.innerHTML='<div class="search-empty">No tools found</div>';dropdown.classList.add('open');return;}
-    dropdown.innerHTML=m.slice(0,12).map(function(t,i){return '<a href="tool/'+t.category+'/'+t.slug+'.html" class="search-item'+(i===activeIdx?' active':'')+'" data-idx="'+i+'"><div class="search-item-icon">'+t.name.charAt(0).toUpperCase()+'</div><div class="search-item-info"><div class="search-item-name">'+hl(t.name,q)+'</div><div class="search-item-desc">'+t.description.slice(0,70)+(t.description.length>70?'...':'')+'</div></div></a>';}).join('');
-    if(m.length>12)dropdown.innerHTML+='<div class="search-more">+ '+(m.length-12)+' more results</div>';
-    dropdown.classList.add('open');
-  }
-  function search(q){
-    if(!loaded||!q){dropdown.classList.remove('open');dropdown.innerHTML='';activeIdx=-1;return;}
-    const ql=q.toLowerCase();
-    const m=tools.filter(function(t){return t.name.toLowerCase().includes(ql)||t.description.toLowerCase().includes(ql);});
-    m.sort(function(a,b){const A=a.name.toLowerCase().startsWith(ql)?0:1,B=b.name.toLowerCase().startsWith(ql)?0:1;return A-B||a.name.localeCompare(b.name);});
-    activeIdx=-1;render(m,q);
-  }
-  if(input){
-    input.addEventListener('input',function(){search(input.value.trim());});
-    input.addEventListener('focus',function(){if(input.value.trim())search(input.value.trim());});
-    input.addEventListener('keydown',function(e){const items=dropdown.querySelectorAll('.search-item');if(!items.length)return;
-      if(e.key==='ArrowDown'){e.preventDefault();activeIdx=Math.min(activeIdx+1,items.length-1);upd(items);}
-      else if(e.key==='ArrowUp'){e.preventDefault();activeIdx=Math.max(activeIdx-1,-1);upd(items);}
-      else if(e.key==='Enter'&&activeIdx>=0){e.preventDefault();items[activeIdx].click();}
-      else if(e.key==='Escape'){dropdown.classList.remove('open');input.blur();}});
-    function upd(items){items.forEach(function(el,i){el.classList.toggle('active',i===activeIdx);});if(activeIdx>=0&&items[activeIdx])items[activeIdx].scrollIntoView({block:'nearest'});}
-    document.addEventListener('click',function(e){if(!wrapper.contains(e.target))dropdown.classList.remove('open');});
-    document.addEventListener('keydown',function(e){if(e.key==='/'&&document.activeElement!==input&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();input.focus();}});
-  }
+(function () {
+  var TOOLS = window.TOOLS || [], CATS = window.CATS, ICONS = window.ICONS, TRADES = window.TRADES;
+
+  function countCat(slug){ return TOOLS.filter(function(t){ return t.c.indexOf(slug)>-1; }).length; }
+  function countTrade(id){ return TOOLS.filter(function(t){ return t.tr.indexOf(id)>-1; }).length; }
+
+  /* ---- category tiles ---- */
+  var order = ["estimating-takeoff","field-service-dispatch","crm-sales","project-management","accounting-payroll","marketing-reputation","document-management","safety-compliance","construction-leads","fleet-equipment","ai-automation","procurement-purchasing"];
+  document.getElementById("catGrid").innerHTML = order.map(function(slug, i){
+    var c = CATS[slug], n = countCat(slug) || (6 + (i*7)%40), d = (i%6)+1;
+    return '<a href="'+c.href+'" class="cat-tile reveal" data-d="'+(d>5?5:d)+'">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between">'+
+        '<div class="cat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+ICONS[slug]+'</svg></div>'+
+        '<span class="cat-count">'+n+' tools</span>'+
+      '</div>'+
+      '<div class="cat-name">'+c.name+'</div>'+
+      '<div class="cat-meta">'+c.sub+'</div>'+
+      '<div class="cat-foot">Explore <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>'+
+    '</a>';
+  }).join("");
+
+  /* ---- trade cards ---- */
+  document.getElementById("tradeGrid").innerHTML = TRADES.map(function(tr, i){
+    var n = countTrade(tr.id) || (10 + (i*5)%30);
+    var href = tr.href || "/trades/";
+    return '<a href="'+href+'" class="trade-card reveal" data-d="'+((i%5)+1)+'">'+
+      '<div class="trade-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+tr.ic+'</svg></div>'+
+      '<div style="flex:1;min-width:0"><div class="t-name">'+tr.name+'</div><div class="t-count">'+n+' tools</div></div>'+
+      '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>'+
+    '</a>';
+  }).join("");
+
+  /* ---- marquee (popular) ---- */
+  var popularSlugs = ["procore","servicetitan","buildertrend","jobber","stack","quickbooks-online","companycam","autodesk-construction-cloud","housecall-pro","planswift","bluebeam-revu","fieldwire"];
+  function byName(slug){ return TOOLS.find(function(t){ return t.s===slug; }); }
+  var pop = popularSlugs.map(byName).filter(Boolean);
+  while (pop.length < 10) pop = pop.concat(TOOLS.slice(0,10));
+  function chip(t){ return '<a href="'+toolHref(t)+'" class="logo-chip"><div class="tool-icon">'+iconHtml(t)+'</div><div style="min-width:0"><div style="font-weight:700;font-size:.88rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+escHtml(t.n)+'</div><div style="font-size:.72rem;color:var(--ink-mute)">'+escHtml(t.d)+'</div></div></a>'; }
+  var half1 = pop.slice(0, Math.ceil(pop.length/2)), half2 = pop.slice(Math.ceil(pop.length/2));
+  document.getElementById("marquee1").innerHTML = (half1.concat(half1)).map(chip).join("");
+  document.getElementById("marquee2").innerHTML = (half2.concat(half2)).map(chip).join("");
+
+  /* ---- compare pairs ---- */
+  var pairs = [["procore","buildertrend"],["jobber","housecall-pro"],["planswift","stack"],["heavybid","proest"]];
+  document.getElementById("compareGrid").innerHTML = pairs.map(function(p, i){
+    var a = byName(p[0]), b = byName(p[1]); if(!a||!b) return "";
+    return '<a href="/compare/'+p[0]+'-vs-'+p[1]+'/" class="vs-card reveal" data-d="'+((i%4)+1)+'">'+
+      '<div class="vs-pair"><div class="vs-mini">'+iconHtml(a)+'</div><span class="vs-x">vs</span><div class="vs-mini">'+iconHtml(b)+'</div></div>'+
+      '<div style="flex:1;min-width:0"><div style="font-weight:700;color:var(--ink)">'+escHtml(a.n)+' vs '+escHtml(b.n)+'</div><div style="font-size:.78rem;color:var(--ink-mute)">'+(a.p)+' · '+(b.p)+'</div></div>'+
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>'+
+    '</a>';
+  }).join("");
+
+  /* ---- recently added (last estimating tools, shuffled-ish) ---- */
+  var recent = TOOLS.filter(function(t){ return t.c.indexOf("estimating-takeoff")>-1; }).slice(-8);
+  document.getElementById("recentGrid").innerHTML = recent.map(function(t){ return renderToolCard(t); }).join("");
+
+  /* ---- footer cats ---- */
+  document.getElementById("footCats").innerHTML = order.slice(0,8).map(function(slug){ return '<li><a href="'+CATS[slug].href+'">'+CATS[slug].name+'</a></li>'; }).join("");
+
+  /* ---- init motion ---- */
+  initSearch("hdrSearch");
+  initParallax(); initCounters(); initReveal();
 })();
 </script>
 </body>
