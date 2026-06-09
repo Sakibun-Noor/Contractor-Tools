@@ -114,7 +114,8 @@ $mshared = Get-SharedStrings $mx   # likely empty (inline strings)
 $mrows = Get-Rows "$mx\xl\worksheets\sheet2.xml" $mshared
 Write-Output ("Master DB rows (incl header): " + $mrows.Count)
 
-# Column indices (0-based) from header inspection
+# Column indices (0-based) from header inspection.
+# NOTE: revenue columns (O-Y) are deliberately NOT read — internal only.
 $C = @{ rank=1; name=2; website=3; primaryCat=4; sub=5; trades=6; whatItDoes=7;
         pricing=8; size=9; pubpriv=10; slug=26; notes=32; divisions=33 }
 
@@ -189,3 +190,32 @@ $out = @{ generatedFrom = '1Final2 Contractor Technology Directory with Division
 $json = $out | ConvertTo-Json -Depth 8
 [System.IO.File]::WriteAllText((Join-Path $Root 'data\companies.json'), $json, $utf8)
 Write-Output ("Wrote data\companies.json")
+
+# ── Most Widely Used: the top 50 companies by Deryck's Category Rank ───────────
+# Deryck: "until we get a robust traffic report, put the largest 50 companies on
+# the rotation." We use his own Category Rank (rank 1 = top company in a category)
+# and round-robin across all 12 categories, so the list spans categories the way
+# his mockup did (Stack, Procore, ServiceTitan, Buildertrend, Bluebeam...).
+$catOrder = @($companies | ForEach-Object { $_.category } | Select-Object -Unique)
+$byCat = @{}
+foreach ($s in $catOrder) {
+  $byCat[$s] = @($companies | Where-Object { $_.category -eq $s } | Sort-Object { [int]$_.rank })
+}
+$picked = @(); $depth = 0
+while ($picked.Count -lt 50 -and $depth -lt 60) {
+  foreach ($s in $catOrder) {
+    if ($byCat[$s].Count -gt $depth) { $picked += $byCat[$s][$depth]; if ($picked.Count -ge 50) { break } }
+  }
+  $depth++
+}
+$top50 = @($picked | Select-Object -First 50)
+$mwu = [ordered]@{
+  note  = 'Top 50 by Category Rank, round-robin across categories. No revenue used.'
+  basis = 'category-rank'
+  count = $top50.Count
+  slugs = @($top50 | ForEach-Object { $_.slug })
+}
+$mwuJson = $mwu | ConvertTo-Json -Depth 4
+[System.IO.File]::WriteAllText((Join-Path $Root 'data\most-widely-used.json'), $mwuJson, $utf8)
+Write-Output ("Wrote data\most-widely-used.json  (top " + $top50.Count + " by category rank)")
+Write-Output ("  first 8: " + (($top50 | Select-Object -First 8 | ForEach-Object { $_.name }) -join ', '))

@@ -238,9 +238,9 @@
   <div class="wrap-wide">
     <div class="section-head">
       <div class="reveal">
-        <span class="eyebrow">Most widely used</span>
-        <h2 class="section-title" style="margin-top:.5rem">The platforms construction teams actually run.</h2>
-        <p class="section-sub">A rotating look at the most-used software across all 12 categories.</p>
+        <span class="eyebrow">Most Widely Used</span>
+        <h2 class="section-title" style="margin-top:.5rem">Popular construction software</h2>
+        <p class="section-sub">A rotating look at the top platforms construction teams rely on, across all 12 categories.</p>
       </div>
       <a href="directory/" class="link-arrow reveal">See the full directory <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
     </div>
@@ -368,12 +368,20 @@
       '<span class="tag">'+esc(catName)+'</span></div>'+
     '</a>';
   }
-  // rank within category exists (t.rk); take the lowest-rank (most used) from each category, round-robin
-  var byCat = {}; order.forEach(function(s){ byCat[s]=[]; });
-  TOOLS.forEach(function(t){ var s=t.c&&t.c[0]; if(byCat[s]) byCat[s].push(t); });
-  order.forEach(function(s){ byCat[s].sort(function(a,b){ return (a.rk||999)-(b.rk||999); }); });
-  var widely = [], idx=0, guard=0;
-  while (widely.length < 50 && guard < 600){ var s=order[idx%order.length]; var arr=byCat[s]; var pos=Math.floor(idx/order.length); if(arr[pos]) widely.push(arr[pos]); idx++; guard++; }
+  // "Most Widely Used" = the largest 50 companies, precomputed by Deryck's
+  // Category Rank in data/most-widely-used.json -> window.WIDELY_USED.
+  var bySlug = {}; TOOLS.forEach(function(t){ bySlug[t.s]=t; });
+  var widely = [];
+  if (window.WIDELY_USED && WIDELY_USED.length){
+    WIDELY_USED.forEach(function(sl){ if (bySlug[sl]) widely.push(bySlug[sl]); });
+  }
+  if (!widely.length){ // fallback: round-robin top-ranked per category
+    var byCat = {}; order.forEach(function(s){ byCat[s]=[]; });
+    TOOLS.forEach(function(t){ var s=t.c&&t.c[0]; if(byCat[s]) byCat[s].push(t); });
+    order.forEach(function(s){ byCat[s].sort(function(a,b){ return (a.rk||999)-(b.rk||999); }); });
+    var idx=0, guard=0;
+    while (widely.length < 50 && guard < 600){ var s=order[idx%order.length]; var arr=byCat[s]; var pos=Math.floor(idx/order.length); if(arr[pos]) widely.push(arr[pos]); idx++; guard++; }
+  }
   var FULL = widely.slice(0,50);
   var shown = FULL.slice();
   function paint(filter){

@@ -24,7 +24,19 @@ foreach ($c in $data.companies) {
 $tools = $tools | Sort-Object { $_.c[0] }, { [int]$_.rk }
 
 $json = ($tools | ConvertTo-Json -Depth 6 -Compress)
+
+# "Most Widely Used" rotation = the 50 largest companies (slug list precomputed
+# in data\most-widely-used.json; revenue used as size sort key, never published).
+$widelyJson = '[]'
+$mwuPath = Join-Path $Root 'data\most-widely-used.json'
+if (Test-Path $mwuPath) {
+  $mwu = [System.IO.File]::ReadAllText($mwuPath, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
+  $widelyJson = (@($mwu.slugs) | ConvertTo-Json -Compress)
+  if ($mwu.slugs.Count -eq 1) { $widelyJson = "[$widelyJson]" }  # single-item guard
+}
+
 $body = "window.TOOLS = $json;`r`n" +
-        "window.TOOLS_COUNT = $($tools.Count);`r`n"
+        "window.TOOLS_COUNT = $($tools.Count);`r`n" +
+        "window.WIDELY_USED = $widelyJson;`r`n"
 [System.IO.File]::WriteAllText((Join-Path $Root 'assets\tools-data.js'), $body, $utf8)
-Write-Output ("Wrote assets\tools-data.js  (" + $tools.Count + " tools)")
+Write-Output ("Wrote assets\tools-data.js  (" + $tools.Count + " tools, widely-used: " + (@($mwu.slugs).Count) + ")")
