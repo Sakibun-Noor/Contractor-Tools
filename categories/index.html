@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>All Software Categories | The Contractor Technology Directory</title>
-  <meta name="description" content="Browse contractor software by category: estimating, CRM, dispatch, project management, accounting, safety, and more.">
-  <meta property="og:title" content="All Software Categories | The Contractor Technology Directory">
-  <meta property="og:description" content="Browse contractor software by category: estimating, CRM, dispatch, project management, accounting, safety, and more.">
+  <title>All Software Categories | The Construction Technology Directory</title>
+  <meta name="description" content="Browse construction software by category: estimating, CRM, dispatch, project management, accounting, safety, and more.">
+  <meta property="og:title" content="All Software Categories | The Construction Technology Directory">
+  <meta property="og:description" content="Browse construction software by category: estimating, CRM, dispatch, project management, accounting, safety, and more.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="/assets/logo.png">
@@ -15,13 +15,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* Brand palette â€” remap Tailwind blue -> navy, add orange (Construction Technology Directory) */
+    tailwind.config = { theme: { extend: { colors: {
+      blue:   {50:'#EAF1F8',100:'#DCE7F3',200:'#C2D4E6',300:'#9DBBD8',400:'#5B8FC7',500:'#1C4E80',600:'#14365C',700:'#0E2747',800:'#0C2138',900:'#0A1B30'},
+      orange: {50:'#FFF1E6',100:'#FFE2CC',400:'#F4923F',500:'#F47A21',600:'#DD6710',700:'#B8540C'}
+    }}}};
+  </script>
   <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body class="bg-white"><header class="sticky top-0 z-50 bg-white/85 backdrop-blur border-b border-slate-200">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
     <a href="../index.html" class="flex items-center gap-2 font-bold text-lg tracking-tight flex-shrink-0">
-      <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-      <span class="hidden sm:inline">The Contractor Technology Directory</span>
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
+      <span class="hidden sm:inline">The Construction Technology Directory</span>
       <span class="sm:hidden">TCTD</span>
     </a>
     <div class="search-wrapper flex-1 max-w-md mx-4 relative" id="search-wrapper">
@@ -33,13 +40,13 @@
       <div class="search-dropdown" id="search-dropdown"></div>
     </div>
     <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600 flex-shrink-0">
-      <a href="../directory/" class="hover:text-blue-600 transition">Directory</a>
-      <a href="../trades/" class="hover:text-blue-600 transition">Trades</a>
       <a href="../categories/" class="hover:text-blue-600 transition">Categories</a>
-      <a href="../compare/" class="hover:text-blue-600 transition">Compare</a>
-      <a href="../pricing/" class="hover:text-blue-600 transition">Pricing</a>
+      <a href="../trades/" class="hover:text-blue-600 transition">Trades</a>
+      <a href="../resources/" class="hover:text-blue-600 transition">Resources</a>
+      <a href="../blog/" class="hover:text-blue-600 transition">Blog</a>
+      <a href="../contact/" class="hover:text-blue-600 transition">Contact</a>
     </nav>
-    <a href="../directory/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
+    <a href="../categories/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
   </div>
 </header><main>
   <section class="section-hero-image">
@@ -48,7 +55,7 @@
       <nav aria-label="Breadcrumb" class="breadcrumb-light"><a href="../index.html">Home</a><span class="mx-2" style="color:#475569">/</span><span class="font-medium" style="color:#F1F5F9">Categories</span></nav>
       <span class="chip" style="margin-top:1.25rem">Browse</span>
       <h1>Software Categories</h1>
-      <p>Everything contractors use to estimate, sell, dispatch, manage projects, and run the business.</p>
+      <p>Everything construction use to estimate, sell, dispatch, manage projects, and run the business.</p>
       <div class="hero-meta"><span>12 Categories</span><span>72 Subcategories</span><span>SEO Hubs</span></div>
     </div>
   </section>
@@ -59,10 +66,10 @@
   <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-10 relative z-10">
     <div>
       <div class="flex items-center gap-2 font-bold text-xl text-white">
-        <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-        <span>The Contractor Technology Directory</span>
+        <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
+        <span>The Construction Technology Directory</span>
       </div>
-      <p class="mt-4 text-sm text-slate-400 max-w-sm leading-relaxed">Search contractor software, apps, vendors, and resources by trade, category, or company.</p>
+      <p class="mt-4 text-sm text-slate-400 max-w-sm leading-relaxed">Search construction software, apps, vendors, and resources by trade, category, or company.</p>
     </div>
     <div>
       <h4 class="text-sm font-semibold text-slate-200 mb-4">Categories</h4>
@@ -73,16 +80,16 @@
       <ul class="space-y-2.5 text-sm text-slate-400">
         <li><a class="hover:text-blue-400 transition" href="../trades/">All Trades</a></li>
         <li><a class="hover:text-blue-400 transition" href="../categories/">All Categories</a></li>
-        <li><a class="hover:text-blue-400 transition" href="../compare/">Compare Software</a></li>
-        <li><a class="hover:text-blue-400 transition" href="../pricing/">Pricing</a></li>
         <li><a class="hover:text-blue-400 transition" href="../directory/">Full Directory</a></li>
+        <li><a class="hover:text-blue-400 transition" href="../resources/">Resources</a></li>
+        <li><a class="hover:text-blue-400 transition" href="../blog/">Blog</a></li>
       </ul>
     </div>
   </div>
   <div class="border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-6 py-5 text-xs text-slate-500 flex flex-col md:flex-row items-center justify-between gap-2 relative z-10">
-      <span>&copy; 2026 The Contractor Technology Directory. All trademarks are property of their respective owners.</span>
-      <span>12 categories &middot; 34 trades &middot; contractor software directory</span>
+      <span>&copy; 2026 The Construction Technology Directory. All trademarks are property of their respective owners.</span>
+      <span>12 categories &middot; 34 trades &middot; construction software directory</span>
     </div>
   </div>
 </footer>

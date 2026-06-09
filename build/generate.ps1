@@ -84,18 +84,14 @@ $tradeKeywords = @{
 foreach ($slug in $companies.Keys) {
   $c = $companies[$slug]
   $hay = ($c.name + ' ' + $c.description).ToLower()
-  foreach ($ck in $catKeywords.Keys) {
-    foreach ($kw in $catKeywords[$ck]) { if ($hay.Contains($kw)) { [void]$c.cats.Add($ck); break } }
-  }
+  # Category is EXPLICIT now — each company is listed under its real primary category
+  # in the master DB, so use the source category directly (no keyword guessing).
+  foreach ($sc in $c.srcCats) { [void]$c.cats.Add($sc) }
+  # Trade classification stays keyword-based: the master DB's coarse audience tags
+  # (GC, Commercial, Residential...) don't map 1:1 to the trade-page slugs.
   foreach ($tk in $tradeKeywords.Keys) {
     foreach ($kw in $tradeKeywords[$tk]) { if ($hay.Contains($kw)) { [void]$c.trades.Add($tk); break } }
   }
-  # Seed from source categories so the obvious ones are never empty
-  if ($c.srcCats -contains 'top-50-construction-estimating-tools') { [void]$c.cats.Add('estimating-takeoff') }
-  if ($c.srcCats -contains 'top-50-contractor-crm-tools') { [void]$c.cats.Add('crm-sales') }
-  if ($c.srcCats -contains 'top-50-plumbing-contractor-tools') { [void]$c.trades.Add('plumbing') }
-  if ($c.srcCats -contains 'top-50-mechanical-contractor-tools') { [void]$c.trades.Add('mechanical') }
-  if ($c.srcCats -contains 'top-50-commercial-contractor-software') { [void]$c.trades.Add('commercial-gc') }
   if ($c.cats.Count -eq 0) { [void]$c.cats.Add('project-management') } # sensible default
 }
 

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bid Leads Software for Contractors | Construction Leads</title>
-  <meta name="description" content="Bid Leads tools and vendors for contractors, part of the Construction Leads category.">
-  <meta property="og:title" content="Bid Leads Software for Contractors | Construction Leads">
-  <meta property="og:description" content="Bid Leads tools and vendors for contractors, part of the Construction Leads category.">
+  <title>Bid Leads Software for Construction | Construction Leads</title>
+  <meta name="description" content="Bid Leads tools and vendors for construction, part of the Construction Leads category.">
+  <meta property="og:title" content="Bid Leads Software for Construction | Construction Leads">
+  <meta property="og:description" content="Bid Leads tools and vendors for construction, part of the Construction Leads category.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="/assets/logo.png">
@@ -15,13 +15,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* Brand palette â€” remap Tailwind blue -> navy, add orange (Construction Technology Directory) */
+    tailwind.config = { theme: { extend: { colors: {
+      blue:   {50:'#EAF1F8',100:'#DCE7F3',200:'#C2D4E6',300:'#9DBBD8',400:'#5B8FC7',500:'#1C4E80',600:'#14365C',700:'#0E2747',800:'#0C2138',900:'#0A1B30'},
+      orange: {50:'#FFF1E6',100:'#FFE2CC',400:'#F4923F',500:'#F47A21',600:'#DD6710',700:'#B8540C'}
+    }}}};
+  </script>
   <link rel="stylesheet" href="../../assets/style.css">
 </head>
 <body class="bg-white"><header class="sticky top-0 z-50 bg-white/85 backdrop-blur border-b border-slate-200">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
     <a href="../../index.html" class="flex items-center gap-2 font-bold text-lg tracking-tight flex-shrink-0">
-      <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-      <span class="hidden sm:inline">The Contractor Technology Directory</span>
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
+      <span class="hidden sm:inline">The Construction Technology Directory</span>
       <span class="sm:hidden">TCTD</span>
     </a>
     <div class="search-wrapper flex-1 max-w-md mx-4 relative" id="search-wrapper">
@@ -33,13 +40,13 @@
       <div class="search-dropdown" id="search-dropdown"></div>
     </div>
     <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600 flex-shrink-0">
-      <a href="../../directory/" class="hover:text-blue-600 transition">Directory</a>
-      <a href="../../trades/" class="hover:text-blue-600 transition">Trades</a>
       <a href="../../categories/" class="hover:text-blue-600 transition">Categories</a>
-      <a href="../../compare/" class="hover:text-blue-600 transition">Compare</a>
-      <a href="../../pricing/" class="hover:text-blue-600 transition">Pricing</a>
+      <a href="../../trades/" class="hover:text-blue-600 transition">Trades</a>
+      <a href="../../resources/" class="hover:text-blue-600 transition">Resources</a>
+      <a href="../../blog/" class="hover:text-blue-600 transition">Blog</a>
+      <a href="../../contact/" class="hover:text-blue-600 transition">Contact</a>
     </nav>
-    <a href="../../directory/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
+    <a href="../../categories/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
   </div>
 </header><main>
   <section class="section-hero-image">
@@ -48,92 +55,196 @@
       <nav aria-label="Breadcrumb" class="breadcrumb-light"><a href="../../index.html">Home</a><span class="mx-2" style="color:#475569">/</span><a href="../../construction-leads/">Construction Leads</a><span class="mx-2" style="color:#475569">/</span><span class="font-medium" style="color:#F1F5F9">Bid Leads</span></nav>
       <span class="chip" style="margin-top:1.25rem">Subcategory</span>
       <h1>Bid Leads</h1>
-      <p>Bid Leads software for contractors &mdash; a focused slice of Construction Leads.</p>
+      <p>Bid Leads software for construction &mdash; a focused slice of Construction Leads.</p>
       <div class="hero-meta"><span>Construction Leads</span><span>Subcategory</span></div>
     </div>
   </section>
   <div class="bg-premium-light">
     <div class="max-w-7xl mx-auto px-6 py-16">
       <p class="text-slate-600 max-w-3xl mb-8">Vendors below are drawn from the <a href="../../construction-leads/" class="text-blue-600 font-medium">Construction Leads</a> category. Subcategory-specific filtering refines as more vendor data is tagged.</p>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"><a href="../../tool/top-50-contractor-crm-tools/activecampaign.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"><a href="../../tool/construction-leads/angi-leads.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/activecampaign.com.ico" alt="ActiveCampaign logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/activecampaign.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>A</div>'}"></div>
-    <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">ActiveCampaign</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">activecampaign.com</div>
-    </div>
-  </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for highly advanced email marketing automation and lead scoring.</p>
-  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-    <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-  </div>
-</a><a href="../../tool/top-50-plumbing-contractor-tools/angi-leads.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
-  <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/pro.angi.com.ico" alt="Angi Leads logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/pro.angi.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>A</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/angileads.com.ico" alt="Angi Leads logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/angileads.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>A</div>'}"></div>
     <div class="flex-grow min-w-0">
       <h3 class="font-semibold text-slate-900 leading-tight truncate">Angi Leads</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">pro.angi.com</div>
+      <div class="text-xs text-slate-500 mt-1 truncate">angileads.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed as a lead generation source to connect with homeowners needing plumbing work.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Angi Leads provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-construction-estimating-tools/b2w-estimate.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/apollo.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/b2wsoftware.com.ico" alt="B2W Estimate logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/b2wsoftware.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/apollo.com.ico" alt="Apollo logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/apollo.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>A</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">B2W Estimate</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">b2wsoftware.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Apollo</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">apollo.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for earthwork, paving, and utility contractors to handle unit price bidding.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Apollo provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/builder-prime.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/bci-central.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/builderprime.com.ico" alt="Builder Prime logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/builderprime.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/bcicentral.com.ico" alt="BCI Central logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/bcicentral.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Builder Prime</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">builderprime.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BCI Central</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">bcicentral.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed specifically for specialty contractors to manage leads, estimates, and production.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BCI Central provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-commercial-contractor-software/buildingconnected.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/bidclerk.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/buildingconnected.com.ico" alt="BuildingConnected logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/buildingconnected.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/bidclerk.com.ico" alt="BidClerk logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/bidclerk.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BidClerk</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">bidclerk.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BidClerk provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/bidexpress.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/bidexpress.com.ico" alt="BidExpress logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/bidexpress.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BidExpress</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">bidexpress.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BidExpress provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/bidnet.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/bidnet.com.ico" alt="BidNet logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/bidnet.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BidNet</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">bidnet.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BidNet provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/bidprime.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/bidprime.com.ico" alt="BidPrime logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/bidprime.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BidPrime</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">bidprime.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BidPrime provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/buildcentral.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/buildcentral.com.ico" alt="BuildCentral logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/buildcentral.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BuildCentral</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">buildcentral.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BuildCentral provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/building-permit-service.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/buildingpermitservice.com.ico" alt="Building Permit Service logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/buildingpermitservice.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Building Permit Service</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">buildingpermitservice.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Building Permit Service provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/building-radar.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/buildingradar.com.ico" alt="Building Radar logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/buildingradar.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Building Radar</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">buildingradar.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Building Radar provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/buildingconnected.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/construction.autodesk.com.ico" alt="BuildingConnected logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/construction.autodesk.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
     <div class="flex-grow min-w-0">
       <h3 class="font-semibold text-slate-900 leading-tight truncate">BuildingConnected</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">buildingconnected.com</div>
+      <div class="text-xs text-slate-500 mt-1 truncate">construction.autodesk.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed by GCs to manage the bidding process and find qualified subcontractors.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BuildingConnected provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-tools/coconstruct.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/buildingreports.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/coconstruct.com.ico" alt="CoConstruct logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/coconstruct.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/buildingreports.com.ico" alt="BuildingReports logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/buildingreports.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">CoConstruct</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">coconstruct.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BuildingReports</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">buildingreports.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed by custom builders to handle lead tracking, warranty management, and client selections.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BuildingReports provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-commercial-contractor-software/constructconnect.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/buildzoom.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/buildzoom.com.ico" alt="BuildZoom logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/buildzoom.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>B</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">BuildZoom</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">buildzoom.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">BuildZoom provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/construct-a-lead.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/constructalead.com.ico" alt="Construct-A-Lead logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/constructalead.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Construct-A-Lead</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">constructalead.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Construct-A-Lead provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/constructconnect.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
     <div class="tool-icon"><img src="../../assets/icons/constructconnect.com.ico" alt="ConstructConnect logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/constructconnect.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
     <div class="flex-grow min-w-0">
@@ -141,218 +252,465 @@
       <div class="text-xs text-slate-500 mt-1 truncate">constructconnect.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for market intelligence and access to thousands of commercial project leads.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">ConstructConnect provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/follow-up-boss.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/construction-journal.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/followupboss.com.ico" alt="Follow Up Boss logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/followupboss.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>F</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/constructionjournal.com.ico" alt="Construction Journal logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/constructionjournal.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Follow Up Boss</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">followupboss.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Construction Journal</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">constructionjournal.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for lightning-fast lead response and automated text follow-ups.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Construction Journal provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/freshsales.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/constructionwire.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/freshworks.com.ico" alt="Freshsales logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/freshworks.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>F</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/constructionwire.com.ico" alt="ConstructionWire logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/constructionwire.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Freshsales</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">freshworks.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">ConstructionWire</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">constructionwire.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for AI-based lead scoring to prioritize which prospects contractors should call first.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">ConstructionWire provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/gohighlevel.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/constructreach.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/gohighlevel.com.ico" alt="GoHighLevel logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/gohighlevel.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>G</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/constructreach.com.ico" alt="ConstructReach logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/constructreach.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">GoHighLevel</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">gohighlevel.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">ConstructReach</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">constructreach.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed as an all-in-one agency-level CRM to capture, nurture, and close contractor leads.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">ConstructReach provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/hatch.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/costar-construction.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/usehatchapp.com.ico" alt="Hatch logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/usehatchapp.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>H</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/costarconstruction.com.ico" alt="CoStar Construction logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/costarconstruction.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Hatch</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">usehatchapp.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">CoStar Construction</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">costarconstruction.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to automate conversational text messaging to immediately engage inbound leads.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">CoStar Construction provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-tools/houzz-pro.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/craftjack.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/houzz.com.ico" alt="Houzz Pro logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/houzz.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>H</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/craftjack.com.ico" alt="CraftJack logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/craftjack.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>C</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Houzz Pro</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">houzz.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">CraftJack</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">craftjack.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to manage inbound leads, create 3D floor plans, and handle visual estimates.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">CraftJack provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/hubspot-crm.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/databid.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/hubspot.com.ico" alt="HubSpot CRM logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/hubspot.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>H</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/databid.com.ico" alt="DataBid logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/databid.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>D</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">HubSpot CRM</h3>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">DataBid</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">databid.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">DataBid provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/deltek.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/deltek.com.ico" alt="Deltek logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/deltek.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>D</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Deltek</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">deltek.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Deltek provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/demandstar.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/demandstar.com.ico" alt="DemandStar logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/demandstar.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>D</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">DemandStar</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">demandstar.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">DemandStar provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/dodge-construction-network.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/construction.com.ico" alt="Dodge Construction Network logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/construction.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>D</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Dodge Construction Network</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">construction.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Dodge Construction Network provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/ebidboard.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/ebidboard.com.ico" alt="eBidboard logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/ebidboard.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>E</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">eBidboard</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">ebidboard.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">eBidboard provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/govwin.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/govwin.com.ico" alt="GovWin logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/govwin.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>G</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">GovWin</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">govwin.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">GovWin provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/homeadvisor.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/homeadvisor.com.ico" alt="HomeAdvisor logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/homeadvisor.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>H</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">HomeAdvisor</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">homeadvisor.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">HomeAdvisor provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/hubspot.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/hubspot.com.ico" alt="HubSpot logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/hubspot.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>H</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">HubSpot</h3>
       <div class="text-xs text-slate-500 mt-1 truncate">hubspot.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to help contractors manage inbound leads, track pipelines, and automate emails.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">HubSpot provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-commercial-contractor-software/isqft.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/isqft.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/constructconnect.com.ico" alt="iSqFt logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/constructconnect.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>I</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/isqft.com.ico" alt="iSqFt logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/isqft.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>I</div>'}"></div>
     <div class="flex-grow min-w-0">
       <h3 class="font-semibold text-slate-900 leading-tight truncate">iSqFt</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">constructconnect.com</div>
+      <div class="text-xs text-slate-500 mt-1 truncate">isqft.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to find commercial bidding opportunities and manage subcontractor networks.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">iSqFt provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-plumbing-contractor-tools/kickserv.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/landvision.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/kickserv.com.ico" alt="Kickserv logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/kickserv.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>K</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/landvision.com.ico" alt="LandVision logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/landvision.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>L</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Kickserv</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">kickserv.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">LandVision</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">landvision.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for managing leads, estimates, and jobs with seamless QuickBooks integration.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">LandVision provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/leadbuilder.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/lead411.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/leadbuilder.com.ico" alt="LeadBuilder logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/leadbuilder.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>L</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/lead411.com.ico" alt="Lead411 logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/lead411.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>L</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">LeadBuilder</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">leadbuilder.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Lead411</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">lead411.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to capture and track leads sourced from digital marketing and directories.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Lead411 provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/marketsharp.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/levelset.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/marketsharp.com.ico" alt="MarketSharp logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/marketsharp.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>M</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/levelset.com.ico" alt="Levelset logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/levelset.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>L</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">MarketSharp</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">marketsharp.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Levelset</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">levelset.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed by remodelers to drive leads, manage canvassing, and track sales metrics.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Levelset provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-tools/procore.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/mybidmatch.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/procore.com.ico" alt="Procore logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/procore.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/mybidmatch.com.ico" alt="MyBidMatch logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/mybidmatch.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>M</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Procore</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">procore.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">MyBidMatch</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">mybidmatch.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">An all-in-one construction management software needed for improving communication and project tracking.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">MyBidMatch provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-construction-estimating-tools/rsmeans-data.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/networx.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/rsmeans.com.ico" alt="RSMeans Data logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/rsmeans.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>R</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/networx.com.ico" alt="Networx logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/networx.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>N</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">RSMeans Data</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">rsmeans.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Networx</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">networx.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for generating highly accurate and localized estimating data to prevent underbidding.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Networx provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/salesrabbit.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/permitflow.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/salesrabbit.com.ico" alt="SalesRabbit logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/salesrabbit.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/permitflow.com.ico" alt="PermitFlow logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/permitflow.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">SalesRabbit</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">salesrabbit.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">PermitFlow</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">permitflow.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for door-to-door canvassing contractors to track territories and lead statuses.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">PermitFlow provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-crm-tools/sharpspring.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/pipelinesuite.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/sharpspring.com.ico" alt="Sharpspring logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/sharpspring.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/pipelinesuite.com.ico" alt="PipelineSuite logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/pipelinesuite.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">Sharpspring</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">sharpspring.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">PipelineSuite</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">pipelinesuite.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed for robust marketing automation tracking exactly which ads generate CRM leads.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">PipelineSuite provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-commercial-contractor-software/smartbid.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/planetbids.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/smartbid.co.ico" alt="SmartBid logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/smartbid.co.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/planetbids.com.ico" alt="PlanetBids logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/planetbids.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">PlanetBids</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">planetbids.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">PlanetBids provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/planhub.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/planhub.com.ico" alt="PlanHub logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/planhub.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">PlanHub</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">planhub.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">PlanHub provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/porch.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/porch.com.ico" alt="Porch logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/porch.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Porch</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">porch.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Porch provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/procureware.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/procureware.com.ico" alt="ProcureWare logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/procureware.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">ProcureWare</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">procureware.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">ProcureWare provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/public-purchase.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/publicpurchase.com.ico" alt="Public Purchase logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/publicpurchase.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>P</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Public Purchase</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">publicpurchase.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Public Purchase provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/reonomy.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/reonomy.com.ico" alt="Reonomy logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/reonomy.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>R</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Reonomy</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">reonomy.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Reonomy provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/salesintel.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/salesintel.com.ico" alt="SalesIntel logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/salesintel.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">SalesIntel</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">salesintel.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">SalesIntel provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/sam-gov.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/samgov.com.ico" alt="SAM.gov logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/samgov.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">SAM.gov</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">samgov.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">SAM.gov provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/seamless-ai.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/seamlessai.com.ico" alt="Seamless.AI logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/seamlessai.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Seamless.AI</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">seamlessai.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Seamless.AI provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/smartbid.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/smartbid.com.ico" alt="SmartBid logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/smartbid.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>S</div>'}"></div>
     <div class="flex-grow min-w-0">
       <h3 class="font-semibold text-slate-900 leading-tight truncate">SmartBid</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">smartbid.co</div>
+      <div class="text-xs text-slate-500 mt-1 truncate">smartbid.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to securely distribute plans, send ITBs, and manage subcontractor prequalification.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">SmartBid provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
-</a><a href="../../tool/top-50-contractor-tools/wordpress.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+</a><a href="../../tool/construction-leads/the-blue-book-network.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
   <div class="flex items-start gap-4">
-    <div class="tool-icon"><img src="../../assets/icons/wordpress.com.ico" alt="WordPress logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/wordpress.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>W</div>'}"></div>
+    <div class="tool-icon"><img src="../../assets/icons/thebluebook.com.ico" alt="The Blue Book Network logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/thebluebook.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>T</div>'}"></div>
     <div class="flex-grow min-w-0">
-      <h3 class="font-semibold text-slate-900 leading-tight truncate">WordPress</h3>
-      <div class="text-xs text-slate-500 mt-1 truncate">wordpress.com</div>
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">The Blue Book Network</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">thebluebook.com</div>
     </div>
   </div>
-  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Needed to build robust, SEO-friendly websites that drive organic contractor leads.</p>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">The Blue Book Network provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/thumbtack-pro.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/thumbtackpro.com.ico" alt="Thumbtack Pro logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/thumbtackpro.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>T</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">Thumbtack Pro</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">thumbtackpro.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">Thumbtack Pro provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/uplead.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/uplead.com.ico" alt="UpLead logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/uplead.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>U</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">UpLead</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">uplead.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">UpLead provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </div>
+</a><a href="../../tool/construction-leads/zoominfo.html" class="tool-card bg-white border border-slate-200 rounded-xl p-5 flex flex-col gap-4 h-full">
+  <div class="flex items-start gap-4">
+    <div class="tool-icon"><img src="../../assets/icons/zoominfo.com.ico" alt="ZoomInfo logo" loading="lazy" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/zoominfo.com.ico'}else{this.outerHTML='<div class=\'icon-fallback \'>Z</div>'}"></div>
+    <div class="flex-grow min-w-0">
+      <h3 class="font-semibold text-slate-900 leading-tight truncate">ZoomInfo</h3>
+      <div class="text-xs text-slate-500 mt-1 truncate">zoominfo.com</div>
+    </div>
+  </div>
+  <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">ZoomInfo provides construction lead, bid opportunity, project intelligence, permit, or market-activity information for construction and building-industry professionals.</p>
+  <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+    <span class="text-xs font-semibold text-blue-600">View details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
 </a></div>
     </div>
@@ -361,10 +719,10 @@
   <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-10 relative z-10">
     <div>
       <div class="flex items-center gap-2 font-bold text-xl text-white">
-        <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-        <span>The Contractor Technology Directory</span>
+        <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
+        <span>The Construction Technology Directory</span>
       </div>
-      <p class="mt-4 text-sm text-slate-400 max-w-sm leading-relaxed">Search contractor software, apps, vendors, and resources by trade, category, or company.</p>
+      <p class="mt-4 text-sm text-slate-400 max-w-sm leading-relaxed">Search construction software, apps, vendors, and resources by trade, category, or company.</p>
     </div>
     <div>
       <h4 class="text-sm font-semibold text-slate-200 mb-4">Categories</h4>
@@ -375,16 +733,16 @@
       <ul class="space-y-2.5 text-sm text-slate-400">
         <li><a class="hover:text-blue-400 transition" href="../../trades/">All Trades</a></li>
         <li><a class="hover:text-blue-400 transition" href="../../categories/">All Categories</a></li>
-        <li><a class="hover:text-blue-400 transition" href="../../compare/">Compare Software</a></li>
-        <li><a class="hover:text-blue-400 transition" href="../../pricing/">Pricing</a></li>
         <li><a class="hover:text-blue-400 transition" href="../../directory/">Full Directory</a></li>
+        <li><a class="hover:text-blue-400 transition" href="../../resources/">Resources</a></li>
+        <li><a class="hover:text-blue-400 transition" href="../../blog/">Blog</a></li>
       </ul>
     </div>
   </div>
   <div class="border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-6 py-5 text-xs text-slate-500 flex flex-col md:flex-row items-center justify-between gap-2 relative z-10">
-      <span>&copy; 2026 The Contractor Technology Directory. All trademarks are property of their respective owners.</span>
-      <span>12 categories &middot; 34 trades &middot; contractor software directory</span>
+      <span>&copy; 2026 The Construction Technology Directory. All trademarks are property of their respective owners.</span>
+      <span>12 categories &middot; 34 trades &middot; construction software directory</span>
     </div>
   </div>
 </footer>

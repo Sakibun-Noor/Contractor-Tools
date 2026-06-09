@@ -37,6 +37,13 @@ function Build-Head($title, $desc, $prefix) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* Brand palette — remap Tailwind blue -> navy, add orange (Construction Technology Directory) */
+    tailwind.config = { theme: { extend: { colors: {
+      blue:   {50:'#EAF1F8',100:'#DCE7F3',200:'#C2D4E6',300:'#9DBBD8',400:'#5B8FC7',500:'#1C4E80',600:'#14365C',700:'#0E2747',800:'#0C2138',900:'#0A1B30'},
+      orange: {50:'#FFF1E6',100:'#FFE2CC',400:'#F4923F',500:'#F47A21',600:'#DD6710',700:'#B8540C'}
+    }}}};
+  </script>
   <link rel="stylesheet" href="${prefix}assets/style.css">
 </head>
 <body class="bg-white">
@@ -48,8 +55,8 @@ function Build-Header($prefix) {
 <header class="sticky top-0 z-50 bg-white/85 backdrop-blur border-b border-slate-200">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
     <a href="${prefix}index.html" class="flex items-center gap-2 font-bold text-lg tracking-tight flex-shrink-0">
-      <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-      <span class="hidden sm:inline">The Contractor Technology Directory</span>
+      <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
+      <span class="hidden sm:inline">The Construction Technology Directory</span>
       <span class="sm:hidden">TCTD</span>
     </a>
     <div class="search-wrapper flex-1 max-w-md mx-4 relative" id="search-wrapper">
@@ -61,13 +68,13 @@ function Build-Header($prefix) {
       <div class="search-dropdown" id="search-dropdown"></div>
     </div>
     <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600 flex-shrink-0">
-      <a href="${prefix}directory/" class="hover:text-blue-600 transition">Directory</a>
-      <a href="${prefix}trades/" class="hover:text-blue-600 transition">Trades</a>
       <a href="${prefix}categories/" class="hover:text-blue-600 transition">Categories</a>
-      <a href="${prefix}compare/" class="hover:text-blue-600 transition">Compare</a>
-      <a href="${prefix}pricing/" class="hover:text-blue-600 transition">Pricing</a>
+      <a href="${prefix}trades/" class="hover:text-blue-600 transition">Trades</a>
+      <a href="${prefix}resources/" class="hover:text-blue-600 transition">Resources</a>
+      <a href="${prefix}blog/" class="hover:text-blue-600 transition">Blog</a>
+      <a href="${prefix}contact/" class="hover:text-blue-600 transition">Contact</a>
     </nav>
-    <a href="${prefix}directory/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
+    <a href="${prefix}categories/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
   </div>
 </header>
 "@
@@ -107,7 +114,7 @@ function Build-ToolCard($c, $prefix) {
   <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 flex-grow">$descH</p>
   <div class="flex items-center justify-between pt-2 border-t border-slate-100">
     <span class="text-xs font-semibold text-blue-600">View details</span>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
   </div>
 </a>
 "@
@@ -135,10 +142,10 @@ function Build-Footer($prefix) {
   <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-10 relative z-10">
     <div>
       <div class="flex items-center gap-2 font-bold text-xl text-white">
-        <img src="/assets/logo.png" alt="The Contractor Technology Directory" class="h-9 w-auto" />
-        <span>The Contractor Technology Directory</span>
+        <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
+        <span>The Construction Technology Directory</span>
       </div>
-      <p class="mt-4 text-sm text-slate-400 max-w-sm leading-relaxed">Search contractor software, apps, vendors, and resources by trade, category, or company.</p>
+      <p class="mt-4 text-sm text-slate-400 max-w-sm leading-relaxed">Search construction software, apps, vendors, and resources by trade, category, or company.</p>
     </div>
     <div>
       <h4 class="text-sm font-semibold text-slate-200 mb-4">Categories</h4>
@@ -149,16 +156,16 @@ function Build-Footer($prefix) {
       <ul class="space-y-2.5 text-sm text-slate-400">
         <li><a class="hover:text-blue-400 transition" href="${prefix}trades/">All Trades</a></li>
         <li><a class="hover:text-blue-400 transition" href="${prefix}categories/">All Categories</a></li>
-        <li><a class="hover:text-blue-400 transition" href="${prefix}compare/">Compare Software</a></li>
-        <li><a class="hover:text-blue-400 transition" href="${prefix}pricing/">Pricing</a></li>
         <li><a class="hover:text-blue-400 transition" href="${prefix}directory/">Full Directory</a></li>
+        <li><a class="hover:text-blue-400 transition" href="${prefix}resources/">Resources</a></li>
+        <li><a class="hover:text-blue-400 transition" href="${prefix}blog/">Blog</a></li>
       </ul>
     </div>
   </div>
   <div class="border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-6 py-5 text-xs text-slate-500 flex flex-col md:flex-row items-center justify-between gap-2 relative z-10">
-      <span>&copy; 2026 The Contractor Technology Directory. All trademarks are property of their respective owners.</span>
-      <span>12 categories &middot; 34 trades &middot; contractor software directory</span>
+      <span>&copy; 2026 The Construction Technology Directory. All trademarks are property of their respective owners.</span>
+      <span>12 categories &middot; 34 trades &middot; construction software directory</span>
     </div>
   </div>
 </footer>
@@ -236,8 +243,8 @@ function Build-CategoryPage($cat, $list) {
   $nameH = HtmlEnc $cat.name
   $nameLower = $cat.name.ToLower()
   $subCount = $cat.subcategories.Count
-  $title = "$nameH Software for Contractors | The Contractor Technology Directory"
-  $desc  = "Browse $nameLower software, apps, and vendors used by contractors. $subCount subcategories, filtered by trade and company."
+  $title = "$nameH Software for Construction | The Construction Technology Directory"
+  $desc  = "Browse $nameLower software, apps, and vendors used by construction. $subCount subcategories, filtered by trade and company."
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label='Categories';href=($prefix+'categories/')}, @{label=$cat.name})
   $meta = '<div class="hero-meta"><span>' + $count + ' Vendors</span><span>' + $subCount + ' Subcategories</span><span>Direct Links</span></div>'
   $heroDesc = "Software and vendors for $nameLower &mdash; explore by subcategory or jump straight to a tool."
@@ -270,11 +277,11 @@ function Build-SubcategoryPage($cat, $sub, $catList) {
   $prefix = '../../'
   $catNameH = HtmlEnc $cat.name
   $subNameH = HtmlEnc $sub.name
-  $title = "$subNameH Software for Contractors | $catNameH"
-  $desc  = "$subNameH tools and vendors for contractors, part of the $catNameH category."
+  $title = "$subNameH Software for Construction | $catNameH"
+  $desc  = "$subNameH tools and vendors for construction, part of the $catNameH category."
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label=$cat.name;href=($prefix+$cat.slug+'/')}, @{label=$sub.name})
   $meta = '<div class="hero-meta"><span>' + $catNameH + '</span><span>Subcategory</span></div>'
-  $heroDesc = "$subNameH software for contractors &mdash; a focused slice of $catNameH."
+  $heroDesc = "$subNameH software for construction &mdash; a focused slice of $catNameH."
   $hero = Build-HeroImage 'Subcategory' $subNameH $heroDesc $bc $meta $cat.slug $prefix
   $grid = Build-ToolGrid $catList $prefix
   $catHref = $prefix + $cat.slug + '/'
@@ -296,11 +303,11 @@ function Build-TradePage($trade, $list) {
   $prefix = '../../'
   $count = if ($list) { $list.Count } else { 0 }
   $nameH = HtmlEnc $trade.name
-  $title = "$nameH Software and Apps for Contractors | The Contractor Technology Directory"
-  $desc  = "Software, apps, and vendors used by $nameH contractors &mdash; estimating, dispatch, CRM, project management, and more."
+  $title = "$nameH Software and Apps for Construction | The Construction Technology Directory"
+  $desc  = "Software, apps, and vendors used by $nameH construction &mdash; estimating, dispatch, CRM, project management, and more."
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label='Trades';href=($prefix+'trades/')}, @{label=$trade.name})
   $meta = '<div class="hero-meta"><span>' + $count + ' Vendors</span><span>' + (HtmlEnc $trade.group) + '</span><span>CSI Div ' + $trade.csi + '</span></div>'
-  $heroDesc = "Everything $nameH contractors use to estimate, sell, dispatch, and run the business."
+  $heroDesc = "Everything $nameH construction use to estimate, sell, dispatch, and run the business."
   $hero = Build-HeroImage 'Trade' ($nameH + ' Software &amp; Apps') $heroDesc $bc $meta $trade.slug $prefix
 
   $catPills = New-Object System.Text.StringBuilder
@@ -317,7 +324,7 @@ $hero
     <div class="max-w-7xl mx-auto px-6 py-16">
       <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">$nameH by Category</span></div>
       <div class="flex flex-wrap gap-2.5 mb-12">$pills</div>
-      <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">Popular with $nameH Contractors</span></div>
+      <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">Popular with $nameH Construction</span></div>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">$grid</div>
     </div>
   </div>
@@ -332,11 +339,11 @@ function Build-ComboPage($trade, $cat, $m, $list) {
   $tradeNameH = HtmlEnc $trade.name
   $catNameH = HtmlEnc $cat.name
   $titleH = HtmlEnc $m.title
-  $title = "$titleH | The Contractor Technology Directory"
-  $desc  = "$tradeNameH $catNameH software and vendors. Compare the tools $($trade.name.ToLower()) contractors use for $($cat.name.ToLower())."
+  $title = "$titleH | The Construction Technology Directory"
+  $desc  = "$tradeNameH $catNameH software and vendors. See the tools $($trade.name.ToLower()) construction use for $($cat.name.ToLower())."
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label=$trade.name;href=($prefix+'trades/'+$trade.slug+'/')}, @{label=$cat.name})
   $meta = '<div class="hero-meta"><span>' + $count + ' Vendors</span><span>' + $tradeNameH + '</span><span>' + $catNameH + '</span></div>'
-  $heroDesc = "The $($cat.name.ToLower()) software and vendors most relevant to $tradeNameH contractors."
+  $heroDesc = "The $($cat.name.ToLower()) software and vendors most relevant to $tradeNameH construction."
   $hero = Build-HeroImage ($tradeNameH + ' &middot; ' + $catNameH) $titleH $heroDesc $bc $meta $trade.slug $prefix
   $grid = Build-ToolGrid $list $prefix
 
@@ -365,11 +372,11 @@ $hero
 
 function Build-TradesIndex() {
   $prefix = '../'
-  $title = "All Contractor Trades | The Contractor Technology Directory"
-  $desc  = "Browse software and vendors by contractor trade: HVAC, plumbing, electrical, mechanical, roofing, concrete, and more."
+  $title = "All Construction Trades | The Construction Technology Directory"
+  $desc  = "Browse software and vendors by construction trade: HVAC, plumbing, electrical, mechanical, roofing, concrete, and more."
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label='Trades'})
   $meta = '<div class="hero-meta"><span>' + $Global:tax.trades.Count + ' Trades</span><span>Filterable</span><span>SEO Hubs</span></div>'
-  $hero = Build-HeroImage 'Browse' 'Contractor Trades' 'Find the software, apps, and vendors used by every construction trade.' $bc $meta 'commercial' $prefix
+  $hero = Build-HeroImage 'Browse' 'Construction Trades' 'Find the software, apps, and vendors used by every construction trade.' $bc $meta 'commercial' $prefix
 
   $groups = [ordered]@{}
   foreach ($t in $Global:tax.trades) {
@@ -401,11 +408,11 @@ $hero
 
 function Build-CategoriesIndex() {
   $prefix = '../'
-  $title = "All Software Categories | The Contractor Technology Directory"
-  $desc  = "Browse contractor software by category: estimating, CRM, dispatch, project management, accounting, safety, and more."
+  $title = "All Software Categories | The Construction Technology Directory"
+  $desc  = "Browse construction software by category: estimating, CRM, dispatch, project management, accounting, safety, and more."
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label='Categories'})
   $meta = '<div class="hero-meta"><span>' + $Global:tax.categories.Count + ' Categories</span><span>72 Subcategories</span><span>SEO Hubs</span></div>'
-  $hero = Build-HeroImage 'Browse' 'Software Categories' 'Everything contractors use to estimate, sell, dispatch, manage projects, and run the business.' $bc $meta 'estimating' $prefix
+  $hero = Build-HeroImage 'Browse' 'Software Categories' 'Everything construction use to estimate, sell, dispatch, manage projects, and run the business.' $bc $meta 'estimating' $prefix
 
   $sb = New-Object System.Text.StringBuilder
   [void]$sb.Append('<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">')
@@ -434,8 +441,8 @@ function Resolve-CompanyHref($slug, $prefix) {
 
 function Build-Homepage() {
   $prefix = ''
-  $title = "The Contractor Technology Directory - Search 600+ contractor software, apps & vendors"
-  $desc  = "Search contractor software, apps, vendors, and resources by trade, category, or company."
+  $title = "The Construction Technology Directory - Search 600+ construction software, apps & vendors"
+  $desc  = "Search construction software, apps, vendors, and resources by trade, category, or company."
 
   $tradeTiles = New-Object System.Text.StringBuilder
   foreach ($t in ($Global:tax.trades | Select-Object -First 12)) {
@@ -464,7 +471,7 @@ function Build-Homepage() {
   $cmpSb = New-Object System.Text.StringBuilder
   foreach ($cm in $compares) {
     $lb = HtmlEnc $cm.label
-    [void]$cmpSb.Append('<a href="' + $cm.href + '" class="vs-card flex items-center justify-between"><span class="font-semibold text-slate-900">' + $lb + '</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>')
+    [void]$cmpSb.Append('<a href="' + $cm.href + '" class="vs-card flex items-center justify-between"><span class="font-semibold text-slate-900">' + $lb + '</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14365C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>')
   }
 
   $tt = $tradeTiles.ToString()
@@ -482,10 +489,10 @@ function Build-Homepage() {
   <div class="max-w-7xl mx-auto px-6 w-full text-white">
     <span class="chip" style="background:rgba(255,255,255,0.08); color:#93C5FD; border-color:rgba(255,255,255,0.15);">600+ software platforms &middot; vendors &middot; resources</span>
     <h1 class="mt-5 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-4xl leading-[1.05]">
-      The Contractor Technology Directory
+      The Construction Technology Directory
     </h1>
     <p class="mt-6 text-lg md:text-xl text-slate-300 max-w-2xl leading-relaxed">
-      Search contractor software, apps, vendors, and resources by trade, category, or company.
+      Search construction software, apps, vendors, and resources by trade, category, or company.
     </p>
     <div class="mt-10 flex flex-wrap gap-4">
       <a href="trades/" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-blue-900/40 transition-all duration-200 hover:-translate-y-0.5">
@@ -502,7 +509,7 @@ function Build-Homepage() {
 <section class="stats-bar">
   <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative z-10">
     <div><div class="text-3xl md:text-4xl font-extrabold text-white">600+</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Software &amp; vendors</div></div>
-    <div><div class="text-3xl md:text-4xl font-extrabold text-white">$nTrades</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Contractor trades</div></div>
+    <div><div class="text-3xl md:text-4xl font-extrabold text-white">$nTrades</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Construction trades</div></div>
     <div><div class="text-3xl md:text-4xl font-extrabold text-white">$nCats</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Software categories</div></div>
     <div><div class="text-3xl md:text-4xl font-extrabold text-blue-400">Free</div><div class="text-xs uppercase tracking-wider text-slate-400 mt-1.5">Cost to browse</div></div>
   </div>
@@ -513,7 +520,7 @@ function Build-Homepage() {
     <div class="max-w-2xl mx-auto px-6">
       <span class="chip">Browse by trade</span>
       <h2>Find tools built for your trade.</h2>
-      <p>Every system a contractor uses, organized by the trade that runs it.</p>
+      <p>Every system a construction uses, organized by the trade that runs it.</p>
     </div>
   </div>
   <div class="bg-premium-light">
@@ -529,7 +536,7 @@ function Build-Homepage() {
     <div class="max-w-2xl mx-auto px-6">
       <span class="chip">Browse by category</span>
       <h2>Twelve categories. Every workflow.</h2>
-      <p>From estimating and takeoff to AI and automation, the full contractor software stack.</p>
+      <p>From estimating and takeoff to AI and automation, the full construction software stack.</p>
     </div>
   </div>
   <div class="bg-premium-light">
@@ -541,7 +548,7 @@ function Build-Homepage() {
 
 <section id="popular" class="bg-premium-light">
   <div class="max-w-7xl mx-auto px-6 py-16">
-    <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">Popular Contractor Software</span></div>
+    <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">Popular Construction Software</span></div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">$pop</div>
   </div>
 </section>

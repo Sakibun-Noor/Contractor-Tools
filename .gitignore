@@ -13,3 +13,5 @@ desktop.ini
 *.tmp
 *.bak
 *.log
+
+.git-commit-msg.txt
