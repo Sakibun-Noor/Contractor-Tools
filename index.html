@@ -50,6 +50,22 @@
     .home-h1 .accent{color:#9DC0EA}
     .home-h1 .o{color:#F8A65A}
     .home-sub{color:#CBD5E1;font-size:clamp(1.02rem,1.5vw,1.22rem);line-height:1.6;margin:1.1rem 0 0;max-width:40rem;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+
+    /* ---- centered wordmark hero (per client mockup) ---- */
+    .hero-inner{max-width:54rem;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center}
+    .hero-inner .chip{margin-bottom:.4rem}
+    .hero-wordmark{display:flex;flex-direction:column;align-items:center;gap:.05rem;line-height:.95;margin:.6rem 0 0;
+      text-shadow:0 2px 22px rgba(0,0,0,.55),0 1px 0 rgba(0,0,0,.25);font-weight:900;letter-spacing:-.02em;color:#F8FAFC}
+    .hero-wordmark .wm-the{font-size:clamp(.95rem,1.3vw,1.15rem);font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:#DCE9F8;margin-bottom:.35rem}
+    .hero-wordmark .wm-big{font-size:clamp(2.6rem,7.6vw,6rem);text-transform:uppercase;display:block}
+    .hero-wordmark .wm-orange{color:var(--orange);text-shadow:0 2px 22px rgba(0,0,0,.55),0 1px 0 rgba(186,68,0,.35)}
+    .hero-wordmark .wm-dir{display:inline-flex;align-items:center;justify-content:center;gap:.9rem;font-size:clamp(1.05rem,1.8vw,1.55rem);font-weight:800;letter-spacing:.42em;text-transform:uppercase;color:#EAF1F8;margin-top:.55rem}
+    .hero-wordmark .wm-dir::before,.hero-wordmark .wm-dir::after{content:"";display:block;width:clamp(2.2rem,5vw,4.2rem);height:2px;background:rgba(255,255,255,.55);border-radius:2px}
+    .hero-tag{margin:1.4rem 0 0;font-size:clamp(.9rem,1.25vw,1.05rem);font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#DCE9F8;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+    .hero-tag .o{color:var(--orange)}
+    .hero-inner .big-search{margin-left:auto;margin-right:auto}
+    .hero-inner .hero-ctas{justify-content:center}
+    .hero-inner .trust-row{justify-content:center}
     .home-hero .chip{background:rgba(255,255,255,.12);color:#DCE9F8;border-color:rgba(255,255,255,.2);backdrop-filter:blur(6px)}
     .home-hero .trust-row{color:#C3D4E6}
     .home-hero .trust-row svg{color:#9DC0EA}
@@ -165,16 +181,19 @@
 <!-- ============ HERO ============ -->
 <section class="home-hero" data-screen-label="Hero">
   <div class="wrap-wide">
-    <div style="max-width:48rem">
+    <div class="hero-inner">
       <span class="chip reveal" data-d="1">
         <span style="width:7px;height:7px;border-radius:999px;background:var(--orange)"></span>
         600+ platforms · 12 categories · free to browse
       </span>
-      <h1 class="home-h1 reveal" data-d="2">
-        Find the <span class="accent">Right Software Solutions</span> for Your <span class="o">Construction</span> Business
+      <h1 class="home-h1 hero-wordmark reveal" data-d="2" aria-label="The Construction Technology Directory">
+        <span class="wm-the">The</span>
+        <span class="wm-big">Construction</span>
+        <span class="wm-big wm-orange">Technology</span>
+        <span class="wm-dir">Directory</span>
       </h1>
-      <p class="home-sub reveal" data-d="3">
-        Every system a construction business runs — estimating, dispatch, CRM, accounting, safety — searchable by trade, category, or company. Curated and reviewed, so you stop guessing.
+      <p class="hero-tag reveal" data-d="3">
+        Construction. Technology. Contractors. <span class="o">Connected.</span>
       </p>
 
       <div class="big-search reveal" data-d="3" id="heroSearch">
