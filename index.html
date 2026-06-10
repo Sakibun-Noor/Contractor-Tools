@@ -35,19 +35,26 @@
     .nav-pop .np-all{justify-content:center;color:var(--accent-dark);font-weight:700;margin-top:.15rem;border-top:1px solid var(--line-soft);border-radius:0 0 .55rem .55rem}
 
     /* hero (light) */
-    .home-hero{position:relative;overflow:hidden;background:
-      radial-gradient(ellipse 60% 70% at 88% -10%,rgba(28,78,128,.10),transparent 60%),
-      radial-gradient(ellipse 50% 60% at 6% 110%,rgba(244,122,33,.08),transparent 60%),
-      var(--bg);
-      border-bottom:1px solid var(--line);padding:clamp(2.6rem,6vw,5rem) 0 clamp(2.2rem,4vw,3.4rem)}
-    .home-hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55;
-      background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
-      background-size:46px 46px;mask-image:radial-gradient(ellipse 75% 90% at 75% 0%,#000,transparent 70%)}
+    .home-hero{position:relative;overflow:hidden;isolation:isolate;background:#0b1220;
+      border-bottom:1px solid rgba(148,163,184,.12);padding:clamp(3rem,7vw,6rem) 0 clamp(2.6rem,5vw,4.2rem)}
+    .home-hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+      background-image:url('assets/hero/cta-hero-desktop.webp');background-size:cover;background-position:center 30%;
+      filter:brightness(.5) saturate(1.05);transform:scale(1.04)}
+    .home-hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+      background:linear-gradient(180deg,rgba(11,18,32,.5),rgba(11,18,32,.66) 55%,rgba(11,18,32,.92)),
+      radial-gradient(ellipse 60% 60% at 16% 88%,rgba(28,78,128,.32),transparent 60%),
+      radial-gradient(ellipse 50% 50% at 88% 10%,rgba(244,122,33,.20),transparent 60%)}
     .home-hero>.wrap-wide{position:relative;z-index:1}
-    .home-h1{font-size:clamp(2.1rem,5.2vw,4rem);font-weight:900;letter-spacing:-.03em;line-height:1.03;color:var(--ink);margin:1rem 0 0}
-    .home-h1 .accent{color:var(--accent-dark)}
-    .home-h1 .o{color:var(--orange-dark)}
-    .home-sub{color:var(--ink-soft);font-size:clamp(1.02rem,1.5vw,1.22rem);line-height:1.6;margin:1.1rem 0 0;max-width:40rem}
+    @media(max-width:640px){.home-hero::before{background-image:url('assets/hero/cta-hero-mobile.webp');background-position:center 28%}}
+    .home-h1{font-size:clamp(2.1rem,5.2vw,4rem);font-weight:900;letter-spacing:-.03em;line-height:1.03;color:#F8FAFC;margin:1rem 0 0;text-shadow:0 2px 24px rgba(0,0,0,.45)}
+    .home-h1 .accent{color:#9DC0EA}
+    .home-h1 .o{color:#F8A65A}
+    .home-sub{color:#CBD5E1;font-size:clamp(1.02rem,1.5vw,1.22rem);line-height:1.6;margin:1.1rem 0 0;max-width:40rem;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+    .home-hero .chip{background:rgba(255,255,255,.12);color:#DCE9F8;border-color:rgba(255,255,255,.2);backdrop-filter:blur(6px)}
+    .home-hero .trust-row{color:#C3D4E6}
+    .home-hero .trust-row svg{color:#9DC0EA}
+    .home-hero .btn-ghost{background:rgba(255,255,255,.08);color:#EAF1F8;border-color:rgba(255,255,255,.26);box-shadow:none;backdrop-filter:blur(6px)}
+    .home-hero .btn-ghost:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);color:#fff}
     .big-search{position:relative;max-width:42rem;margin-top:1.9rem}
     .big-search .search-input{padding:1.05rem 3.4rem 1.05rem 3.3rem;font-size:1.05rem;border-radius:1rem;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-md)}
     .big-search .search-icon{left:18px;width:20px;height:20px}
@@ -65,9 +72,10 @@
     .ccard{position:relative;display:flex;flex-direction:column;gap:.55rem;padding:1.05rem;border:1px solid var(--line);border-radius:.95rem;
       background:#fff;text-decoration:none;box-shadow:var(--shadow-sm);transition:transform .2s var(--ease),box-shadow .2s var(--ease),border-color .2s var(--ease)}
     .ccard:hover{transform:translateY(-3px);border-color:rgba(28,78,128,.4);box-shadow:var(--shadow-md)}
-    .ccard .cc-ic{width:2.6rem;height:2.6rem;border-radius:.65rem;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(150deg,var(--accent-light),#fff);border:1px solid var(--line);color:var(--accent-dark)}
+    .ccard .cc-ic{width:3rem;height:3rem;border-radius:.7rem;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(150deg,var(--accent-light),#fff);border:1px solid var(--line);color:var(--accent-dark);padding:.34rem}
     .ccard .cc-ic svg{width:1.35rem;height:1.35rem}
+    .ccard .cc-ic img{width:100%;height:100%;object-fit:contain;display:block}
     .ccard .cc-name{font-weight:700;font-size:.95rem;color:var(--ink);letter-spacing:-.01em}
     .ccard .cc-sub{font-size:.74rem;color:var(--ink-mute);line-height:1.4}
     .ccard .cc-count{position:absolute;top:.85rem;right:.95rem;font-size:.68rem;font-weight:700;color:var(--accent-dark);background:var(--accent-light);padding:.12rem .45rem;border-radius:999px}
@@ -320,7 +328,7 @@
     var n = countCat(slug);
     return '<a href="'+c.href+'" class="ccard reveal" data-d="'+((i%4)+1)+'">'+
       (n?'<span class="cc-count">'+n+'</span>':'')+
-      '<span class="cc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+(ICONS[slug]||'')+'</svg></span>'+
+      '<span class="cc-ic"><img src="assets/logos/'+slug+'.png" alt="" loading="lazy"></span>'+
       '<span class="cc-name">'+esc(c.name)+'</span>'+
       '<span class="cc-sub">'+esc(c.sub)+'</span>'+
     '</a>';
