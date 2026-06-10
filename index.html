@@ -71,7 +71,9 @@
     .home-hero .trust-row svg{color:#9DC0EA}
     .home-hero .btn-ghost{background:rgba(255,255,255,.08);color:#EAF1F8;border-color:rgba(255,255,255,.26);box-shadow:none;backdrop-filter:blur(6px)}
     .home-hero .btn-ghost:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);color:#fff}
-    .big-search{position:relative;max-width:42rem;margin-top:1.9rem}
+    .big-search{position:relative;max-width:42rem;margin-top:1.9rem;z-index:50}
+    /* keep siblings beneath the open dropdown so they can't overlap it */
+    .hero-ctas,.trust-row{position:relative;z-index:1}
     .big-search .search-input{padding:1.05rem 3.4rem 1.05rem 3.3rem;font-size:1.05rem;border-radius:1rem;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-md)}
     .big-search .search-icon{left:18px;width:20px;height:20px}
     .hero-ctas{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.4rem}
@@ -134,15 +136,6 @@
       </span>
     </a>
 
-    <div class="search-wrapper relative flex-1 max-w-sm mx-2 hidden md:block" id="hdrSearch">
-      <div class="search-input-container">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" class="search-input" placeholder="Search software, vendors…" autocomplete="off" aria-label="Search">
-        <kbd class="search-kbd hidden sm:flex">/</kbd>
-      </div>
-      <div class="search-dropdown"></div>
-    </div>
-
     <nav class="hidden lg:flex items-center gap-6 ml-auto">
       <div class="nav-item"><a href="categories/" class="nav-link">Categories</a>
         <div class="nav-pop" id="navCats"></div>
@@ -182,10 +175,6 @@
 <section class="home-hero" data-screen-label="Hero">
   <div class="wrap-wide">
     <div class="hero-inner">
-      <span class="chip reveal" data-d="1">
-        <span style="width:7px;height:7px;border-radius:999px;background:var(--orange)"></span>
-        600+ platforms · 12 categories · free to browse
-      </span>
       <h1 class="home-h1 hero-wordmark reveal" data-d="2" aria-label="The Construction Technology Directory">
         <span class="wm-the">The</span>
         <span class="wm-big">Construction</span>
@@ -441,7 +430,7 @@
   document.getElementById("footCats").innerHTML = order.slice(0,8).map(function(slug){ return '<li><a href="'+CATS[slug].href+'">'+esc(CATS[slug].name)+'</a></li>'; }).join("");
 
   /* ---- init search + motion ---- */
-  if (window.initSearch){ initSearch("hdrSearch"); initSearch("heroSearch"); }
+  if (window.initSearch){ initSearch("heroSearch"); }
   if (window.initReveal) initReveal();
 })();
 </script>
