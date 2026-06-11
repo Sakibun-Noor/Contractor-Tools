@@ -34,43 +34,41 @@
     .nav-pop .np-ic svg{width:1rem;height:1rem}
     .nav-pop .np-all{justify-content:center;color:var(--accent-dark);font-weight:700;margin-top:.15rem;border-top:1px solid var(--line-soft);border-radius:0 0 .55rem .55rem}
 
-    /* hero (light) */
-    .home-hero{position:relative;overflow:hidden;isolation:isolate;background:#0b1220;
-      border-bottom:1px solid rgba(148,163,184,.12);padding:clamp(3rem,7vw,6rem) 0 clamp(2.6rem,5vw,4.2rem)}
+    /* hero (bright + navy — matches category pages per client mockup) */
+    .home-hero{position:relative;overflow:hidden;isolation:isolate;background:#FFFFFF;
+      border-bottom:1px solid var(--line);padding:clamp(3rem,7vw,6rem) 0 clamp(2.6rem,5vw,4.2rem)}
     .home-hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
       background-image:url('assets/hero/cta-hero-desktop.webp');background-size:cover;background-position:center 30%;
-      filter:brightness(.5) saturate(1.05);transform:scale(1.04)}
+      filter:saturate(1.05)}
     .home-hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-      background:linear-gradient(180deg,rgba(11,18,32,.5),rgba(11,18,32,.66) 55%,rgba(11,18,32,.92)),
-      radial-gradient(ellipse 60% 60% at 16% 88%,rgba(28,78,128,.32),transparent 60%),
-      radial-gradient(ellipse 50% 50% at 88% 10%,rgba(244,122,33,.20),transparent 60%)}
+      background:linear-gradient(180deg,rgba(255,255,255,.78) 0%,rgba(255,255,255,.58) 38%,rgba(255,255,255,.18) 62%,rgba(255,255,255,0) 90%)}
     .home-hero>.wrap-wide{position:relative;z-index:1}
     @media(max-width:640px){.home-hero::before{background-image:url('assets/hero/cta-hero-mobile.webp');background-position:center 28%}}
-    .home-h1{font-size:clamp(2.1rem,5.2vw,4rem);font-weight:900;letter-spacing:-.03em;line-height:1.03;color:#F8FAFC;margin:1rem 0 0;text-shadow:0 2px 24px rgba(0,0,0,.45)}
-    .home-h1 .accent{color:#9DC0EA}
-    .home-h1 .o{color:#F8A65A}
-    .home-sub{color:#CBD5E1;font-size:clamp(1.02rem,1.5vw,1.22rem);line-height:1.6;margin:1.1rem 0 0;max-width:40rem;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+    .home-h1{font-size:clamp(2.1rem,5.2vw,4rem);font-weight:900;letter-spacing:-.03em;line-height:1.03;color:#14365C;margin:1rem 0 0}
+    .home-h1 .accent{color:#1C4E80}
+    .home-h1 .o{color:var(--orange)}
+    .home-sub{color:#0F2240;font-size:clamp(1.02rem,1.5vw,1.22rem);line-height:1.6;margin:1.1rem 0 0;max-width:40rem;margin-left:auto;margin-right:auto}
 
-    /* ---- centered wordmark hero (per client mockup) ---- */
+    /* ---- centered wordmark hero (per client mockup) — navy on bright photo ---- */
     .hero-inner{max-width:54rem;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center}
     .hero-inner .chip{margin-bottom:.4rem}
     .hero-wordmark{display:flex;flex-direction:column;align-items:center;gap:.05rem;line-height:.95;margin:.6rem 0 0;
-      text-shadow:0 2px 22px rgba(0,0,0,.55),0 1px 0 rgba(0,0,0,.25);font-weight:900;letter-spacing:-.02em;color:#F8FAFC}
-    .hero-wordmark .wm-the{font-size:clamp(.95rem,1.3vw,1.15rem);font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:#DCE9F8;margin-bottom:.35rem}
+      text-shadow:0 2px 16px rgba(255,255,255,.85),0 1px 2px rgba(255,255,255,.9);font-weight:900;letter-spacing:-.02em;color:#14365C}
+    .hero-wordmark .wm-the{font-size:clamp(.95rem,1.3vw,1.15rem);font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:#14365C;margin-bottom:.35rem}
     .hero-wordmark .wm-big{font-size:clamp(2.6rem,7.6vw,6rem);text-transform:uppercase;display:block}
-    .hero-wordmark .wm-orange{color:var(--orange);text-shadow:0 2px 22px rgba(0,0,0,.55),0 1px 0 rgba(186,68,0,.35)}
-    .hero-wordmark .wm-dir{display:inline-flex;align-items:center;justify-content:center;gap:.9rem;font-size:clamp(1.05rem,1.8vw,1.55rem);font-weight:800;letter-spacing:.42em;text-transform:uppercase;color:#EAF1F8;margin-top:.55rem}
-    .hero-wordmark .wm-dir::before,.hero-wordmark .wm-dir::after{content:"";display:block;width:clamp(2.2rem,5vw,4.2rem);height:2px;background:rgba(255,255,255,.55);border-radius:2px}
-    .hero-tag{margin:1.4rem 0 0;font-size:clamp(.9rem,1.25vw,1.05rem);font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#DCE9F8;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+    .hero-wordmark .wm-orange{color:var(--orange);text-shadow:0 2px 16px rgba(255,255,255,.85),0 1px 2px rgba(255,255,255,.9)}
+    .hero-wordmark .wm-dir{display:inline-flex;align-items:center;justify-content:center;gap:.9rem;font-size:clamp(1.05rem,1.8vw,1.55rem);font-weight:800;letter-spacing:.42em;text-transform:uppercase;color:#14365C;margin-top:.55rem}
+    .hero-wordmark .wm-dir::before,.hero-wordmark .wm-dir::after{content:"";display:block;width:clamp(2.2rem,5vw,4.2rem);height:2px;background:#14365C;border-radius:2px}
+    .hero-tag{margin:1.4rem 0 0;font-size:clamp(.9rem,1.25vw,1.05rem);font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#14365C;text-shadow:0 1px 8px rgba(255,255,255,.85)}
     .hero-tag .o{color:var(--orange)}
     .hero-inner .big-search{margin-left:auto;margin-right:auto}
     .hero-inner .hero-ctas{justify-content:center}
     .hero-inner .trust-row{justify-content:center}
-    .home-hero .chip{background:rgba(255,255,255,.12);color:#DCE9F8;border-color:rgba(255,255,255,.2);backdrop-filter:blur(6px)}
-    .home-hero .trust-row{color:#C3D4E6}
-    .home-hero .trust-row svg{color:#9DC0EA}
-    .home-hero .btn-ghost{background:rgba(255,255,255,.08);color:#EAF1F8;border-color:rgba(255,255,255,.26);box-shadow:none;backdrop-filter:blur(6px)}
-    .home-hero .btn-ghost:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4);color:#fff}
+    .home-hero .chip{background:#FFFFFF;color:#14365C;border-color:rgba(20,54,92,.18);box-shadow:0 6px 18px -10px rgba(20,54,92,.5);font-weight:700}
+    .home-hero .trust-row{color:#14365C;background:rgba(255,255,255,.85);border:1px solid rgba(20,54,92,.08);border-radius:.85rem;padding:.55rem 1rem;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 10px 26px -16px rgba(20,54,92,.35);font-weight:600}
+    .home-hero .trust-row svg{color:var(--orange)}
+    .home-hero .btn-ghost{background:#FFFFFF;color:#14365C;border-color:rgba(20,54,92,.22);box-shadow:0 8px 22px -14px rgba(20,54,92,.45);backdrop-filter:blur(6px)}
+    .home-hero .btn-ghost:hover{background:#FFFFFF;border-color:rgba(20,54,92,.45);color:#14365C}
     .big-search{position:relative;max-width:42rem;margin-top:1.9rem;z-index:50}
     /* keep siblings beneath the open dropdown so they can't overlap it */
     .hero-ctas,.trust-row{position:relative;z-index:1}
