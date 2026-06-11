@@ -35,8 +35,15 @@ if (Test-Path $mwuPath) {
   if ($mwu.slugs.Count -eq 1) { $widelyJson = "[$widelyJson]" }  # single-item guard
 }
 
+# slug -> tool page path; home.js toolHref() uses this so every card/search hit
+# lands on the tool detail page instead of falling back to the category page.
+$paths = [ordered]@{}
+foreach ($c in $data.companies) { $paths[$c.slug] = "tool/$($c.category)/$($c.slug).html" }
+$pathsJson = ($paths | ConvertTo-Json -Compress)
+
 $body = "window.TOOLS = $json;`r`n" +
         "window.TOOLS_COUNT = $($tools.Count);`r`n" +
-        "window.WIDELY_USED = $widelyJson;`r`n"
+        "window.WIDELY_USED = $widelyJson;`r`n" +
+        "window.TOOLPATHS = $pathsJson;`r`n"
 [System.IO.File]::WriteAllText((Join-Path $Root 'assets\tools-data.js'), $body, $utf8)
 Write-Output ("Wrote assets\tools-data.js  (" + $tools.Count + " tools, widely-used: " + (@($mwu.slugs).Count) + ")")

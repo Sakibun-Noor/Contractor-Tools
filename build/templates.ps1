@@ -3,20 +3,8 @@
 # All pages share the existing design system in assets/style.css
 # -----------------------------------------------------------------------------
 
-$HeroImages = @('contractor-tools','plumbing','commercial','estimating','crm','mechanical')
-$HeroMap = @{
-  'estimating-takeoff'='estimating'; 'crm-sales'='crm'; 'field-service-dispatch'='contractor-tools';
-  'project-management'='commercial'; 'construction-leads'='commercial'; 'accounting-payroll'='estimating';
-  'safety-compliance'='mechanical'; 'fleet-equipment'='mechanical'; 'marketing-reputation'='crm';
-  'ai-automation'='contractor-tools'; 'document-management'='contractor-tools'; 'procurement-purchasing'='commercial';
-  'plumbing'='plumbing'; 'mechanical'='mechanical'; 'hvac'='mechanical'; 'electrical'='contractor-tools';
-  'commercial-gc'='commercial'; 'residential-builder'='commercial'; 'general-contractor'='commercial'; 'roofing'='commercial'
-}
-function Get-HeroImage($key) {
-  if ($HeroMap.ContainsKey($key)) { return $HeroMap[$key] }
-  $sum = 0; foreach ($ch in $key.ToCharArray()) { $sum += [int]$ch }
-  return $HeroImages[$sum % $HeroImages.Count]
-}
+# All pages share one bright hero photo (assets/hero/cta-hero-*.webp), applied
+# by .section-hero-image .hero-bg in style.css — no per-page image mapping.
 
 function Build-Head($title, $desc, $prefix) {
 @"
@@ -53,41 +41,41 @@ function Build-Head($title, $desc, $prefix) {
 function Build-Header($prefix) {
 @"
 <header class="sticky top-0 z-50 bg-white/85 backdrop-blur border-b border-slate-200">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-    <a href="${prefix}index.html" class="flex items-center gap-2 font-bold text-lg tracking-tight flex-shrink-0">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center gap-4">
+    <a href="${prefix}index.html" class="flex items-center gap-2.5 font-bold tracking-tight flex-shrink-0" style="text-decoration:none">
       <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
-      <span class="hidden sm:inline">The Construction Technology Directory</span>
-      <span class="sm:hidden">TCTD</span>
+      <span class="brand-stack-hdr"><span class="b1">The</span><span class="b2">Construction Technology Directory</span></span>
+      <span class="brand-tctd-short text-slate-900 text-base font-bold">TCTD</span>
     </a>
-    <div class="search-wrapper flex-1 max-w-md mx-4 relative" id="search-wrapper">
+    <div class="search-wrapper flex-1 max-w-md md:mx-4 relative" id="search-wrapper">
       <div class="search-input-container">
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" id="tool-search" class="search-input" placeholder="Search HVAC estimating software..." autocomplete="off" />
+        <input type="text" id="tool-search" class="search-input" placeholder="Search software, vendors&hellip;" autocomplete="off" />
         <kbd class="search-kbd hidden sm:inline-flex">/</kbd>
       </div>
       <div class="search-dropdown" id="search-dropdown"></div>
     </div>
-    <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-600 flex-shrink-0">
+    <nav class="hidden xl:flex items-center gap-6 text-sm font-semibold text-slate-700 flex-shrink-0">
       <a href="${prefix}categories/" class="hover:text-blue-600 transition">Categories</a>
       <a href="${prefix}trades/" class="hover:text-blue-600 transition">Trades</a>
       <a href="${prefix}resources/" class="hover:text-blue-600 transition">Resources</a>
       <a href="${prefix}blog/" class="hover:text-blue-600 transition">Blog</a>
       <a href="${prefix}contact/" class="hover:text-blue-600 transition">Contact</a>
     </nav>
-    <a href="${prefix}categories/" class="lg:hidden text-sm font-medium text-blue-600 flex-shrink-0">Browse</a>
+    <a href="${prefix}categories/" class="hdr-cta-orange hidden lg:inline-flex">Let's Begin</a>
   </div>
 </header>
 "@
 }
 
-function Build-HeroImage($chipText, $title, $desc, $breadcrumbHtml, $metaHtml, $imgKey, $prefix) {
-  $img = Get-HeroImage $imgKey
+function Build-HeroImage($chipText, $title, $desc, $breadcrumbHtml, $metaHtml, $imgKey, $prefix, $logoHtml = '') {
+  # $imgKey kept for signature compatibility; the photo comes from style.css now.
 @"
   <section class="section-hero-image">
-    <div class="hero-bg" style="background-image:url('${prefix}assets/hero/$img.webp')"></div>
+    <div class="hero-bg"></div>
     <div class="max-w-4xl mx-auto px-6">
       $breadcrumbHtml
-      <span class="chip" style="margin-top:1.25rem">$chipText</span>
+      $logoHtml<span class="chip" style="margin-top:1.25rem">$chipText</span>
       <h1>$title</h1>
       <p>$desc</p>
       $metaHtml
@@ -227,9 +215,9 @@ function Build-Breadcrumb($crumbs) {
   for ($i=0; $i -lt $crumbs.Count; $i++) {
     $cr = $crumbs[$i]
     $lbl = HtmlEnc $cr.label
-    if ($i -gt 0) { [void]$sb.Append('<span class="mx-2" style="color:#475569">/</span>') }
+    if ($i -gt 0) { [void]$sb.Append('<span class="mx-2" style="color:rgba(20,54,92,.45)">/</span>') }
     if ($cr.href) { [void]$sb.Append('<a href="' + $cr.href + '">' + $lbl + '</a>') }
-    else { [void]$sb.Append('<span class="font-medium" style="color:#F1F5F9">' + $lbl + '</span>') }
+    else { [void]$sb.Append('<span class="font-semibold" style="color:#14365C">' + $lbl + '</span>') }
   }
   [void]$sb.Append('</nav>')
   return $sb.ToString()
@@ -248,7 +236,8 @@ function Build-CategoryPage($cat, $list) {
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label='Categories';href=($prefix+'categories/')}, @{label=$cat.name})
   $meta = '<div class="hero-meta"><span>' + $count + ' Vendors</span><span>' + $subCount + ' Subcategories</span><span>Direct Links</span></div>'
   $heroDesc = "Software and vendors for $nameLower &mdash; explore by subcategory or jump straight to a tool."
-  $hero = Build-HeroImage 'Category' $nameH $heroDesc $bc $meta $cat.slug $prefix
+  $logo = '<img class="hero-logo" src="' + $prefix + 'assets/logos/' + $cat.slug + '.png" alt="' + $nameH + ' icon" width="88" height="88" loading="eager">'
+  $hero = Build-HeroImage 'Category' $nameH $heroDesc $bc $meta $cat.slug $prefix $logo
 
   $subPills = New-Object System.Text.StringBuilder
   foreach ($sub in $cat.subcategories) {
@@ -282,7 +271,8 @@ function Build-SubcategoryPage($cat, $sub, $catList) {
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label=$cat.name;href=($prefix+$cat.slug+'/')}, @{label=$sub.name})
   $meta = '<div class="hero-meta"><span>' + $catNameH + '</span><span>Subcategory</span></div>'
   $heroDesc = "$subNameH software for construction &mdash; a focused slice of $catNameH."
-  $hero = Build-HeroImage 'Subcategory' $subNameH $heroDesc $bc $meta $cat.slug $prefix
+  $logo = '<img class="hero-logo" src="' + $prefix + 'assets/logos/' + $cat.slug + '.png" alt="' + $catNameH + ' icon" width="88" height="88" loading="eager">'
+  $hero = Build-HeroImage 'Subcategory' $subNameH $heroDesc $bc $meta $cat.slug $prefix $logo
   $grid = Build-ToolGrid $catList $prefix
   $catHref = $prefix + $cat.slug + '/'
   $body = @"
@@ -344,7 +334,8 @@ function Build-ComboPage($trade, $cat, $m, $list) {
   $bc = Build-Breadcrumb @(@{label='Home';href=($prefix+'index.html')}, @{label=$trade.name;href=($prefix+'trades/'+$trade.slug+'/')}, @{label=$cat.name})
   $meta = '<div class="hero-meta"><span>' + $count + ' Vendors</span><span>' + $tradeNameH + '</span><span>' + $catNameH + '</span></div>'
   $heroDesc = "The $($cat.name.ToLower()) software and vendors most relevant to $tradeNameH construction."
-  $hero = Build-HeroImage ($tradeNameH + ' &middot; ' + $catNameH) $titleH $heroDesc $bc $meta $trade.slug $prefix
+  $logo = '<img class="hero-logo" src="' + $prefix + 'assets/logos/' + $cat.slug + '.png" alt="' + $catNameH + ' icon" width="88" height="88" loading="eager">'
+  $hero = Build-HeroImage ($tradeNameH + ' &middot; ' + $catNameH) $titleH $heroDesc $bc $meta $trade.slug $prefix $logo
   $grid = Build-ToolGrid $list $prefix
 
   $related = New-Object System.Text.StringBuilder
@@ -432,6 +423,87 @@ $hero
 </main>
 "@
   return (Build-Head $title $desc $prefix) + (Build-Header $prefix) + $body + (Build-Footer $prefix)
+}
+
+# -- TOOL DETAIL PAGE ---------------------------------------------------------
+# $c = a record from data/companies.json; $related = up to 6 sibling records.
+function Build-ToolPage($c, $related) {
+  $prefix = '../../'
+  $nameH = HtmlEnc $c.name
+  $catNameH = HtmlEnc $c.categoryName
+  $subH = HtmlEnc $c.subcategory
+  $descH = HtmlEnc $c.description
+  $domain = $c.domain
+  $letter = $c.name.Substring(0,1).ToUpper()
+  $website = $c.website
+  $title = "$nameH &mdash; $catNameH Software | The Construction Technology Directory"
+  $metaDesc = $c.description
+  if ($metaDesc.Length -gt 155) { $metaDesc = $metaDesc.Substring(0,152) + '...' }
+  $metaDescH = HtmlEnc $metaDesc
+  $bc = Build-Breadcrumb @(
+    @{label='Home';href=($prefix+'index.html')},
+    @{label=$c.categoryName;href=($prefix+$c.category+'/')},
+    @{label=$c.name})
+
+  $tradesH = ''
+  if ($c.trades -and $c.trades.Count -gt 0) { $tradesH = HtmlEnc (($c.trades) -join ', ') }
+  if (-not $tradesH) { $tradesH = 'All construction trades' }
+  $pricingH = if ($c.pricingModel) { HtmlEnc $c.pricingModel } else { 'See website' }
+  $sizeH = if ($c.companySize) { HtmlEnc $c.companySize } else { 'All sizes' }
+
+  $relatedHtml = ''
+  if ($related -and $related.Count -gt 0) {
+    $sb = New-Object System.Text.StringBuilder
+    foreach ($r in $related) {
+      $rc = @{ name=$r.name; domain=$r.domain; description=$r.description; toolPath=("tool/" + $r.category + "/" + $r.slug + ".html") }
+      [void]$sb.Append((Build-ToolCard $rc $prefix))
+    }
+    $relatedHtml = @"
+      <div class="section-title-row mt-16"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">More in $catNameH</span></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">$($sb.ToString())</div>
+"@
+  }
+
+  $body = @"
+<main>
+  <section class="tool-hero">
+    <div class="max-w-5xl mx-auto px-6 pt-10 pb-12">
+      $bc
+      <div class="flex flex-col sm:flex-row sm:items-center gap-6 mt-8">
+        <div class="tool-icon-xl"><img src="${prefix}assets/icons/$domain.ico" alt="$nameH logo" loading="eager" onerror="if(!this.dataset.r){this.dataset.r=1;this.src='https://icons.duckduckgo.com/ip3/$domain.ico'}else{this.outerHTML='<div class=\'icon-fallback-xl\'>$letter</div>'}"></div>
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <a href="${prefix}$($c.category)/" class="chip-link">$catNameH</a>
+            <span class="chip-soft">$subH</span>
+          </div>
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight text-blue-600" style="color:#14365C">$nameH</h1>
+          <div class="text-sm text-slate-500 font-medium mt-2">$domain</div>
+        </div>
+      </div>
+      <p class="text-lg text-slate-700 leading-relaxed max-w-3xl mt-7">$descH</p>
+      <div class="flex flex-wrap items-center gap-3 mt-8">
+        <a href="$website" target="_blank" rel="nofollow noopener" class="btn-visit">Visit official website
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg></a>
+        <a href="${prefix}$($c.category)/" class="btn-secondary">Browse $catNameH</a>
+      </div>
+    </div>
+  </section>
+  <div class="bg-premium-light">
+    <div class="max-w-5xl mx-auto px-6 py-14">
+      <div class="section-title-row"><span class="text-sm font-semibold uppercase tracking-wider text-slate-500">At a glance</span></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="spec-card"><div class="spec-label">Category</div><div class="spec-value">$catNameH</div></div>
+        <div class="spec-card"><div class="spec-label">Subcategory</div><div class="spec-value">$subH</div></div>
+        <div class="spec-card"><div class="spec-label">Pricing model</div><div class="spec-value">$pricingH</div></div>
+        <div class="spec-card"><div class="spec-label">Serves</div><div class="spec-value">$sizeH</div></div>
+      </div>
+      <div class="spec-card mt-4"><div class="spec-label">Trades served</div><div class="spec-value">$tradesH</div></div>
+$relatedHtml
+    </div>
+  </div>
+</main>
+"@
+  return (Build-Head $title $metaDescH $prefix) + (Build-Header $prefix) + $body + (Build-Footer $prefix)
 }
 
 function Resolve-CompanyHref($slug, $prefix) {
