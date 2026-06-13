@@ -17,20 +17,22 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
   color: var(--ink);
-}
-
-/* ─── Premium Section Backgrounds ─── */
-
-/* Replaces the old square blueprint grid with a soft radial mesh */
-.bg-premium-light {
-  background-color: #F8FAFC;
+  /* ONE seamless page background — flows behind every section, no hard breaks.
+     Color mesh + faint blueprint grid baked into the bg (GPU-cheap, no masks). */
+  background-color: #EEF4FB;
   background-image:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(28,78,128,0.06), transparent),
-    radial-gradient(ellipse 60% 50% at 90% 80%, rgba(244,122,33,0.05), transparent),
-    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(14,165,233,0.04), transparent);
+    radial-gradient(ellipse 60% 45% at 8% 10%, rgba(28,78,128,0.10), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 95% 32%, rgba(244,122,33,0.07), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 92%, rgba(14,116,144,0.06), transparent 60%),
+    linear-gradient(rgba(20,54,92,0.038) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,54,92,0.038) 1px, transparent 1px),
+    linear-gradient(180deg, #FFFFFF 0%, #F1F6FC 42%, #E9F1F9 100%);
+  background-size: auto, auto, auto, 46px 46px, 46px 46px, auto;
 }
+
+/* sections are transparent so the one page background shows through seamlessly */
+.bg-premium-light { background: transparent; }
 
 /* Dark section hero banners */
 .section-hero {
@@ -88,16 +90,13 @@ body {
 .section-hero-image {
   position: relative;
   min-height: 0;
-  aspect-ratio: 16 / 9;
-  max-height: 76vh;
-  padding: 3rem 0;
+  padding: clamp(3rem, 7vw, 6rem) 0 clamp(2.6rem, 5vw, 4.2rem); /* matches homepage hero */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   text-align: center;
   isolation: isolate;
-  border-bottom: 1px solid rgba(148,163,184,0.08);
 }
 .section-hero-image .hero-bg {
   position: absolute;
@@ -588,7 +587,7 @@ a:focus-visible, button:focus-visible {
   .search-wrapper { max-width: none; margin: 0 0.25rem; }
   .search-dropdown { left: -1rem; right: -1rem; border-radius: 0 0 0.75rem 0.75rem; }
   .hero { min-height: 85vh; }
-  .section-hero-image { aspect-ratio: auto; min-height: 64vh; max-height: none; padding: 3.25rem 0 2.5rem; }
+  .section-hero-image { min-height: 0; padding: 3.25rem 0 2.5rem; }
   .section-hero-image > .max-w-4xl { padding: 1.9rem 1.4rem 1.7rem; border-radius: 1.2rem; }
 }
 

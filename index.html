@@ -37,8 +37,8 @@
     /* hero (bright + navy — matches category pages per client mockup) */
     /* NOTE: no overflow:hidden here — the search dropdown must extend past the
        hero into the next section; z-index keeps the whole hero layer on top. */
-    .home-hero{position:relative;isolation:isolate;z-index:30;background:#FFFFFF;
-      border-bottom:1px solid var(--line);padding:clamp(3rem,7vw,6rem) 0 clamp(2.6rem,5vw,4.2rem)}
+    .home-hero{position:relative;isolation:isolate;z-index:30;background:transparent;
+      padding:clamp(3rem,7vw,6rem) 0 clamp(2.6rem,5vw,4.2rem)}
     .home-hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
       background-image:url('assets/hero/cta-hero-desktop.webp');background-size:cover;background-position:center 30%;
       filter:saturate(1.05)}

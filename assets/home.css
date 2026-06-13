@@ -44,10 +44,20 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
   color: var(--ink);
   margin: 0;
   font-feature-settings: "cv02","cv03","cv04","ss01";
+  /* ONE seamless page background — flows behind every section, no hard breaks.
+     Color mesh + faint blueprint grid baked into the bg (GPU-cheap, no masks). */
+  background-color: #EEF4FB;
+  background-image:
+    radial-gradient(ellipse 60% 45% at 8% 10%, rgba(28,78,128,0.10), transparent 60%),
+    radial-gradient(ellipse 55% 40% at 95% 32%, rgba(244,122,33,0.07), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 92%, rgba(14,116,144,0.06), transparent 60%),
+    linear-gradient(rgba(20,54,92,0.038) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,54,92,0.038) 1px, transparent 1px),
+    linear-gradient(180deg, #FFFFFF 0%, #F1F6FC 42%, #E9F1F9 100%);
+  background-size: auto, auto, auto, 46px 46px, 46px 46px, auto;
 }
 
 ::selection { background: rgba(28,78,128,0.18); }
@@ -309,57 +319,9 @@ body {
    ============================================================ */
 .section { padding: clamp(3rem, 6vw, 5.5rem) 0; }
 
-/* ── premium body graphics: layered color mesh + blueprint grid + glow blobs.
-      White cards (categories, marquee pills) overlay this design. ── */
-.section-soft, .section-tint { position: relative; overflow: hidden; }
-.section-soft > .wrap-wide, .section-tint > .wrap-wide { position: relative; z-index: 1; }
-
-.section-tint {
-  background:
-    radial-gradient(ellipse 75% 70% at 8% 4%, rgba(28,78,128,.15), transparent 55%),
-    radial-gradient(ellipse 55% 60% at 96% 24%, rgba(244,122,33,.12), transparent 55%),
-    radial-gradient(ellipse 70% 55% at 50% 112%, rgba(14,116,144,.09), transparent 60%),
-    linear-gradient(180deg, #F2F7FD 0%, #E9F1F9 55%, #F5FAFE 100%);
-}
-.section-tint::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(20,54,92,.075) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20,54,92,.075) 1px, transparent 1px);
-  background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(ellipse 95% 95% at 50% 0%, #000 28%, transparent 80%);
-  mask-image: radial-gradient(ellipse 95% 95% at 50% 0%, #000 28%, transparent 80%);
-}
-.section-tint::after {
-  content: ""; position: absolute; pointer-events: none;
-  width: 36rem; height: 36rem; border-radius: 50%;
-  left: -12rem; bottom: -16rem;
-  background: radial-gradient(circle, rgba(244,122,33,.17), transparent 65%);
-  filter: blur(8px);
-}
-
-.section-soft {
-  background:
-    radial-gradient(ellipse 60% 70% at 95% 4%, rgba(28,78,128,.13), transparent 55%),
-    radial-gradient(ellipse 50% 55% at 3% 92%, rgba(244,122,33,.11), transparent 60%),
-    linear-gradient(180deg, #F6FAFE 0%, #ECF3FA 100%);
-}
-.section-soft::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(20,54,92,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20,54,92,.07) 1px, transparent 1px);
-  background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(ellipse 95% 95% at 50% 100%, #000 28%, transparent 80%);
-  mask-image: radial-gradient(ellipse 95% 95% at 50% 100%, #000 28%, transparent 80%);
-}
-.section-soft::after {
-  content: ""; position: absolute; pointer-events: none;
-  width: 32rem; height: 32rem; border-radius: 50%;
-  right: -12rem; top: -14rem;
-  background: radial-gradient(circle, rgba(28,78,128,.14), transparent 65%);
-  filter: blur(8px);
-}
+/* Seamless: sections are transparent so the single page background (on body)
+   shows through with no hard transitions. White cards still overlay it. */
+.section-soft, .section-tint { background: transparent; }
 .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
 .section-title { font-size: clamp(1.5rem, 2.8vw, 2.1rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.08; }
 .section-sub { color: var(--ink-soft); font-size: 1rem; margin-top: .6rem; max-width: 38rem; line-height: 1.6; }
