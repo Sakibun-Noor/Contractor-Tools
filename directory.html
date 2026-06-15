@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Full Directory — 600 Construction Software Tools | The Construction Technology Directory</title>
+  <meta name="description" content="Browse all 600 construction software platforms — filter by category, trade, company size, pricing model and more. Free to browse.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:'Inter',system-ui,sans-serif;background:#F4F6F9;color:#0F1B2D;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    input,select,button{font-family:inherit}
+    ::-webkit-scrollbar{width:10px}
+    ::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:8px;border:2px solid #F4F6F9}
+    .dir-layout{display:grid;grid-template-columns:276px 1fr;gap:26px;align-items:start}
+    .cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+    .ftr-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+    .cat-tile{cursor:pointer;transition:transform .14s,border-color .14s,background .14s}
+    .cat-tile:hover{transform:translateY(-3px)}
+    @media(max-width:1000px){
+      .dir-layout{grid-template-columns:1fr}
+      .dir-sidebar{position:static!important;top:auto!important}
+      .cat-grid{grid-template-columns:repeat(3,1fr)}
+      .ftr-pillars{grid-template-columns:repeat(2,1fr);gap:22px}
+    }
+    @media(max-width:600px){
+      .cat-grid{grid-template-columns:repeat(2,1fr)}
+      .acct-area{display:none!important}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<header style="position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid #E5EAF1;box-shadow:0 1px 0 rgba(15,27,45,.02)">
+  <div style="max-width:1240px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:20px">
+    <a href="index.html" style="display:flex;align-items:center;gap:11px;flex:none">
+      <span style="width:40px;height:40px;border-radius:10px;background:linear-gradient(155deg,#1C4E80,#14365C);display:flex;align-items:center;justify-content:center;position:relative;flex:none">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/><path d="M9 11h.01M15 11h.01"/></svg>
+        <span style="position:absolute;left:8px;right:8px;bottom:7px;height:3px;border-radius:3px;background:#F47A21"></span>
+      </span>
+      <span style="display:flex;flex-direction:column;line-height:1.02">
+        <span style="font-size:8.5px;font-weight:800;letter-spacing:.26em;color:#94A3B8">THE CONSTRUCTION</span>
+        <span style="font-size:14px;font-weight:900;letter-spacing:.01em;color:#F47A21;line-height:1.05">TECHNOLOGY</span>
+        <span style="font-size:9px;font-weight:800;letter-spacing:.42em;color:#14365C">DIRECTORY</span>
+      </span>
+    </a>
+    <div style="flex:1;position:relative;max-width:680px">
+      <svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Search by company, category, subcategory, trade or subtrade…" style="width:100%;padding:12px 44px 12px 44px;border-radius:11px;border:1.5px solid #E2E8F0;background:#F8FAFC;font-size:14px;color:#0F1B2D;outline:none" onfocus="this.style.borderColor='#1C4E80';this.style.background='#fff'" onblur="this.style.borderColor='#E2E8F0';this.style.background='#F8FAFC'">
+      <button id="clear-search" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:none;border-radius:50%;background:#E2E8F0;color:#475569;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;padding:0">×</button>
+    </div>
+    <div class="acct-area" style="display:flex;align-items:center;gap:22px;flex:none">
+      <a href="#" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#14365C">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <span style="font-size:11px;font-weight:600">Saved</span>
+      </a>
+      <a href="#" style="display:flex;flex-direction:column;align-items:center;gap:2px;color:#14365C">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        <span style="font-size:11px;font-weight:600">My Account</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ====== EXPLORE BY CATEGORY ====== -->
+<div style="background:#fff;border-bottom:1px solid #E5EAF1">
+  <div style="max-width:1240px;margin:0 auto;padding:20px 22px 24px">
+    <div style="font-size:11px;font-weight:800;letter-spacing:.16em;color:#94A3B8;margin-bottom:14px">EXPLORE BY CATEGORY</div>
+    <div class="cat-grid" id="cat-band"></div>
+  </div>
+</div>
+
+<!-- ====== MAIN ====== -->
+<main style="max-width:1240px;width:100%;margin:0 auto;padding:26px 22px 40px">
+  <div class="dir-layout">
+
+    <!-- FILTER SIDEBAR -->
+    <aside class="dir-sidebar" style="position:sticky;top:84px">
+      <div style="background:#fff;border:1px solid #E5EAF1;border-radius:16px;overflow:hidden">
+        <div id="filter-body"></div>
+      </div>
+    </aside>
+
+    <!-- RESULTS -->
+    <section>
+      <div id="results-top" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px" id="results-bar-wrap">
+        <div id="results-bar" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;width:100%"></div>
+      </div>
+      <div id="results-wrap"></div>
+      <div id="pagination" style="margin-top:30px"></div>
+
+      <!-- Popular searches -->
+      <div style="margin-top:38px;padding-top:24px;border-top:1px solid #E5EAF1">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.16em;color:#94A3B8;margin-bottom:12px">POPULAR SEARCHES</div>
+        <div style="display:flex;flex-wrap:wrap;gap:9px">
+          <button data-q="Estimating" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">Estimating Software</button>
+          <button data-q="Takeoff" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">Takeoff</button>
+          <button data-q="CRM" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">CRM for Contractors</button>
+          <button data-q="Payroll" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">Payroll</button>
+          <button data-q="Project Management" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">Project Management</button>
+          <button data-q="Dispatch" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">Field Dispatch</button>
+          <button data-q="Accounting" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">Accounting</button>
+          <button data-q="AI" style="padding:8px 15px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#334155;font-size:12.5px;font-weight:600;cursor:pointer" onmouseover="this.style.borderColor='#1C4E80';this.style.color='#1C4E80'" onmouseout="this.style.borderColor='#E2E8F0';this.style.color='#334155'">AI Tools</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ====== FOOTER ====== -->
+<footer style="background:linear-gradient(180deg,#14365C,#0E2747);color:#fff">
+  <div style="max-width:1240px;margin:0 auto;padding:38px 22px 30px">
+    <div class="ftr-pillars">
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span>
+        <div><div style="font-size:15px;font-weight:800;color:#F47A21;letter-spacing:.04em">FIND</div><div style="font-size:12.5px;line-height:1.55;color:#A6C3DE;margin-top:4px">The best construction technology solutions.</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l-2 4 2 1.5M19 8l2 4-2 1.5M3 12h4M17 12h4"/></svg></span>
+        <div><div style="font-size:15px;font-weight:800;color:#F47A21;letter-spacing:.04em">COMPARE</div><div style="font-size:12.5px;line-height:1.55;color:#A6C3DE;margin-top:4px">Features, pricing &amp; reviews side by side.</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.6l6.8-3.2M8.6 13.4l6.8 3.2"/></svg></span>
+        <div><div style="font-size:15px;font-weight:800;color:#F47A21;letter-spacing:.04em">CONNECT</div><div style="font-size:12.5px;line-height:1.55;color:#A6C3DE;margin-top:4px">With trusted technology providers.</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V3M3 21h18M7 16l4-5 3 3 5-7"/></svg></span>
+        <div><div style="font-size:15px;font-weight:800;color:#F47A21;letter-spacing:.04em">GROW</div><div style="font-size:12.5px;line-height:1.55;color:#A6C3DE;margin-top:4px">Build more. Waste less. Achieve more.</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:32px;padding-top:24px;border-top:1px solid rgba(166,195,222,.18)">
+      <div style="font-size:clamp(15px,2.2vw,21px);font-weight:800;letter-spacing:.01em">SMARTER <span style="color:#5BA7E8">TECHNOLOGY.</span> STRONGER <span style="color:#F47A21">RELATIONSHIPS.</span> BETTER <span style="color:#3FB57A">BUILDS.</span></div>
+      <a href="index.html" style="display:inline-block;margin-top:10px;font-size:13px;font-weight:600;color:#7FA8D4">www.buildertechdirectory.com</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/tools-data.js"></script>
+<script>
+(function(){
+  var ORDER=['accounting-payroll','crm-sales','construction-leads','estimating-takeoff','project-management','field-service-dispatch','safety-compliance','fleet-equipment','marketing-reputation','ai-automation','document-management','procurement-purchasing'];
+  var CM={'accounting-payroll':{name:'Accounting & Payroll'},'crm-sales':{name:'CRM & Sales'},'construction-leads':{name:'Leads, Bids & Estimates'},'estimating-takeoff':{name:'Estimating & Takeoff'},'project-management':{name:'Project Management'},'field-service-dispatch':{name:'Field Service & Dispatch'},'safety-compliance':{name:'Safety & Compliance'},'fleet-equipment':{name:'Fleet & Equipment'},'marketing-reputation':{name:'Marketing & Reputation'},'ai-automation':{name:'AI & Automation'},'document-management':{name:'Document Management'},'procurement-purchasing':{name:'Back Office Operations'}};
+  var FM={'GC':'General Contractor','Commercial':'Commercial','Residential':'Home Builder','Specialty Trades':'Specialty Trade','All Construction':'All Contractors'};
+  var DATA=null,GD=null;
+  var state={search:'',sort:'popular',view:'list',page:1,filtersOpen:true,sel:{},groupOpen:{Category:true},gsearch:{}};
+
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function hash(s){var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}return h;}
+  function bkt(sz){sz=sz||'';if(/enterprise/i.test(sz))return 'Enterprise';if(/mid-market/i.test(sz))return 'Mid-Market';return 'Small Business';}
+
+  function prep(){
+    var T=window.TOOLS||[];
+    DATA=T.map(function(t){
+      var slug=t.s,b=bkt(t.sz),r=hash(slug)%3,trial;
+      if(b==='Enterprise')trial=['Demo Available','Free Trial','Demo Available'][r];
+      else if(b==='Small Business')trial=['Free Trial','Free Plan','Free Trial'][r];
+      else trial=['Free Trial','Demo Available','Free Plan'][r];
+      var r2=hash(slug+'p')%3,pricing;
+      if(b==='Enterprise')pricing=['Enterprise / Custom','Subscription','Enterprise / Custom'][r2];
+      else if(b==='Small Business')pricing=['Subscription','Freemium','Subscription'][r2];
+      else pricing=['Subscription','Enterprise / Custom','Freemium'][r2];
+      if(hash(slug+'x')%11===0)pricing='One-Time License';
+      var focus=(t.tr||[]).map(function(x){return FM[x]||x;}).filter(function(v,i,a){return a.indexOf(v)===i;});
+      var dep=['Cloud / SaaS'],hd=hash(slug+'d');
+      if(hd%2===0)dep.push('Mobile App');
+      if(b==='Enterprise'&&hd%3===0)dep.push('On-Premise');
+      if(hd%5===0)dep.push('Desktop');
+      var cats=(t.c||[]);
+      var catLabels=cats.map(function(cs){return (CM[cs]&&CM[cs].name)||cs;});
+      return {n:t.n,s:slug,d:t.d,x:t.x||'',c:cats,sub:t.sub||'',tr:t.tr||[],rk:t.rk||999,sz:b,trial:trial,pricing:pricing,focus:focus,dep:dep,catLabels:catLabels};
+    });
+    function cnt(fn){var n=0;for(var i=0;i<DATA.length;i++)if(fn(DATA[i]))n++;return n;}
+    var tv=[];DATA.forEach(function(t){t.tr.forEach(function(v){if(tv.indexOf(v)<0)tv.push(v);});});tv.sort();
+    GD=[
+      {key:'Trade',label:'Trade / Subtrade',opts:tv.map(function(v){return {value:v,label:v,count:cnt(function(t){return t.tr.indexOf(v)>-1;})};})},
+      {key:'Category',label:'Category / Subcategory',opts:ORDER.map(function(cs){return {value:cs,label:CM[cs].name,count:cnt(function(t){return t.c.indexOf(cs)>-1;})};})},
+      {key:'Trial',label:'Free Trial / Demo',opts:['Free Trial','Demo Available','Free Plan'].map(function(v){return {value:v,label:v,count:cnt(function(t){return t.trial===v;})};})},
+      {key:'Pricing',label:'Pricing Model',opts:['Subscription','Enterprise / Custom','Freemium','One-Time License'].map(function(v){return {value:v,label:v,count:cnt(function(t){return t.pricing===v;})};})},
+      {key:'Focus',label:'Business Focus',opts:['General Contractor','Commercial','Home Builder','Specialty Trade','All Contractors'].map(function(v){return {value:v,label:v,count:cnt(function(t){return t.focus.indexOf(v)>-1;})};})},
+      {key:'Size',label:'Company Size',opts:['Small Business','Mid-Market','Enterprise'].map(function(v){return {value:v,label:v,count:cnt(function(t){return t.sz===v;})};})},
+      {key:'Deploy',label:'Deployment Type',opts:['Cloud / SaaS','Mobile App','On-Premise','Desktop'].map(function(v){return {value:v,label:v,count:cnt(function(t){return t.dep.indexOf(v)>-1;})};})}
+    ];
+  }
+
+  function filtered(){
+    if(!DATA)return [];
+    var q=(state.search||'').trim().toLowerCase(),sel=state.sel;
+    function sk(k){return sel[k]?Object.keys(sel[k]):[]; }
+    var out=DATA.filter(function(t){
+      if(q){var h=(t.n+' '+t.catLabels.join(' ')+' '+t.sub+' '+t.tr.join(' ')+' '+t.x).toLowerCase();if(h.indexOf(q)<0)return false;}
+      var ks;
+      ks=sk('Trade');if(ks.length&&!ks.some(function(v){return t.tr.indexOf(v)>-1;}))return false;
+      ks=sk('Category');if(ks.length&&!ks.some(function(v){return t.c.indexOf(v)>-1;}))return false;
+      ks=sk('Trial');if(ks.length&&ks.indexOf(t.trial)<0)return false;
+      ks=sk('Pricing');if(ks.length&&ks.indexOf(t.pricing)<0)return false;
+      ks=sk('Focus');if(ks.length&&!ks.some(function(v){return t.focus.indexOf(v)>-1;}))return false;
+      ks=sk('Size');if(ks.length&&ks.indexOf(t.sz)<0)return false;
+      ks=sk('Deploy');if(ks.length&&!ks.some(function(v){return t.dep.indexOf(v)>-1;}))return false;
+      return true;
+    });
+    var s=state.sort;out=out.slice();
+    if(s==='name')out.sort(function(a,b){return a.n.localeCompare(b.n);});
+    else if(s==='size'){var o={'Enterprise':0,'Mid-Market':1,'Small Business':2};out.sort(function(a,b){return o[a.sz]-o[b.sz]||a.rk-b.rk;});}
+    else if(s==='category')out.sort(function(a,b){return(ORDER.indexOf(a.c[0])-ORDER.indexOf(b.c[0]))||a.rk-b.rk;});
+    else out.sort(function(a,b){return a.rk-b.rk||a.n.localeCompare(b.n);});
+    return out;
+  }
+
+  function activeCount(){var n=0,sel=state.sel;Object.keys(sel).forEach(function(k){n+=Object.keys(sel[k]).length;});if((state.search||'').trim())n++;return n;}
+
+  function toggleSel(k,v){var sel=JSON.parse(JSON.stringify(state.sel));sel[k]=sel[k]||{};if(sel[k][v])delete sel[k][v];else sel[k][v]=true;if(!Object.keys(sel[k]).length)delete sel[k];state.sel=sel;state.page=1;render();}
+  function toggleGroup(k){state.groupOpen=Object.assign({},state.groupOpen);state.groupOpen[k]=!state.groupOpen[k];renderFilters();}
+  function setGroupSearch(k,v){state.gsearch=Object.assign({},state.gsearch);state.gsearch[k]=v;renderFilters();}
+  function clearAll(){state.sel={};state.search='';state.page=1;state.gsearch={};var si=document.getElementById('search-input');if(si)si.value='';render();}
+  function toggleFilters(){state.filtersOpen=!state.filtersOpen;renderFilters();}
+  function pickCategory(slug){var sel=JSON.parse(JSON.stringify(state.sel));sel.Category=sel.Category||{};if(sel.Category[slug])delete sel.Category[slug];else sel.Category[slug]=true;if(sel.Category&&!Object.keys(sel.Category).length)delete sel.Category;state.sel=sel;state.groupOpen=Object.assign({},state.groupOpen);state.groupOpen.Category=true;state.page=1;render();}
+  function gotoPage(n){state.page=n;renderCards();renderPagination();var el=document.getElementById('results-top');if(el){window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-90,behavior:'smooth'});}}
+
+  function render(){renderFilters();renderResultsBar();renderCards();renderPagination();}
+
+  /* ——— RENDER CATEGORY BAND ——— */
+  function renderCatBand(){
+    var h='';
+    ORDER.forEach(function(cs){
+      var c=CM[cs],active=!!(state.sel.Category&&state.sel.Category[cs]);
+      h+='<div class="cat-tile" data-cat="'+cs+'" style="display:flex;flex-direction:column;align-items:center;gap:9px;padding:15px 10px;border-radius:14px;text-align:center;border:1.5px solid '+(active?'#1C4E80':'#E5EAF1')+';background:'+(active?'#EAF1F8':'#fff')+';box-shadow:0 1px 2px rgba(15,27,45,.04)">'+
+        '<img src="assets/logos/'+cs+'.png" alt="" style="width:38px;height:38px;object-fit:contain" loading="lazy">'+
+        '<span style="font-size:12px;font-weight:700;color:#14365C;line-height:1.25">'+esc(c.name)+'</span>'+
+      '</div>';
+    });
+    document.getElementById('cat-band').innerHTML=h;
+  }
+
+  /* ——— RENDER FILTERS ——— */
+  function checkIcon(){return '<svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,6 5,9 10,3"/></svg>';}
+  function renderFilters(){
+    var ac=activeCount();
+    var h='<button data-filters-toggle style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:15px 16px;background:#fff;border:none;border-bottom:1px solid #EEF2F7;cursor:pointer">'+
+      '<span style="display:flex;align-items:center;gap:9px">'+
+        '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>'+
+        '<span style="font-size:13.5px;font-weight:800;letter-spacing:.04em;color:#14365C">FILTERS</span>'+
+        '<span style="font-size:11.5px;font-weight:700;color:#fff;background:#F47A21;padding:1px 8px;border-radius:999px">'+ac+' Active</span>'+
+      '</span>'+
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>'+
+    '</button>';
+    if(state.filtersOpen&&GD){
+      GD.forEach(function(gd){
+        var open=!!state.groupOpen[gd.key];
+        var gs=(state.gsearch[gd.key]||'').toLowerCase();
+        var sc=state.sel[gd.key]?Object.keys(state.sel[gd.key]).length:0;
+        h+='<div style="border-bottom:1px solid #F1F4F8">'+
+          '<button data-group-toggle="'+esc(gd.key)+'" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 16px;background:#fff;border:none;cursor:pointer">'+
+            '<span style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#1F2D3D">'+
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .15s;transform:rotate('+(open?90:0)+'deg)"><path d="M9 6l6 6-6 6"/></svg>'+
+              esc(gd.label)+
+            '</span>'+(sc?'<span style="font-size:10.5px;font-weight:800;color:#1C4E80;background:#EAF1F8;padding:1px 7px;border-radius:999px">'+sc+'</span>':'')+
+          '</button>';
+        if(open){
+          h+='<div style="padding:2px 12px 14px">'+
+            '<div style="position:relative;margin-bottom:8px">'+
+              '<svg style="position:absolute;left:11px;top:50%;transform:translateY(-50%)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A9B6C6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>'+
+              '<input type="text" data-gsearch="'+esc(gd.key)+'" value="'+esc(state.gsearch[gd.key]||'')+'" placeholder="Search '+esc(gd.label)+'..." style="width:100%;padding:8px 12px 8px 32px;border-radius:9px;border:1px solid #E2E8F0;background:#F8FAFC;font-size:12.5px;color:#0F1B2D;outline:none">'+
+            '</div><div style="display:flex;flex-direction:column;gap:1px;max-height:230px;overflow-y:auto">';
+          gd.opts.filter(function(o){return !gs||o.label.toLowerCase().indexOf(gs)>-1;}).forEach(function(o){
+            var chk=!!(state.sel[gd.key]&&state.sel[gd.key][o.value]);
+            h+='<div data-opt data-opt-group="'+esc(gd.key)+'" data-opt-val="'+esc(o.value)+'" style="display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:8px;cursor:pointer;font-size:13px;color:'+(chk?'#0F1B2D':'#334155')+';font-weight:'+(chk?600:500)+'">'+
+              '<span style="width:18px;height:18px;border-radius:5px;flex:none;display:flex;align-items:center;justify-content:center;border:1.5px solid '+(chk?'#F47A21':'#CBD5E1')+';background:'+(chk?'#F47A21':'#fff')+'">'+
+                (chk?checkIcon():'')+
+              '</span><span style="flex:1">'+esc(o.label)+'</span><span style="font-size:11px;font-weight:600;color:#A9B6C6">'+o.count+'</span></div>';
+          });
+          h+='</div></div>';
+        }
+        h+='</div>';
+      });
+      h+='<div style="padding:14px 16px"><button data-clear-all style="width:100%;padding:10px;border-radius:10px;border:1.5px solid #F47A21;background:#fff;color:#DD6710;font-size:13px;font-weight:700;cursor:pointer">Clear All Filters</button></div>';
+    }
+    document.getElementById('filter-body').innerHTML=h;
+  }
+
+  /* ——— RENDER RESULTS BAR ——— */
+  function renderResultsBar(){
+    var all=filtered(),total=all.length,ps=24;
+    var pages=Math.max(1,Math.ceil(total/ps)),page=Math.min(state.page,pages);
+    var shown=all.slice((page-1)*ps,(page-1)*ps+ps).length;
+    var v=state.view;
+    function vBtn(mode,icon){return '<button data-view="'+mode+'" style="width:32px;height:30px;display:flex;align-items:center;justify-content:center;border:none;border-radius:7px;cursor:pointer;color:'+(v===mode?'#14365C':'#94A3B8')+';background:'+(v===mode?'#fff':'transparent')+';box-shadow:'+(v===mode?'0 1px 3px rgba(15,27,45,.12)':'none')+'">'+icon+'</button>';}
+    var h='<div style="display:flex;align-items:center;gap:14px">'+
+      '<div style="font-size:15px;color:#475569">Showing <strong style="color:#0F1B2D;font-weight:800">'+shown+'</strong> of <strong style="color:#0F1B2D;font-weight:800">'+total+'</strong> results</div>'+
+      '<div style="display:flex;gap:4px;background:#EEF2F7;border-radius:9px;padding:3px">'+
+        vBtn('grid','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>')+
+        vBtn('list','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>')+
+      '</div></div>'+
+      '<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#64748B">Sort by:'+
+        '<div style="position:relative">'+
+          '<select data-sort style="appearance:none;-webkit-appearance:none;padding:9px 34px 9px 14px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;font-size:13px;font-weight:600;color:#14365C;cursor:pointer;outline:none">'+
+            '<option value="popular"'+(state.sort==='popular'?' selected':'')+'>Popularity (Most Used)</option>'+
+            '<option value="name"'+(state.sort==='name'?' selected':'')+'>Name (A–Z)</option>'+
+            '<option value="size"'+(state.sort==='size'?' selected':'')+'>Company Size</option>'+
+            '<option value="category"'+(state.sort==='category'?' selected':'')+'>Category</option>'+
+          '</select>'+
+          '<svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>'+
+        '</div></label>';
+    document.getElementById('results-bar').innerHTML=h;
+  }
+
+  /* ——— RENDER CARDS ——— */
+  function badge(text,bg,col){return '<span style="display:inline-flex;align-items:center;padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700;background:'+bg+';color:'+col+'">'+esc(text)+'</span>';}
+  function renderCards(){
+    var all=filtered(),ps=24,total=all.length;
+    var pages=Math.max(1,Math.ceil(total/ps)),page=Math.min(state.page,pages);
+    var slice=all.slice((page-1)*ps,(page-1)*ps+ps);
+    var grid=state.view==='grid';
+    var ws=grid?'display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px':'display:flex;flex-direction:column;gap:12px';
+    var cs=grid?'display:flex;flex-direction:column;gap:14px;background:#fff;border:1px solid #E8EDF3;border-radius:14px;padding:18px':'display:flex;gap:16px;align-items:center;background:#fff;border:1px solid #E8EDF3;border-radius:14px;padding:16px 18px;flex-wrap:wrap';
+    var h='<div style="'+ws+'">';
+    slice.forEach(function(t){
+      var icon='https://icons.duckduckgo.com/ip3/'+t.d+'.ico';
+      var detailUrl='/tool/'+(t.c[0]||'directory')+'/'+t.s+'.html';
+      var visitUrl='https://'+t.d;
+      var sub=t.focus.slice(0,3).join(', ')||t.tr.slice(0,3).join(', ');
+      var cat=t.catLabels.join(', ')+(t.sub?' · '+t.sub:'');
+      var tk=t.trial==='Demo Available'?['#FEF1E2','#C26A12']:['#E7F6EC','#1F8A4C'];
+      var pl=t.pricing==='Enterprise / Custom'?'Enterprise':(t.pricing==='One-Time License'?'One-Time':t.pricing);
+      var szb=t.sz==='Enterprise'?'#EEF2F7':(t.sz==='Mid-Market'?'#E8F0FB':'#E7F6EC');
+      var szc=t.sz==='Enterprise'?'#475569':(t.sz==='Mid-Market'?'#1C4E80':'#1F8A4C');
+      h+='<div style="'+cs+'">'+
+        '<a href="'+esc(detailUrl)+'" style="display:flex;gap:15px;align-items:center;flex:1;min-width:0">'+
+          '<span style="width:54px;height:54px;border-radius:12px;background:#F4F7FB url('+icon+') no-repeat center/30px;border:1px solid #E8EDF3;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#9DB8CC;overflow:hidden"></span>'+
+          '<span style="min-width:0;display:flex;flex-direction:column;gap:4px">'+
+            '<span style="display:flex;align-items:center;gap:6px">'+
+              '<span style="font-size:16px;font-weight:800;color:#0F1B2D;letter-spacing:-.01em">'+esc(t.n)+'</span>'+
+              '<svg width="15" height="15" viewBox="0 0 24 24" fill="#1C4E80" style="flex:none"><path d="M12 2l2.4 1.8 3 .2.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3 .2L12 22l-2.4-1.8-3-.2-.9-2.9L3.3 14.5l.9-2.9-.9-2.9 2.4-1.8.9-2.9 3-.2z"/><polyline points="9,12 11,14 15,10" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
+            '</span>'+
+            '<span style="font-size:12.5px;font-weight:600;color:#1C4E80">'+esc(cat)+'</span>'+
+            '<span style="font-size:12px;color:#94A3B8">'+esc(sub)+'</span>'+
+            '<span style="display:flex;flex-wrap:wrap;gap:6px;margin-top:3px">'+badge(t.trial,tk[0],tk[1])+badge(pl,'#E8F0FB','#1C4E80')+badge(t.sz,szb,szc)+'</span>'+
+          '</span>'+
+        '</a>'+
+        '<a href="'+esc(visitUrl)+'" target="_blank" rel="noopener" style="flex:none;display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:10px;border:1.5px solid #1C4E80;color:#1C4E80;font-size:13px;font-weight:700;white-space:nowrap" onmouseover="this.style.background=\'#1C4E80\';this.style.color=\'#fff\'" onmouseout="this.style.background=\'\';this.style.color=\'#1C4E80\'">'+
+          'Visit Website <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>'+
+        '</a>'+
+      '</div>';
+    });
+    h+='</div>';
+    document.getElementById('results-wrap').innerHTML=h;
+  }
+
+  /* ——— RENDER PAGINATION ——— */
+  function renderPagination(){
+    var all=filtered(),ps=24,total=all.length;
+    var pages=Math.max(1,Math.ceil(total/ps)),page=Math.min(state.page,pages);
+    function bs(a){return 'min-width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;padding:0 10px;border-radius:9px;font-size:13px;font-weight:700;cursor:'+(a?'default':'pointer')+';border:1px solid '+(a?'#1C4E80':'#E2E8F0')+';background:'+(a?'#1C4E80':'#fff')+';color:'+(a?'#fff':'#334155');}
+    var h='<div style="display:flex;align-items:center;justify-content:center;gap:7px">';
+    function ap(n){h+='<button data-page="'+n+'" style="'+bs(n===page)+'">'+n+'</button>';}
+    function ag(){h+='<span style="min-width:30px;height:34px;display:inline-flex;align-items:center;justify-content:center;color:#94A3B8;font-weight:700">…</span>';}
+    if(pages<=7){for(var i=1;i<=pages;i++)ap(i);}
+    else{ap(1);if(page>3)ag();var lo=Math.max(2,page-1),hi=Math.min(pages-1,page+1);for(var j=lo;j<=hi;j++)ap(j);if(page<pages-2)ag();ap(pages);}
+    h+='</div>';
+    document.getElementById('pagination').innerHTML=h;
+  }
+
+  /* ——— INIT ——— */
+  function init(){
+    try{var p=new URLSearchParams(location.search),c=p.get('cat'),q=p.get('q');if(q)state.search=q;if(c){state.sel={Category:{}};state.sel.Category[c]=true;state.groupOpen.Category=true;}}catch(e){}
+    prep();renderCatBand();render();
+    var si=document.getElementById('search-input');
+    if(si){si.value=state.search;si.addEventListener('input',function(){state.search=si.value;state.page=1;render();});}
+    var cs=document.getElementById('clear-search');
+    if(cs){cs.addEventListener('click',function(){si.value='';state.search='';state.page=1;render();});}
+    document.addEventListener('click',function(e){
+      var t=e.target;
+      var el;
+      if((el=t.closest('[data-cat]'))){pickCategory(el.dataset.cat);return;}
+      if((el=t.closest('[data-group-toggle]'))){toggleGroup(el.dataset.groupToggle);return;}
+      if((el=t.closest('[data-opt]'))){toggleSel(el.dataset.optGroup,el.dataset.optVal);return;}
+      if(t.closest('[data-clear-all]')){clearAll();return;}
+      if(t.closest('[data-filters-toggle]')){toggleFilters();return;}
+      if((el=t.closest('[data-view]'))){state.view=el.dataset.view;state.page=1;render();return;}
+      if((el=t.closest('[data-page]'))){gotoPage(+el.dataset.page);return;}
+      if((el=t.closest('[data-q]'))){var q=el.dataset.q;state.search=q;state.page=1;var si2=document.getElementById('search-input');if(si2)si2.value=q;render();return;}
+    });
+    document.addEventListener('change',function(e){if(e.target.dataset.sort){state.sort=e.target.value;state.page=1;render();}});
+    document.addEventListener('input',function(e){if(e.target.dataset.gsearch){setGroupSearch(e.target.dataset.gsearch,e.target.value);}});
+  }
+
+  function boot(){if(window.TOOLS&&window.TOOLS.length){init();}else{setTimeout(boot,40);}}
+  boot();
+})();
+</script>
+</body>
+</html>

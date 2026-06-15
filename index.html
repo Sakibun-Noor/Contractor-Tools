@@ -3,445 +3,120 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Construction Technology Directory — Find the right software for your construction business</title>
-  <meta name="description" content="Search construction software, apps, and vendors by trade, category, or company. 600+ platforms across 12 categories — free to browse.">
-  <link rel="icon" type="image/png" href="/assets/logo.png">
-  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <title>The Construction Technology Directory — Find the Right Software for Your Construction Business</title>
+  <meta name="description" content="Search 600+ construction software platforms across 12 categories. Estimating, CRM, Project Management, Accounting, AI and more — free to browse.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/home.css">
   <style>
-    /* ---- homepage-specific (light, brand, factory-style mobile) ---- */
-    .logo-mark{width:2.5rem;height:2.5rem;border-radius:.7rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(150deg,var(--accent-dark),var(--accent-deep));color:#fff;box-shadow:var(--shadow-sm);position:relative}
-    .logo-mark svg{width:1.5rem;height:1.5rem}
-    .logo-mark::after{content:"";position:absolute;left:.45rem;right:.45rem;bottom:.42rem;height:3px;border-radius:3px;background:var(--orange)}
-    .brand-stack{display:flex;flex-direction:column;line-height:1.05}
-    .brand-stack .b1{font-size:.66rem;font-weight:700;letter-spacing:.18em;color:var(--orange-dark);text-transform:uppercase}
-    .brand-stack .b2{font-size:1rem;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
-
-    /* nav dropdowns */
-    .nav-item{position:relative}
-    .nav-pop{position:absolute;top:calc(100% + .5rem);left:50%;transform:translateX(-50%) translateY(6px);min-width:18rem;
-      background:#fff;border:1px solid var(--line);border-radius:.9rem;box-shadow:var(--shadow-lg);padding:.5rem;opacity:0;
-      pointer-events:none;transition:opacity .18s var(--ease),transform .18s var(--ease);z-index:90}
-    .nav-item:hover .nav-pop{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-    .nav-pop a{display:flex;align-items:center;gap:.6rem;padding:.5rem .6rem;border-radius:.55rem;text-decoration:none;color:var(--ink);font-size:.86rem;font-weight:600}
-    .nav-pop a:hover{background:var(--accent-light);color:var(--accent-dark)}
-    .nav-pop .np-ic{width:1.8rem;height:1.8rem;border-radius:.45rem;display:flex;align-items:center;justify-content:center;background:var(--bg-soft);border:1px solid var(--line);color:var(--accent-dark);flex-shrink:0}
-    .nav-pop .np-ic svg{width:1rem;height:1rem}
-    .nav-pop .np-all{justify-content:center;color:var(--accent-dark);font-weight:700;margin-top:.15rem;border-top:1px solid var(--line-soft);border-radius:0 0 .55rem .55rem}
-
-    /* hero (bright + navy — matches category pages per client mockup) */
-    /* NOTE: no overflow:hidden here — the search dropdown must extend past the
-       hero into the next section; z-index keeps the whole hero layer on top. */
-    .home-hero{position:relative;isolation:isolate;z-index:30;background:transparent;
-      padding:clamp(3rem,7vw,6rem) 0 clamp(2.6rem,5vw,4.2rem)}
-    .home-hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-      background-image:url('assets/hero/cta-hero-desktop.webp');background-size:cover;background-position:center 30%;
-      filter:saturate(1.05)}
-    .home-hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-      background:linear-gradient(180deg,rgba(255,255,255,.78) 0%,rgba(255,255,255,.58) 38%,rgba(255,255,255,.18) 62%,rgba(255,255,255,0) 90%)}
-    .home-hero>.wrap-wide{position:relative;z-index:1}
-    @media(max-width:640px){.home-hero::before{background-image:url('assets/hero/cta-hero-mobile.webp');background-position:center 28%}}
-    .home-h1{font-size:clamp(2.1rem,5.2vw,4rem);font-weight:900;letter-spacing:-.03em;line-height:1.03;color:#14365C;margin:1rem 0 0}
-    .home-h1 .accent{color:#1C4E80}
-    .home-h1 .o{color:var(--orange)}
-    .home-sub{color:#0F2240;font-size:clamp(1.02rem,1.5vw,1.22rem);line-height:1.6;margin:1.1rem 0 0;max-width:40rem;margin-left:auto;margin-right:auto}
-
-    /* ---- centered wordmark hero (per client mockup) — navy on bright photo ---- */
-    .hero-inner{max-width:54rem;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center}
-    .hero-inner .chip{margin-bottom:.4rem}
-    .hero-wordmark{display:flex;flex-direction:column;align-items:center;gap:.05rem;line-height:.95;margin:.6rem 0 0;
-      text-shadow:0 2px 16px rgba(255,255,255,.85),0 1px 2px rgba(255,255,255,.9);font-weight:900;letter-spacing:-.02em;color:#14365C}
-    .hero-wordmark .wm-the{font-size:clamp(.95rem,1.3vw,1.15rem);font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:#14365C;margin-bottom:.35rem}
-    .hero-wordmark .wm-big{font-size:clamp(2.6rem,7.6vw,6rem);text-transform:uppercase;display:block}
-    .hero-wordmark .wm-orange{color:var(--orange);text-shadow:0 2px 16px rgba(255,255,255,.85),0 1px 2px rgba(255,255,255,.9)}
-    .hero-wordmark .wm-dir{display:inline-flex;align-items:center;justify-content:center;gap:.9rem;font-size:clamp(1.05rem,1.8vw,1.55rem);font-weight:800;letter-spacing:.42em;text-transform:uppercase;color:#14365C;margin-top:.55rem}
-    .hero-wordmark .wm-dir::before,.hero-wordmark .wm-dir::after{content:"";display:block;width:clamp(2.2rem,5vw,4.2rem);height:2px;background:#14365C;border-radius:2px}
-    .hero-tag{margin:1.4rem 0 0;font-size:clamp(.9rem,1.25vw,1.05rem);font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#14365C;text-shadow:0 1px 8px rgba(255,255,255,.85)}
-    .hero-tag .o{color:var(--orange)}
-    .hero-inner .big-search{margin-left:auto;margin-right:auto}
-    .hero-inner .hero-ctas{justify-content:center}
-    .hero-inner .trust-row{justify-content:center}
-    .home-hero .chip{background:#FFFFFF;color:#14365C;border-color:rgba(20,54,92,.18);box-shadow:0 6px 18px -10px rgba(20,54,92,.5);font-weight:700}
-    .home-hero .trust-row{color:#14365C;background:rgba(255,255,255,.85);border:1px solid rgba(20,54,92,.08);border-radius:.85rem;padding:.55rem 1rem;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 10px 26px -16px rgba(20,54,92,.35);font-weight:600}
-    .home-hero .trust-row svg{color:var(--orange)}
-    .home-hero .btn-ghost{background:#FFFFFF;color:#14365C;border-color:rgba(20,54,92,.22);box-shadow:0 8px 22px -14px rgba(20,54,92,.45);backdrop-filter:blur(6px)}
-    .home-hero .btn-ghost:hover{background:#FFFFFF;border-color:rgba(20,54,92,.45);color:#14365C}
-    .big-search{position:relative;max-width:42rem;margin-top:1.9rem;z-index:50}
-    /* keep siblings beneath the open dropdown so they can't overlap it */
-    .hero-ctas,.trust-row{position:relative;z-index:1}
-    .big-search .search-input{padding:1.05rem 3.4rem 1.05rem 3.3rem;font-size:1.05rem;border-radius:1rem;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-md)}
-    .big-search .search-icon{left:18px;width:20px;height:20px}
-    .hero-ctas{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.4rem}
-    .btn-orange{background:var(--orange);color:#fff;box-shadow:0 14px 30px -14px rgba(244,122,33,.7)}
-    .btn-orange:hover{background:var(--orange-dark);transform:translateY(-2px)}
-    .trust-row{display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:1.7rem;color:var(--ink-soft);font-size:.84rem;font-weight:600}
-    .trust-row .ti{display:inline-flex;align-items:center;gap:.45rem}
-    .trust-row svg{width:1.05rem;height:1.05rem;color:var(--accent)}
-
-    /* compact category grid (factory.services style, esp. mobile) */
-    .cat-compact{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
-    @media(min-width:680px){.cat-compact{grid-template-columns:repeat(3,1fr)}}
-    @media(min-width:1080px){.cat-compact{grid-template-columns:repeat(4,1fr)}}
-    .ccard{position:relative;display:flex;flex-direction:column;gap:.55rem;padding:1.05rem;border:1px solid var(--line);border-radius:.95rem;
-      background:#fff;text-decoration:none;box-shadow:var(--shadow-sm);transition:transform .2s var(--ease),box-shadow .2s var(--ease),border-color .2s var(--ease)}
-    .ccard:hover{transform:translateY(-3px);border-color:rgba(28,78,128,.4);box-shadow:var(--shadow-md)}
-    .ccard .cc-ic{width:3rem;height:3rem;border-radius:.7rem;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(150deg,var(--accent-light),#fff);border:1px solid var(--line);color:var(--accent-dark);padding:.34rem}
-    .ccard .cc-ic svg{width:1.35rem;height:1.35rem}
-    .ccard .cc-ic img{width:100%;height:100%;object-fit:contain;display:block}
-    .ccard .cc-name{font-weight:700;font-size:.95rem;color:var(--ink);letter-spacing:-.01em}
-    .ccard .cc-sub{font-size:.74rem;color:var(--ink-mute);line-height:1.4}
-    .ccard .cc-count{position:absolute;top:.85rem;right:.95rem;font-size:.68rem;font-weight:700;color:var(--accent-dark);background:var(--accent-light);padding:.12rem .45rem;border-radius:999px}
-
-    /* tech stack builder */
-    .builder{background:linear-gradient(135deg,var(--accent-deep),var(--bg-deep-2));border-radius:var(--radius-lg);padding:clamp(1.6rem,4vw,2.8rem);color:#fff;position:relative;overflow:hidden}
-    .builder::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 50% 80% at 90% 10%,rgba(244,122,33,.22),transparent 60%),radial-gradient(ellipse 40% 60% at 5% 100%,rgba(28,78,128,.4),transparent 60%)}
-    .builder>*{position:relative;z-index:1}
-    .builder .bq{display:grid;gap:1rem;grid-template-columns:1fr;margin-top:1.4rem}
-    @media(min-width:760px){.builder .bq{grid-template-columns:1fr 1fr auto;align-items:end}}
-    .bfield label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#A6C3DE;margin-bottom:.4rem}
-    .bfield input{width:100%;padding:.85rem 1rem;border-radius:.7rem;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:.95rem}
-    .bfield input::placeholder{color:rgba(255,255,255,.5)}
-    .bfield input:focus{outline:none;border-color:var(--orange);background:rgba(255,255,255,.14)}
-    .builder-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.3rem}
-    .builder-links a{font-size:.84rem;font-weight:650;color:#fff;text-decoration:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:.5rem .9rem;border-radius:999px}
-    .builder-links a:hover{background:rgba(255,255,255,.2)}
-
-    /* most widely used — logo marquee (continuous, pause on hover) */
-    .mwu-wrap{display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:center}
-    @media(min-width:980px){.mwu-wrap{grid-template-columns:15rem 1fr}}
-    .mwu-filter{align-self:center}
-    @media(max-width:979px){.mwu-filter{display:none}}
-    .mwu-marquee{display:flex;flex-direction:column;gap:.9rem;overflow:hidden;min-width:0;
-      -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
-      mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
-    .mq-row{overflow:hidden}
-    .mq-track{display:inline-flex;width:max-content;animation:mqScroll var(--dur,42s) linear infinite}
-    .mq-row.rev .mq-track{animation-direction:reverse}
-    .mq-row:hover .mq-track{animation-play-state:paused}
-    @keyframes mqScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    @media(prefers-reduced-motion:reduce){.mq-track{animation:none}}
-    .mq-set{display:inline-flex;gap:.85rem;padding-right:.85rem}
-    .mq-pill{display:inline-flex;align-items:center;gap:.6rem;padding:.5rem .95rem .5rem .55rem;background:#fff;
-      border:1px solid var(--line);border-radius:.85rem;box-shadow:var(--shadow-sm);text-decoration:none;white-space:nowrap;
-      transition:transform .18s var(--ease),box-shadow .18s var(--ease),border-color .18s var(--ease)}
-    .mq-pill:hover{transform:translateY(-2px);border-color:rgba(28,78,128,.45);box-shadow:var(--shadow-md)}
-    .mq-pill .tool-icon{width:2.1rem;height:2.1rem;border-radius:.55rem;overflow:hidden;flex-shrink:0;display:flex;
-      align-items:center;justify-content:center;background:var(--bg-soft);border:1px solid var(--line)}
-    .mq-pill .tool-icon img{width:100%;height:100%;object-fit:contain;display:block}
-    .mq-pill .tool-icon .icon-fallback{width:100%;height:100%;border-radius:0;font-size:.95rem}
-    .mq-name{font-weight:700;font-size:.9rem;color:var(--ink)}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#0F1B2D;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    .home-catgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+    .home-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    .htile{display:flex;flex-direction:column;align-items:center;gap:11px;padding:20px 12px;border:1.5px solid #E5EAF1;border-radius:16px;background:#fff;box-shadow:0 1px 3px rgba(15,27,45,.05);transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+    .htile:hover{transform:translateY(-4px);border-color:#1C4E80;box-shadow:0 14px 30px -16px rgba(20,54,92,.5)}
+    @media(max-width:880px){
+      .home-catgrid{grid-template-columns:repeat(3,1fr)}
+      .home-pillars{grid-template-columns:repeat(2,1fr);gap:18px}
+    }
+    @media(max-width:520px){.home-catgrid{grid-template-columns:repeat(2,1fr)}}
   </style>
 </head>
 <body>
 
-<!-- ============ HEADER ============ -->
-<header class="site-header" data-screen-label="Header">
-  <div class="wrap-wide" style="display:flex;align-items:center;gap:1rem;padding-top:.7rem;padding-bottom:.7rem">
-    <!-- LOGO: placeholder mark — swap for final brand logo when ready -->
-    <a href="index.html" class="brand" aria-label="The Construction Technology Directory home">
-      <span class="logo-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/><path d="M9 11h.01M15 11h.01"/></svg>
+<!-- HERO -->
+<section style="position:relative;background:#0E2747">
+  <picture>
+    <source media="(max-width:640px)" srcset="assets/hero/cta-hero-mobile.webp">
+    <img src="assets/hero/cta-hero-desktop.webp" alt="Construction professionals reviewing technology on a job site at sunset" style="display:block;width:100%;height:auto">
+  </picture>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,20,38,.55) 0%,rgba(8,20,38,.22) 42%,rgba(8,20,38,.42) 100%)"></div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
+    <div style="font-size:clamp(11px,1.5vw,14px);font-weight:800;letter-spacing:.34em;color:#DCE7F3;text-shadow:0 2px 10px rgba(0,0,0,.5)">THE</div>
+    <h1 style="margin:6px 0 0;line-height:.96;text-shadow:0 4px 24px rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center">
+      <span style="font-size:clamp(40px,9vw,86px);font-weight:900;letter-spacing:-.01em;color:#fff;text-transform:uppercase">Construction</span>
+      <span style="font-size:clamp(40px,9vw,86px);font-weight:900;letter-spacing:-.01em;color:#F47A21;text-transform:uppercase">Technology</span>
+      <span style="display:inline-flex;align-items:center;gap:clamp(10px,2.4vw,22px);font-size:clamp(16px,2.6vw,28px);font-weight:800;letter-spacing:.4em;color:#fff;text-transform:uppercase;margin-top:10px">
+        <span style="width:clamp(28px,6vw,64px);height:2px;background:#fff;display:block"></span>
+        Directory
+        <span style="width:clamp(28px,6vw,64px);height:2px;background:#fff;display:block"></span>
       </span>
-      <span class="brand-stack">
-        <span class="b1">The</span>
-        <span class="b2">Construction Technology Directory</span>
-      </span>
-    </a>
-
-    <nav class="hidden lg:flex items-center gap-6 ml-auto">
-      <div class="nav-item"><a href="categories/" class="nav-link">Categories</a>
-        <div class="nav-pop" id="navCats"></div>
-      </div>
-      <div class="nav-item"><a href="trades/" class="nav-link">Trades</a>
-        <div class="nav-pop" id="navTrades"></div>
-      </div>
-      <a href="resources/" class="nav-link">Resources</a>
-      <a href="blog/" class="nav-link">Blog</a>
-      <a href="contact/" class="nav-link">Contact</a>
-    </nav>
-    <a href="#builder" class="btn btn-orange btn-sm hidden lg:inline-flex">Let's Begin</a>
-
-    <button class="menu-btn btn btn-ghost btn-sm ml-auto lg:ml-0" aria-label="Menu" onclick="toggleMenu(true)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
-  </div>
-</header>
-
-<div class="mobile-scrim" id="mobileScrim" onclick="toggleMenu(false)"></div>
-<aside class="mobile-menu" id="mobileMenu">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
-    <span style="font-weight:800;letter-spacing:-.02em">Menu</span>
-    <button class="btn btn-ghost btn-sm" aria-label="Close" onclick="toggleMenu(false)">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-  </div>
-  <a class="mobile-link" href="categories/">Categories</a>
-  <a class="mobile-link" href="trades/">Trades</a>
-  <a class="mobile-link" href="resources/">Resources</a>
-  <a class="mobile-link" href="blog/">Blog</a>
-  <a class="mobile-link" href="contact/">Contact</a>
-  <a class="btn btn-orange" style="margin-top:1rem" href="#builder" onclick="toggleMenu(false)">Let's Begin</a>
-</aside>
-
-<!-- ============ HERO ============ -->
-<section class="home-hero" data-screen-label="Hero">
-  <div class="wrap-wide">
-    <div class="hero-inner">
-      <h1 class="home-h1 hero-wordmark reveal" data-d="2" aria-label="The Construction Technology Directory">
-        <span class="wm-the">The</span>
-        <span class="wm-big">Construction</span>
-        <span class="wm-big wm-orange">Technology</span>
-        <span class="wm-dir">Directory</span>
-      </h1>
-      <p class="hero-tag reveal" data-d="3">
-        Construction. Technology. Contractors. <span class="o">Connected.</span>
-      </p>
-
-      <div class="big-search reveal" data-d="3" id="heroSearch">
-        <div class="search-input-container">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" class="search-input" id="heroSearchInput" placeholder="Search software, vendors, categories…" autocomplete="off" aria-label="Search the directory">
-        </div>
-        <div class="search-dropdown"></div>
-      </div>
-
-      <div class="hero-ctas reveal" data-d="4">
-        <a href="#builder" class="btn btn-orange">Let's Begin <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
-        <a href="#categories" class="btn btn-ghost">Browse 12 categories</a>
-      </div>
-
-      <div class="trust-row reveal" data-d="5">
-        <span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Curated &amp; reviewed</span>
-        <span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg> Sorted by real usage</span>
-        <span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg> Independent &amp; free</span>
-      </div>
+    </h1>
+    <div style="margin-top:clamp(20px,3vw,30px);font-size:clamp(11px,1.6vw,15px);font-weight:800;letter-spacing:.13em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6)">
+      CONSTRUCTION. TECHNOLOGY. CONTRACTORS. <span style="color:#F47A21">CONNECTED.</span>
     </div>
   </div>
 </section>
 
-<!-- ============ 12 CATEGORIES (above the fold) ============ -->
-<section class="section section-tint" id="categories" data-screen-label="Browse by Category" style="padding-top:clamp(2rem,4vw,3.2rem)">
-  <div class="wrap-wide">
-    <div class="section-head">
-      <div class="reveal">
-        <span class="eyebrow">Browse by category</span>
-        <h2 class="section-title" style="margin-top:.5rem">All 12 categories. The full construction stack.</h2>
-      </div>
-      <a href="categories/" class="link-arrow reveal">View all categories <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
+<!-- CATEGORY GRID -->
+<section style="background:#fff;padding:clamp(34px,5vw,52px) 24px clamp(30px,4vw,44px)">
+  <div style="max-width:1080px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:clamp(26px,4vw,38px)">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate(-28deg)"><path d="M12 4v13"/><path d="M6 11l6 6 6-6"/></svg>
+      <h2 style="margin:0;text-align:center;font-size:clamp(15px,2.4vw,22px);font-weight:900;letter-spacing:.02em;color:#14365C;text-transform:uppercase">Click on any category below to explore solutions</h2>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate(28deg)"><path d="M12 4v13"/><path d="M6 11l6 6 6-6"/></svg>
     </div>
-    <div id="catCompact" class="cat-compact"></div>
-  </div>
-</section>
-
-<!-- ============ CONSTRUCTION TECH STACK BUILDER ============ -->
-<section class="section" id="builder" data-screen-label="Tech Stack Builder">
-  <div class="wrap-wide">
-    <div class="builder reveal">
-      <span class="eyebrow" style="color:var(--orange)">Construction Tech Stack Builder</span>
-      <h2 class="display" style="color:#fff;font-size:clamp(1.6rem,3vw,2.4rem);margin:.6rem 0 0">Tell us two things. We'll point you to the right stack.</h2>
-      <p style="color:#A6C3DE;font-size:1rem;line-height:1.6;margin-top:.7rem;max-width:40rem">Pick your trade and what you're trying to solve — we'll send you straight to the matching tools.</p>
-      <div class="bq">
-        <div class="bfield">
-          <label for="bTrade">1 · What's your trade?</label>
-          <input list="tradeList" id="bTrade" placeholder="e.g. Electrical, HVAC, GC…" autocomplete="off">
-          <datalist id="tradeList"></datalist>
-        </div>
-        <div class="bfield">
-          <label for="bCat">2 · What do you need?</label>
-          <input list="catList" id="bCat" placeholder="e.g. Estimating, Project Management…" autocomplete="off">
-          <datalist id="catList"></datalist>
-        </div>
-        <button class="btn btn-orange" id="bGo" style="height:3rem">Build my stack <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></button>
-      </div>
-      <div class="builder-links">
-        <a href="trades/">Browse all trades →</a>
-        <a href="categories/">Browse all categories →</a>
-      </div>
+    <div class="home-catgrid">
+      <a class="htile" href="directory.html?cat=accounting-payroll"><img src="assets/logos/accounting-payroll.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">ACCOUNTING</span></a>
+      <a class="htile" href="directory.html?cat=crm-sales"><img src="assets/logos/crm-sales.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">CRM SALES</span></a>
+      <a class="htile" href="directory.html?cat=construction-leads"><img src="assets/logos/construction-leads.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">LEADS, BIDS</span></a>
+      <a class="htile" href="directory.html?cat=estimating-takeoff"><img src="assets/logos/estimating-takeoff.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">ESTIMATING, TAKEOFF</span></a>
+      <a class="htile" href="directory.html?cat=project-management"><img src="assets/logos/project-management.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">PROJECT MANAGEMENT</span></a>
+      <a class="htile" href="directory.html?cat=field-service-dispatch"><img src="assets/logos/field-service-dispatch.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">DISPATCH</span></a>
+      <a class="htile" href="directory.html?cat=safety-compliance"><img src="assets/logos/safety-compliance.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">COMPLIANCE</span></a>
+      <a class="htile" href="directory.html?cat=fleet-equipment"><img src="assets/logos/fleet-equipment.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">FLEET</span></a>
+      <a class="htile" href="directory.html?cat=marketing-reputation"><img src="assets/logos/marketing-reputation.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">MARKETING</span></a>
+      <a class="htile" href="directory.html?cat=ai-automation"><img src="assets/logos/ai-automation.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">AI AUTOMATION</span></a>
+      <a class="htile" href="directory.html?cat=document-management"><img src="assets/logos/document-management.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">DOCUMENTATION</span></a>
+      <a class="htile" href="directory.html?cat=procurement-purchasing"><img src="assets/logos/procurement-purchasing.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">PURCHASING</span></a>
     </div>
-  </div>
-</section>
-
-<!-- ============ MOST WIDELY USED ============ -->
-<section class="section section-soft" id="popular" data-screen-label="Most Widely Used">
-  <div class="wrap-wide">
-    <div class="section-head">
-      <div class="reveal">
-        <span class="eyebrow">Most Widely Used</span>
-        <h2 class="section-title" style="margin-top:.5rem">Popular construction software</h2>
-        <p class="section-sub">The top platforms construction teams rely on — hover to pause, click to open.</p>
-      </div>
-      <a href="directory/" class="link-arrow reveal">See the full directory <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
-    </div>
-    <div class="mwu-wrap">
-      <!-- left expandable filter -->
-      <aside class="mwu-filter reveal">
-        <div class="filter-group">
-          <h4>Filter by category</h4>
-          <div id="mwuFilter" style="display:flex;flex-direction:column;gap:.15rem"></div>
-        </div>
-      </aside>
-      <div id="mwuMarquee" class="mwu-marquee" aria-label="Most widely used construction software"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CTA ============ -->
-<section class="section" style="padding-top:0">
-  <div class="wrap-wide">
-    <div class="cta-band reveal" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2rem">
-      <div style="max-width:34rem">
-        <span class="eyebrow" style="color:var(--orange)">Ready to build your stack?</span>
-        <h2 class="display" style="color:#fff;font-size:clamp(1.7rem,3vw,2.5rem);margin:.7rem 0 0">Find the right software for your construction business.</h2>
-        <p style="color:#A6C3DE;font-size:1.02rem;line-height:1.6;margin-top:.9rem">Start with your trade and category — we'll do the shortlisting. Free to browse, no sign-up.</p>
-      </div>
-      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-        <a href="#builder" class="btn btn-orange">Let's Begin <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a>
-        <a href="categories/" class="btn btn-glass">Browse manually</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FOOTER ============ -->
-<footer class="footer">
-  <div class="wrap-wide" style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2.5rem;padding-top:4rem;padding-bottom:3rem" id="footGrid">
-    <div>
-      <a href="index.html" class="brand" style="color:#fff">
-        <span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg></span>
-        <span style="font-size:1rem;color:#fff">The Construction Technology Directory</span>
+    <div style="text-align:center;margin-top:clamp(26px,4vw,38px)">
+      <a href="directory.html" style="display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:12px;background:#F47A21;color:#fff;font-size:14px;font-weight:800;letter-spacing:.02em;box-shadow:0 14px 30px -14px rgba(244,122,33,.7)">
+        Browse all 600 platforms
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
       </a>
-      <p style="margin-top:1rem;font-size:.9rem;line-height:1.65;max-width:24rem">Search construction software, apps, vendors, and resources by trade, category, or company.</p>
-    </div>
-    <div><h4>Categories</h4><ul style="list-style:none;padding:0;margin:0;display:grid;gap:.6rem;font-size:.88rem" id="footCats"></ul></div>
-    <div><h4>Browse</h4><ul style="list-style:none;padding:0;margin:0;display:grid;gap:.6rem;font-size:.88rem">
-      <li><a href="trades/">All Trades</a></li>
-      <li><a href="categories/">All Categories</a></li>
-      <li><a href="directory/">Full Directory</a></li>
-      <li><a href="resources/">Resources</a></li>
-      <li><a href="blog/">Blog</a></li>
-      <li><a href="contact/">Contact</a></li>
-    </ul></div>
-  </div>
-  <div style="border-top:1px solid rgba(166,195,222,.16)">
-    <div class="wrap-wide" style="display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;padding-top:1.25rem;padding-bottom:1.25rem;font-size:.78rem;color:#8FA8C2">
-      <span>© 2026 The Construction Technology Directory. All trademarks property of their respective owners.</span>
-      <span>12 categories · 600+ platforms · free to browse</span>
     </div>
   </div>
-  <style>@media(max-width:767px){#footGrid{grid-template-columns:1fr!important;gap:2rem!important}}</style>
+</section>
+
+<!-- FOOTER: FIND/COMPARE/CONNECT/GROW + TAGLINE -->
+<footer style="background:linear-gradient(180deg,#14365C,#0E2747);color:#fff">
+  <div style="max-width:1080px;margin:0 auto;padding:clamp(34px,5vw,54px) 24px clamp(28px,4vw,40px)">
+    <div class="home-pillars">
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        </span>
+        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">FIND</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">The Best Construction Technology Solutions</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l-2 4 2 1.5M19 8l2 4-2 1.5M3 12h4M17 12h4"/></svg>
+        </span>
+        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">COMPARE</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">Features, Pricing &amp; Reviews</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.6l6.8-3.2M8.6 13.4l6.8 3.2"/></svg>
+        </span>
+        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">CONNECT</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">With Trusted Technology Providers</div></div>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start">
+        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V3M3 21h18M7 16l4-5 3 3 5-7"/></svg>
+        </span>
+        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">GROW</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">Build More. Waste Less. Achieve More.</div></div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:clamp(30px,4vw,44px);padding-top:clamp(24px,3vw,32px);border-top:1px solid rgba(166,195,222,.18)">
+      <div style="font-size:clamp(16px,3vw,26px);font-weight:900;letter-spacing:.01em">SMARTER <span style="color:#5BA7E8">TECHNOLOGY.</span> STRONGER <span style="color:#F47A21">CONTRACTORS.</span> BETTER <span style="color:#3FB57A">BUILDS.</span></div>
+      <a href="directory.html" style="display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:#9DBBD8;letter-spacing:.02em">www.buildertechdirectory.com</a>
+    </div>
+  </div>
 </footer>
 
-<script src="assets/tools-data.js"></script>
-<script src="assets/home.js"></script>
-<script>
-(function () {
-  var TOOLS = window.TOOLS || [], CATS = window.CATS, ICONS = window.ICONS, TRADES = window.TRADES;
-  var esc = window.escHtml;
-
-  function countCat(slug){ return TOOLS.filter(function(t){ return t.c && t.c.indexOf(slug)>-1; }).length; }
-
-  var order = ["estimating-takeoff","construction-leads","crm-sales","field-service-dispatch","project-management","accounting-payroll","safety-compliance","fleet-equipment","marketing-reputation","ai-automation","document-management","procurement-purchasing"];
-
-  /* ---- compact category grid (factory-style) ---- */
-  document.getElementById("catCompact").innerHTML = order.map(function(slug,i){
-    var c = CATS[slug]; if(!c) return "";
-    var n = countCat(slug);
-    return '<a href="'+c.href+'" class="ccard reveal" data-d="'+((i%4)+1)+'">'+
-      (n?'<span class="cc-count">'+n+'</span>':'')+
-      '<span class="cc-ic"><img src="assets/logos/'+slug+'.png" alt="" loading="lazy"></span>'+
-      '<span class="cc-name">'+esc(c.name)+'</span>'+
-      '<span class="cc-sub">'+esc(c.sub)+'</span>'+
-    '</a>';
-  }).join("");
-
-  /* ---- nav dropdowns (popular only) ---- */
-  function navPop(items, allHref, allLabel){
-    return items.map(function(it){
-      return '<a href="'+it.href+'"><span class="np-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+it.ic+'</svg></span>'+esc(it.name)+'</a>';
-    }).join("") + '<a class="np-all" href="'+allHref+'">'+allLabel+' →</a>';
-  }
-  var popCats = order.slice(0,6).map(function(slug){ return { name:CATS[slug].name, href:CATS[slug].href, ic:ICONS[slug]||'' }; });
-  document.getElementById("navCats").innerHTML = navPop(popCats, "categories/", "All 12 categories");
-  document.getElementById("navTrades").innerHTML = navPop(TRADES.slice(0,6).map(function(t){return {name:t.name,href:t.href,ic:t.ic};}), "trades/", "All trades");
-
-  /* ---- stack builder datalists ---- */
-  document.getElementById("catList").innerHTML = order.map(function(slug){ return '<option value="'+esc(CATS[slug].name)+'">'; }).join("");
-  document.getElementById("tradeList").innerHTML = TRADES.map(function(t){ return '<option value="'+esc(t.name)+'">'; }).join("");
-
-  var catByName = {}; order.forEach(function(slug){ catByName[CATS[slug].name.toLowerCase()] = CATS[slug].href; });
-  var tradeByName = {}; TRADES.forEach(function(t){ tradeByName[t.name.toLowerCase()] = t.href; });
-  document.getElementById("bGo").addEventListener("click", function(){
-    var cv = (document.getElementById("bCat").value||"").trim().toLowerCase();
-    var tv = (document.getElementById("bTrade").value||"").trim().toLowerCase();
-    if (catByName[cv]) { location.href = catByName[cv]; return; }
-    if (tradeByName[tv]) { location.href = tradeByName[tv]; return; }
-    // partial match fallback
-    var hit = order.filter(function(s){ return CATS[s].name.toLowerCase().indexOf(cv)>-1 && cv; })[0];
-    location.href = hit ? CATS[hit].href : "categories/";
-  });
-
-  /* ---- most widely used: continuous logo marquee, click -> tool page ---- */
-  // Top 50 by Deryck's Category Rank (data/most-widely-used.json -> WIDELY_USED).
-  var bySlug = {}; TOOLS.forEach(function(t){ bySlug[t.s]=t; });
-  var widely = [];
-  if (window.WIDELY_USED && WIDELY_USED.length){
-    WIDELY_USED.forEach(function(sl){ if (bySlug[sl]) widely.push(bySlug[sl]); });
-  }
-  if (!widely.length){ widely = TOOLS.slice(0,50); }
-  var FULL = widely.slice(0,50);
-
-  function toolPage(t){
-    if (window.TOOLPATHS && TOOLPATHS[t.s]) return TOOLPATHS[t.s];
-    return (t.c && t.c[0] ? t.c[0] + "/" : "categories/");
-  }
-  function pillHtml(t){
-    return '<a class="mq-pill" href="'+toolPage(t)+'" title="'+esc(t.n)+'">'+
-      '<span class="tool-icon">'+window.iconHtml(t)+'</span>'+
-      '<span class="mq-name">'+esc(t.n)+'</span></a>';
-  }
-  function renderMarquee(list){
-    var rows = list.length > 24 ? 5 : (list.length > 8 ? 2 : 1);
-    var per = Math.ceil(list.length / rows), html = '';
-    for (var r=0; r<rows; r++){
-      var seg = list.slice(r*per, (r+1)*per);
-      if (!seg.length) break;
-      var set = '<span class="mq-set">'+seg.map(pillHtml).join('')+'</span>';
-      html += '<div class="mq-row'+(r%2 ? ' rev' : '')+'"><div class="mq-track" style="--dur:'+(36+r*7)+'s">'+set+set+'</div></div>';
-    }
-    document.getElementById("mwuMarquee").innerHTML = html;
-  }
-  function listFor(f){
-    if (!f) return FULL;
-    return TOOLS.filter(function(t){ return t.c && t.c.indexOf(f) > -1; })
-      .sort(function(a,b){ return (a.rk||999)-(b.rk||999); }).slice(0,14);
-  }
-  renderMarquee(FULL);
-
-  /* left filter */
-  document.getElementById("mwuFilter").innerHTML =
-    '<a href="#" data-f="" class="mfo active" style="font-size:.84rem;font-weight:650;color:var(--accent-dark);padding:.3rem .25rem;text-decoration:none">All categories</a>' +
-    order.map(function(s){ return '<a href="#" data-f="'+s+'" class="mfo" style="font-size:.84rem;font-weight:600;color:var(--ink-soft);padding:.3rem .25rem;text-decoration:none">'+esc(CATS[s].name)+'</a>'; }).join("");
-  Array.prototype.forEach.call(document.querySelectorAll("#mwuFilter .mfo"), function(a){
-    a.addEventListener("click", function(e){ e.preventDefault();
-      Array.prototype.forEach.call(document.querySelectorAll("#mwuFilter .mfo"), function(x){ x.classList.remove("active"); x.style.color="var(--ink-soft)"; });
-      a.classList.add("active"); a.style.color="var(--accent-dark)";
-      renderMarquee(listFor(a.getAttribute("data-f")||null));
-    });
-  });
-
-  /* ---- footer cats ---- */
-  document.getElementById("footCats").innerHTML = order.slice(0,8).map(function(slug){ return '<li><a href="'+CATS[slug].href+'">'+esc(CATS[slug].name)+'</a></li>'; }).join("");
-
-  /* ---- init search + motion ---- */
-  if (window.initSearch){ initSearch("heroSearch"); }
-  if (window.initReveal) initReveal();
-})();
-</script>
 </body>
 </html>
