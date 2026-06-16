@@ -23,40 +23,82 @@
       .home-pillars{grid-template-columns:repeat(2,1fr);gap:18px}
     }
     @media(max-width:520px){.home-catgrid{grid-template-columns:repeat(2,1fr)}}
+
+    /* ===== MOBILE: fit hero + categories + footer in one viewport, no scroll ===== */
+    @media (max-width:640px){
+      html,body{height:100%;overflow:hidden}
+      .home-wrap{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+
+      .home-hero{flex:0 0 auto;height:34vh;height:34dvh;min-height:0!important}
+      .home-hero picture,.home-hero img{height:100%!important;width:100%;object-fit:cover}
+      .home-hero-text{padding:10px!important}
+      .home-hero-kicker{font-size:8px!important;letter-spacing:.28em!important}
+      .home-hero-title{margin-top:3px!important}
+      .home-hero-title span.line{font-size:clamp(20px,7.4vh,34px)!important;line-height:.95!important}
+      .home-hero-sub-row{gap:8px!important;margin-top:6px!important}
+      .home-hero-sub-row span.bar{width:16px!important}
+      .home-hero-sub-row{font-size:clamp(8px,2vh,12px)!important}
+      .home-hero-tag{margin-top:8px!important;font-size:clamp(7px,1.7vh,10px)!important}
+
+      .home-catsec{flex:0 0 auto;display:block;padding:14px 10px 12px!important;min-height:0;overflow:hidden}
+      .home-cat-title-row{margin-bottom:10px!important;gap:6px!important}
+      .home-cat-title-row svg{width:14px!important;height:14px!important}
+      .home-cat-title{font-size:10.5px!important}
+      .home-catgrid{grid-template-columns:repeat(6,1fr)!important;gap:6px!important}
+      .htile{padding:7px 2px!important;gap:4px!important;border-radius:8px!important;border-width:1px!important}
+      .htile img{width:25px!important;height:25px!important}
+      .htile span{font-size:6px!important;line-height:1.15!important;letter-spacing:0!important}
+      .home-browse-wrap{margin-top:12px!important}
+      .home-browse-btn{padding:8px 16px!important;font-size:11px!important;gap:6px!important}
+      .home-browse-btn svg{width:12px!important;height:12px!important}
+
+      .home-footer{flex:1 1 auto;display:flex;flex-direction:column;justify-content:flex-start;min-height:0}
+      .home-footer-inner{padding:16px 12px 10px!important}
+      .home-pillars{grid-template-columns:repeat(4,1fr)!important;gap:4px!important}
+      .home-pillar{flex-direction:column!important;align-items:center!important;text-align:center;gap:5px!important}
+      .home-pillar-icon{width:22px!important;height:22px!important;border-radius:7px!important}
+      .home-pillar-icon svg{width:11px!important;height:11px!important}
+      .home-pillar-label{font-size:8px!important}
+      .home-pillar-desc{display:none!important}
+      .home-tagline-wrap{margin-top:6px!important;padding-top:6px!important}
+      .home-tagline{font-size:9px!important}
+      .home-tagline-url{margin-top:3px!important;font-size:7px!important}
+    }
   </style>
 </head>
 <body>
+<div class="home-wrap">
 
 <!-- HERO -->
-<section style="position:relative;background:#0E2747">
+<section class="home-hero" style="position:relative;background:#0E2747">
   <picture>
     <source media="(max-width:640px)" srcset="assets/hero/cta-hero-mobile.webp">
     <img src="assets/hero/cta-hero-desktop.webp" alt="Construction professionals reviewing technology on a job site at sunset" style="display:block;width:100%;height:auto">
   </picture>
   <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,20,38,.55) 0%,rgba(8,20,38,.22) 42%,rgba(8,20,38,.42) 100%)"></div>
-  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
-    <div style="font-size:clamp(11px,1.5vw,14px);font-weight:800;letter-spacing:.34em;color:#DCE7F3;text-shadow:0 2px 10px rgba(0,0,0,.5)">THE</div>
-    <h1 style="margin:6px 0 0;line-height:.96;text-shadow:0 4px 24px rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center">
-      <span style="font-size:clamp(40px,9vw,86px);font-weight:900;letter-spacing:-.01em;color:#fff;text-transform:uppercase">Construction</span>
-      <span style="font-size:clamp(40px,9vw,86px);font-weight:900;letter-spacing:-.01em;color:#F47A21;text-transform:uppercase">Technology</span>
-      <span style="display:inline-flex;align-items:center;gap:clamp(10px,2.4vw,22px);font-size:clamp(16px,2.6vw,28px);font-weight:800;letter-spacing:.4em;color:#fff;text-transform:uppercase;margin-top:10px">
-        <span style="width:clamp(28px,6vw,64px);height:2px;background:#fff;display:block"></span>
+  <div class="home-hero-text" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
+    <div class="home-hero-kicker" style="font-size:clamp(11px,1.5vw,14px);font-weight:800;letter-spacing:.34em;color:#DCE7F3;text-shadow:0 2px 10px rgba(0,0,0,.5)">THE</div>
+    <h1 class="home-hero-title" style="margin:6px 0 0;line-height:.96;text-shadow:0 4px 24px rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center">
+      <span class="line" style="font-size:clamp(40px,9vw,86px);font-weight:900;letter-spacing:-.01em;color:#fff;text-transform:uppercase">Construction</span>
+      <span class="line" style="font-size:clamp(40px,9vw,86px);font-weight:900;letter-spacing:-.01em;color:#F47A21;text-transform:uppercase">Technology</span>
+      <span class="home-hero-sub-row" style="display:inline-flex;align-items:center;gap:clamp(10px,2.4vw,22px);font-size:clamp(16px,2.6vw,28px);font-weight:800;letter-spacing:.4em;color:#fff;text-transform:uppercase;margin-top:10px">
+        <span class="bar" style="width:clamp(28px,6vw,64px);height:2px;background:#fff;display:block"></span>
         Directory
-        <span style="width:clamp(28px,6vw,64px);height:2px;background:#fff;display:block"></span>
+        <span class="bar" style="width:clamp(28px,6vw,64px);height:2px;background:#fff;display:block"></span>
       </span>
     </h1>
-    <div style="margin-top:clamp(20px,3vw,30px);font-size:clamp(11px,1.6vw,15px);font-weight:800;letter-spacing:.13em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6)">
+    <div class="home-hero-tag" style="margin-top:clamp(20px,3vw,30px);font-size:clamp(11px,1.6vw,15px);font-weight:800;letter-spacing:.13em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6)">
       CONSTRUCTION. TECHNOLOGY. CONTRACTORS. <span style="color:#F47A21">CONNECTED.</span>
     </div>
   </div>
 </section>
 
 <!-- CATEGORY GRID -->
-<section style="background:#fff;padding:clamp(34px,5vw,52px) 24px clamp(30px,4vw,44px)">
-  <div style="max-width:1080px;margin:0 auto">
-    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:clamp(26px,4vw,38px)">
+<section class="home-catsec" style="background:#fff;padding:clamp(34px,5vw,52px) 24px clamp(30px,4vw,44px)">
+  <div style="max-width:1080px;margin:0 auto;width:100%">
+    <div class="home-cat-title-row" style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:clamp(26px,4vw,38px)">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate(-28deg)"><path d="M12 4v13"/><path d="M6 11l6 6 6-6"/></svg>
-      <h2 style="margin:0;text-align:center;font-size:clamp(15px,2.4vw,22px);font-weight:900;letter-spacing:.02em;color:#14365C;text-transform:uppercase">Click on any category below to explore solutions</h2>
+      <h2 class="home-cat-title" style="margin:0;text-align:center;font-size:clamp(15px,2.4vw,22px);font-weight:900;letter-spacing:.02em;color:#14365C;text-transform:uppercase">Click on any category below to explore solutions</h2>
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;transform:rotate(28deg)"><path d="M12 4v13"/><path d="M6 11l6 6 6-6"/></svg>
     </div>
     <div class="home-catgrid">
@@ -73,8 +115,8 @@
       <a class="htile" href="directory.html?cat=document-management"><img src="assets/logos/document-management.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">DOCUMENTATION</span></a>
       <a class="htile" href="directory.html?cat=procurement-purchasing"><img src="assets/logos/procurement-purchasing.png" alt="" style="width:46px;height:46px;object-fit:contain"><span style="font-size:11.5px;font-weight:800;letter-spacing:.05em;color:#14365C;text-align:center">PURCHASING</span></a>
     </div>
-    <div style="text-align:center;margin-top:clamp(26px,4vw,38px)">
-      <a href="directory.html" style="display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:12px;background:#F47A21;color:#fff;font-size:14px;font-weight:800;letter-spacing:.02em;box-shadow:0 14px 30px -14px rgba(244,122,33,.7)">
+    <div class="home-browse-wrap" style="text-align:center;margin-top:clamp(26px,4vw,38px)">
+      <a class="home-browse-btn" href="directory.html" style="display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:12px;background:#F47A21;color:#fff;font-size:14px;font-weight:800;letter-spacing:.02em;box-shadow:0 14px 30px -14px rgba(244,122,33,.7)">
         Browse all 600 platforms
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
       </a>
@@ -83,40 +125,41 @@
 </section>
 
 <!-- FOOTER: FIND/COMPARE/CONNECT/GROW + TAGLINE -->
-<footer style="background:linear-gradient(180deg,#14365C,#0E2747);color:#fff">
-  <div style="max-width:1080px;margin:0 auto;padding:clamp(34px,5vw,54px) 24px clamp(28px,4vw,40px)">
+<footer class="home-footer" style="background:linear-gradient(180deg,#14365C,#0E2747);color:#fff">
+  <div class="home-footer-inner" style="max-width:1080px;margin:0 auto;padding:clamp(34px,5vw,54px) 24px clamp(28px,4vw,40px)">
     <div class="home-pillars">
-      <div style="display:flex;gap:13px;align-items:flex-start">
-        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+      <div class="home-pillar" style="display:flex;gap:13px;align-items:flex-start">
+        <span class="home-pillar-icon" style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
         </span>
-        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">FIND</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">The Best Construction Technology Solutions</div></div>
+        <div><div class="home-pillar-label" style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">FIND</div><div class="home-pillar-desc" style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">The Best Construction Technology Solutions</div></div>
       </div>
-      <div style="display:flex;gap:13px;align-items:flex-start">
-        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+      <div class="home-pillar" style="display:flex;gap:13px;align-items:flex-start">
+        <span class="home-pillar-icon" style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l-2 4 2 1.5M19 8l2 4-2 1.5M3 12h4M17 12h4"/></svg>
         </span>
-        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">COMPARE</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">Features, Pricing &amp; Reviews</div></div>
+        <div><div class="home-pillar-label" style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">COMPARE</div><div class="home-pillar-desc" style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">Features, Pricing &amp; Reviews</div></div>
       </div>
-      <div style="display:flex;gap:13px;align-items:flex-start">
-        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+      <div class="home-pillar" style="display:flex;gap:13px;align-items:flex-start">
+        <span class="home-pillar-icon" style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.6 10.6l6.8-3.2M8.6 13.4l6.8 3.2"/></svg>
         </span>
-        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">CONNECT</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">With Trusted Technology Providers</div></div>
+        <div><div class="home-pillar-label" style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">CONNECT</div><div class="home-pillar-desc" style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">With Trusted Technology Providers</div></div>
       </div>
-      <div style="display:flex;gap:13px;align-items:flex-start">
-        <span style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
+      <div class="home-pillar" style="display:flex;gap:13px;align-items:flex-start">
+        <span class="home-pillar-icon" style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F47A21" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V3M3 21h18M7 16l4-5 3 3 5-7"/></svg>
         </span>
-        <div><div style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">GROW</div><div style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">Build More. Waste Less. Achieve More.</div></div>
+        <div><div class="home-pillar-label" style="font-size:15px;font-weight:900;color:#F47A21;letter-spacing:.04em">GROW</div><div class="home-pillar-desc" style="font-size:12.5px;line-height:1.5;color:#A6C3DE;margin-top:4px">Build More. Waste Less. Achieve More.</div></div>
       </div>
     </div>
-    <div style="text-align:center;margin-top:clamp(30px,4vw,44px);padding-top:clamp(24px,3vw,32px);border-top:1px solid rgba(166,195,222,.18)">
-      <div style="font-size:clamp(16px,3vw,26px);font-weight:900;letter-spacing:.01em">SMARTER <span style="color:#5BA7E8">TECHNOLOGY.</span> STRONGER <span style="color:#F47A21">CONTRACTORS.</span> BETTER <span style="color:#3FB57A">BUILDS.</span></div>
-      <a href="directory.html" style="display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:#9DBBD8;letter-spacing:.02em">www.buildertechdirectory.com</a>
+    <div class="home-tagline-wrap" style="text-align:center;margin-top:clamp(30px,4vw,44px);padding-top:clamp(24px,3vw,32px);border-top:1px solid rgba(166,195,222,.18)">
+      <div class="home-tagline" style="font-size:clamp(16px,3vw,26px);font-weight:900;letter-spacing:.01em">SMARTER <span style="color:#5BA7E8">TECHNOLOGY.</span> STRONGER <span style="color:#F47A21">CONTRACTORS.</span> BETTER <span style="color:#3FB57A">BUILDS.</span></div>
+      <a class="home-tagline-url" href="directory.html" style="display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:#9DBBD8;letter-spacing:.02em">www.buildertechdirectory.com</a>
     </div>
   </div>
 </footer>
 
+</div>
 </body>
 </html>
