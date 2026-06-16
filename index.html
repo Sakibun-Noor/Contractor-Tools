@@ -26,10 +26,11 @@
 
     /* ===== MOBILE: bigger hero, compact categories, short footer ===== */
     @media (max-width:640px){
-      .home-wrap{display:flex;flex-direction:column}
+      .home-wrap{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
 
-      .home-hero{flex:0 0 auto;height:48vh;height:48dvh;min-height:0!important}
-      .home-hero picture,.home-hero img{height:100%!important;width:100%;object-fit:cover}
+      .home-hero{flex:1 1 auto;height:auto;min-height:260px!important}
+      .home-hero picture,.home-hero img{height:100%!important;width:100%;object-fit:cover;position:absolute;inset:0}
+      .home-hero picture{position:absolute;inset:0;display:block}
       .home-hero-text{padding:10px!important}
       .home-hero-kicker{font-size:9px!important;letter-spacing:.3em!important}
       .home-hero-title{margin-top:4px!important}
