@@ -19,122 +19,114 @@
     ::-webkit-scrollbar{width:10px}
     ::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:8px;border:2px solid #F4F6F9}
 
-    /* ===== PAGE 1 : HERO LANDING ===== */
-    .hero-page{background:#0A1B30}
-    /* Desktop: flat mockup image + clickable category hotspots */
-    .hero-flat{position:relative;display:block;width:100%;margin:0 auto}
-    .hero-flat>img{display:block;width:100%;height:auto}
-    .hero-hot{position:absolute;left:0;right:0;top:60.5%;height:15.5%}
-    .hero-hot a{position:absolute;top:0;height:100%;display:block;border-radius:10px;transition:background .14s ease}
-    .hero-hot a:hover{background:rgba(28,78,128,.15)}
-    /* Mobile: flat portrait mockup image + clickable hotspots */
-    .hero-mobile-flat{display:none;position:relative;width:100%}
-    .hero-mobile-flat>img{display:block;width:100%;height:auto}
-    .hero-mobile-flat a{position:absolute;display:block;border-radius:8px;-webkit-tap-highlight-color:transparent;transition:background .14s ease}
-    .hero-mobile-flat a:hover,.hero-mobile-flat a:active{background:rgba(28,78,128,.18)}
-    /* (legacy HTML mobile hero, unused) */
-    .hero-mobile{display:none}
-    .hero-visual{flex:1 1 auto;position:relative;min-height:200px;overflow:hidden}
-    .hero-visual picture,.hero-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-    .hero-catstrip{flex:0 0 auto;background:#fff}
-    .hero-catgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-    .htile{display:flex;flex-direction:column;align-items:center;gap:7px;padding:11px 5px;border:1.5px solid #E5EAF1;border-radius:12px;background:#fff}
-    .hero-pillarband{flex:0 0 auto;background:linear-gradient(180deg,#14365C,#0E2747);color:#fff}
-    .hero-pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    /* ===== PAGE 1 : HERO + FOOTER (flat design images, hotspot overlays) ===== */
+    body{background:#01153c}
+    img.hero-img{width:100%;height:auto;display:block}
+    .hswrap{position:relative;width:100%;margin:0 auto}
+    .hswrap.desktop{max-width:1672px}
+    .hswrap.mobile{max-width:941px}
+    .hswrap.desktop-ftr{max-width:1677px}
+    .hswrap.mobile-ftr{max-width:942px}
+    .hs{position:absolute;display:block;border-radius:6px;cursor:pointer;
+        background:transparent;transition:background .15s ease, box-shadow .15s ease;}
+    .hs:hover{background:rgba(242,106,27,.16);box-shadow:0 0 0 2px rgba(242,106,27,.75) inset;}
+    .hs:focus-visible{outline:none;background:rgba(242,106,27,.20);box-shadow:0 0 0 2px rgba(242,106,27,.9) inset;}
+    .view-desktop{display:block}
+    .view-mobile{display:none}
+    @media (max-width:760px){.view-desktop{display:none}.view-mobile{display:block}}
 
     /* ===== PAGE 2 : DIRECTORY / FILTERS ===== */
-    #directory{scroll-margin-top:72px}
+    #directory{background:#F4F6F9;scroll-margin-top:12px}
+    .dir-search{max-width:900px;margin:0 auto 30px;display:flex;gap:0;box-shadow:0 8px 30px rgba(1,21,60,.10);border-radius:14px;overflow:hidden;border:1px solid #E2E8F0}
+    .dir-search input{flex:1;border:none;padding:19px 22px;font-size:16px;outline:none;color:#0F1B2D;background:#fff}
+    .dir-search button{border:none;background:#F47A21;color:#fff;font-weight:800;padding:0 26px;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px}
     .dir-layout{display:grid;grid-template-columns:276px 1fr;gap:26px;align-items:start}
-    .cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
-    .ftr-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
     .cat-tile{cursor:pointer;transition:transform .14s,border-color .14s,background .14s}
     .cat-tile:hover{transform:translateY(-3px)}
 
     @media(max-width:1000px){
       .dir-layout{grid-template-columns:1fr}
       .dir-sidebar{position:static!important;top:auto!important}
-      .cat-grid{grid-template-columns:repeat(3,1fr)}
-      .ftr-pillars{grid-template-columns:repeat(2,1fr);gap:22px}
-    }
-    @media(max-width:760px){
-      .hero-flat{display:none}
-      .hero-mobile-flat{display:block}
     }
     @media(max-width:600px){
-      .cat-grid{grid-template-columns:repeat(2,1fr)}
-      .hdr-inner{flex-wrap:wrap;gap:10px!important;padding:10px 16px!important}
-      .hdr-search{order:3;flex-basis:100%;max-width:none}
+      .dir-search{margin-bottom:20px}
     }
   </style>
 </head>
 <body>
 
-<!-- ============ UNIFIED HEADER (logo + search, no login) ============ -->
-<header style="position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid #E5EAF1;box-shadow:0 1px 0 rgba(15,27,45,.02)">
-  <div class="hdr-inner" style="max-width:1240px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:20px">
-    <a href="#top" style="display:flex;align-items:center;gap:11px;flex:none">
-      <span style="width:40px;height:40px;border-radius:10px;background:linear-gradient(155deg,#1C4E80,#14365C);display:flex;align-items:center;justify-content:center;position:relative;flex:none">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/><path d="M9 11h.01M15 11h.01"/></svg>
-        <span style="position:absolute;left:8px;right:8px;bottom:7px;height:3px;border-radius:3px;background:#F47A21"></span>
-      </span>
-      <span style="display:flex;flex-direction:column;line-height:1.02">
-        <span style="font-size:8.5px;font-weight:800;letter-spacing:.26em;color:#94A3B8">THE CONSTRUCTION</span>
-        <span style="font-size:14px;font-weight:900;letter-spacing:.01em;color:#F47A21;line-height:1.05">TECHNOLOGY</span>
-        <span style="font-size:9px;font-weight:800;letter-spacing:.42em;color:#14365C">DIRECTORY</span>
-      </span>
-    </a>
-    <div class="hdr-search" style="flex:1;position:relative;max-width:680px">
-      <svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="text" id="search-input" placeholder="Type company, category, subcategory or trade name…" style="width:100%;padding:12px 44px 12px 44px;border-radius:11px;border:1.5px solid #E2E8F0;background:#F8FAFC;font-size:14px;color:#0F1B2D;outline:none" onfocus="this.style.borderColor='#1C4E80';this.style.background='#fff';document.getElementById('directory').scrollIntoView({behavior:'smooth'})" onblur="this.style.borderColor='#E2E8F0';this.style.background='#F8FAFC'">
-      <button id="clear-search" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:none;border-radius:50%;background:#E2E8F0;color:#475569;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;padding:0">×</button>
-    </div>
-  </div>
-</header>
+<!-- ============ HERO + NAV + CATEGORIES (flat design image, DESKTOP) ============ -->
+<div id="top" class="view-desktop">
+  <div class="hswrap desktop">
+    <img class="hero-img" src="assets/hero/home-hero-desktop.webp" alt="The Construction Technology Directory homepage">
+    <a class="hs" href="#top" data-scroll="top" aria-label="Home — scroll to top" style="left:3.3%;top:2.1%;width:16.7%;height:9%"></a>
+    <a class="hs" href="#directory" data-scroll="search" aria-label="Search — go to Directory" style="left:27.4%;top:3.2%;width:41.4%;height:6.6%"></a>
+    <a class="hs" href="#" data-link="about-us" aria-label="About Us" style="left:72.4%;top:2.7%;width:4.8%;height:8.5%"></a>
+    <a class="hs" href="#" data-link="contact-us" aria-label="Contact Us" style="left:78.6%;top:2.7%;width:5.1%;height:8.5%"></a>
+    <a class="hs" href="#" data-link="update-info" aria-label="Update Info" style="left:85.4%;top:2.7%;width:5.6%;height:8.5%"></a>
+    <a class="hs" href="#top" data-scroll="top" aria-label="Home" style="left:92.3%;top:2.7%;width:4.3%;height:8.5%"></a>
 
-<!-- ============ PAGE 1 : HERO LANDING ============ -->
-<section id="top" class="hero-page">
+    <a class="hs" href="#directory" data-cat="accounting-payroll" aria-label="Accounting category" style="left:5.4%;top:59.5%;width:14.7%;height:12.8%"></a>
+    <a class="hs" href="#directory" data-cat="crm-sales" aria-label="CRM &amp; Sales category" style="left:20.9%;top:59.5%;width:14.1%;height:12.8%"></a>
+    <a class="hs" href="#directory" data-cat="construction-leads" aria-label="Leads &amp; Bids category" style="left:35.9%;top:59.5%;width:14.1%;height:12.8%"></a>
+    <a class="hs" href="#directory" data-cat="estimating-takeoff" aria-label="Estimating &amp; Takeoff category" style="left:50.8%;top:59.5%;width:14.1%;height:12.8%"></a>
+    <a class="hs" href="#directory" data-cat="project-management" aria-label="Project Management category" style="left:65.8%;top:59.5%;width:14.1%;height:12.8%"></a>
+    <a class="hs" href="#directory" data-cat="field-service-dispatch" aria-label="Dispatch category" style="left:80.7%;top:59.5%;width:13.8%;height:12.8%"></a>
+    <a class="hs" href="#directory" data-cat="safety-compliance" aria-label="Compliance category" style="left:5.4%;top:74.4%;width:14.7%;height:12.2%"></a>
+    <a class="hs" href="#directory" data-cat="fleet-equipment" aria-label="Fleet category" style="left:20.9%;top:74.4%;width:14.1%;height:12.2%"></a>
+    <a class="hs" href="#directory" data-cat="marketing-reputation" aria-label="Marketing category" style="left:35.9%;top:74.4%;width:14.1%;height:12.2%"></a>
+    <a class="hs" href="#directory" data-cat="ai-automation" aria-label="AI Automation category" style="left:50.8%;top:74.4%;width:14.1%;height:12.2%"></a>
+    <a class="hs" href="#directory" data-cat="document-management" aria-label="Documentation category" style="left:65.8%;top:74.4%;width:14.1%;height:12.2%"></a>
+    <a class="hs" href="#directory" data-cat="procurement-purchasing" aria-label="Purchasing category" style="left:80.7%;top:74.4%;width:13.8%;height:12.2%"></a>
 
-  <!-- DESKTOP: flat mockup image with clickable category hotspots -->
-  <div class="hero-flat">
-    <img src="assets/hero/home-hero-desktop.webp" alt="The Construction Technology Directory — construction professionals reviewing technology with AI tools, click any category to explore solutions">
-    <div class="hero-hot">
-      <a href="#directory" data-cat="accounting-payroll"     aria-label="Accounting &amp; Payroll"   style="left:1.0%;width:8.25%"></a>
-      <a href="#directory" data-cat="crm-sales"              aria-label="CRM &amp; Sales"           style="left:9.25%;width:8.3%"></a>
-      <a href="#directory" data-cat="construction-leads"     aria-label="Leads, Bids &amp; Estimates" style="left:17.55%;width:8.45%"></a>
-      <a href="#directory" data-cat="estimating-takeoff"     aria-label="Estimating &amp; Takeoff"   style="left:26.0%;width:8.5%"></a>
-      <a href="#directory" data-cat="project-management"     aria-label="Project Management"        style="left:34.5%;width:8.7%"></a>
-      <a href="#directory" data-cat="field-service-dispatch" aria-label="Dispatch"                  style="left:43.2%;width:8.55%"></a>
-      <a href="#directory" data-cat="safety-compliance"      aria-label="Compliance"                style="left:51.75%;width:7.85%"></a>
-      <a href="#directory" data-cat="fleet-equipment"        aria-label="Fleet"                     style="left:59.6%;width:7.55%"></a>
-      <a href="#directory" data-cat="marketing-reputation"   aria-label="Marketing"                 style="left:67.15%;width:7.8%"></a>
-      <a href="#directory" data-cat="ai-automation"          aria-label="AI Automation"             style="left:74.95%;width:8.2%"></a>
-      <a href="#directory" data-cat="document-management"    aria-label="Documentation"             style="left:83.15%;width:7.85%"></a>
-      <a href="#directory" data-cat="procurement-purchasing" aria-label="Purchasing"                style="left:91.0%;width:7.4%"></a>
-    </div>
+    <a class="hs" href="#" data-link="find" aria-label="Find" style="left:6%;top:87.7%;width:22.1%;height:12.3%"></a>
+    <a class="hs" href="#" data-link="learn" aria-label="Learn" style="left:31.7%;top:87.7%;width:22.7%;height:12.3%"></a>
+    <a class="hs" href="#" data-link="research" aria-label="Research" style="left:57.4%;top:87.7%;width:17.3%;height:12.3%"></a>
+    <a class="hs" href="#" data-link="insights" aria-label="Insights" style="left:76.6%;top:87.7%;width:19.7%;height:12.3%"></a>
   </div>
+</div>
 
-  <!-- MOBILE: flat portrait mockup image with clickable category hotspots -->
-  <div class="hero-mobile-flat">
-    <img src="assets/hero/home-hero-mobile.webp" alt="The Construction Technology Directory — construction professionals reviewing technology with AI tools, tap any category to explore solutions">
-    <!-- Row 1 -->
-    <a href="#directory" data-cat="accounting-payroll"     aria-label="Accounting &amp; Payroll"    style="left:1.9%;width:15%;top:54.5%;height:10.8%"></a>
-    <a href="#directory" data-cat="crm-sales"              aria-label="CRM &amp; Sales"            style="left:18.5%;width:15%;top:54.5%;height:10.8%"></a>
-    <a href="#directory" data-cat="construction-leads"     aria-label="Leads, Bids &amp; Estimates" style="left:34.1%;width:15%;top:54.5%;height:10.8%"></a>
-    <a href="#directory" data-cat="estimating-takeoff"     aria-label="Estimating &amp; Takeoff"    style="left:50.2%;width:15%;top:54.5%;height:10.8%"></a>
-    <a href="#directory" data-cat="project-management"     aria-label="Project Management"         style="left:65.8%;width:15%;top:54.5%;height:10.8%"></a>
-    <a href="#directory" data-cat="field-service-dispatch" aria-label="Dispatch"                   style="left:82.3%;width:15%;top:54.5%;height:10.8%"></a>
-    <!-- Row 2 -->
-    <a href="#directory" data-cat="safety-compliance"      aria-label="Compliance"                style="left:1.9%;width:15%;top:65.5%;height:12.5%"></a>
-    <a href="#directory" data-cat="fleet-equipment"        aria-label="Fleet"                     style="left:18.5%;width:15%;top:65.5%;height:12.5%"></a>
-    <a href="#directory" data-cat="marketing-reputation"   aria-label="Marketing"                 style="left:34.1%;width:15%;top:65.5%;height:12.5%"></a>
-    <a href="#directory" data-cat="ai-automation"          aria-label="AI Automation"             style="left:50.2%;width:15%;top:65.5%;height:12.5%"></a>
-    <a href="#directory" data-cat="document-management"    aria-label="Documentation"             style="left:65.8%;width:15%;top:65.5%;height:12.5%"></a>
-    <a href="#directory" data-cat="procurement-purchasing" aria-label="Purchasing"                style="left:82.3%;width:15%;top:65.5%;height:12.5%"></a>
+<!-- ============ HERO + NAV + CATEGORIES (flat design image, MOBILE) ============ -->
+<div class="view-mobile">
+  <div class="hswrap mobile">
+    <img class="hero-img" src="assets/hero/home-hero-mobile.webp" alt="The Construction Technology Directory homepage">
+    <a class="hs" href="#top" data-scroll="top" aria-label="Home — scroll to top" style="left:5.8%;top:1.2%;width:29.8%;height:6%"></a>
+    <a class="hs" href="#directory" data-scroll="search" aria-label="Search — go to Directory" style="left:3.7%;top:8.7%;width:92.8%;height:3.9%"></a>
+    <a class="hs" href="#" data-link="about-us" aria-label="About Us" style="left:50.5%;top:1.8%;width:9%;height:5.4%"></a>
+    <a class="hs" href="#" data-link="contact-us" aria-label="Contact Us" style="left:62.7%;top:1.8%;width:9.4%;height:5.4%"></a>
+    <a class="hs" href="#" data-link="update-info" aria-label="Update Info" style="left:74.9%;top:1.8%;width:10.6%;height:5.4%"></a>
+    <a class="hs" href="#top" data-scroll="top" aria-label="Home" style="left:88.4%;top:1.8%;width:8.5%;height:5.4%"></a>
+
+    <a class="hs" href="#directory" data-cat="accounting-payroll" aria-label="Accounting category" style="left:3.2%;top:53.2%;width:21.8%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="crm-sales" aria-label="CRM &amp; Sales category" style="left:26%;top:53.2%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="construction-leads" aria-label="Leads &amp; Bids category" style="left:49.4%;top:53.2%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="estimating-takeoff" aria-label="Estimating &amp; Takeoff category" style="left:72.8%;top:53.2%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="project-management" aria-label="Project Management category" style="left:3.2%;top:64.6%;width:21.8%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="field-service-dispatch" aria-label="Dispatch category" style="left:26%;top:64.6%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="safety-compliance" aria-label="Compliance category" style="left:49.4%;top:64.6%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="fleet-equipment" aria-label="Fleet category" style="left:72.8%;top:64.6%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="marketing-reputation" aria-label="Marketing category" style="left:3.2%;top:75.4%;width:21.8%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="ai-automation" aria-label="AI Automation category" style="left:26%;top:75.4%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="document-management" aria-label="Documentation category" style="left:49.4%;top:75.4%;width:22.3%;height:10.5%"></a>
+    <a class="hs" href="#directory" data-cat="procurement-purchasing" aria-label="Purchasing category" style="left:72.8%;top:75.4%;width:22.3%;height:10.5%"></a>
+
+    <a class="hs" href="#" data-link="find" aria-label="Find" style="left:6.4%;top:86%;width:42%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="learn" aria-label="Learn" style="left:53%;top:86%;width:43%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="research" aria-label="Research" style="left:6.4%;top:93.5%;width:42%;height:6%"></a>
+    <a class="hs" href="#" data-link="insights" aria-label="Insights" style="left:53%;top:93.5%;width:43%;height:6%"></a>
   </div>
-</section>
+</div>
 
 <!-- ============ PAGE 2 : DIRECTORY / FILTERS ============ -->
-<main id="directory" style="max-width:1240px;width:100%;margin:0 auto;padding:26px 22px 40px">
+<main id="directory" style="max-width:1240px;width:100%;margin:0 auto;padding:34px 22px 40px">
+  <div class="dir-search">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-left:19px"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="search-input" placeholder="Search Company, Product, Category, Trade or Keyword" aria-label="Search the directory" style="padding-left:12px">
+    <button id="clear-search" type="button" aria-label="Clear search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      Clear
+    </button>
+  </div>
   <div class="dir-layout">
 
     <!-- FILTER SIDEBAR -->
@@ -170,44 +162,69 @@
   </div>
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer style="background:linear-gradient(180deg,#14365C,#0E2747);color:#fff">
-  <div style="max-width:1240px;margin:0 auto;padding:38px 22px 30px">
-    <div class="ftr-pillars">
-      <div>
-        <div style="font-size:13px;font-weight:900;color:#fff;letter-spacing:.06em;margin-bottom:12px">COMPANY</div>
-        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#A6C3DE">
-          <a href="about/" style="color:#A6C3DE">About Us</a>
-          <a href="contact/" style="color:#A6C3DE">Contact Us</a>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:900;color:#fff;letter-spacing:.06em;margin-bottom:12px">RESOURCES</div>
-        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#A6C3DE">
-          <a href="resources/" style="color:#A6C3DE">Insights</a>
-          <a href="resources/" style="color:#A6C3DE">FAQ</a>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:900;color:#fff;letter-spacing:.06em;margin-bottom:12px">LEGAL</div>
-        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#A6C3DE">
-          <a href="#" style="color:#A6C3DE">Privacy Policy</a>
-          <a href="#" style="color:#A6C3DE">Terms of Use</a>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:900;color:#fff;letter-spacing:.06em;margin-bottom:12px">FOLLOW US</div>
-        <div style="display:flex;gap:12px">
-          <a href="#" aria-label="LinkedIn" style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4z"/></svg></a>
-          <a href="#" aria-label="X" style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#fff"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-6.9l-5.4-7-6.2 7H1.6l8.1-9.3L1 2h7l4.9 6.5zM17.7 20h1.7L7.4 4H5.6z"/></svg></a>
-        </div>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:34px;padding-top:22px;border-top:1px solid rgba(166,195,222,.18);font-size:12.5px;color:#7FA8D4">
-      © 2026 The Construction Technology Directory, LLC. All rights reserved.
-    </div>
+<!-- ============ FOOTER (flat design image, DESKTOP) ============ -->
+<div class="view-desktop">
+  <div class="hswrap desktop-ftr">
+    <img class="hero-img" src="assets/hero/footer-hero-desktop.webp" alt="Footer">
+    <a class="hs" href="#top" data-scroll="top" aria-label="Home — scroll to top" style="left:2%;top:10%;width:17%;height:48%"></a>
+    <a class="hs" href="#" data-link="about-us" aria-label="About Us" style="left:25.9%;top:28.7%;width:11.6%;height:8%"></a>
+    <a class="hs" href="#" data-link="contact-us" aria-label="Contact Us" style="left:25.9%;top:40.6%;width:11.6%;height:8%"></a>
+    <a class="hs" href="#" data-link="update-info" aria-label="Update Info" style="left:25.9%;top:52.6%;width:11.6%;height:8%"></a>
+    <a class="hs" href="#" data-link="marketing-opportunities" aria-label="Marketing Opportunities" style="left:25.9%;top:64.5%;width:14%;height:8.8%"></a>
+    <a class="hs" href="#" data-link="categories" aria-label="Categories" style="left:41.7%;top:27.1%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="subcategories" aria-label="Subcategories" style="left:41.7%;top:37.5%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="products" aria-label="Products" style="left:41.7%;top:47.8%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="master-trades" aria-label="Master Trades" style="left:41.7%;top:58.2%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="divisions" aria-label="Divisions" style="left:41.7%;top:68.5%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="trades" aria-label="Trades" style="left:41.7%;top:78.9%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="technology-guides" aria-label="Technology Guides" style="left:56.1%;top:27.1%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="find" aria-label="Find" style="left:56.1%;top:37.5%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="learn" aria-label="Learn" style="left:56.1%;top:47.8%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="research" aria-label="Research" style="left:56.1%;top:58.2%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="insights" aria-label="Insights" style="left:56.1%;top:68.5%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="faqs-glossary" aria-label="FAQs / Glossary" style="left:56.1%;top:78.9%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="privacy-policy" aria-label="Privacy Policy" style="left:71.9%;top:27.9%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" data-link="terms-of-use" aria-label="Terms of Use" style="left:71.9%;top:41%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" data-link="site-map" aria-label="Site Map" style="left:71.9%;top:54.2%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" data-link="disclaimer" aria-label="Disclaimer" style="left:71.9%;top:67.3%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" data-link="linkedin" aria-label="LinkedIn" style="left:85.2%;top:31.1%;width:4.2%;height:19.9%"></a>
+    <a class="hs" href="#" data-link="facebook" aria-label="Facebook" style="left:89.9%;top:31.1%;width:4.3%;height:19.9%"></a>
+    <a class="hs" href="#" data-link="youtube" aria-label="YouTube" style="left:85.2%;top:59.8%;width:4.2%;height:19.1%"></a>
+    <a class="hs" href="#" data-link="instagram" aria-label="Instagram" style="left:89.9%;top:59.8%;width:4.3%;height:19.1%"></a>
   </div>
-</footer>
+</div>
+
+<!-- ============ FOOTER (flat design image, MOBILE) ============ -->
+<div class="view-mobile">
+  <div class="hswrap mobile-ftr">
+    <img class="hero-img" src="assets/hero/footer-hero-mobile.webp" alt="Footer">
+    <a class="hs" href="#top" data-scroll="top" aria-label="Home — scroll to top" style="left:3.2%;top:10.3%;width:20.2%;height:41%"></a>
+    <a class="hs" href="#" data-link="about-us" aria-label="About Us" style="left:25.8%;top:27.6%;width:19.9%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="contact-us" aria-label="Contact Us" style="left:25.8%;top:39.3%;width:19.9%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="update-info" aria-label="Update Info" style="left:25.8%;top:51%;width:19.9%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="marketing-opportunities" aria-label="Marketing Opportunities" style="left:25.8%;top:62.8%;width:22%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="categories" aria-label="Categories" style="left:41.9%;top:26.9%;width:12.2%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="subcategories" aria-label="Subcategories" style="left:41.9%;top:36.6%;width:12.2%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="products" aria-label="Products" style="left:41.9%;top:46.2%;width:12.2%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="master-trades" aria-label="Master Trades" style="left:41.9%;top:55.9%;width:12.2%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="divisions" aria-label="Divisions" style="left:41.9%;top:65.5%;width:12.2%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="trades" aria-label="Trades" style="left:41.9%;top:75.2%;width:12.2%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="technology-guides" aria-label="Technology Guides" style="left:56.3%;top:26.9%;width:13%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="find" aria-label="Find" style="left:56.3%;top:36.6%;width:13%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="learn" aria-label="Learn" style="left:56.3%;top:46.2%;width:13%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="research" aria-label="Research" style="left:56.3%;top:55.9%;width:13%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="insights" aria-label="Insights" style="left:56.3%;top:65.5%;width:13%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="faqs-glossary" aria-label="FAQs / Glossary" style="left:56.3%;top:75.2%;width:13%;height:6.5%"></a>
+    <a class="hs" href="#" data-link="privacy-policy" aria-label="Privacy Policy" style="left:72.2%;top:27.6%;width:10.1%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="terms-of-use" aria-label="Terms of Use" style="left:72.2%;top:39.3%;width:10.1%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="site-map" aria-label="Site Map" style="left:72.2%;top:51%;width:10.1%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="disclaimer" aria-label="Disclaimer" style="left:72.2%;top:62.8%;width:10.1%;height:7.6%"></a>
+    <a class="hs" href="#" data-link="linkedin" aria-label="LinkedIn" style="left:86%;top:30.3%;width:5.1%;height:15.9%"></a>
+    <a class="hs" href="#" data-link="facebook" aria-label="Facebook" style="left:91.9%;top:30.3%;width:5.1%;height:15.9%"></a>
+    <a class="hs" href="#" data-link="youtube" aria-label="YouTube" style="left:86%;top:51.7%;width:5.1%;height:15.9%"></a>
+    <a class="hs" href="#" data-link="instagram" aria-label="Instagram" style="left:91.9%;top:51.7%;width:5.1%;height:15.9%"></a>
+  </div>
+</div>
 
 <script src="assets/tools-data.js"></script>
 <script>
@@ -446,6 +463,18 @@
       if((el=t.closest('[data-view]'))){state.view=el.dataset.view;state.page=1;render();return;}
       if((el=t.closest('[data-page]'))){gotoPage(+el.dataset.page);return;}
       if((el=t.closest('[data-q]'))){var q=el.dataset.q;state.search=q;state.page=1;var si2=document.getElementById('search-input');if(si2)si2.value=q;render();var dir=document.getElementById('directory');if(dir)dir.scrollIntoView({behavior:'smooth'});return;}
+      if((el=t.closest('[data-scroll]'))){
+        e.preventDefault();
+        var sc=el.dataset.scroll;
+        if(sc==='top'){window.scrollTo({top:0,behavior:'smooth'});}
+        else if(sc==='search'){
+          var d=document.getElementById('directory');
+          if(d)d.scrollIntoView({behavior:'smooth'});
+          setTimeout(function(){var si3=document.getElementById('search-input');if(si3)si3.focus({preventScroll:true});},450);
+        }
+        return;
+      }
+      if((el=t.closest('a.hs'))&&el.getAttribute('href')==='#'){e.preventDefault();}
     });
     document.addEventListener('change',function(e){if(e.target.dataset.sort){state.sort=e.target.value;state.page=1;render();}});
     document.addEventListener('input',function(e){if(e.target.dataset.gsearch){setGroupSearch(e.target.dataset.gsearch,e.target.value);}});
