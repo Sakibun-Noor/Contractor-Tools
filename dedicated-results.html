@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dedicated Search Results — The Construction Technology Directory</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100vh}
+    body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+    a{text-decoration:none;color:inherit}input,select,button{font-family:inherit}
+    /* HEADER */
+    header{background:var(--navy);position:sticky;top:0;z-index:60;flex-shrink:0}
+    .hdr{display:flex;align-items:center;gap:20px;padding:12px 26px;max-width:1620px;margin:0 auto}
+    .logo{display:flex;align-items:center;gap:11px;flex:none;text-decoration:none}
+    .logo .mark{width:46px;height:46px;background:linear-gradient(150deg,#2a5fd6,#1C57B8);border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}
+    .logo .txt{display:flex;flex-direction:column;color:#fff;gap:1px}
+    .logo .txt .pre{font-size:7.5px;font-weight:800;letter-spacing:.22em;opacity:.85}
+    .logo .txt .t{font-size:13.5px;font-weight:900;color:var(--orange);letter-spacing:.01em;line-height:1.1}
+    .hsearch{flex:1;position:relative;max-width:800px}
+    .hsearch input{width:100%;padding:12px 50px 12px 18px;border-radius:10px;border:none;font-size:14px;color:var(--ink);outline:none}
+    .hsearch .go{position:absolute;right:5px;top:5px;bottom:5px;width:40px;border:none;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .hnav{display:flex;gap:18px;flex:none}
+    .hlink{display:flex;flex-direction:column;align-items:center;gap:4px;color:#fff;font-size:11px;font-weight:600;text-decoration:none}
+    .hlink .ic{width:24px;height:24px;border:1.5px solid rgba(255,255,255,.6);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .hlink:hover{color:var(--orange)}.hlink:hover .ic{border-color:var(--orange)}
+    /* MAIN */
+    main{flex:1;max-width:1620px;margin:0 auto;width:100%;padding:20px 26px 36px}
+    /* TOP ROW */
+    .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:4px}
+    .ptop-l .phead{font-size:26px;font-weight:900;letter-spacing:-.01em;color:var(--navy);margin:0 0 7px}
+    .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:500}
+    .ptop-r{display:flex;gap:10px;flex-wrap:wrap;padding-top:4px}
+    .btn-act{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12.5px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+    .btn-act:hover{border-color:var(--navy)}.btn-act svg{color:var(--blue)}
+    /* CHIPS */
+    .chips{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 12px}
+    .chip{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border:1.5px solid #c8d6ee;border-radius:5px;background:#fff;font-size:12px;white-space:nowrap}
+    .chip b{color:var(--navy);font-weight:700}.chip span{color:var(--ink)}
+    .chip .cx{cursor:pointer;color:var(--blue);font-size:13px;margin-left:3px;opacity:.7;line-height:1}
+    .chip .cx:hover{opacity:1;color:#c00}
+    /* TABLE */
+    .tablewrap{border:1px solid var(--line);border-radius:7px;overflow:hidden}
+    .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    table.res{width:100%;border-collapse:collapse;font-size:10.5px;table-layout:fixed;min-width:1200px}
+    table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:10px 8px;white-space:nowrap;letter-spacing:.02em;font-size:10.5px;border-right:1px solid rgba(255,255,255,.1)}
+    table.res th:last-child{border-right:none}
+    .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px}
+    .sic:hover{opacity:1}
+    table.res td{padding:9px 8px;vertical-align:top;border-bottom:1px solid #EEF1F6;border-right:1px solid #EEF1F6;line-height:1.4;font-size:10.5px}
+    table.res td:last-child{border-right:none}
+    table.res tr:nth-child(even) td{background:var(--cream)}
+    table.res tr:hover td{background:#eff3ff}
+    .ck{text-align:center;vertical-align:middle!important;padding:0!important}
+    .vn{font-weight:700;font-size:11px;color:var(--ink);display:block;margin-bottom:2px}
+    .vd{color:var(--vlink);font-size:9.5px}
+    .bl{color:var(--vlink)}.bl:hover{text-decoration:underline}
+    .more{display:block;color:var(--vlink);font-size:9.5px;font-style:italic;margin-top:3px}
+    .avl{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--muted);margin-bottom:3px}
+    .btn-vp{display:block;padding:5px 8px;background:var(--navy);color:#fff;border-radius:4px;font-size:10px;font-weight:700;text-align:center;margin-bottom:4px;cursor:pointer;text-decoration:none;white-space:nowrap}
+    .btn-vp:hover{background:var(--navy-deep)}
+    .btn-vw{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 8px;border:1.5px solid var(--line);color:var(--ink);border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;background:#fff;white-space:nowrap;text-decoration:none}
+    .btn-vw:hover{border-color:var(--navy)}
+    /* PAGINATION */
+    .pgbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+    .pgnums{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+    .pgbtn{padding:6px 11px;border:1.5px solid var(--line);border-radius:5px;background:#fff;font-size:12.5px;cursor:pointer;color:var(--ink);font-weight:500;min-width:34px;text-align:center}
+    .pgbtn:hover,.pgbtn.act{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .pgrpp{display:flex;align-items:center;gap:8px}
+    .pgrpp select{border:1.5px solid var(--line);border-radius:5px;padding:6px 10px;font-size:12.5px;background:#fff;cursor:pointer;outline:none;color:var(--ink)}
+    /* FOOTER */
+    footer{background:var(--navy);color:#fff;flex-shrink:0}
+    .ftr{display:grid;grid-template-columns:190px repeat(5,1fr);gap:28px;max-width:1620px;margin:0 auto;padding:36px 26px 28px}
+    .ftr-logo{display:flex;flex-direction:column}
+    .ftr-logo .logo{margin-bottom:12px}
+    .ftr-logo p{font-size:11px;opacity:.55;line-height:1.6;margin:8px 0 0}
+    .fcol h4{font-size:10px;font-weight:800;letter-spacing:.18em;opacity:.75;margin:0 0 12px}
+    .fcol a{display:block;font-size:12px;opacity:.65;margin-bottom:8px;line-height:1.35;color:#fff}
+    .fcol a:hover{opacity:1}
+    .soc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .soc a{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;margin:0;opacity:1;transition:transform .12s}
+    .soc a:hover{transform:scale(1.1)}
+    .si-li{background:#0077B5}.si-fb{background:#1877F2}.si-yt{background:#FF0000}
+    .si-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+    @media(max-width:760px){
+      .hdr{flex-wrap:wrap;padding:10px 14px;gap:8px}
+      .hsearch{order:3;width:100%;flex:none}
+      .hnav{gap:10px}
+      .hlink{font-size:9.5px}.hlink .ic{width:20px;height:20px}
+      main{padding:14px 14px 28px}
+      .ptop{flex-direction:column;gap:10px}
+      .ptop-l .phead{font-size:20px}
+      table.res{min-width:1200px}
+      .pgbar{gap:8px}
+      .ftr{grid-template-columns:1fr 1fr;gap:18px}
+      .ftr-logo{grid-column:1/-1}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <a class="logo" href="index.html">
+      <div class="mark">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+          <rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/>
+          <rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/>
+          <rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/>
+        </svg>
+      </div>
+      <div class="txt">
+        <span class="pre">THE</span>
+        <span class="t">CONSTRUCTION</span>
+        <span class="pre">TECHNOLOGY</span>
+        <span class="pre">DIRECTORY</span>
+      </div>
+    </a>
+    <div class="hsearch">
+      <input type="text" id="hdr-q" placeholder="Search Company, Product, Category, Trade or Keyword" autocomplete="off" onkeydown="if(event.key==='Enter')doHdrSearch()">
+      <button class="go" onclick="doHdrSearch()" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </button>
+    </div>
+    <nav class="hnav">
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>About Us</a>
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.12.987.35 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/></svg></span>Contact Us</a>
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Add / Modify Info</a>
+      <a class="hlink" href="index.html"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div class="ptop">
+    <div class="ptop-l">
+      <h1 class="phead">DEDICATED SEARCH RESULTS PAGE</h1>
+      <div class="pcount">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span id="vendor-count">Loading…</span>
+      </div>
+    </div>
+    <div class="ptop-r">
+      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
+      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
+      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
+    </div>
+  </div>
+
+  <!-- Active filter chips -->
+  <div class="chips" id="chips-row">
+    <div class="chip"><b>Category:</b>&nbsp;<span>Estimating &amp; Takeoff</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><b>Subcategory:</b>&nbsp;<span>Digital Takeoff</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><b>Product:</b>&nbsp;<span>Quantity Takeoff Software</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><b>Master Trade:</b>&nbsp;<span>General Construction &amp; Project Delivery</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><b>Serving:</b>&nbsp;<span>General Contractors</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+  </div>
+
+  <!-- Table -->
+  <div class="tablewrap">
+    <div class="tscroll">
+      <table class="res" id="res-table">
+        <thead>
+          <tr>
+            <th style="width:2.5%" class="ck"><input type="checkbox" id="chk-all" onchange="document.querySelectorAll('.rck').forEach(function(c){c.checked=this.checked;}.bind(this))"></th>
+            <th style="width:3%">#</th>
+            <th style="width:10%">VENDOR <span class="sic" onclick="sortBy('n')">↑↓</span></th>
+            <th style="width:10%">DESCRIPTION</th>
+            <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+            <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+            <th style="width:9%">CATEGORIES <span class="sic">↑↓</span></th>
+            <th style="width:8.5%">DIVISIONS</th>
+            <th style="width:11%">TRADES SERVED <span class="sic">↑↓</span></th>
+            <th style="width:8%">MASTER TRADES</th>
+            <th style="width:10.5%">AVAILABLE ON</th>
+            <th style="width:8%">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody id="res-tbody"><tr><td colspan="12" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pgbar">
+    <div id="pg-count" style="min-width:210px"></div>
+    <div class="pgnums" id="pg-nums"></div>
+    <div class="pgrpp">Results per page:&nbsp;<select id="pg-rpp" onchange="setRpp(+this.value)"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftr">
+    <div class="ftr-logo">
+      <a class="logo" href="index.html">
+        <div class="mark"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/><rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/><rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/></svg></div>
+        <div class="txt"><span class="pre">THE</span><span class="t">CONSTRUCTION</span><span class="pre">TECHNOLOGY</span><span class="pre">DIRECTORY</span></div>
+      </a>
+      <p>© 2024 The Construction Technology<br>Directory, LLC. All rights reserved.</p>
+    </div>
+    <div class="fcol"><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Add / Modify Info</a><a href="#">Marketing Opportunities</a></div>
+    <div class="fcol"><h4>DIRECTORY</h4><a href="#">Categories</a><a href="#">Subcategories</a><a href="#">Products</a><a href="#">Master Trades</a><a href="#">Divisions</a><a href="#">Trades</a></div>
+    <div class="fcol"><h4>RESOURCES</h4><a href="#">Technology Guides</a><a href="#">Find</a><a href="#">Learn</a><a href="#">Research</a><a href="#">Insights</a><a href="#">Insights &amp; Glossary</a></div>
+    <div class="fcol"><h4>SITE INFO</h4><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Site Map</a><a href="#">Disclaimer</a></div>
+    <div class="fcol"><h4>FOLLOW US</h4>
+      <div class="soc">
+        <a class="si-li" href="#" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a class="si-fb" href="#" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a class="si-yt" href="#" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg></a>
+        <a class="si-ig" href="#" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/tools-data.js"></script>
+<script>
+(function(){
+  var CM={'accounting-payroll':'Accounting & Payroll','crm-sales':'CRM & Sales','construction-leads':'Leads, Bids & Estimates','estimating-takeoff':'Estimating & Takeoff','project-management':'Project Management','field-service-dispatch':'Field Service & Dispatch','safety-compliance':'Safety & Compliance','fleet-equipment':'Fleet & Equipment','marketing-reputation':'Marketing & Reputation','ai-automation':'AI & Automation','document-management':'Document Management','procurement-purchasing':'Back Office Operations'};
+  var DIV_MAP={'accounting-payroll':['00 – General','01 – General Req.'],'crm-sales':['00 – General'],'construction-leads':['01 – General Req.'],'estimating-takeoff':['03 – Concrete','04 – Masonry','09 – Metals'],'project-management':['01 – General Req.','00 – General'],'field-service-dispatch':['01 – General Req.'],'safety-compliance':['01 – General Req.'],'fleet-equipment':['01 – General Req.','34 – Transportation'],'marketing-reputation':['00 – General'],'ai-automation':['01 – General Req.'],'document-management':['01 – General Req.'],'procurement-purchasing':['00 – General','01 – General Req.']};
+  var MT_MAP={'accounting-payroll':'General Construction & Project Delivery','crm-sales':'General Construction & Project Delivery','construction-leads':'General Construction & Project Delivery','estimating-takeoff':'General Construction & Project Delivery','project-management':'General Construction & Project Delivery','field-service-dispatch':'General Construction & Project Delivery','safety-compliance':'General Construction & Project Delivery','fleet-equipment':'Mechanical Trades','marketing-reputation':'General Construction & Project Delivery','ai-automation':'All Master Trades','document-management':'General Construction & Project Delivery','procurement-purchasing':'General Construction & Project Delivery'};
+  function avail(sz){var r=['Cloud Based'];if(/Enterprise|Mid/i.test(sz||'')){r.push('Mobile App (iOS/Android)');}else{r.push('Web Access');}if(/Enterprise/i.test(sz||''))r.push('API Available');return r;}
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true;
+
+  function prep(){
+    DATA=(window.TOOLS||[]).slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);});
+    render();
+  }
+
+  function render(){
+    var s=(page-1)*rpp,e=s+rpp,rows=DATA.slice(s,e),total=DATA.length;
+    document.getElementById('vendor-count').textContent=total.toLocaleString()+' Vendors Found';
+    var h='';
+    rows.forEach(function(t,i){
+      var idx=s+i+1;
+      var cats=(t.c||[]),catNames=cats.map(function(c){return CM[c]||c;});
+      var divs=[]; cats.forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
+      divs=divs.filter(function(v,i,a){return a.indexOf(v)===i;}).slice(0,3);
+      var mts=cats.map(function(c){return MT_MAP[c]||'General Construction & Project Delivery';}).filter(function(v,i,a){return a.indexOf(v)===i;});
+      var tr=(t.tr||['General Contractors']);
+      var av=avail(t.sz);
+      var desc=(t.x||'').slice(0,110)+(t.x&&t.x.length>110?'…':'');
+      var prod=(t.sub||catNames[0]||'')+' Software';
+      h+='<tr>';
+      h+='<td class="ck"><input type="checkbox" class="rck"></td>';
+      h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
+      h+='<td><span class="vn">'+esc(t.n)+'</span><a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a></td>';
+      h+='<td style="font-size:9.5px;line-height:1.5;color:#4a5568">'+esc(desc)+'</td>';
+      h+='<td><a class="bl" href="#">'+esc(prod)+'</a>'+(catNames.length>1?'<a class="more" href="#">more...</a>':'')+'</td>';
+      h+='<td><a class="bl" href="#">'+esc(t.sub||catNames[0]||'')+'</a>'+(catNames.length>1?'<a class="more" href="#">more...</a>':'')+'</td>';
+      h+='<td>'+catNames.slice(0,2).map(function(c){return'<a class="bl" style="display:block;margin-bottom:2px" href="#">'+esc(c)+'</a>';}).join('')+(catNames.length>2?'<a class="more" href="#">more...</a>':'')+'</td>';
+      h+='<td>'+divs.slice(0,2).map(function(d){return'<div style="font-size:10px;margin-bottom:2px">'+esc(d)+'</div>';}).join('')+(divs.length>2?'<a class="more" href="#">more...</a>':'')+'</td>';
+      h+='<td>'+tr.slice(0,3).map(function(r){return'<div style="font-size:10px;margin-bottom:2px">'+esc(r)+'</div>';}).join('')+(tr.length>3?'<a class="more" href="#">more...</a>':'')+'</td>';
+      h+='<td>'+mts.slice(0,2).map(function(m){return'<div style="font-size:10px;margin-bottom:2px">'+esc(m)+'</div>';}).join('')+(mts.length>2?'<a class="more" href="#">more...</a>':'')+'</td>';
+      h+='<td>'+av.map(function(a){return'<div class="avl"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+'</td>';
+      h+='<td style="min-width:88px"><a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'">View Profile</a><a class="btn-vw" href="https://'+esc(t.d)+'" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Visit Website</a></td>';
+      h+='</tr>';
+    });
+    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="12" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
+    var tp=Math.ceil(total/rpp),ps=s+1,pe=Math.min(e,total);
+    document.getElementById('pg-count').textContent='Showing '+ps+' to '+pe+' of '+total.toLocaleString()+' vendors';
+    var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';
+    var lo=Math.max(1,page-2),hi=Math.min(tp,page+2);
+    if(lo>1){pn+='<button class="pgbtn" onclick="goPage(1)">1</button>';if(lo>2)pn+='<span style="padding:0 4px">…</span>';}
+    for(var p2=lo;p2<=hi;p2++)pn+='<button class="pgbtn'+(p2===page?' act':'')+'" onclick="goPage('+p2+')">'+p2+'</button>';
+    if(hi<tp){if(hi<tp-1)pn+='<span style="padding:0 4px">…</span>';pn+='<button class="pgbtn" onclick="goPage('+tp+')">'+tp+'</button>';}
+    pn+='<button class="pgbtn" onclick="goPage('+Math.min(tp,page+1)+')">&rsaquo;</button>';
+    document.getElementById('pg-nums').innerHTML=pn;
+  }
+
+  window.goPage=function(p){page=p;render();window.scrollTo({top:80,behavior:'smooth'});};
+  window.setRpp=function(v){rpp=v;page=1;render();};
+  window.doHdrSearch=function(){
+    var q=(document.getElementById('hdr-q').value||'').trim().toLowerCase();
+    DATA=(q?((window.TOOLS||[]).filter(function(t){return(t.n||'').toLowerCase().includes(q)||(t.x||'').toLowerCase().includes(q)||(t.sub||'').toLowerCase().includes(q)||((t.c||[]).join(' ')).includes(q);})):(window.TOOLS||[]).slice()).sort(function(a,b){return(a.rk||999)-(b.rk||999);});
+    page=1;render();
+  };
+  window.sortBy=function(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}DATA.sort(function(a,b){var va=a[col]||'',vb=b[col]||'';return typeof va==='string'?(sortAsc?va.localeCompare(vb):vb.localeCompare(va)):(sortAsc?va-vb:vb-va);});page=1;render();};
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',prep);else prep();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dedicated Search — The Construction Technology Directory</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100vh}
+    body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+    a{text-decoration:none;color:inherit}input,select,button{font-family:inherit}
+    /* HEADER */
+    header{background:var(--navy);position:sticky;top:0;z-index:60;flex-shrink:0}
+    .hdr{display:flex;align-items:center;gap:20px;padding:12px 26px;max-width:1620px;margin:0 auto}
+    .logo{display:flex;align-items:center;gap:11px;flex:none;text-decoration:none}
+    .logo .mark{width:46px;height:46px;background:linear-gradient(150deg,#2a5fd6,#1C57B8);border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}
+    .logo .txt{display:flex;flex-direction:column;color:#fff;gap:1px}
+    .logo .txt .pre{font-size:7.5px;font-weight:800;letter-spacing:.22em;opacity:.85}
+    .logo .txt .t{font-size:13.5px;font-weight:900;color:var(--orange);letter-spacing:.01em;line-height:1.1}
+    .hsearch{flex:1;position:relative;max-width:800px}
+    .hsearch input{width:100%;padding:12px 50px 12px 18px;border-radius:10px;border:none;font-size:14px;color:var(--ink);outline:none}
+    .hsearch .go{position:absolute;right:5px;top:5px;bottom:5px;width:40px;border:none;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .hnav{display:flex;gap:18px;flex:none}
+    .hlink{display:flex;flex-direction:column;align-items:center;gap:4px;color:#fff;font-size:11px;font-weight:600;text-decoration:none}
+    .hlink .ic{width:24px;height:24px;border:1.5px solid rgba(255,255,255,.6);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .hlink:hover{color:var(--orange)}.hlink:hover .ic{border-color:var(--orange)}
+    /* MAIN */
+    main{flex:1;max-width:1620px;margin:0 auto;width:100%;padding:20px 26px 40px}
+    /* BACK + TITLE */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--vlink);font-weight:600;margin-bottom:16px;cursor:pointer}
+    .back-link:hover{text-decoration:underline}
+    .phead{font-size:26px;font-weight:900;letter-spacing:-.01em;color:var(--navy);margin:0 0 8px}
+    .pcount{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:500;margin-bottom:12px}
+    /* CHIPS */
+    .chips-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:20px}
+    .chips-label{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap}
+    .chip{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border:1.5px solid #c8d6ee;border-radius:5px;background:#fff;font-size:12px;white-space:nowrap}
+    .chip span{color:var(--navy);font-weight:600}
+    .chip .cx{cursor:pointer;color:var(--blue);font-size:13px;margin-left:3px;opacity:.7}
+    .chip .cx:hover{opacity:1;color:#c00}
+    .clear-all{font-size:12.5px;font-weight:700;color:var(--blue);cursor:pointer;margin-left:4px;white-space:nowrap}
+    .clear-all:hover{text-decoration:underline}
+    /* ADVANCED FILTER PANEL (top, full-width) */
+    .af-panel{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:22px}
+    .af-hd{display:flex;align-items:center;gap:10px;padding:11px 18px;background:var(--navy);color:#fff;cursor:pointer;user-select:none}
+    .af-hd h3{margin:0;font-size:13px;font-weight:700;letter-spacing:.04em;flex:1}
+    .af-chev{font-size:12px;transition:transform .2s}
+    .af-body{padding:20px 22px;display:grid;grid-template-columns:repeat(5,1fr);gap:20px 28px}
+    .af-grp{}
+    .af-grp h4{margin:0 0 10px;font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--ink)}
+    .af-grp:not(:last-child){border-right:1px solid var(--line);padding-right:28px}
+    .af-item{display:flex;align-items:center;gap:7px;font-size:12.5px;padding:4px 0}
+    .af-item input{accent-color:var(--blue);width:14px;height:14px;flex:none}
+    /* SELECTOR GRID */
+    .selector-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-bottom:28px}
+    .sel-card{border:1px solid var(--line);border-radius:7px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+    .sel-card-hd{background:var(--navy);color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+    .sel-card-hd h3{margin:0;font-size:12px;font-weight:800;letter-spacing:.08em}
+    .sel-card-hd .info-ic{opacity:.7;cursor:help}
+    .sel-search{padding:10px 12px;border-bottom:1px solid var(--line)}
+    .sel-search-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:6px;padding:7px 10px;background:#f8fafc}
+    .sel-search-wrap input{border:none;background:none;font-size:12.5px;outline:none;flex:1;color:var(--ink)}
+    .sel-search-wrap svg{flex:none;color:var(--muted)}
+    .sel-list{flex:1;overflow-y:auto;padding:8px 12px;max-height:320px}
+    .sel-list::-webkit-scrollbar{width:5px}
+    .sel-list::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+    .sel-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f0f4f8;font-size:12.5px}
+    .sel-item:last-child{border-bottom:none}
+    .sel-item input{accent-color:var(--blue);width:14px;height:14px;flex:none}
+    .sel-item label{cursor:pointer;flex:1}
+    .sel-clear{display:block;text-align:center;font-size:12px;font-weight:700;color:var(--blue);padding:10px;border-top:1px solid var(--line);cursor:pointer;background:#fafbfc}
+    .sel-clear:hover{text-decoration:underline}
+    /* CTA */
+    .cta-wrap{display:flex;justify-content:center;margin-bottom:32px}
+    .btn-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 48px;background:var(--orange);color:#fff;border-radius:8px;font-size:15px;font-weight:800;border:none;cursor:pointer;letter-spacing:.02em;transition:background .15s}
+    .btn-cta:hover{background:#d95f0e}
+    /* FOOTER */
+    footer{background:var(--navy);color:#fff;flex-shrink:0}
+    .ftr{display:grid;grid-template-columns:190px repeat(5,1fr);gap:28px;max-width:1620px;margin:0 auto;padding:36px 26px 28px}
+    .ftr-logo{display:flex;flex-direction:column}
+    .ftr-logo .logo{margin-bottom:12px}
+    .ftr-logo p{font-size:11px;opacity:.55;line-height:1.6;margin:8px 0 0}
+    .fcol h4{font-size:10px;font-weight:800;letter-spacing:.18em;opacity:.75;margin:0 0 12px}
+    .fcol a{display:block;font-size:12px;opacity:.65;margin-bottom:8px;line-height:1.35;color:#fff}
+    .fcol a:hover{opacity:1}
+    .soc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .soc a{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;margin:0;transition:transform .12s}
+    .soc a:hover{transform:scale(1.1)}
+    .si-li{background:#0077B5}.si-fb{background:#1877F2}.si-yt{background:#FF0000}
+    .si-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+    @media(max-width:760px){
+      .hdr{flex-wrap:wrap;padding:10px 14px;gap:8px}
+      .hsearch{order:3;width:100%;flex:none}
+      .hnav{gap:10px}.hlink{font-size:9.5px}.hlink .ic{width:20px;height:20px}
+      main{padding:14px 14px 28px}
+      .af-body{grid-template-columns:1fr 1fr;gap:14px}
+      .af-grp:not(:last-child){border-right:none;padding-right:0;border-bottom:1px solid var(--line);padding-bottom:14px}
+      .selector-grid{grid-template-columns:repeat(2,1fr)}
+      .ftr{grid-template-columns:1fr 1fr;gap:18px}
+      .ftr-logo{grid-column:1/-1}
+    }
+    @media(min-width:761px) and (max-width:1199px){
+      .selector-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <a class="logo" href="index.html">
+      <div class="mark"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/><rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/><rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/></svg></div>
+      <div class="txt"><span class="pre">THE</span><span class="t">CONSTRUCTION</span><span class="pre">TECHNOLOGY</span><span class="pre">DIRECTORY</span></div>
+    </a>
+    <div class="hsearch">
+      <input type="text" id="hdr-q" placeholder="Search Company, Product, Category, Trade or Keyword" autocomplete="off">
+      <button class="go" onclick="doSearch()" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <nav class="hnav">
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>About Us</a>
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.12.987.35 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/></svg></span>Contact Us</a>
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Add / Modify Info</a>
+      <a class="hlink" href="index.html"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Back + Heading -->
+  <a class="back-link" href="advanced-search-results.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Advanced Search Results
+  </a>
+  <h1 class="phead">DEDICATED SELECTION PAGE</h1>
+  <div class="pcount">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    <span>1,248 Vendor matches</span>
+  </div>
+
+  <!-- Active Filter Chips -->
+  <div class="chips-row">
+    <span class="chips-label">ACTIVE FILTERS:</span>
+    <div class="chip"><span>United States</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><span>Project Management</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><span>SaaS</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><span>Free Trial</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <div class="chip"><span>2024 Revenue: $10M+</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
+    <span class="clear-all" onclick="document.querySelectorAll('.chip').forEach(function(c){c.remove();})">Clear All</span>
+  </div>
+
+  <!-- Advanced Filters Panel -->
+  <div class="af-panel">
+    <div class="af-hd" onclick="toggleAF(this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      <h3>ADVANCED FILTERS</h3>
+      <span class="af-chev">▲</span>
+    </div>
+    <div class="af-body" id="af-body">
+      <div class="af-grp">
+        <h4>EVALUATION OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+        <div class="af-item"><input type="checkbox" id="ev1"><label for="ev1">Peer Web Research</label></div>
+        <div class="af-item"><input type="checkbox" id="ev2"><label for="ev2">Demos Available</label></div>
+        <div class="af-item"><input type="checkbox" id="ev3"><label for="ev3">Peer Reviews</label></div>
+      </div>
+      <div class="af-grp">
+        <h4>COMPANY TYPE <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+        <div class="af-item"><input type="checkbox" id="ct1"><label for="ct1">Public Company</label></div>
+        <div class="af-item"><input type="checkbox" id="ct2"><label for="ct2">Private Company</label></div>
+      </div>
+      <div class="af-grp">
+        <h4>MARKETS SERVED <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+        <div class="af-item"><input type="checkbox" id="ms1"><label for="ms1">Col/Varsity Sports</label></div>
+        <div class="af-item"><input type="checkbox" id="ms2"><label for="ms2">Commercial</label></div>
+        <div class="af-item"><input type="checkbox" id="ms3"><label for="ms3">Education</label></div>
+        <div class="af-item"><input type="checkbox" id="ms4"><label for="ms4">Energy / Utilities</label></div>
+        <div class="af-item"><input type="checkbox" id="ms5"><label for="ms5">Government / Public Sector</label></div>
+        <div class="af-item"><input type="checkbox" id="ms6"><label for="ms6">Healthcare</label></div>
+        <div class="af-item"><input type="checkbox" id="ms7"><label for="ms7">Nonprofit</label></div>
+        <div class="af-item"><input type="checkbox" id="ms8"><label for="ms8">Manufacturing</label></div>
+        <div class="af-item"><input type="checkbox" id="ms9"><label for="ms9">Residential</label></div>
+        <div class="af-item"><input type="checkbox" id="ms10"><label for="ms10">Retail / Hospitality</label></div>
+      </div>
+      <div class="af-grp">
+        <h4>PURCHASE OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+        <div class="af-item"><input type="checkbox" id="po1"><label for="po1">Subscription</label></div>
+        <div class="af-item"><input type="checkbox" id="po2"><label for="po2">One-Time Purchase</label></div>
+        <div class="af-item"><input type="checkbox" id="po3"><label for="po3">Contract Or Quote</label></div>
+      </div>
+      <div class="af-grp">
+        <h4>AVAILABLE ON <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+        <div class="af-item"><input type="checkbox" id="ao1"><label for="ao1">Web Browser</label></div>
+        <div class="af-item"><input type="checkbox" id="ao2"><label for="ao2">Mobile App</label></div>
+        <div class="af-item"><input type="checkbox" id="ao3"><label for="ao3">Desktop Software</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 Selector Cards -->
+  <div class="selector-grid">
+
+    <!-- Product -->
+    <div class="sel-card">
+      <div class="sel-card-hd">
+        <h3>PRODUCT</h3>
+        <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search products..."></div></div>
+      <div class="sel-list">
+        <div class="sel-item"><input type="checkbox" id="prod1" checked><label for="prod1">Asset Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod2"><label for="prod2">BIM &amp; 3D Modeling</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod3"><label for="prod3">Building Materials</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod4"><label for="prod4">Collaboration Software</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod5"><label for="prod5">Construction Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod6"><label for="prod6">Cost Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod7"><label for="prod7">Document Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod8"><label for="prod8">Field Service</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod9"><label for="prod9">Human Resources</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod10"><label for="prod10">IoT / Sensors</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod11"><label for="prod11">Safety Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod12"><label for="prod12">Scheduling</label></div>
+        <div class="sel-item"><input type="checkbox" id="prod13"><label for="prod13">Supply Chain Management</label></div>
+      </div>
+      <span class="sel-clear" onclick="this.closest('.sel-card').querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false;})">Clear Products</span>
+    </div>
+
+    <!-- Subcategory -->
+    <div class="sel-card">
+      <div class="sel-card-hd">
+        <h3>SUBCATEGORY</h3>
+        <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search subcategories..."></div></div>
+      <div class="sel-list">
+        <div class="sel-item"><input type="checkbox" id="sc1" checked><label for="sc1">Accounting &amp; Payroll</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc2"><label for="sc2">Analytics &amp; Reporting</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc3"><label for="sc3">Asset Tracking</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc4"><label for="sc4">Bidding &amp; Estimating</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc5"><label for="sc5">Budget Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc6"><label for="sc6">Collaboration</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc7"><label for="sc7">Contract Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc8"><label for="sc8">Document Control</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc9"><label for="sc9">Equipment Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc10"><label for="sc10">Inspection Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc11"><label for="sc11">Inventory Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc12"><label for="sc12">Project Scheduling</label></div>
+        <div class="sel-item"><input type="checkbox" id="sc13"><label for="sc13">Time Tracking</label></div>
+      </div>
+      <span class="sel-clear" onclick="this.closest('.sel-card').querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false;})">Clear Subcategories</span>
+    </div>
+
+    <!-- Category -->
+    <div class="sel-card">
+      <div class="sel-card-hd">
+        <h3>CATEGORY</h3>
+        <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search categories..."></div></div>
+      <div class="sel-list">
+        <div class="sel-item"><input type="checkbox" id="cat1" checked><label for="cat1">Construction Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat2"><label for="cat2">Design &amp; Engineering</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat3"><label for="cat3">Finance &amp; Accounting</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat4"><label for="cat4">Health &amp; Safety</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat5"><label for="cat5">Human Capital Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat6"><label for="cat6">Material Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat7"><label for="cat7">Operations Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat8"><label for="cat8">Procurement</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat9"><label for="cat9">Project Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat10"><label for="cat10">Quality Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat11"><label for="cat11">Risk Management</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat12"><label for="cat12">Sales &amp; CRM</label></div>
+        <div class="sel-item"><input type="checkbox" id="cat13"><label for="cat13">Sustainability</label></div>
+      </div>
+      <span class="sel-clear" onclick="this.closest('.sel-card').querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false;})">Clear Categories</span>
+    </div>
+
+    <!-- Trade -->
+    <div class="sel-card">
+      <div class="sel-card-hd">
+        <h3>TRADE</h3>
+        <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search trades..."></div></div>
+      <div class="sel-list">
+        <div class="sel-item"><input type="checkbox" id="tr1" checked><label for="tr1">Demolition</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr2"><label for="tr2">Drywall</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr3"><label for="tr3">Electrical</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr4"><label for="tr4">Excavation</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr5"><label for="tr5">Flooring</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr6"><label for="tr6">HVAC</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr7"><label for="tr7">Landscaping</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr8"><label for="tr8">Masonry</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr9"><label for="tr9">Painting</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr10"><label for="tr10">Plumbing</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr11"><label for="tr11">Roofing</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr12"><label for="tr12">Site Utilities</label></div>
+        <div class="sel-item"><input type="checkbox" id="tr13"><label for="tr13">Structural Steel</label></div>
+      </div>
+      <span class="sel-clear" onclick="this.closest('.sel-card').querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false;})">Clear Trades</span>
+    </div>
+
+    <!-- Division -->
+    <div class="sel-card">
+      <div class="sel-card-hd">
+        <h3>DIVISION</h3>
+        <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search divisions..."></div></div>
+      <div class="sel-list">
+        <div class="sel-item"><input type="checkbox" id="dv1" checked><label for="dv1">01 – General Requirements</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv2"><label for="dv2">02 – Existing Conditions</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv3"><label for="dv3">03 – Concrete</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv4"><label for="dv4">04 – Masonry</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv5"><label for="dv5">05 – Metals</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv6"><label for="dv6">06 – Wood, Plastics, &amp; Composites</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv7"><label for="dv7">07 – Thermal &amp; Moisture Protection</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv8"><label for="dv8">08 – Openings</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv9"><label for="dv9">09 – Finishes</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv10"><label for="dv10">10 – Specialties</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv11"><label for="dv11">11 – Equipment</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv12"><label for="dv12">12 – Furnishings</label></div>
+        <div class="sel-item"><input type="checkbox" id="dv13"><label for="dv13">13 – Special Construction</label></div>
+      </div>
+      <span class="sel-clear" onclick="this.closest('.sel-card').querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false;})">Clear Divisions</span>
+    </div>
+
+    <!-- Master Trade -->
+    <div class="sel-card">
+      <div class="sel-card-hd">
+        <h3>MASTER TRADE</h3>
+        <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search master trades..."></div></div>
+      <div class="sel-list">
+        <div class="sel-item"><input type="checkbox" id="mt1" checked><label for="mt1">Building Envelope Trades</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt2"><label for="mt2">Civil &amp; Sitework</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt3"><label for="mt3">Electrical &amp; Technology Trades</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt4"><label for="mt4">Fire &amp; Life Safety</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt5"><label for="mt5">General Construction &amp; Project Delivery</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt6"><label for="mt6">Interior Finishes</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt7"><label for="mt7">Mechanical Trades</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt8"><label for="mt8">Specialty Building Systems</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt9"><label for="mt9">Structural Trades</label></div>
+        <div class="sel-item"><input type="checkbox" id="mt10"><label for="mt10">Transportation &amp; Infrastructure</label></div>
+      </div>
+      <span class="sel-clear" onclick="this.closest('.sel-card').querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false;})">Clear Master Trades</span>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <button class="btn-cta" onclick="doSearch()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search Vendors
+    </button>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftr">
+    <div class="ftr-logo">
+      <a class="logo" href="index.html">
+        <div class="mark"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/><rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/><rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/></svg></div>
+        <div class="txt"><span class="pre">THE</span><span class="t">CONSTRUCTION</span><span class="pre">TECHNOLOGY</span><span class="pre">DIRECTORY</span></div>
+      </a>
+      <p>© 2024 The Construction Technology<br>Directory, LLC. All rights reserved.</p>
+    </div>
+    <div class="fcol"><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Add / Modify Info</a><a href="#">Marketing Opportunities</a></div>
+    <div class="fcol"><h4>DIRECTORY</h4><a href="#">Categories</a><a href="#">Subcategories</a><a href="#">Products</a><a href="#">Master Trades</a><a href="#">Divisions</a><a href="#">Trades</a></div>
+    <div class="fcol"><h4>RESOURCES</h4><a href="#">Technology Guides</a><a href="#">Find</a><a href="#">Learn</a><a href="#">Research</a><a href="#">Insights</a><a href="#">Insights &amp; Glossary</a></div>
+    <div class="fcol"><h4>SITE INFO</h4><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Site Map</a><a href="#">Disclaimer</a></div>
+    <div class="fcol"><h4>FOLLOW US</h4>
+      <div class="soc">
+        <a class="si-li" href="#" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a class="si-fb" href="#" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a class="si-yt" href="#" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg></a>
+        <a class="si-ig" href="#" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.doSearch=function(){
+  var q=document.getElementById('hdr-q').value.trim();
+  window.location.href='dedicated-results.html'+(q?'?q='+encodeURIComponent(q):'');
+};
+window.toggleAF=function(hd){
+  var body=document.getElementById('af-body');
+  var chev=hd.querySelector('.af-chev');
+  if(body.style.display==='none'){body.style.display='grid';chev.textContent='▲';}
+  else{body.style.display='none';chev.textContent='▼';}
+};
+// Live search within selector cards
+document.querySelectorAll('.sel-search input').forEach(function(inp){
+  inp.addEventListener('input',function(){
+    var q=this.value.toLowerCase();
+    var items=this.closest('.sel-card').querySelectorAll('.sel-item');
+    items.forEach(function(item){
+      var lbl=item.querySelector('label');
+      item.style.display=(lbl&&lbl.textContent.toLowerCase().includes(q))?'':'none';
+    });
+  });
+});
+</script>
+</body>
+</html>

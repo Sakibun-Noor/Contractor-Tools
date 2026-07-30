@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vendor Profile — The Construction Technology Directory</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100vh}
+    body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+    a{text-decoration:none;color:inherit}input,select,button{font-family:inherit}
+    /* HEADER */
+    header{background:var(--navy);position:sticky;top:0;z-index:60;flex-shrink:0}
+    .hdr{display:flex;align-items:center;gap:20px;padding:12px 26px;max-width:1680px;margin:0 auto}
+    .logo{display:flex;align-items:center;gap:11px;flex:none;text-decoration:none}
+    .logo .mark{width:46px;height:46px;background:linear-gradient(150deg,#2a5fd6,#1C57B8);border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}
+    .logo .txt{display:flex;flex-direction:column;color:#fff;gap:1px}
+    .logo .txt .pre{font-size:7.5px;font-weight:800;letter-spacing:.22em;opacity:.85}
+    .logo .txt .t{font-size:13.5px;font-weight:900;color:var(--orange);letter-spacing:.01em;line-height:1.1}
+    .hsearch{flex:1;position:relative;max-width:830px}
+    .hsearch input{width:100%;padding:12px 50px 12px 18px;border-radius:10px;border:none;font-size:14px;color:var(--ink);outline:none}
+    .hsearch .go{position:absolute;right:5px;top:5px;bottom:5px;width:40px;border:none;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .hnav{display:flex;gap:18px;flex:none}
+    .hlink{display:flex;flex-direction:column;align-items:center;gap:4px;color:#fff;font-size:11px;font-weight:600;text-decoration:none}
+    .hlink .ic{width:24px;height:24px;border:1.5px solid rgba(255,255,255,.6);border-radius:50%;display:flex;align-items:center;justify-content:center}
+    .hlink:hover{color:var(--orange)}.hlink:hover .ic{border-color:var(--orange)}
+    /* MAIN */
+    main{flex:1;max-width:1680px;margin:0 auto;width:100%;padding:18px 26px 40px}
+    /* BREADCRUMB ROW */
+    .breadrow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+    .bread{font-size:13px;color:var(--muted)}
+    .bread a{color:var(--vlink)}.bread a:hover{text-decoration:underline}
+    .bread .sep{margin:0 6px;opacity:.5}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-act{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12.5px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+    .btn-act:hover{border-color:var(--navy)}.btn-act svg{color:var(--blue)}
+    /* TOP PROFILE */
+    .vendor-top{display:grid;grid-template-columns:335px minmax(0,1fr);gap:32px;margin-bottom:28px;align-items:start}
+    .vcard{border:1px solid var(--line);border-radius:10px;padding:24px;text-align:center;background:#fff}
+    .vcard-logo{max-width:200px;max-height:70px;object-fit:contain;margin:0 auto 12px;display:block}
+    .vcard-name-big{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:4px;display:none}
+    .vcard-domain{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--vlink);margin-bottom:18px}
+    .vcard-domain:hover{text-decoration:underline}
+    .btn-visit{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;background:var(--blue);color:#fff;border-radius:7px;font-size:14px;font-weight:700;margin-bottom:10px;width:100%;cursor:pointer;text-decoration:none}
+    .btn-visit:hover{background:var(--navy)}
+    .btn-demo{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:1.5px solid var(--line);color:var(--ink);border-radius:7px;font-size:14px;font-weight:600;margin-bottom:10px;width:100%;cursor:pointer;background:#fff;text-decoration:none}
+    .btn-demo:hover{border-color:var(--navy)}
+    .btn-save{display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer;width:100%;padding:8px}
+    .btn-save:hover{text-decoration:underline}
+    /* RIGHT OVERVIEW */
+    .vendor-name{font-size:28px;font-weight:900;color:var(--ink);margin:0 0 6px}
+    .vendor-tagline{font-size:15px;font-weight:600;color:var(--vlink);margin:0 0 14px}
+    .vendor-desc{font-size:14px;line-height:1.65;color:#3a4a6b;margin:0 0 22px;max-width:700px}
+    .facts-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+    .fact{padding:16px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+    .fact:last-child{border-right:none}
+    .fact .fic{color:var(--blue);margin-bottom:4px}
+    .fact .fl{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+    .fact .fv{font-size:14px;font-weight:700;color:var(--ink)}
+    /* 6 INFO CARDS */
+    .vendor-list-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;margin-bottom:24px}
+    .lcard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+    .lcard-hd{padding:10px 14px;border-bottom:1px solid var(--line);font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--ink);text-transform:uppercase}
+    .lcard-body{padding:12px 14px;max-height:200px;overflow-y:auto}
+    .lcard-body::-webkit-scrollbar{width:5px}
+    .lcard-body::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+    .lcard-body ul{list-style:none;margin:0;padding:0}
+    .lcard-body li{font-size:12px;color:var(--ink);padding:4px 0;border-bottom:1px solid #f0f2f6;line-height:1.4}
+    .lcard-body li:last-child{border-bottom:none}
+    /* BOTTOM */
+    .vendor-bottom{display:grid;grid-template-columns:1fr 1.1fr;gap:20px;margin-bottom:8px}
+    .bcard{border:1px solid var(--line);border-radius:10px;padding:24px;background:#fff}
+    .bcard-sec{margin-bottom:20px}
+    .bcard-sec:last-child{margin-bottom:0}
+    .bcard-sec h3{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--ink);text-transform:uppercase;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+    .avail-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink);padding:6px 0}
+    .avail-item svg{color:var(--blue);flex:none}
+    .social-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+    .sicon{display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none}
+    .sicon .s-box{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+    .sicon .s-lbl{font-size:10px;color:var(--muted);font-weight:600}
+    .s-li{background:#0077B5}.s-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}.s-fb{background:#1877F2}.s-yt{background:#FF0000}.s-tt{background:#000}.s-hz{background:#f15a24}.s-pt{background:#E60023}.s-x{background:#000}
+    .ci-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--ink);padding:6px 0;border-bottom:1px solid #f0f2f6}
+    .ci-item:last-child{border-bottom:none}
+    .ci-item svg{color:var(--blue);flex:none;margin-top:1px}
+    .qf-row{display:grid;grid-template-columns:1fr 1fr;gap:0}
+    .qf-item{padding:8px 0;border-bottom:1px solid #f0f2f6}
+    .qf-item:nth-last-child(-n+2){border-bottom:none}
+    .qf-label{font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:2px}
+    .qf-value{font-size:13px;color:var(--ink)}
+    /* FOOTER */
+    footer{background:var(--navy);color:#fff;flex-shrink:0}
+    .ftr{display:grid;grid-template-columns:190px repeat(5,1fr);gap:28px;max-width:1680px;margin:0 auto;padding:36px 26px 28px}
+    .ftr-logo{display:flex;flex-direction:column}
+    .ftr-logo .logo{margin-bottom:12px}
+    .ftr-logo p{font-size:11px;opacity:.55;line-height:1.6;margin:8px 0 0}
+    .fcol h4{font-size:10px;font-weight:800;letter-spacing:.18em;opacity:.75;margin:0 0 12px}
+    .fcol a{display:block;font-size:12px;opacity:.65;margin-bottom:8px;line-height:1.35;color:#fff}
+    .fcol a:hover{opacity:1}
+    .soc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+    .soc a{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;margin:0;transition:transform .12s}
+    .soc a:hover{transform:scale(1.1)}
+    .si-li{background:#0077B5}.si-fb{background:#1877F2}.si-yt{background:#FF0000}
+    .si-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+    @media(max-width:1100px){
+      .vendor-list-grid{grid-template-columns:repeat(3,1fr)}
+      .facts-row{grid-template-columns:repeat(2,1fr)}
+      .fact:nth-child(2){border-right:none}.fact:nth-child(3){border-top:1px solid var(--line)}.fact:nth-child(4){border-top:1px solid var(--line);border-right:none}
+    }
+    @media(max-width:760px){
+      .hdr{flex-wrap:wrap;padding:10px 14px;gap:8px}
+      .hsearch{order:3;width:100%;flex:none}
+      .hnav{gap:10px}.hlink{font-size:9.5px}.hlink .ic{width:20px;height:20px}
+      main{padding:14px 14px 28px}
+      .vendor-top{grid-template-columns:1fr;gap:18px}
+      .vendor-list-grid{grid-template-columns:repeat(2,1fr)}
+      .vendor-bottom{grid-template-columns:1fr}
+      .facts-row{grid-template-columns:repeat(2,1fr)}
+      .vendor-name{font-size:22px}
+      .ftr{grid-template-columns:1fr 1fr;gap:18px}
+      .ftr-logo{grid-column:1/-1}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <a class="logo" href="index.html">
+      <div class="mark"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/><rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/><rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/></svg></div>
+      <div class="txt"><span class="pre">THE</span><span class="t">CONSTRUCTION</span><span class="pre">TECHNOLOGY</span><span class="pre">DIRECTORY</span></div>
+    </a>
+    <div class="hsearch">
+      <input type="text" id="hdr-q" placeholder="Search Company, Product, Category, Trade or Keyword" autocomplete="off" onkeydown="if(event.key==='Enter')doHdrSearch()">
+      <button class="go" onclick="doHdrSearch()" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <nav class="hnav">
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>About Us</a>
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.12.987.35 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/></svg></span>Contact Us</a>
+      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Add / Modify Info</a>
+      <a class="hlink" href="index.html"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <!-- Breadcrumb + actions -->
+  <div class="breadrow">
+    <div class="bread">
+      <a href="index.html">Home</a><span class="sep">›</span>
+      <a href="results.html">Search Results</a><span class="sep">›</span>
+      <span id="bread-name">Vendor</span>
+    </div>
+    <div class="top-actions">
+      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
+      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
+      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
+    </div>
+  </div>
+
+  <!-- Top profile area -->
+  <div class="vendor-top">
+    <!-- Left card -->
+    <div class="vcard">
+      <div id="vcard-logo-wrap">
+        <div id="vcard-logo-text" class="vcard-name-big"></div>
+      </div>
+      <a id="vcard-domain" class="vcard-domain" href="#" target="_blank" rel="noopener">
+        <span id="vcard-domain-text"></span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+      <a id="btn-visit" class="btn-visit" href="#" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        Visit Website
+      </a>
+      <a class="btn-demo" href="#">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Request a Demo
+      </a>
+      <button class="btn-save">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        Save Vendor
+      </button>
+    </div>
+
+    <!-- Right overview -->
+    <div>
+      <h1 class="vendor-name" id="v-name">Loading…</h1>
+      <div class="vendor-tagline" id="v-tagline"></div>
+      <p class="vendor-desc" id="v-desc"></p>
+      <div class="facts-row">
+        <div class="fact">
+          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="fl">Founded</div><div class="fv" id="f-founded">—</div>
+        </div>
+        <div class="fact">
+          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="fl">Headquarters</div><div class="fv" id="f-hq">USA</div>
+        </div>
+        <div class="fact">
+          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <div class="fl">Employees</div><div class="fv" id="f-emp">—</div>
+        </div>
+        <div class="fact">
+          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <div class="fl">Deployment</div><div class="fv" id="f-deploy">Cloud-Based</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 info cards -->
+  <div class="vendor-list-grid" id="info-cards">
+    <div class="lcard"><div class="lcard-hd">Divisions Served</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Trades Served</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Master Categories Served</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Key Products</div><div class="lcard-body"><ul id="lc-products"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Subcategories</div><div class="lcard-body"><ul id="lc-subcats"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Categories</div><div class="lcard-body"><ul id="lc-cats"></ul></div></div>
+  </div>
+
+  <!-- Bottom area -->
+  <div class="vendor-bottom">
+    <!-- Left: Available On + Social -->
+    <div class="bcard">
+      <div class="bcard-sec">
+        <h3>Available On</h3>
+        <div id="avail-list"></div>
+      </div>
+      <div class="bcard-sec">
+        <h3>Social Media</h3>
+        <div class="social-grid">
+          <a class="sicon" href="#" title="LinkedIn"><div class="s-box s-li"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div><span class="s-lbl">LinkedIn</span></a>
+          <a class="sicon" href="#" title="Instagram"><div class="s-box s-ig"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><span class="s-lbl">Instagram</span></a>
+          <a class="sicon" href="#" title="Facebook"><div class="s-box s-fb"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div><span class="s-lbl">Facebook</span></a>
+          <a class="sicon" href="#" title="YouTube"><div class="s-box s-yt"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg></div><span class="s-lbl">YouTube</span></a>
+          <a class="sicon" href="#" title="TikTok"><div class="s-box s-tt"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></div><span class="s-lbl">TikTok</span></a>
+          <a class="sicon" href="#" title="Houzz"><div class="s-box s-hz"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 8v14h8v-6h4v6h8V8z"/></svg></div><span class="s-lbl">Houzz</span></a>
+          <a class="sicon" href="#" title="Pinterest"><div class="s-box s-pt"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0a12 12 0 00-4.37 23.17c-.1-.94-.2-2.39.04-3.41l1.46-6.19s-.37-.74-.37-1.84c0-1.73.99-3.02 2.23-3.02 1.05 0 1.56.79 1.56 1.74 0 1.06-.67 2.64-1.02 4.11-.29 1.23.61 2.23 1.82 2.23 2.18 0 3.86-2.3 3.86-5.62 0-2.94-2.11-4.99-5.13-4.99-3.5 0-5.55 2.62-5.55 5.33 0 1.06.41 2.19.91 2.81a.37.37 0 01.09.35l-.34 1.37c-.05.22-.18.27-.42.16-1.57-.73-2.55-3.03-2.55-4.88 0-3.96 2.88-7.6 8.3-7.6 4.36 0 7.75 3.1 7.75 7.25 0 4.33-2.73 7.81-6.51 7.81-1.27 0-2.47-.66-2.88-1.44l-.78 2.93c-.28 1.09-1.05 2.45-1.57 3.28A12 12 0 1012 0z"/></svg></div><span class="s-lbl">Pinterest</span></a>
+          <a class="sicon" href="#" title="X (Twitter)"><div class="s-box s-x"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div><span class="s-lbl">X</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Contact + Quick Facts -->
+    <div class="bcard">
+      <div class="bcard-sec">
+        <h3>Contact Information</h3>
+        <div class="ci-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="ci-addr">—</span></div>
+        <div class="ci-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.12.987.35 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/></svg><span id="ci-phone">—</span></div>
+        <div class="ci-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span id="ci-email">—</span></div>
+      </div>
+      <div class="bcard-sec">
+        <h3>Quick Facts</h3>
+        <div class="qf-row">
+          <div class="qf-item"><div class="qf-label">Pricing Model</div><div class="qf-value" id="qf-pricing">—</div></div>
+          <div class="qf-item"><div class="qf-label">Free Trial</div><div class="qf-value" id="qf-trial">—</div></div>
+          <div class="qf-item"><div class="qf-label">Typical Customers</div><div class="qf-value" id="qf-customers">—</div></div>
+          <div class="qf-item"><div class="qf-label">Industries</div><div class="qf-value" id="qf-industries">—</div></div>
+          <div class="qf-item" style="grid-column:1/-1"><div class="qf-label">Languages</div><div class="qf-value" id="qf-lang">English</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftr">
+    <div class="ftr-logo">
+      <a class="logo" href="index.html">
+        <div class="mark"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/><rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/><rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/></svg></div>
+        <div class="txt"><span class="pre">THE</span><span class="t">CONSTRUCTION</span><span class="pre">TECHNOLOGY</span><span class="pre">DIRECTORY</span></div>
+      </a>
+      <p>© 2024 The Construction Technology<br>Directory, LLC. All rights reserved.</p>
+    </div>
+    <div class="fcol"><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Add / Modify Info</a><a href="#">Marketing Opportunities</a></div>
+    <div class="fcol"><h4>DIRECTORY</h4><a href="#">Categories</a><a href="#">Subcategories</a><a href="#">Products</a><a href="#">Master Trades</a><a href="#">Divisions</a><a href="#">Trades</a></div>
+    <div class="fcol"><h4>RESOURCES</h4><a href="#">Technology Guides</a><a href="#">Find</a><a href="#">Learn</a><a href="#">Research</a><a href="#">Insights</a><a href="#">Insights &amp; Glossary</a></div>
+    <div class="fcol"><h4>SITE INFO</h4><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Site Map</a><a href="#">Disclaimer</a></div>
+    <div class="fcol"><h4>FOLLOW US</h4>
+      <div class="soc">
+        <a class="si-li" href="#" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a class="si-fb" href="#" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a class="si-yt" href="#" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg></a>
+        <a class="si-ig" href="#" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/tools-data.js"></script>
+<script>
+(function(){
+  var CM={'accounting-payroll':'Accounting & Payroll','crm-sales':'CRM & Sales','construction-leads':'Leads, Bids & Estimates','estimating-takeoff':'Estimating & Takeoff','project-management':'Project Management','field-service-dispatch':'Field Service & Dispatch','safety-compliance':'Safety & Compliance','fleet-equipment':'Fleet & Equipment','marketing-reputation':'Marketing & Reputation','ai-automation':'AI & Automation','document-management':'Document Management','procurement-purchasing':'Back Office Operations'};
+  var DIV_MAP={'accounting-payroll':['00 – General','01 – General Req.'],'crm-sales':['00 – General'],'construction-leads':['01 – General Req.'],'estimating-takeoff':['03 – Concrete','04 – Masonry','05 – Metals','06 – Wood & Plastics','09 – Finishes'],'project-management':['01 – General Req.','03 – Concrete','04 – Masonry','05 – Metals'],'field-service-dispatch':['01 – General Req.','03 – Concrete','04 – Masonry'],'safety-compliance':['01 – General Req.'],'fleet-equipment':['01 – General Req.','34 – Transportation'],'marketing-reputation':['00 – General'],'ai-automation':['01 – General Req.'],'document-management':['01 – General Req.'],'procurement-purchasing':['00 – General','01 – General Req.']};
+  var MT_MAP={'accounting-payroll':'General Construction & Project Delivery','crm-sales':'General Construction & Project Delivery','construction-leads':'General Construction & Project Delivery','estimating-takeoff':'General Construction & Project Delivery','project-management':'General Construction & Project Delivery','field-service-dispatch':'General Construction & Project Delivery','safety-compliance':'General Construction & Project Delivery','fleet-equipment':'Mechanical Trades','marketing-reputation':'General Construction & Project Delivery','ai-automation':'All Master Trades','document-management':'General Construction & Project Delivery','procurement-purchasing':'General Construction & Project Delivery'};
+  var FACTS={procore:{founded:'2002',hq:'Carpinteria, CA, USA',emp:'2,500+',addr:'1000 Brooks St., Carpinteria, CA 93013, USA',phone:'(805) 654-9443',email:'info@procore.com',pricing:'Subscription / SaaS',trial:'Yes',customers:'Small to Enterprise Construction Firms',industries:'Commercial, Industrial, Infrastructure, Residential',lang:'English, Spanish, French, German, Portuguese'},autodesk:{founded:'1982',hq:'San Francisco, CA, USA',emp:'10,000+',addr:'111 McInnis Pkwy, San Rafael, CA 94903',phone:'(415) 507-5000',email:'info@autodesk.com',pricing:'Subscription',trial:'Yes',customers:'Mid to Enterprise Construction Firms',industries:'Commercial, Infrastructure, Industrial',lang:'English, French, German, Spanish, Japanese'}};
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function li(text){return'<li>'+esc(text)+'</li>';}
+  function setEl(id,val){var el=document.getElementById(id);if(el)el.textContent=val||'—';}
+
+  function load(){
+    var params=new URLSearchParams(window.location.search);
+    var slug=params.get('s')||params.get('slug')||'procore';
+    var tools=window.TOOLS||[];
+    var t=tools.find(function(x){return x.s===slug;})||tools[0];
+    if(!t)return;
+
+    // Title
+    document.title=t.n+' — The Construction Technology Directory';
+    setEl('bread-name',t.n);
+
+    // Logo / name
+    var logoWrap=document.getElementById('vcard-logo-wrap');
+    logoWrap.innerHTML='<div style="font-size:22px;font-weight:900;color:var(--ink);padding:16px 0 8px;letter-spacing:-.01em">'+esc(t.n)+'</div>';
+
+    // Domain
+    var domEl=document.getElementById('vcard-domain-text');
+    if(domEl)domEl.textContent=t.d||'';
+    var visitEl=document.getElementById('btn-visit');
+    if(visitEl&&t.d)visitEl.href='https://'+t.d;
+    var domLink=document.getElementById('vcard-domain');
+    if(domLink&&t.d)domLink.href='https://'+t.d;
+
+    // Overview
+    setEl('v-name',t.n);
+    var cats=(t.c||[]),catNames=cats.map(function(c){return CM[c]||c;});
+    document.getElementById('v-tagline').textContent=catNames[0]||'Construction Software';
+    document.getElementById('v-desc').textContent=t.x||'';
+
+    // Facts
+    var f=FACTS[slug]||FACTS[t.s]||{};
+    setEl('f-founded',f.founded||'—');
+    setEl('f-hq',f.hq||'USA');
+    setEl('f-emp',/Enterprise/i.test(t.sz||'')?'500+':'100+');
+    setEl('f-deploy','Cloud-Based');
+
+    // 6 cards
+    var divs=[];cats.forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
+    divs=divs.filter(function(v,i,a){return a.indexOf(v)===i;});
+    var allDivs=['03 – Concrete','04 – Masonry','05 – Metals','06 – Wood & Plastics','07 – Thermal & Moisture Protection','08 – Openings','09 – Finishes','10 – Specialties','11 – Equipment','12 – Furnishings','13 – Special Construction','14 – Conveying Equipment'];
+    var finalDivs=divs.concat(allDivs.filter(function(d){return divs.indexOf(d)===-1;})).slice(0,12);
+    document.getElementById('lc-divs').innerHTML=finalDivs.map(li).join('');
+
+    var trades=(t.tr||['General Contractors','Owners','Construction Managers','Specialty Contractors','Subcontractors','Design-Build Firms','Architects','Engineers','Project Managers','Estimators','Superintendents','Facility Managers']);
+    document.getElementById('lc-trades').innerHTML=trades.map(li).join('');
+
+    var mts=['General Construction & Project Delivery','Preconstruction','Project Management','Field Management','Financial Management','Quality & Safety','Resource Management','Document Management','Collaboration','Analytics & Reporting','Risk Management'];
+    document.getElementById('lc-mcat').innerHTML=mts.map(li).join('');
+
+    var products=[t.n+' '+t.sub,(t.sub||'')+ ' Management',t.n+' Mobile',(catNames[0]||'')+ ' Suite',t.n+' Analytics',t.n+' Field','Project Reporting','Quality & Safety Module'];
+    document.getElementById('lc-products').innerHTML=products.filter(function(p){return p.trim()&&p.trim()!=='undefined';}).map(li).join('');
+
+    var allSubs=['Digital Takeoff','Estimating','Project Management','Field Management','Financial Management','Quality & Safety','Document Management','BIM & Design Coordination','Bid Management','Contract Management','Change Management','RFI Management'];
+    document.getElementById('lc-subcats').innerHTML=allSubs.map(li).join('');
+    document.getElementById('lc-cats').innerHTML=catNames.concat(['Project Management','Field Management','Financial Management','Collaboration','BIM & Design','Safety Management','Document Management','Contract Management','Analytics & Reporting','Preconstruction','Workforce Management','Asset Management']).filter(function(v,i,a){return a.indexOf(v)===i;}).slice(0,12).map(li).join('');
+
+    // Available On
+    var avItems=['Cloud-Based','Mobile App (iOS/Android)','API Available','100+ Integrations'];
+    if(!/Enterprise/i.test(t.sz||''))avItems=['Cloud-Based','Web Access'];
+    var avIcons={
+      'Cloud-Based':'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+      'Mobile App (iOS/Android)':'<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+      'API Available':'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+      '100+ Integrations':'<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>',
+      'Web Access':'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>'
+    };
+    document.getElementById('avail-list').innerHTML=avItems.map(function(a){return'<div class="avail-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+( avIcons[a]||'<circle cx="12" cy="12" r="10"/>')+'</svg>'+esc(a)+'</div>';}).join('');
+
+    // Contact
+    setEl('ci-addr',f.addr||'USA');
+    setEl('ci-phone',f.phone||'Contact via website');
+    setEl('ci-email',f.email||('info@'+t.d));
+
+    // Quick facts
+    setEl('qf-pricing',f.pricing||((/Enterprise/i.test(t.sz||''))?'Enterprise / Custom':'Subscription'));
+    setEl('qf-trial',f.trial||'Yes');
+    setEl('qf-customers',f.customers||(/Enterprise/i.test(t.sz||'')?'Medium to Enterprise Construction Firms':'Small to Medium Construction Firms'));
+    setEl('qf-industries',f.industries||'Commercial, Industrial, Infrastructure');
+    setEl('qf-lang',f.lang||'English');
+  }
+
+  window.doHdrSearch=function(){window.location.href='results.html?q='+(document.getElementById('hdr-q').value||'');};
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else load();
+})();
+</script>
+</body>
+</html>
