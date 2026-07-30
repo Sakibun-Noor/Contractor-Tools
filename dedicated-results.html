@@ -231,7 +231,25 @@
   var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true;
 
   function prep(){
-    DATA=(window.TOOLS||[]).slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);});
+    var sp=new URLSearchParams(window.location.search);
+    var q=(sp.get('q')||'').trim();
+    var cat=(sp.get('cat')||'').trim();
+    var all=(window.TOOLS||[]).slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);});
+    function esc2(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    if(q){
+      var ql=q.toLowerCase();
+      DATA=all.filter(function(t){return(t.n||'').toLowerCase().includes(ql)||(t.x||'').toLowerCase().includes(ql)||(t.sub||'').toLowerCase().includes(ql)||((t.c||[]).join(' ')).includes(ql);});
+      var hq=document.getElementById('hdr-q');if(hq)hq.value=q;
+      var ph=document.querySelector('.phead');if(ph)ph.textContent='Search Results: '+q;
+      var cr=document.getElementById('chips-row');if(cr)cr.innerHTML='<div class="chip"><b>Search:</b>&nbsp;<span>'+esc2(q)+'</span></div>';
+    }else if(cat){
+      DATA=all.filter(function(t){return(t.c||[]).indexOf(cat)>-1;});
+      var catName=CM[cat]||cat;
+      var ph=document.querySelector('.phead');if(ph)ph.textContent=catName+' Vendors';
+      var cr=document.getElementById('chips-row');if(cr)cr.innerHTML='<div class="chip"><b>Category:</b>&nbsp;<span>'+esc2(catName)+'</span></div>';
+    }else{
+      DATA=all;
+    }
     render();
   }
 
