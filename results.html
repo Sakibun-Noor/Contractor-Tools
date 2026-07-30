@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search Results — The Construction Technology Directory</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#00164B; --navy-deep:#001238; --orange:#F26A1B;
+      --blue:#1B5FD0; --vlink:#1C57B8; --green:#158526;
+      --cream:#FBF6EF; --line:#E4E9F0; --muted:#6B7793; --ink:#0F1B2D;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    input,select,button{font-family:inherit}
+    .wrap{max-width:1672px;margin:0 auto;padding:0 26px}
+
+    /* ---------- HEADER ---------- */
+    header{background:var(--navy);position:sticky;top:0;z-index:60}
+    .hdr{display:flex;align-items:center;gap:26px;padding:14px 26px;max-width:1672px;margin:0 auto}
+    .logo{display:flex;align-items:center;gap:12px;flex:none}
+    .logo .mark{width:46px;height:46px;border-radius:9px;background:linear-gradient(155deg,#3f6bd6,#1C57B8);display:flex;align-items:center;justify-content:center;position:relative;flex:none}
+    .logo .mark span{position:absolute;left:9px;right:9px;bottom:8px;height:3px;border-radius:3px;background:var(--orange)}
+    .logo .txt{display:flex;flex-direction:column;line-height:1.02;color:#fff}
+    .logo .txt b{font-size:9px;font-weight:800;letter-spacing:.24em}
+    .logo .txt .t{font-size:15px;font-weight:900;letter-spacing:.01em;color:var(--orange);line-height:1.05}
+    .logo .txt .d{font-size:9.5px;font-weight:800;letter-spacing:.4em}
+    .hsearch{flex:1;position:relative;max-width:820px}
+    .hsearch input{width:100%;padding:14px 52px 14px 20px;border-radius:11px;border:none;font-size:15px;color:var(--ink);outline:none;background:#fff}
+    .hsearch .go{position:absolute;right:6px;top:6px;bottom:6px;width:44px;border:none;border-radius:9px;background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .hnav{display:flex;gap:22px;flex:none}
+    .hnav a{display:flex;flex-direction:column;align-items:center;gap:5px;color:#fff;font-size:12px;font-weight:600}
+    .hnav a .ic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:1.6px solid #fff;border-radius:50%}
+    .hnav a:hover{color:var(--orange)}
+
+    /* ---------- TITLE ROW ---------- */
+    .titlerow{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:24px 0 18px}
+    .titlerow h1{margin:0;font-size:30px;font-weight:900;letter-spacing:-.01em;color:var(--navy)}
+    .titlerow .sub{margin:6px 0 0;font-size:15px;color:var(--muted)}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:9px;padding:12px 18px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);background:#fff;color:var(--navy)}
+    .btn:hover{border-color:var(--navy)}
+    .btn.solid{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .btn.solid:hover{background:var(--navy-deep)}
+
+    /* ---------- TWO-QUESTION PANEL ---------- */
+    .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:26px}
+    .qcard{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 24px rgba(1,21,60,.05);padding:20px 22px}
+    .qhead{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .qhead h2{margin:0;font-size:15px;font-weight:800;letter-spacing:.04em;color:var(--navy);white-space:nowrap}
+    .qhead .qs{flex:1;position:relative}
+    .qhead .qs input{width:100%;padding:11px 14px 11px 40px;border-radius:10px;border:1.5px solid var(--line);background:#F8FAFC;font-size:13.5px;outline:none;color:var(--ink)}
+    .qhead .qs svg{position:absolute;left:13px;top:50%;transform:translateY(-50%)}
+    .qcols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+    .qcol h3{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:12.5px;font-weight:800;letter-spacing:.05em}
+    .qcol.blue h3{color:var(--blue)} .qcol.green h3{color:var(--green)} .qcol.orange h3{color:var(--orange)}
+    .qcol .ico{width:18px;height:18px;flex:none}
+    .qcol ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+    .qcol li a{font-size:13px;color:#33415A;line-height:1.35}
+    .qcol li a:hover{color:var(--blue);text-decoration:underline}
+    .qcol .viewall{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:700;color:var(--blue)}
+    .qcol .viewall:hover{text-decoration:underline}
+
+    /* ---------- TABLE ---------- */
+    .tablewrap{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+    .tscroll{overflow-x:auto}
+    table.res{width:100%;border-collapse:collapse;min-width:1180px;font-size:12.5px}
+    table.res thead th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:13px 12px;white-space:nowrap;letter-spacing:.02em;font-size:12px}
+    table.res thead th .sort{display:inline-flex;margin-left:6px;color:#9fb6e6;cursor:pointer;vertical-align:middle}
+    table.res thead th .sort:hover{color:#fff}
+    table.res tbody td{padding:12px;vertical-align:top;border-bottom:1px solid #EEF1F6;line-height:1.4}
+    table.res tbody tr:nth-child(even){background:var(--cream)}
+    .vend{display:flex;align-items:center;gap:10px;min-width:150px}
+    .vend .fav{width:30px;height:30px;border-radius:7px;background:#F1F5FA no-repeat center/18px;border:1px solid var(--line);flex:none}
+    .vend a{font-weight:800;color:var(--vlink);font-size:13px}
+    .vend a:hover{text-decoration:underline}
+    .more{display:block;color:var(--blue);font-weight:600;font-size:11.5px;margin-top:3px}
+    .more:hover{text-decoration:underline}
+    .cellmuted{color:#33415A}
+    .act{display:flex;align-items:center;gap:12px;white-space:nowrap}
+    .act .ib{color:var(--muted);cursor:pointer}
+    .act .ib:hover{color:var(--navy)}
+    .act .vp{color:var(--vlink);font-weight:700;font-size:12.5px}
+    .act .vp:hover{text-decoration:underline}
+
+    /* ---------- PAGINATION ---------- */
+    .pag{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px 2px 40px}
+    .pag .cnt{font-size:13.5px;color:var(--muted)}
+    .pag .pages{display:flex;align-items:center;gap:7px}
+    .pag .pages button{min-width:38px;height:38px;padding:0 10px;border-radius:9px;border:1px solid var(--line);background:#fff;color:#33415A;font-size:13px;font-weight:700;cursor:pointer}
+    .pag .pages button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .pag .pages button:disabled{opacity:.4;cursor:default}
+    .pag .per{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--muted)}
+    .pag .per select{padding:8px 12px;border-radius:9px;border:1.5px solid var(--line);font-size:13px;font-weight:600;color:var(--navy);cursor:pointer}
+
+    /* ---------- FOOTER (flat image + hotspots) ---------- */
+    .hswrap{position:relative;width:100%;margin:0 auto}
+    .hswrap.desktop-ftr{max-width:1677px}
+    .hswrap.mobile-ftr{max-width:942px}
+    .hswrap img{width:100%;height:auto;display:block}
+    .hs{position:absolute;display:block;border-radius:6px;transition:background .15s}
+    .hs:hover{background:rgba(242,106,27,.16);box-shadow:0 0 0 2px rgba(242,106,27,.7) inset}
+    .view-mobile{display:none}
+
+    @media(max-width:1000px){
+      .qgrid{grid-template-columns:1fr}
+    }
+    @media(max-width:760px){
+      .wrap{padding:0 16px}
+      .hdr{flex-wrap:wrap;gap:12px 8px;padding:12px 16px}
+      .logo .mark{width:40px;height:40px}
+      .hsearch{order:3;flex-basis:100%;max-width:none}
+      .hnav{gap:14px;margin-left:auto;flex:none}
+      .hnav a{font-size:9.5px;font-weight:700;max-width:62px;text-align:center;line-height:1.15}
+      .hnav a .ic{width:22px;height:22px}
+      .titlerow h1{font-size:24px}
+      .view-desktop{display:none}
+      .view-mobile{display:block}
+    }
+    @media(max-width:520px){
+      .qcols{grid-template-columns:1fr}
+      .hnav{gap:10px}
+      .hnav a{font-size:9px;max-width:54px}
+      .actions .btn{flex:1;justify-content:center}
+    }
+  </style>
+</head>
+<body id="top">
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="hdr">
+    <a href="index.html" class="logo" aria-label="Home">
+      <span class="mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"/><path d="M9 21v-5h6v5"/></svg><span></span></span>
+      <span class="txt"><b>THE CONSTRUCTION</b><span class="t">TECHNOLOGY</span><span class="d">DIRECTORY</span></span>
+    </a>
+    <div class="hsearch">
+      <input type="text" id="search-input" placeholder="Search Company, Product, Category, Trade or Keyword" aria-label="Search">
+      <button class="go" id="search-go" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+    </div>
+    <nav class="hnav">
+      <a href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg></span>About Us</a>
+      <a href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>Contact Us</a>
+      <a href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>Add / Modify Info</a>
+      <a href="index.html"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>Home</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ================= TITLE ROW ================= -->
+  <div class="titlerow">
+    <div>
+      <h1>SEARCH RESULTS</h1>
+      <p class="sub"><strong id="count-lead" style="color:var(--navy)">0</strong> companies match your search criteria.</p>
+    </div>
+    <div class="actions">
+      <button class="btn" id="btn-save"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 16.5 5.5 21 7.5 13.5 2 9 9 9"/></svg>Save Search</button>
+      <button class="btn" id="btn-export"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Export Results</button>
+      <button class="btn solid" id="btn-adv"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.5V19l4 2v-8.5L22 3z"/></svg>Advanced Filters</button>
+    </div>
+  </div>
+
+  <!-- ================= TWO-QUESTION PANEL ================= -->
+  <div class="qgrid">
+    <div class="qcard">
+      <div class="qhead">
+        <h2>WHAT DO YOU DO?</h2>
+        <div class="qs"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Start typing…" data-qsearch></div>
+      </div>
+      <div class="qcols">
+        <div class="qcol blue">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20V8l8-5 8 5v12M9 20v-6h6v6"/></svg>MASTER TRADE</h3>
+          <ul><li><a href="#">General Contractors &amp; Project Delivery</a></li><li><a href="#">Industrial Trades</a></li><li><a href="#">Electrical &amp; Technology Trades</a></li><li><a href="#">Civil &amp; Sitework</a></li></ul>
+          <a class="viewall" href="#">View all master trades ›</a>
+        </div>
+        <div class="qcol green">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>DIVISION</h3>
+          <ul><li><a href="#">00 – General</a></li><li><a href="#">01 – General Work of Practice</a></li><li><a href="#">02 – HVAC</a></li><li><a href="#">31 – Drywall</a></li></ul>
+          <a class="viewall" href="#">View all divisions ›</a>
+        </div>
+        <div class="qcol orange">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-4.5 4.5M4 20l5-1 9.5-9.5a2.1 2.1 0 0 0-3-3L5 16l-1 4z"/></svg>TRADE</h3>
+          <ul><li><a href="#">Concrete Contractor</a></li><li><a href="#">HVAC Contractor</a></li><li><a href="#">Electrical Contractor</a></li><li><a href="#">Plumbing Contractor</a></li></ul>
+          <a class="viewall" href="#">View all trades ›</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="qcard">
+      <div class="qhead">
+        <h2>WHAT ARE YOU LOOKING FOR?</h2>
+        <div class="qs"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Start typing…" data-qsearch></div>
+      </div>
+      <div class="qcols">
+        <div class="qcol blue">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>CATEGORY</h3>
+          <ul id="cat-list"></ul>
+          <a class="viewall" href="#" id="cat-viewall">View all categories ›</a>
+        </div>
+        <div class="qcol green">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>SUBCATEGORY</h3>
+          <ul><li><a href="#">Project Scheduling</a></li><li><a href="#">Daily Logs</a></li><li><a href="#">RFIs</a></li><li><a href="#">Project Collection</a></li></ul>
+          <a class="viewall" href="#">View all subcategories ›</a>
+        </div>
+        <div class="qcol orange">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>PRODUCT</h3>
+          <ul><li><a href="#">Procore Project Management</a></li><li><a href="#">Assemble &amp; Build</a></li><li><a href="#">Subcontractor</a></li><li><a href="#">Color/Preparatory Site</a></li></ul>
+          <a class="viewall" href="#">View all products ›</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= RESULTS TABLE ================= -->
+  <div class="tablewrap">
+    <div class="tscroll">
+      <table class="res">
+        <thead><tr id="thead-row"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= PAGINATION ================= -->
+  <div class="pag">
+    <div class="cnt"><strong id="count-tail">0</strong> vendors match your search criteria</div>
+    <div class="pages" id="pages"></div>
+    <div class="per">Results per page:
+      <select id="perpage"><option>10</option><option>25</option><option>50</option></select>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<div class="view-desktop">
+  <div class="hswrap desktop-ftr">
+    <img src="assets/hero/footer-hero-desktop.webp" alt="Footer">
+    <a class="hs" href="index.html#top" aria-label="Home" style="left:2%;top:10%;width:17%;height:48%"></a>
+    <a class="hs" href="#" aria-label="About Us" style="left:25.9%;top:28.7%;width:11.6%;height:8%"></a>
+    <a class="hs" href="#" aria-label="Contact Us" style="left:25.9%;top:40.6%;width:11.6%;height:8%"></a>
+    <a class="hs" href="#" aria-label="Add / Modify Info" style="left:25.9%;top:52.6%;width:11.6%;height:8%"></a>
+    <a class="hs" href="#" aria-label="Marketing Opportunities" style="left:25.9%;top:64.5%;width:14%;height:8.8%"></a>
+    <a class="hs" href="#" aria-label="Categories" style="left:41.7%;top:27.1%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Subcategories" style="left:41.7%;top:37.5%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Products" style="left:41.7%;top:47.8%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Master Trades" style="left:41.7%;top:58.2%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Divisions" style="left:41.7%;top:68.5%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Trades" style="left:41.7%;top:78.9%;width:8.5%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Technology Guides" style="left:56.1%;top:27.1%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Find" style="left:56.1%;top:37.5%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Learn" style="left:56.1%;top:47.8%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Research" style="left:56.1%;top:58.2%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Insights" style="left:56.1%;top:68.5%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="FAQs / Glossary" style="left:56.1%;top:78.9%;width:10%;height:7.6%"></a>
+    <a class="hs" href="#" aria-label="Privacy Policy" style="left:71.9%;top:27.9%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" aria-label="Terms of Use" style="left:71.9%;top:41%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" aria-label="Site Map" style="left:71.9%;top:54.2%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" aria-label="Disclaimer" style="left:71.9%;top:67.3%;width:8.5%;height:8%"></a>
+    <a class="hs" href="#" aria-label="LinkedIn" style="left:85.2%;top:31.1%;width:4.2%;height:19.9%"></a>
+    <a class="hs" href="#" aria-label="Facebook" style="left:89.9%;top:31.1%;width:4.3%;height:19.9%"></a>
+    <a class="hs" href="#" aria-label="YouTube" style="left:85.2%;top:59.8%;width:4.2%;height:19.1%"></a>
+    <a class="hs" href="#" aria-label="Instagram" style="left:89.9%;top:59.8%;width:4.3%;height:19.1%"></a>
+  </div>
+</div>
+<div class="view-mobile">
+  <div class="hswrap mobile-ftr">
+    <img src="assets/hero/footer-hero-mobile.webp" alt="Footer">
+    <a class="hs" href="index.html#top" aria-label="Home" style="left:3.2%;top:10.3%;width:20.2%;height:41%"></a>
+  </div>
+</div>
+
+<script src="assets/tools-data.js"></script>
+<script>
+(function(){
+  var ORDER=['accounting-payroll','crm-sales','construction-leads','estimating-takeoff','project-management','field-service-dispatch','safety-compliance','fleet-equipment','marketing-reputation','ai-automation','document-management','procurement-purchasing'];
+  var CM={'accounting-payroll':'Accounting & Payroll','crm-sales':'CRM & Sales','construction-leads':'Leads, Bids & Estimates','estimating-takeoff':'Estimating & Takeoff','project-management':'Project Management','field-service-dispatch':'Field Service & Dispatch','safety-compliance':'Safety & Compliance','fleet-equipment':'Fleet & Equipment','marketing-reputation':'Marketing & Reputation','ai-automation':'AI & Automation','document-management':'Document Management','procurement-purchasing':'Procurement & Purchasing'};
+  // placeholder taxonomy pools (swap for real Master Trade -> Division -> Trade data later)
+  var MTR=['General Contractors & Project Delivery','Industrial Trades','Electrical & Technology Trades','Civil & Sitework','Mechanical Trades'];
+  var DIV=['00 - General','01 - General Requirements','02 - HVAC','03 - Concrete','31 - Drywall'];
+  var TRD=['Project Managers, Superintendents','Estimators, Project Managers','Field Supervisors, Site Leads','Accountants, Controllers','Designers, Remodelers'];
+  var COLS=[
+    {k:'idx',  label:'#',            sort:false},
+    {k:'n',    label:'VENDORS',      sort:true},
+    {k:'cat',  label:'CATEGORIES',   sort:true},
+    {k:'sub',  label:'SUBCATEGORIES',sort:true},
+    {k:'prod', label:'PRODUCTS',     sort:false},
+    {k:'mtr',  label:'MASTER TRADES',sort:true},
+    {k:'div',  label:'DIVISIONS',    sort:true},
+    {k:'trd',  label:'TRADES',       sort:false},
+    {k:'act',  label:'ACTIONS',      sort:false}
+  ];
+  var DATA=[], state={q:'',cat:'',sort:'rk',dir:1,page:1,per:10};
+
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+
+  function prep(){
+    DATA=(window.TOOLS||[]).map(function(t){
+      var cats=(t.c||[]).map(function(c){return CM[c]||c;});
+      var hd=hash(t.s);
+      return {
+        n:t.n, s:t.s, d:t.d, rk:t.rk||999,
+        cRaw:(t.c||[]),
+        cat:cats[0]||'', catMore:cats.length>1,
+        sub:t.sub||'',
+        prod:t.n+' '+(t.sub||'Platform'),
+        mtr:MTR[hd%MTR.length], div:DIV[(hd>>2)%DIV.length], trd:TRD[(hd>>4)%TRD.length]
+      };
+    });
+  }
+
+  function filtered(){
+    var q=state.q.trim().toLowerCase(), cat=state.cat;
+    var out=DATA.filter(function(r){
+      if(cat && r.cRaw.indexOf(cat)<0) return false;
+      if(q){var hay=(r.n+' '+r.cat+' '+r.sub+' '+r.mtr+' '+r.trd).toLowerCase();if(hay.indexOf(q)<0)return false;}
+      return true;
+    });
+    var k=state.sort, dir=state.dir;
+    out.sort(function(a,b){
+      if(k==='rk') return (a.rk-b.rk)*dir || a.n.localeCompare(b.n);
+      var av=(a[k]||'').toString().toLowerCase(), bv=(b[k]||'').toString().toLowerCase();
+      return av<bv?-1*dir:av>bv?1*dir:0;
+    });
+    return out;
+  }
+
+  function renderHead(){
+    var h='';
+    COLS.forEach(function(c){
+      var arrow=c.sort?'<span class="sort" data-sort="'+c.k+'">'+
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg></span>':'';
+      h+='<th>'+esc(c.label)+arrow+'</th>';
+    });
+    document.getElementById('thead-row').innerHTML=h;
+  }
+
+  function renderCats(){
+    var h='';
+    ORDER.slice(0,4).forEach(function(cs){h+='<li><a href="#" data-cat="'+cs+'">'+esc(CM[cs])+'</a></li>';});
+    document.getElementById('cat-list').innerHTML=h;
+  }
+
+  function moreLink(show){return show?'<a class="more" href="#">more…</a>':'';}
+
+  function render(){
+    var all=filtered(), total=all.length, per=state.per;
+    var pages=Math.max(1,Math.ceil(total/per)), page=Math.min(state.page,pages);
+    state.page=page;
+    var slice=all.slice((page-1)*per,(page-1)*per+per);
+    document.getElementById('count-lead').textContent=total.toLocaleString();
+    document.getElementById('count-tail').textContent=total.toLocaleString();
+
+    var h='';
+    slice.forEach(function(r,i){
+      var idx=(page-1)*per+i+1;
+      var fav="https://icons.duckduckgo.com/ip3/"+r.d+".ico";
+      var url="/tool/"+(r.cRaw[0]||'directory')+"/"+r.s+".html";
+      h+='<tr>'+
+        '<td>'+idx+'</td>'+
+        '<td><div class="vend"><span class="fav" style="background-image:url('+fav+')"></span><a href="'+esc(url)+'">'+esc(r.n)+'</a></div></td>'+
+        '<td class="cellmuted">'+esc(r.cat)+moreLink(r.catMore)+'</td>'+
+        '<td class="cellmuted">'+esc(r.sub)+moreLink(true)+'</td>'+
+        '<td class="cellmuted">'+esc(r.prod)+moreLink(true)+'</td>'+
+        '<td class="cellmuted">'+esc(r.mtr)+moreLink(true)+'</td>'+
+        '<td class="cellmuted">'+esc(r.div)+moreLink(true)+'</td>'+
+        '<td class="cellmuted">'+esc(r.trd)+moreLink(true)+'</td>'+
+        '<td><div class="act">'+
+          '<a class="ib" href="https://'+esc(r.d)+'" target="_blank" rel="noopener" aria-label="Visit website"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></a>'+
+          '<span class="ib" aria-label="Save"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>'+
+          '<a class="vp" href="'+esc(url)+'">View Profile</a>'+
+        '</div></td>'+
+      '</tr>';
+    });
+    if(!slice.length) h='<tr><td colspan="9" style="padding:40px;text-align:center;color:var(--muted)">No vendors match your search.</td></tr>';
+    document.getElementById('tbody').innerHTML=h;
+    renderPages(page,pages);
+  }
+
+  function renderPages(page,pages){
+    var h='<button data-pg="'+(page-1)+'"'+(page<=1?' disabled':'')+'>‹</button>';
+    function pg(n){h+='<button data-pg="'+n+'"'+(n===page?' class="on"':'')+'>'+n+'</button>';}
+    function gap(){h+='<button disabled style="border:none;background:none">…</button>';}
+    if(pages<=7){for(var i=1;i<=pages;i++)pg(i);}
+    else{pg(1);if(page>3)gap();var lo=Math.max(2,page-1),hi=Math.min(pages-1,page+1);for(var j=lo;j<=hi;j++)pg(j);if(page<pages-2)gap();pg(pages);}
+    h+='<button data-pg="'+(page+1)+'"'+(page>=pages?' disabled':'')+'>›</button>';
+    document.getElementById('pages').innerHTML=h;
+  }
+
+  function init(){
+    prep(); renderHead(); renderCats();
+    // preselect category from URL
+    try{var c=new URLSearchParams(location.search).get('category');if(c)state.cat=c;}catch(e){}
+    render();
+    var si=document.getElementById('search-input');
+    si.addEventListener('input',function(){state.q=si.value;state.page=1;render();});
+    document.getElementById('search-go').addEventListener('click',function(){state.q=si.value;state.page=1;render();});
+    document.getElementById('perpage').addEventListener('change',function(e){state.per=+e.target.value;state.page=1;render();});
+    document.getElementById('btn-save').addEventListener('click',function(){
+      try{navigator.clipboard.writeText(location.href);this.innerHTML=this.innerHTML.replace('Save Search','Link Copied ✓');var b=this;setTimeout(function(){b.innerHTML=b.innerHTML.replace('Link Copied ✓','Save Search');},1600);}catch(e){}
+    });
+    document.addEventListener('click',function(e){
+      var el;
+      if((el=e.target.closest('[data-sort]'))){var k=el.dataset.sort;if(state.sort===k)state.dir*=-1;else{state.sort=k;state.dir=1;}render();return;}
+      if((el=e.target.closest('[data-cat]'))){e.preventDefault();state.cat=el.dataset.cat;state.page=1;render();document.querySelector('.tablewrap').scrollIntoView({behavior:'smooth'});return;}
+      if((el=e.target.closest('[data-pg]'))&&!el.disabled){var n=+el.dataset.pg;if(n>=1){state.page=n;render();document.querySelector('.tablewrap').scrollIntoView({behavior:'smooth'});}return;}
+    });
+  }
+  function boot(){if(window.TOOLS&&window.TOOLS.length)init();else setTimeout(boot,40);}
+  boot();
+})();
+</script>
+</body>
+</html>
