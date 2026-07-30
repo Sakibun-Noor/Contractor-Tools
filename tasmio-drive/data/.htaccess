@@ -1,0 +1,9 @@
+# Block all direct web access to token.json / users.json.
+# Works on Apache 2.4 (Require) and 2.2 (Order/Deny).
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

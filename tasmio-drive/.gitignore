@@ -1,0 +1,5 @@
+# This repo is public — never commit real credentials or user data.
+config.php           # holds your Microsoft client secret; copy config.sample.php -> config.php locally
+data/token.json       # OneDrive access + refresh tokens
+data/users.json       # usernames and password hashes
+!data/.htaccess

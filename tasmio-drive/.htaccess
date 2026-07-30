@@ -1,0 +1,14 @@
+# Send folder requests to index.php (nice default) and keep config/libs private.
+DirectoryIndex index.php
+
+<FilesMatch "^(config|config\.local)\.php$">
+  <IfModule mod_authz_core.c>
+    # config.php is executed by PHP, never served as text; this is belt-and-suspenders.
+  </IfModule>
+</FilesMatch>
+
+# Protect the library folder from direct browsing
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^lib/ - [F,L]
+</IfModule>
