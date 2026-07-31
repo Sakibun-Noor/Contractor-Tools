@@ -154,7 +154,7 @@
   <div class="breadrow">
     <div class="bread">
       <a href="index.html">Home</a><span class="sep">›</span>
-      <a href="results.html">Search Results</a><span class="sep">›</span>
+      <a href="dedicated-results.html">Search Results</a><span class="sep">›</span>
       <span id="bread-name">Vendor</span>
     </div>
     <div class="top-actions">
@@ -387,7 +387,7 @@
     setEl('qf-lang',f.lang||'English');
   }
 
-  window.doHdrSearch=function(){window.location.href='results.html?q='+(document.getElementById('hdr-q').value||'');};
+  window.doHdrSearch=function(){window.location.href='dedicated-results.html?q='+(document.getElementById('hdr-q').value||'');};
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else load();
 })();

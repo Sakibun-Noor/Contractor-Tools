@@ -72,6 +72,11 @@
     .pgbtn:hover,.pgbtn.act{background:var(--navy);color:#fff;border-color:var(--navy)}
     .pgrpp{display:flex;align-items:center;gap:8px}
     .pgrpp select{border:1.5px solid var(--line);border-radius:5px;padding:6px 10px;font-size:12.5px;background:#fff;cursor:pointer;outline:none;color:var(--ink)}
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--vlink);font-weight:600;margin-bottom:14px;text-decoration:none}
+    .back-link:hover{text-decoration:underline}
+    .btn-adv{background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important}
+    .btn-adv:hover{background:#00235f!important}
+    .btn-adv svg{color:#fff!important}
     /* FOOTER */
     footer{background:var(--navy);color:#fff;flex-shrink:0}
     .ftr{display:grid;grid-template-columns:190px repeat(5,1fr);gap:28px;max-width:1620px;margin:0 auto;padding:36px 26px 28px}
@@ -138,6 +143,11 @@
 
 <!-- MAIN -->
 <main>
+  <a class="back-link" id="page-back" href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <span id="back-label">Back to Home</span>
+  </a>
+  <script>(function(){var sp=new URLSearchParams(window.location.search);if(sp.get('ref')==='selection'){var l=document.getElementById('page-back');var t=document.getElementById('back-label');if(l)l.href='dedicated-search.html';if(t)t.textContent='Back to Dedicated Selection';}})();</script>
   <div class="ptop">
     <div class="ptop-l">
       <h1 class="phead">DEDICATED SEARCH RESULTS PAGE</h1>
@@ -150,6 +160,7 @@
       <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
       <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
       <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
+      <a class="btn-act btn-adv" href="advanced-search-results.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Advanced Search</a>
     </div>
   </div>
 

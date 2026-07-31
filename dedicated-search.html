@@ -390,7 +390,7 @@
 <script>
 window.doSearch=function(){
   var q=document.getElementById('hdr-q').value.trim();
-  window.location.href='dedicated-results.html'+(q?'?q='+encodeURIComponent(q):'');
+  window.location.href='dedicated-results.html?ref=selection'+(q?'&q='+encodeURIComponent(q):'');
 };
 window.toggleAF=function(hd){
   var body=document.getElementById('af-body');
