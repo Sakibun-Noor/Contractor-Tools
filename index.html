@@ -8,280 +8,244 @@
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --navy: #00154d;
-      --navy2: #00164B;
-      --orange: #ff4b00;
-      --orange2: #F26A1B;
-      --blue: #1B5FD0;
-      --green: #158526;
-      --ink: #0F1B2D;
-      --pale: #E6EFF8;
-      --line: #BDD7EF;
+      --navy: #001746;
+      --navy-deep: #00143f;
+      --blue: #075cff;
+      --orange: #ff5a00;
+      --green: #3b8e12;
+      --yellow: #ffbf00;
+      --pale-blue: #edf8ff;
+      --line-blue: #bcd8ef;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { width: 100%; height: 100%; }
-    body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: #fff; -webkit-font-smoothing: antialiased; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body, #root { width: 100%; height: 100%; margin: 0; }
+    body {
+      overflow: hidden;
+      background: var(--navy);
+      font-family: "Roboto Condensed", "Arial Narrow", Arial, sans-serif;
+      color: #001746;
+      -webkit-font-smoothing: antialiased;
+    }
     a { text-decoration: none; color: inherit; }
     img { display: block; max-width: 100%; }
     button, input { font-family: inherit; }
-    h1, h2, h3, p, ul { margin-top: 0; }
 
-    /* ══════════════════════════════════════════
-       SINGLE-SCREEN GRID (desktop ≥1200px)
-    ══════════════════════════════════════════ */
+    /* ══════════ TOP-LEVEL VIEWPORT GRID ══════════ */
     .homepage {
       width: 100%;
-      height: 100svh;
+      height: 100dvh;
       display: grid;
-      grid-template-rows: 10% 39.2% 24.4% 10% 16.4%;
+      grid-template-rows: 102fr 670fr 169fr;
       overflow: hidden;
     }
-    .homepage > * { min-width: 0; min-height: 0; }
+    .homepage > * { min-width: 0; min-height: 0; overflow: hidden; }
 
-    /* ══════════════════════════════════════════
-       HEADER
-    ══════════════════════════════════════════ */
+    /* ══════════ HEADER ══════════ */
     .site-header {
-      overflow: hidden;
-      background: var(--navy);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(15, 62, 119, .24), transparent 38%),
+        linear-gradient(90deg, #00143f 0%, #001b55 50%, #00143f 100%);
       color: #fff;
-      border-bottom: 1px solid rgba(255,255,255,.65);
+      border-bottom: 1px solid rgba(255, 255, 255, .72);
     }
     .site-header__inner {
-      height: 100%;
+      width: 100%; height: 100%;
       display: grid;
-      grid-template-columns: 250px minmax(460px, 1fr) auto;
+      grid-template-columns: minmax(250px, 20%) minmax(480px, 1fr) minmax(440px, 31%);
       align-items: center;
-      gap: 40px;
-      max-width: 1680px;
-      margin: 0 auto;
-      padding: 0 40px;
+      gap: clamp(22px, 3vw, 55px);
+      padding: 0 clamp(42px, 5.7vw, 96px);
     }
-    .logo-link { display: flex; align-items: center; gap: 12px; flex: none; }
-    .logo-mark {
-      width: 46px; height: 46px;
-      background: linear-gradient(145deg,#2558c4,#1B5FD0);
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      flex: none;
-    }
-    .logo-txt { display: flex; flex-direction: column; gap: 1px; color: #fff; }
-    .logo-pre { font-size: 8px; font-weight: 800; letter-spacing: .22em; opacity: .82; }
-    .logo-brand { font-size: 15px; font-weight: 900; color: var(--orange2); letter-spacing: .02em; line-height: 1.1; }
+    .brand { display: flex; align-items: center; height: 100%; }
+    .brand img { display: block; width: clamp(205px, 14vw, 242px); max-height: 86%; object-fit: contain; }
 
-    /* Search */
-    .header-search { display: flex; position: relative; width: 100%; max-width: 720px; }
-    .header-search input {
-      width: 100%; height: 50px;
-      padding: 0 56px 0 22px;
-      border-radius: 7px; border: none;
-      font-size: 14.5px; color: var(--ink);
-      outline: none; background: #fff;
+    .global-search {
+      height: clamp(48px, 5.5vh, 58px);
+      display: grid; grid-template-columns: 1fr 64px;
+      overflow: hidden; background: #fff; border-radius: 7px;
     }
-    .header-search input::placeholder { color: #94A3B8; }
-    .header-search button {
-      position: absolute; right: 6px; top: 6px; bottom: 6px;
-      width: 42px; border: none; border-radius: 6px;
-      background: var(--navy); color: #fff; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background .15s;
+    .global-search input {
+      min-width: 0; border: 0; outline: 0; padding: 0 24px;
+      color: #344866; font: inherit; font-size: clamp(15px, 1.05vw, 19px);
     }
-    .header-search button:hover { background: #00235f; }
+    .global-search input::placeholder { color: #7c8ba6; }
+    .global-search button {
+      border: 0; background: #fff; color: #001746;
+      display: grid; place-items: center; cursor: pointer;
+    }
 
-    /* Nav */
-    .header-nav { display: flex; align-items: center; gap: 6px; flex: none; }
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      color: #fff; font-size: 11.5px; font-weight: 600; text-align: center;
-      min-width: 72px; padding: 6px 4px; cursor: pointer;
+    .header-nav {
+      height: 100%;
+      display: grid; grid-template-columns: repeat(4, minmax(72px, 1fr));
+      align-items: center;
+    }
+    .header-nav a {
+      height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px; color: #fff; text-decoration: none;
+      font-size: clamp(12px, .9vw, 16px); white-space: nowrap;
       transition: color .15s;
     }
-    .nav-icon {
-      width: 30px; height: 30px;
-      border: 1.5px solid rgba(255,255,255,.6);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color .15s;
-    }
-    .nav-item:hover { color: var(--orange2); }
-    .nav-item:hover .nav-icon { border-color: var(--orange2); }
-    .nav-item:focus-visible { outline: 2px solid var(--orange2); outline-offset: 2px; border-radius: 4px; }
+    .header-nav a svg { width: clamp(22px, 1.7vw, 28px); height: clamp(22px, 1.7vw, 28px); }
+    .header-nav a:hover { color: #ffb066; }
 
-    /* Mobile hamburger */
-    .menu-btn {
-      display: none; align-items: center; justify-content: center;
-      width: 40px; height: 40px; background: none;
-      border: 1.5px solid rgba(255,255,255,.5); border-radius: 8px;
-      cursor: pointer; color: #fff; flex: none;
-    }
+    /* mobile hamburger — hidden on desktop */
+    .menu-btn { display: none; }
 
-    /* ══════════════════════════════════════════
-       HERO
-    ══════════════════════════════════════════ */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
+    /* ══════════ MAIN CONTENT ══════════ */
+    .main-content {
+      display: grid;
+      grid-template-rows: 345fr 234fr 91fr;
+      min-height: 0; overflow: hidden;
     }
-    .hero__background {
-      position: absolute; inset: 0;
+    .main-content > section { min-height: 0; min-width: 0; overflow: hidden; }
+
+    /* ── HERO (3 layers) ── */
+    .hero { position: relative; isolation: isolate; background: #cfe9fa; }
+    .hero__construction {
+      position: absolute; inset: 0; z-index: 1;
       width: 100%; height: 100%;
-      object-fit: cover; object-position: center center;
-      border: 0; border-radius: 0;
+      object-fit: cover; object-position: center 50%;
+      border: 0; border-radius: 0; user-select: none; pointer-events: none;
+    }
+    /* subtle blue scrim behind the AI so the screen-blended graphic pops
+       (matches the cooler/darker right-side tech zone in the reference) */
+    .hero__ai-scrim {
+      position: absolute; z-index: 2; top: 0; right: 0; bottom: 0;
+      width: 44%;
+      background: linear-gradient(to right, rgba(1,15,48,0) 0%, rgba(1,17,54,.42) 45%, rgba(1,20,60,.62) 100%);
+      pointer-events: none;
+    }
+    .hero__ai {
+      position: absolute; z-index: 3; top: 0; right: 0;
+      width: 42%; height: 100%;
+      object-fit: contain; object-position: right center;
+      mix-blend-mode: screen; opacity: 1;
+      border: 0; border-radius: 0; user-select: none; pointer-events: none;
     }
     .hero__title {
-      position: absolute; z-index: 2;
-      top: 49%; left: 53%;
-      width: min(52vw, 780px);
+      position: absolute; z-index: 4;
+      left: 52.5%; top: 34%;
       transform: translate(-50%, -50%);
-      text-align: center;
-      color: #03164d;
-      font-family: 'Barlow Condensed', 'Roboto Condensed', 'Arial Narrow', sans-serif;
+      width: clamp(460px, 31%, 560px); height: auto;
+      object-fit: contain; user-select: none; pointer-events: none;
     }
-    .hero__the {
-      display: block;
-      font-size: clamp(20px, 2.1vw, 34px);
-      line-height: .9; font-weight: 700;
-      letter-spacing: .04em;
-    }
-    .hero__heading { margin: 0; line-height: .84; font-weight: 800; letter-spacing: -.02em; }
-    .hero__construction, .hero__technology { display: block; white-space: nowrap; }
-    .hero__construction { font-size: clamp(48px, 5.1vw, 86px); color: #03164d; }
-    .hero__technology { font-size: clamp(50px, 5.3vw, 89px); color: var(--orange); }
-    .hero__directory {
-      display: grid; grid-template-columns: 1fr auto 1fr;
-      align-items: center; gap: 18px;
-      width: 84%; margin: 6px auto 0;
-    }
-    .hero__directory strong {
-      font-size: clamp(22px, 2.3vw, 38px);
-      line-height: 1; letter-spacing: .32em; font-weight: 700;
-    }
-    .hero__line { height: 4px; background: #03164d; }
-    .hero__tagline {
-      margin: 10px 0 0;
-      font-size: clamp(12px, 1.2vw, 19px);
-      line-height: 1; font-weight: 700; white-space: nowrap;
-      letter-spacing: .02em;
-      display: flex; gap: 8px; justify-content: center;
-    }
-    .hero__tagline strong { color: var(--orange); font-weight: 800; }
 
-    /* ══════════════════════════════════════════
-       WORKFLOW CATEGORY SECTION
-    ══════════════════════════════════════════ */
-    .workflow-section {
-      overflow: hidden;
-      background: linear-gradient(180deg, #f5fbff 0%, #eaf6ff 100%);
-      display: flex; flex-direction: column;
+    /* ── WORKFLOW ── */
+    .workflow {
+      display: grid; grid-template-rows: 38fr 196fr;
+      min-height: 0; overflow: hidden;
+      background: linear-gradient(180deg, #f2fbff 0%, #e9f6ff 100%);
     }
-    .workflow-heading-wrap {
-      display: flex; align-items: center; justify-content: center;
-      gap: 16px; padding: 12px 20px 8px;
-      flex: none;
+    .workflow__heading {
+      min-height: 0; margin: 0;
+      display: flex; align-items: center; justify-content: center; gap: 22px;
+      color: #001746; font-size: clamp(17px, 1.35vw, 23px);
+      line-height: 1; font-weight: 800; white-space: nowrap;
+      text-transform: uppercase; letter-spacing: .01em;
     }
-    .wf-arrow { flex: none; width: 34px; height: 24px; color: var(--orange2); }
-    .workflow-heading {
-      font-size: 21px; font-weight: 800; color: var(--navy2);
-      text-align: center; letter-spacing: .015em;
-      text-transform: uppercase; line-height: 1.2;
-    }
-    .workflow-grid {
-      flex: 1;
-      width: min(1515px, calc(100% - 100px));
-      margin: 0 auto;
+    .wf-arrow { flex: none; width: clamp(28px, 2.2vw, 38px); height: clamp(20px, 1.6vw, 27px); color: var(--orange); }
+    .workflow__grid {
+      width: calc(100% - clamp(100px, 12.7vw, 212px));
+      height: 100%; margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
       grid-template-rows: repeat(2, minmax(0, 1fr));
+      min-height: 0;
     }
-    .workflow-item {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 8px; padding: 8px 10px;
-      cursor: pointer;
+    .workflow-card {
+      min-width: 0; min-height: 0;
+      padding: 4px 8px 5px;
+      display: grid; grid-template-rows: minmax(0, 1fr) auto;
+      place-items: center; gap: 2px;
+      color: #001746; text-decoration: none; overflow: visible;
+      border-right: 1px solid var(--line-blue);
       transition: background .15s;
-      background: transparent;
     }
-    .workflow-item:hover { background: rgba(27,95,208,.06); }
-    .workflow-item:hover .workflow-icon { transform: translateY(-3px); }
-    .workflow-item:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
-    .workflow-icon { width: 62px; height: 62px; object-fit: contain; transition: transform .2s ease; }
-    .workflow-label {
-      font-size: 12.5px; font-weight: 800; color: var(--navy2);
-      text-transform: uppercase; text-align: center;
-      letter-spacing: .03em; line-height: 1.2;
+    .workflow-card:hover { background: rgba(7, 92, 255, .06); }
+    .workflow-card:hover img { transform: translateY(-3px); }
+    .workflow-card:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+    .workflow-card:nth-child(6n) { border-right: 0; }
+    .workflow-card:nth-child(-n + 6) { border-bottom: 1px solid var(--line-blue); }
+    .workflow-card img {
+      display: block; width: auto; height: clamp(50px, 6.3vh, 72px);
+      max-width: 92px; object-fit: contain; transition: transform .2s ease;
     }
-    /* Dividers: 6 cols × 2 rows */
-    .workflow-item { border-right: 1px solid var(--line); }
-    .workflow-item:nth-child(6n) { border-right: none; }
-    .workflow-item:nth-child(-n+6) { border-bottom: 1px solid var(--line); }
+    .workflow-card span {
+      margin: 0; font-size: clamp(11px, .82vw, 14px);
+      line-height: 1; font-weight: 800; text-align: center; white-space: nowrap;
+    }
 
-    /* ══════════════════════════════════════════
-       DISCOVERY STRIP
-    ══════════════════════════════════════════ */
-    .discovery-strip { overflow: hidden; background: var(--navy); }
-    .discovery-inner {
-      width: min(1450px, calc(100% - 120px));
+    /* ── DISCOVERY ── */
+    .discovery {
+      min-height: 0; overflow: hidden;
+      background: linear-gradient(90deg, #001746, #001b55, #001746);
+      color: #fff;
+    }
+    .discovery__grid {
+      width: calc(100% - clamp(120px, 15vw, 250px));
       height: 100%; margin: 0 auto;
-      display: grid; grid-template-columns: repeat(4, 1fr);
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
     }
-    .discovery-block {
-      display: flex; align-items: center; gap: 16px;
-      padding: 0 24px;
-      border-right: 1px solid rgba(255,255,255,.13);
-      transition: background .15s;
+    .discovery-card {
+      min-width: 0;
+      display: grid; grid-template-columns: auto 1fr; align-items: center;
+      gap: 16px; padding: 8px 28px;
+      border-right: 1px solid rgba(255,255,255,.62);
+      text-decoration: none;
     }
-    .discovery-block:last-child { border-right: none; }
-    .discovery-block:hover { background: rgba(255,255,255,.05); }
-    .discovery-block:focus-visible { outline: 2px solid var(--orange2); outline-offset: -2px; }
-    .disc-icon { flex: none; width: 52px; height: 52px; }
-    .disc-text { display: flex; flex-direction: column; gap: 3px; }
-    .disc-title { font-size: 19px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
-    .disc-desc { font-size: 12.5px; color: rgba(255,255,255,.72); line-height: 1.35; }
-    .disc-find .disc-title  { color: #5B9BDE; }
-    .disc-learn .disc-title { color: var(--orange2); }
-    .disc-research .disc-title { color: #52C46A; }
-    .disc-insights .disc-title { color: #F5C842; }
+    .discovery-card:last-child { border-right: 0; }
+    .discovery-card:hover { background: rgba(255,255,255,.05); }
+    .discovery-card:focus-visible { outline: 2px solid var(--orange); outline-offset: -2px; }
+    .disc-icon { flex: none; width: clamp(40px, 3.4vw, 56px); height: clamp(40px, 3.4vw, 56px); }
+    .disc-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .disc-title { font-size: clamp(16px, 1.25vw, 21px); font-weight: 800; letter-spacing: .06em; line-height: 1; }
+    .disc-desc { font-size: clamp(11px, .82vw, 13.5px); color: rgba(255,255,255,.75); line-height: 1.28; }
+    .disc-find .disc-title { color: #4f9bff; }
+    .disc-learn .disc-title { color: var(--orange); }
+    .disc-research .disc-title { color: #59c23a; }
+    .disc-insights .disc-title { color: var(--yellow); }
 
-    /* ══════════════════════════════════════════
-       FOOTER
-    ══════════════════════════════════════════ */
+    /* ══════════ FOOTER ══════════ */
     .site-footer {
-      overflow: hidden;
-      background: var(--navy); color: #fff;
-      border-top: 1px solid rgba(255,255,255,.65);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(15, 62, 119, .22), transparent 42%),
+        linear-gradient(90deg, #00143f 0%, #001b55 50%, #00143f 100%);
+      color: #fff;
+      border-top: 1px solid rgba(255,255,255,.7);
     }
     .site-footer__inner {
-      height: 100%;
+      width: 100%; height: 100%;
       display: grid;
-      grid-template-columns: 250px 1fr 1fr 1.2fr .85fr .85fr;
-      max-width: 1680px; margin: 0 auto;
-      padding: 16px 46px 14px;
+      grid-template-columns: 1.35fr 1.1fr 1.15fr 1.2fr .95fr .95fr;
+      padding: 14px clamp(55px, 5.5vw, 92px) 12px;
     }
-    .fcol { padding: 0 20px; }
-    .fcol:first-child { padding-left: 0; }
-    .fcol:last-child { padding-right: 0; }
-    .fcol:not(:first-child) { border-left: 1px solid rgba(255,255,255,.1); }
-    .fcol-logo { display: flex; flex-direction: column; gap: 10px; }
-    .fcol-logo p { font-size: 10.5px; color: rgba(255,255,255,.45); line-height: 1.55; margin-top: 2px; }
-    .fcol-heading {
-      display: inline-block; font-size: 12px; font-weight: 800; color: #fff;
-      letter-spacing: .12em; text-transform: uppercase;
-      margin-bottom: 10px; padding-bottom: 5px;
-      border-bottom: 2px solid var(--orange2);
+    .footer-column { padding: 0 clamp(12px, 1.2vw, 22px); min-width: 0; }
+    .footer-column:first-child { padding-left: 0; }
+    .footer-column:not(:first-child) { border-left: 1px solid rgba(255,255,255,.16); }
+    .footer-brand img { width: clamp(180px, 13vw, 220px); height: auto; margin-bottom: 8px; }
+    .footer-column p { margin: 0; color: rgba(255,255,255,.62); font-size: clamp(11px, .83vw, 13px); line-height: 1.4; }
+    .footer-column h2 {
+      margin: 0 0 9px; font-size: clamp(13px, 1vw, 16px); line-height: 1;
+      font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+      padding-bottom: 6px; position: relative;
     }
-    .fcol a {
-      display: block; font-size: 11.5px; color: rgba(255,255,255,.62);
-      margin-bottom: 5px; line-height: 1.3; transition: color .12s;
+    .footer-column h2::after {
+      content: ""; position: absolute; left: 0; bottom: 0;
+      width: 30px; height: 2px; background: var(--orange);
     }
-    .fcol a:hover { color: #fff; }
-    .soc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+    .footer-column a {
+      display: block; margin: 0 0 5px; color: rgba(255,255,255,.72);
+      font-size: clamp(11px, .83vw, 14px); line-height: 1.33; transition: color .12s;
+    }
+    .footer-column a:hover { color: #fff; }
+    .soc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; max-width: 108px; }
     .soc-btn {
-      width: 40px; height: 40px; border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
+      width: clamp(36px, 2.7vw, 44px); height: clamp(36px, 2.7vw, 44px);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
       transition: transform .12s, opacity .12s;
     }
     .soc-btn:hover { transform: scale(1.1); opacity: .9; }
@@ -291,113 +255,73 @@
     .soc-ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
 
     /* ══════════════════════════════════════════
-       RESPONSIVE — PORTRAIT 760–1199px (scroll allowed)
+       RESPONSIVE — TABLET / PHONE (< 900px): scroll allowed
     ══════════════════════════════════════════ */
-    @media (max-width: 1199px) {
+    @media (max-width: 899px) {
       html, body { height: auto; }
+      body { overflow: auto; }
       .homepage { height: auto; display: block; overflow: visible; }
-    }
-    @media (min-width: 760px) and (max-width: 1199px) {
-      .site-header { height: 118px; }
-      .site-header__inner { grid-template-columns: 200px minmax(280px, 1fr) auto; gap: 24px; padding: 0 26px; }
-      .header-search input { height: 50px; font-size: 13.5px; }
-      .nav-item { font-size: 10.5px; min-width: 58px; }
-      .nav-icon { width: 26px; height: 26px; }
+      .main-content { display: block; }
 
-      .hero { height: 460px; }
-      .hero__title { top: 48%; left: 52%; width: min(70vw, 560px); }
-
-      .workflow-heading { font-size: 19px; }
-      .workflow-grid {
-        width: calc(100% - 40px);
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        grid-template-rows: repeat(3, minmax(0, 1fr));
-      }
-      .workflow-item { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 150px; }
-      .workflow-item:nth-child(6n) { border-right: 1px solid var(--line); }
-      .workflow-item:nth-child(-n+6) { border-bottom: 1px solid var(--line); }
-      .workflow-item:nth-child(4n) { border-right: none; }
-      .workflow-item:nth-last-child(-n+4) { border-bottom: none; }
-      .workflow-icon { width: 80px; height: 80px; }
-      .workflow-label { font-size: 14px; }
-
-      .discovery-strip { height: 130px; }
-      .discovery-inner { width: calc(100% - 40px); }
-      .discovery-block { padding: 0 16px; gap: 12px; }
-      .disc-icon { width: 46px; height: 46px; }
-      .disc-title { font-size: 16px; }
-      .disc-desc { font-size: 12px; }
-
-      .site-footer { height: auto; }
-      .site-footer__inner {
-        grid-template-columns: 180px 1fr 1fr 1.1fr;
-        gap: 8px 0; padding: 26px 28px;
-      }
-      .fcol:nth-child(5), .fcol:nth-child(6) { border-left: none; padding-top: 16px; }
-    }
-
-    /* ══════════════════════════════════════════
-       RESPONSIVE — PHONE < 760px (scroll allowed)
-    ══════════════════════════════════════════ */
-    @media (max-width: 759px) {
-      .site-header { height: auto; }
       .site-header__inner {
         grid-template-columns: 1fr auto;
-        gap: 10px; padding: 12px 14px;
+        gap: 12px; padding: 12px 16px; min-height: 0;
       }
-      .header-search { grid-column: 1 / -1; order: 3; max-width: 100%; }
+      .brand img { width: 180px; }
+      .global-search { grid-column: 1 / -1; order: 3; height: 48px; }
       .header-nav { display: none; }
       .header-nav.open {
-        display: flex; flex-wrap: wrap; justify-content: center;
-        grid-column: 1 / -1; order: 4; padding: 10px 0 4px; gap: 4px;
+        display: grid; grid-template-columns: repeat(4, 1fr);
+        grid-column: 1 / -1; order: 4; padding: 8px 0 2px;
       }
-      .menu-btn { display: flex; }
+      .header-nav.open a { flex-direction: row; gap: 6px; font-size: 12px; }
+      .menu-btn {
+        display: flex; align-items: center; justify-content: center;
+        width: 42px; height: 42px; background: none;
+        border: 1.5px solid rgba(255,255,255,.5); border-radius: 8px;
+        cursor: pointer; color: #fff;
+      }
 
       .hero { height: 300px; }
-      .hero__title { top: 47%; left: 50%; width: 88vw; }
-      .hero__construction { font-size: 40px; }
-      .hero__technology { font-size: 42px; }
-      .hero__the { font-size: 18px; }
-      .hero__directory strong { font-size: 20px; }
-      .hero__tagline { font-size: 11px; gap: 5px; flex-wrap: wrap; }
+      .hero__ai { width: 46%; }
+      .hero__title { width: min(78vw, 520px); top: 38%; left: 50%; }
 
-      .workflow-heading-wrap { padding: 16px 12px 10px; }
-      .workflow-heading { font-size: 14px; letter-spacing: .01em; }
+      .workflow { display: block; }
+      .workflow__heading { padding: 16px 12px; font-size: 15px; white-space: normal; text-align: center; }
       .wf-arrow { display: none; }
-      .workflow-grid {
+      .workflow__grid {
         width: 100%;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         grid-template-rows: repeat(6, minmax(0, 1fr));
       }
-      .workflow-item { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 118px; padding: 14px 10px; }
-      .workflow-item:nth-child(6n) { border-right: 1px solid var(--line); }
-      .workflow-item:nth-child(-n+6) { border-bottom: 1px solid var(--line); }
-      .workflow-item:nth-child(2n) { border-right: none; }
-      .workflow-item:nth-last-child(-n+2) { border-bottom: none; }
-      .workflow-icon { width: 60px; height: 60px; }
-      .workflow-label { font-size: 12px; }
+      .workflow-card { min-height: 116px; padding: 14px 10px; border-right: 1px solid var(--line-blue); border-bottom: 1px solid var(--line-blue); }
+      .workflow-card:nth-child(6n) { border-right: 1px solid var(--line-blue); }
+      .workflow-card:nth-child(-n + 6) { border-bottom: 1px solid var(--line-blue); }
+      .workflow-card:nth-child(2n) { border-right: 0; }
+      .workflow-card:nth-last-child(-n + 2) { border-bottom: 0; }
+      .workflow-card img { height: 58px; }
+      .workflow-card span { font-size: 12px; }
 
-      .discovery-strip { height: auto; }
-      .discovery-inner { width: 100%; grid-template-columns: repeat(2, 1fr); }
-      .discovery-block {
-        padding: 18px 14px; gap: 10px;
-        border-right: 1px solid rgba(255,255,255,.13);
-        border-bottom: 1px solid rgba(255,255,255,.13);
+      .discovery { display: block; }
+      .discovery__grid { width: 100%; grid-template-columns: repeat(2, 1fr); }
+      .discovery-card {
+        padding: 18px 14px; gap: 12px;
+        border-right: 1px solid rgba(255,255,255,.4);
+        border-bottom: 1px solid rgba(255,255,255,.4);
       }
-      .discovery-block:last-child { border-right: 1px solid rgba(255,255,255,.13); }
-      .discovery-block:nth-child(2n) { border-right: none; }
-      .discovery-block:nth-child(n+3) { border-bottom: none; }
-      .disc-icon { width: 40px; height: 40px; }
-      .disc-title { font-size: 14px; }
-      .disc-desc { font-size: 11.5px; }
+      .discovery-card:last-child { border-right: 1px solid rgba(255,255,255,.4); }
+      .discovery-card:nth-child(2n) { border-right: 0; }
+      .discovery-card:nth-child(n + 3) { border-bottom: 0; }
 
       .site-footer { height: auto; }
       .site-footer__inner {
-        grid-template-columns: 1fr 1fr; gap: 20px;
-        padding: 22px 16px;
+        grid-template-columns: 1fr 1fr; gap: 20px; padding: 22px 18px;
       }
-      .fcol { padding: 0; border-left: none !important; }
-      .fcol-logo { grid-column: 1 / -1; flex-direction: row; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
+      .footer-column { padding: 0; border-left: none !important; }
+      .footer-brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 560px) {
+      .site-footer__inner { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -409,28 +333,16 @@
   <header class="site-header">
     <div class="site-header__inner">
 
-      <a class="logo-link" href="/">
-        <div class="logo-mark">
-          <svg width="28" height="28" viewBox="0 0 30 30" fill="none">
-            <rect x="4" y="9" width="9" height="17" rx="1" fill="rgba(255,255,255,.93)"/>
-            <rect x="17" y="4" width="9" height="22" rx="1" fill="rgba(255,255,255,.93)"/>
-            <rect x="2" y="24" width="26" height="3" rx="1.5" fill="#F26A1B"/>
-          </svg>
-        </div>
-        <div class="logo-txt">
-          <span class="logo-pre">THE</span>
-          <span class="logo-brand">CONSTRUCTION</span>
-          <span class="logo-pre">TECHNOLOGY</span>
-          <span class="logo-pre">DIRECTORY</span>
-        </div>
+      <a class="brand" href="/">
+        <img src="assets/ctd/logo.png" alt="The Construction Technology Directory">
       </a>
 
-      <form class="header-search" action="dedicated-results.html" method="get" role="search">
-        <input type="text" name="q" id="hdr-q"
+      <form class="global-search" action="dedicated-results.html" method="get" role="search">
+        <input type="search" name="q" id="hdr-q"
           placeholder="Search Company, Product, Category, Trade or Keyword"
           autocomplete="off" aria-label="Search the directory">
         <button type="submit" aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
           </svg>
         </button>
@@ -442,37 +354,29 @@
         </svg>
       </button>
 
-      <nav class="header-nav" id="header-nav" aria-label="Main navigation">
-        <a class="nav-item" href="#">
-          <span class="nav-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-          </span>
+      <nav class="header-nav" id="header-nav" aria-label="Primary">
+        <a href="#" aria-label="About Us">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.8" r="0.6" fill="currentColor" stroke="none"/>
+          </svg>
           About Us
         </a>
-        <a class="nav-item" href="#">
-          <span class="nav-icon">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.987.347 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/>
-            </svg>
-          </span>
+        <a href="#" aria-label="Contact Us">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.987.347 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/>
+          </svg>
           Contact Us
         </a>
-        <a class="nav-item" href="#">
-          <span class="nav-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
-            </svg>
-          </span>
+        <a href="#" aria-label="Update Info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
           Update Info
         </a>
-        <a class="nav-item" href="/">
-          <span class="nav-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </span>
+        <a href="/" aria-label="Home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10l9-7 9 7v10a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 20z"/><polyline points="9 21 9 13 15 13 15 21"/>
+          </svg>
           Home
         </a>
       </nav>
@@ -480,197 +384,161 @@
     </div>
   </header>
 
-  <!-- ═══════════ HERO ═══════════ -->
-  <main class="hero" aria-label="The Construction Technology Directory">
-    <img class="hero__background" src="assets/hero/homepage-hero-bg.png"
-         alt="Construction professionals reviewing plans with AI-powered construction technology"
-         loading="eager" fetchpriority="high">
+  <!-- ═══════════ MAIN CONTENT ═══════════ -->
+  <main class="main-content">
 
-    <div class="hero__title">
-      <span class="hero__the">THE</span>
-      <h1 class="hero__heading">
-        <span class="hero__construction">CONSTRUCTION</span>
-        <span class="hero__technology">TECHNOLOGY</span>
-      </h1>
-      <div class="hero__directory">
-        <span class="hero__line"></span>
-        <strong>DIRECTORY</strong>
-        <span class="hero__line"></span>
+    <!-- HERO: 3 layered images -->
+    <section class="hero" aria-label="The Construction Technology Directory">
+      <img class="hero__construction" src="assets/ctd/hero-construction.png" alt="" loading="eager" fetchpriority="high">
+      <div class="hero__ai-scrim" aria-hidden="true"></div>
+      <img class="hero__ai" src="assets/ctd/hero-ai.png" alt="" loading="eager">
+      <img class="hero__title" src="assets/ctd/hero-title.png"
+           alt="The Construction Technology Directory. Construction. Technology. Contractors. Connected." loading="eager">
+    </section>
+
+    <!-- WORKFLOW -->
+    <section class="workflow" aria-label="Workflow categories">
+      <h2 class="workflow__heading">
+        <svg class="wf-arrow" viewBox="0 0 48 32" fill="none" aria-hidden="true">
+          <path d="M44 6 Q28 0 16 14 Q8 22 12 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M6 24 L12 28 L14 21" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        CLICK ON ANY CATEGORY TO EXPLORE IT WORKFLOW SOLUTIONS
+        <svg class="wf-arrow" viewBox="0 0 48 32" fill="none" aria-hidden="true" style="transform:scaleX(-1)">
+          <path d="M44 6 Q28 0 16 14 Q8 22 12 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M6 24 L12 28 L14 21" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </h2>
+
+      <div class="workflow__grid">
+        <!-- ROW 1 -->
+        <a class="workflow-card" href="dedicated-results.html?cat=accounting-payroll">
+          <img src="assets/logos/accounting-payroll.png" alt="" loading="lazy"><span>ACCOUNTING</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=crm-sales">
+          <img src="assets/logos/crm-sales.png" alt="" loading="lazy"><span>CRM SALES</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=construction-leads">
+          <img src="assets/logos/construction-leads.png" alt="" loading="lazy"><span>LEADS, BIDS</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=estimating-takeoff">
+          <img src="assets/logos/estimating-takeoff.png" alt="" loading="lazy"><span>ESTIMATING, TAKEOFF</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=project-management">
+          <img src="assets/logos/project-management.png" alt="" loading="lazy"><span>PROJECT MANAGEMENT</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=field-service-dispatch">
+          <img src="assets/logos/field-service-dispatch.png" alt="" loading="lazy"><span>DISPATCH</span>
+        </a>
+        <!-- ROW 2 -->
+        <a class="workflow-card" href="dedicated-results.html?cat=safety-compliance">
+          <img src="assets/logos/safety-compliance.png" alt="" loading="lazy"><span>COMPLIANCE</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=fleet-equipment">
+          <img src="assets/logos/fleet-equipment.png" alt="" loading="lazy"><span>FLEET</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=marketing-reputation">
+          <img src="assets/logos/marketing-reputation.png" alt="" loading="lazy"><span>MARKETING</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=ai-automation">
+          <img src="assets/logos/ai-automation.png" alt="" loading="lazy"><span>AI AUTOMATION</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=document-management">
+          <img src="assets/logos/document-management.png" alt="" loading="lazy"><span>DOCUMENTATION</span>
+        </a>
+        <a class="workflow-card" href="dedicated-results.html?cat=procurement-purchasing">
+          <img src="assets/logos/procurement-purchasing.png" alt="" loading="lazy"><span>PURCHASING</span>
+        </a>
       </div>
-      <p class="hero__tagline">
-        <span>CONSTRUCTION.</span>
-        <span>TECHNOLOGY.</span>
-        <span>CONTRACTORS.</span>
-        <strong>CONNECTED.</strong>
-      </p>
-    </div>
-  </main>
+    </section>
 
-  <!-- ═══════════ WORKFLOW CATEGORIES ═══════════ -->
-  <section class="workflow-section" aria-label="Workflow categories">
-    <div class="workflow-heading-wrap">
-      <svg class="wf-arrow" viewBox="0 0 48 32" fill="none" aria-hidden="true">
-        <path d="M44 6 Q28 0 16 14 Q8 22 12 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-        <path d="M6 24 L12 28 L14 21" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      </svg>
-      <h2 class="workflow-heading">CLICK ON ANY CATEGORY TO EXPLORE IT WORKFLOW SOLUTIONS</h2>
-      <svg class="wf-arrow" viewBox="0 0 48 32" fill="none" aria-hidden="true" style="transform:scaleX(-1)">
-        <path d="M44 6 Q28 0 16 14 Q8 22 12 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-        <path d="M6 24 L12 28 L14 21" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      </svg>
-    </div>
+    <!-- DISCOVERY -->
+    <section class="discovery" aria-label="Discovery pathways">
+      <div class="discovery__grid">
 
-    <div class="workflow-grid">
-      <!-- ROW 1 -->
-      <a class="workflow-item" href="dedicated-results.html?cat=accounting-payroll" aria-label="Accounting">
-        <img class="workflow-icon" src="assets/logos/accounting-payroll.png" alt="" loading="lazy">
-        <span class="workflow-label">ACCOUNTING</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=crm-sales" aria-label="CRM Sales">
-        <img class="workflow-icon" src="assets/logos/crm-sales.png" alt="" loading="lazy">
-        <span class="workflow-label">CRM SALES</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=construction-leads" aria-label="Leads, Bids">
-        <img class="workflow-icon" src="assets/logos/construction-leads.png" alt="" loading="lazy">
-        <span class="workflow-label">LEADS, BIDS</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=estimating-takeoff" aria-label="Estimating, Takeoff">
-        <img class="workflow-icon" src="assets/logos/estimating-takeoff.png" alt="" loading="lazy">
-        <span class="workflow-label">ESTIMATING, TAKEOFF</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=project-management" aria-label="Project Management">
-        <img class="workflow-icon" src="assets/logos/project-management.png" alt="" loading="lazy">
-        <span class="workflow-label">PROJECT MANAGEMENT</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=field-service-dispatch" aria-label="Dispatch">
-        <img class="workflow-icon" src="assets/logos/field-service-dispatch.png" alt="" loading="lazy">
-        <span class="workflow-label">DISPATCH</span>
-      </a>
-      <!-- ROW 2 -->
-      <a class="workflow-item" href="dedicated-results.html?cat=safety-compliance" aria-label="Compliance">
-        <img class="workflow-icon" src="assets/logos/safety-compliance.png" alt="" loading="lazy">
-        <span class="workflow-label">COMPLIANCE</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=fleet-equipment" aria-label="Fleet">
-        <img class="workflow-icon" src="assets/logos/fleet-equipment.png" alt="" loading="lazy">
-        <span class="workflow-label">FLEET</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=marketing-reputation" aria-label="Marketing">
-        <img class="workflow-icon" src="assets/logos/marketing-reputation.png" alt="" loading="lazy">
-        <span class="workflow-label">MARKETING</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=ai-automation" aria-label="AI Automation">
-        <img class="workflow-icon" src="assets/logos/ai-automation.png" alt="" loading="lazy">
-        <span class="workflow-label">AI AUTOMATION</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=document-management" aria-label="Documentation">
-        <img class="workflow-icon" src="assets/logos/document-management.png" alt="" loading="lazy">
-        <span class="workflow-label">DOCUMENTATION</span>
-      </a>
-      <a class="workflow-item" href="dedicated-results.html?cat=procurement-purchasing" aria-label="Purchasing">
-        <img class="workflow-icon" src="assets/logos/procurement-purchasing.png" alt="" loading="lazy">
-        <span class="workflow-label">PURCHASING</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ═══════════ DISCOVERY STRIP ═══════════ -->
-  <section class="discovery-strip" aria-label="Discovery pathways">
-    <div class="discovery-inner">
-
-      <a class="discovery-block disc-find" href="dedicated-results.html" aria-label="Find construction technology providers">
-        <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
-          <circle cx="30" cy="30" r="30" fill="#1B5FD0"/>
-          <circle cx="26" cy="26" r="11" stroke="white" stroke-width="3.5" fill="none"/>
-          <path d="M34.5 34.5L44 44" stroke="white" stroke-width="4" stroke-linecap="round"/>
-        </svg>
-        <div class="disc-text">
-          <span class="disc-title">FIND</span>
-          <span class="disc-desc">Locate construction technology providers.</span>
-        </div>
-      </a>
-
-      <a class="discovery-block disc-learn" href="#" aria-label="Learn about construction software">
-        <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
-          <polygon points="30,10 54,21 30,32 6,21" fill="#F26A1B"/>
-          <path d="M18,25 L18,40 C18,40 23,48 30,48 C37,48 42,40 42,40 L42,25" stroke="#F26A1B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="52" y1="21" x2="52" y2="34" stroke="#F26A1B" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="52" cy="36.5" r="2" fill="#F26A1B"/>
-        </svg>
-        <div class="disc-text">
-          <span class="disc-title">LEARN</span>
-          <span class="disc-desc">Understand software before you buy.</span>
-        </div>
-      </a>
-
-      <a class="discovery-block disc-research" href="#" aria-label="Research construction technology">
-        <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
-          <rect x="6" y="16" width="30" height="38" rx="2" fill="rgba(21,133,38,.15)" stroke="#158526" stroke-width="2.5"/>
-          <rect x="11" y="22" width="6" height="6" rx="1" fill="#158526" opacity=".55"/>
-          <rect x="22" y="22" width="6" height="6" rx="1" fill="#158526" opacity=".55"/>
-          <rect x="11" y="33" width="6" height="6" rx="1" fill="#158526" opacity=".55"/>
-          <rect x="22" y="33" width="6" height="6" rx="1" fill="#158526" opacity=".55"/>
-          <rect x="14" y="44" width="10" height="10" rx="1" fill="#158526" opacity=".4"/>
-          <circle cx="45" cy="27" r="10" stroke="#158526" stroke-width="3" fill="none"/>
-          <path d="M52,34 L58,40" stroke="#158526" stroke-width="3.5" stroke-linecap="round"/>
-        </svg>
-        <div class="disc-text">
-          <span class="disc-title">RESEARCH</span>
-          <span class="disc-desc">Research trusted technology providers.</span>
-        </div>
-      </a>
-
-      <a class="discovery-block disc-insights" href="#" aria-label="Insights about construction technology">
-        <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
-          <path d="M30 8C21 8 15 14.5 15 22C15 27.5 18 32.5 23 35.5V44H37V35.5C42 32.5 45 27.5 45 22C45 14.5 39 8 30 8Z" fill="rgba(245,200,66,.55)" stroke="#F5C842" stroke-width="2.5" stroke-linejoin="round"/>
-          <line x1="24" y1="47" x2="36" y2="47" stroke="#F5C842" stroke-width="3" stroke-linecap="round"/>
-          <line x1="26" y1="51" x2="34" y2="51" stroke="#F5C842" stroke-width="3" stroke-linecap="round"/>
-          <line x1="30" y1="3" x2="30" y2="1" stroke="#F5C842" stroke-width="2" stroke-linecap="round"/>
-          <line x1="9" y1="11" x2="7.5" y2="9.5" stroke="#F5C842" stroke-width="2" stroke-linecap="round"/>
-          <line x1="51" y1="11" x2="52.5" y2="9.5" stroke="#F5C842" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <div class="disc-text">
-          <span class="disc-title">INSIGHTS</span>
-          <span class="disc-desc">Stay informed about construction technology.</span>
-        </div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ═══════════ FOOTER ═══════════ -->
-  <footer class="site-footer" aria-label="Site footer">
-    <div class="site-footer__inner">
-
-      <div class="fcol fcol-logo">
-        <a href="/" class="logo-link" aria-label="The Construction Technology Directory home" style="gap:10px">
-          <div class="logo-mark" style="width:40px;height:40px;border-radius:8px">
-            <svg width="24" height="24" viewBox="0 0 30 30" fill="none">
-              <rect x="4" y="9" width="9" height="17" rx="1" fill="rgba(255,255,255,.93)"/>
-              <rect x="17" y="4" width="9" height="22" rx="1" fill="rgba(255,255,255,.93)"/>
-              <rect x="2" y="24" width="26" height="3" rx="1.5" fill="#F26A1B"/>
-            </svg>
-          </div>
-          <div class="logo-txt">
-            <span class="logo-pre">THE</span>
-            <span class="logo-brand" style="font-size:12px">CONSTRUCTION</span>
-            <span class="logo-pre">TECHNOLOGY</span>
-            <span class="logo-pre">DIRECTORY</span>
+        <a class="discovery-card disc-find" href="dedicated-results.html">
+          <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <circle cx="30" cy="30" r="30" fill="#075cff"/>
+            <circle cx="26" cy="26" r="11" stroke="#fff" stroke-width="3.5" fill="none"/>
+            <path d="M34.5 34.5L44 44" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <div class="disc-text">
+            <span class="disc-title">FIND</span>
+            <span class="disc-desc">Locate construction technology providers.</span>
           </div>
         </a>
-        <p>© 2026 The Construction Technology<br>Directory, LLC. All rights reserved.</p>
+
+        <a class="discovery-card disc-learn" href="#">
+          <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <polygon points="30,10 54,21 30,32 6,21" fill="#ff5a00"/>
+            <path d="M18,25 L18,40 C18,40 23,48 30,48 C37,48 42,40 42,40 L42,25" stroke="#ff5a00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="52" y1="21" x2="52" y2="34" stroke="#ff5a00" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="52" cy="36.5" r="2" fill="#ff5a00"/>
+          </svg>
+          <div class="disc-text">
+            <span class="disc-title">LEARN</span>
+            <span class="disc-desc">Understand software before you buy.</span>
+          </div>
+        </a>
+
+        <a class="discovery-card disc-research" href="#">
+          <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <rect x="6" y="16" width="30" height="38" rx="2" fill="rgba(59,142,18,.15)" stroke="#3b8e12" stroke-width="2.5"/>
+            <rect x="11" y="22" width="6" height="6" rx="1" fill="#3b8e12" opacity=".55"/>
+            <rect x="22" y="22" width="6" height="6" rx="1" fill="#3b8e12" opacity=".55"/>
+            <rect x="11" y="33" width="6" height="6" rx="1" fill="#3b8e12" opacity=".55"/>
+            <rect x="22" y="33" width="6" height="6" rx="1" fill="#3b8e12" opacity=".55"/>
+            <rect x="14" y="44" width="10" height="10" rx="1" fill="#3b8e12" opacity=".4"/>
+            <circle cx="45" cy="27" r="10" stroke="#3b8e12" stroke-width="3" fill="none"/>
+            <path d="M52,34 L58,40" stroke="#3b8e12" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+          <div class="disc-text">
+            <span class="disc-title">RESEARCH</span>
+            <span class="disc-desc">Research trusted technology providers.</span>
+          </div>
+        </a>
+
+        <a class="discovery-card disc-insights" href="#">
+          <svg class="disc-icon" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+            <path d="M30 8C21 8 15 14.5 15 22C15 27.5 18 32.5 23 35.5V44H37V35.5C42 32.5 45 27.5 45 22C45 14.5 39 8 30 8Z" fill="rgba(255,191,0,.5)" stroke="#ffbf00" stroke-width="2.5" stroke-linejoin="round"/>
+            <line x1="24" y1="47" x2="36" y2="47" stroke="#ffbf00" stroke-width="3" stroke-linecap="round"/>
+            <line x1="26" y1="51" x2="34" y2="51" stroke="#ffbf00" stroke-width="3" stroke-linecap="round"/>
+            <line x1="30" y1="3" x2="30" y2="1" stroke="#ffbf00" stroke-width="2" stroke-linecap="round"/>
+            <line x1="9" y1="11" x2="7.5" y2="9.5" stroke="#ffbf00" stroke-width="2" stroke-linecap="round"/>
+            <line x1="51" y1="11" x2="52.5" y2="9.5" stroke="#ffbf00" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div class="disc-text">
+            <span class="disc-title">INSIGHTS</span>
+            <span class="disc-desc">Stay informed about construction technology.</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+
+      <div class="footer-column footer-brand">
+        <a href="/" aria-label="The Construction Technology Directory home">
+          <img src="assets/ctd/logo.png" alt="The Construction Technology Directory">
+        </a>
+        <p>© 2026 The Construction Technology<br>Directory, LLC.&nbsp; All rights reserved.</p>
       </div>
 
-      <div class="fcol">
-        <div class="fcol-heading">COMPANY</div>
+      <div class="footer-column">
+        <h2>Company</h2>
         <a href="#">About Us</a>
         <a href="#">Contact Us</a>
         <a href="#">Update Info</a>
         <a href="#">Marketing Opportunities</a>
       </div>
 
-      <div class="fcol">
-        <div class="fcol-heading">DIRECTORY</div>
+      <div class="footer-column">
+        <h2>Directory</h2>
         <a href="#">Categories</a>
         <a href="#">Subcategories</a>
         <a href="#">Products</a>
@@ -679,8 +547,8 @@
         <a href="#">Trades</a>
       </div>
 
-      <div class="fcol">
-        <div class="fcol-heading">RESOURCES</div>
+      <div class="footer-column">
+        <h2>Resources</h2>
         <a href="#">Technology Guides</a>
         <a href="#">Find</a>
         <a href="#">Learn</a>
@@ -689,40 +557,28 @@
         <a href="#">FAQs / Glossary</a>
       </div>
 
-      <div class="fcol">
-        <div class="fcol-heading">SITE INFO</div>
+      <div class="footer-column">
+        <h2>Site Info</h2>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Use</a>
         <a href="#">Site Map</a>
         <a href="#">Disclaimer</a>
       </div>
 
-      <div class="fcol">
-        <div class="fcol-heading">FOLLOW US</div>
+      <div class="footer-column">
+        <h2>Follow Us</h2>
         <div class="soc-grid">
           <a class="soc-btn soc-li" href="#" aria-label="LinkedIn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-              <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
-              <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
           </a>
           <a class="soc-btn soc-fb" href="#" aria-label="Facebook">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
           </a>
           <a class="soc-btn soc-yt" href="#" aria-label="YouTube">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="white" d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/>
-              <polygon fill="#FF0000" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#FF0000" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
           </a>
           <a class="soc-btn soc-ig" href="#" aria-label="Instagram">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           </a>
         </div>
       </div>
@@ -740,7 +596,6 @@
   btn.addEventListener('click', function() {
     var open = nav.classList.toggle('open');
     btn.setAttribute('aria-expanded', String(open));
-    btn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
   });
   document.addEventListener('click', function(e) {
     if (!btn.contains(e.target) && !nav.contains(e.target)) {
