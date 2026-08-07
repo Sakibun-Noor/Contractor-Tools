@@ -233,13 +233,13 @@
       grid-auto-rows: clamp(32px, 2.4vw, 38px);
       gap: 7px; margin-top: 1px;
     }
-    .soc-btn {
-      width: 100%; height: 100%;
+    a.soc-btn {
+      width: 100%; height: 100%; margin: 0;
       border-radius: 8px; display: flex; align-items: center; justify-content: center;
       line-height: 0; transition: transform .12s, opacity .12s;
     }
-    .soc-btn svg { width: 55%; height: 55%; display: block; }
-    .soc-btn:hover { transform: scale(1.08); opacity: .9; }
+    .soc-btn svg { width: 55%; height: 55%; display: block; flex: none; }
+    a.soc-btn:hover { transform: scale(1.08); opacity: .9; }
     .soc-li { background: #0077B5; }
     .soc-fb { background: #1877F2; }
     .soc-yt { background: #FF0000; }
