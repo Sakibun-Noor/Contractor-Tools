@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --navy: #001746;
@@ -92,8 +92,10 @@
     .header-nav a svg { width: clamp(22px, 1.7vw, 28px); height: clamp(22px, 1.7vw, 28px); }
     .header-nav a:hover { color: #ffb066; }
 
-    /* mobile hamburger — hidden on desktop */
+    /* mobile-only elements — hidden on desktop */
     .menu-btn { display: none; }
+    .hero__construction--mobile { display: none; }
+    .hero__title-html { display: none; }
 
     /* ══════════ MAIN CONTENT ══════════ */
     .main-content {
@@ -246,73 +248,156 @@
     .soc-ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
 
     /* ══════════════════════════════════════════
-       RESPONSIVE — TABLET / PHONE (< 900px): scroll allowed
+       MOBILE LAYOUT (< 900px) — 941×1672 spec, no scroll
     ══════════════════════════════════════════ */
-    @media (max-width: 899px) {
-      html, body { height: auto; }
-      body { overflow: auto; }
-      .homepage { height: auto; display: block; overflow: visible; }
-      .main-content { display: block; }
+    @media (max-width: 999px) {
+      /* page grid: 131 header + 1322 main + 219 footer = 1672 */
+      .homepage {
+        grid-template-rows: 131fr 1322fr 219fr;
+      }
 
+      /* ── HEADER ── */
+      .site-header {
+        background: linear-gradient(90deg,#00143f,#001b55,#00143f);
+      }
       .site-header__inner {
-        grid-template-columns: 1fr auto;
-        gap: 12px; padding: 12px 16px; min-height: 0;
+        grid-template-columns: 245px minmax(320px,1fr) 270px;
+        gap: 18px;
+        padding: 0 28px;
       }
-      .brand img { width: 180px; }
-      .global-search { grid-column: 1 / -1; order: 3; height: 48px; }
-      .header-nav { display: none; }
-      .header-nav.open {
-        display: grid; grid-template-columns: repeat(4, 1fr);
-        grid-column: 1 / -1; order: 4; padding: 8px 0 2px;
+      .brand img { width: 210px; max-height: 108px; }
+      .global-search { height: 55px; grid-template-columns: 1fr 52px; }
+      .global-search input { font-size: 14px; padding: 0 18px; }
+      .header-nav {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
       }
-      .header-nav.open a { flex-direction: row; gap: 6px; font-size: 12px; }
-      .menu-btn {
-        display: flex; align-items: center; justify-content: center;
-        width: 42px; height: 42px; background: none;
-        border: 1.5px solid rgba(255,255,255,.5); border-radius: 8px;
-        cursor: pointer; color: #fff;
+      .header-nav a { font-size: 13px; }
+      .header-nav a svg { width: 24px; height: 24px; }
+      .menu-btn { display: none; }
+
+      /* ── MAIN CONTENT: 544 hero + 656 workflow + 122 discovery ── */
+      .main-content {
+        grid-template-rows: 544fr 656fr 122fr;
       }
 
-      .hero { height: 300px; }
-      .hero__ai { width: 46%; }
-      .hero__title { width: min(78vw, 520px); top: 38%; left: 50%; }
+      /* ── HERO ── */
+      .hero__construction { display: none; }
+      .hero__construction--mobile {
+        display: block;
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: fill;
+        border: 0; border-radius: 0;
+        z-index: 1;
+      }
+      .hero__title { display: none; }
+      .hero__title-html {
+        display: block;
+        position: absolute; z-index: 2;
+        top: 44%; left: 49.5%;
+        transform: translate(-50%,-50%);
+        width: 42%;
+        text-align: center;
+        color: #06194f;
+        font-family: "Barlow Condensed","Roboto Condensed","Arial Narrow",sans-serif;
+      }
+      .hero__the {
+        font-size: 34px; line-height: .9; font-weight: 800;
+      }
+      .hero__title-html h1 {
+        margin: 0; line-height: .86; font-weight: 800;
+      }
+      .hero__h-construction {
+        display: block; font-size: 64px; white-space: nowrap; color: #06194f;
+      }
+      .hero__h-technology {
+        display: block; font-size: 66px; color: #ff5200; white-space: nowrap;
+      }
+      .hero__directory-row {
+        width: 92%; margin: 8px auto 0;
+        display: grid; grid-template-columns: 1fr auto 1fr;
+        gap: 12px; align-items: center;
+      }
+      .hero__dir-line { height: 3px; background: #06194f; }
+      .hero__directory-row strong {
+        font-size: 27px; letter-spacing: .32em; line-height: 1;
+      }
+      .hero__tagline {
+        margin-top: 9px; font-size: 12px; font-weight: 700; white-space: nowrap;
+      }
+      .hero__tagline strong { color: #ff5200; }
 
-      .workflow { display: block; }
-      .workflow__heading { padding: 16px 12px; font-size: 15px; white-space: normal; text-align: center; }
-      .wf-arrow { display: none; }
+      /* ── WORKFLOW: 4 cols × 3 rows ── */
+      .workflow {
+        grid-template-rows: 62px minmax(0,1fr);
+        background: linear-gradient(180deg,#f4fbff,#eaf6ff);
+      }
+      .workflow__heading {
+        font-size: 21px; gap: 14px;
+      }
+      .wf-arrow { width: 32px; height: 23px; display: block; }
       .workflow__grid {
+        width: calc(100% - 76px);
+        grid-template-columns: repeat(4, minmax(0,1fr));
+        grid-template-rows: repeat(3, minmax(0,1fr));
+      }
+      .workflow-card {
+        padding: 7px 8px 6px; gap: 4px;
+        border-right: 1px solid #bfd8ed;
+        border-bottom: none;
+      }
+      .workflow-card:nth-child(6n) { border-right: 1px solid #bfd8ed; }
+      .workflow-card:nth-child(-n+6) { border-bottom: none; }
+      .workflow-card:nth-child(4n) { border-right: 0; }
+      .workflow-card:nth-child(-n+8) { border-bottom: 1px solid #bfd8ed; }
+      .workflow-card img { height: 86px; max-width: 115px; }
+      .workflow-card span { font-size: 16px; }
+
+      /* ── DISCOVERY ── */
+      .discovery {
+        background: #001746;
+      }
+      .discovery__grid {
         width: 100%;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-rows: repeat(6, minmax(0, 1fr));
+        grid-template-columns: repeat(4,1fr);
       }
-      .workflow-card { min-height: 116px; padding: 14px 10px; border-right: 1px solid var(--line-blue); border-bottom: 1px solid var(--line-blue); }
-      .workflow-card:nth-child(6n) { border-right: 1px solid var(--line-blue); }
-      .workflow-card:nth-child(-n + 6) { border-bottom: 1px solid var(--line-blue); }
-      .workflow-card:nth-child(2n) { border-right: 0; }
-      .workflow-card:nth-last-child(-n + 2) { border-bottom: 0; }
-      .workflow-card img { height: 58px; }
-      .workflow-card span { font-size: 12px; }
-
-      .discovery { display: block; }
-      .discovery__grid { width: 100%; grid-template-columns: repeat(2, 1fr); }
       .discovery-card {
-        padding: 18px 14px; gap: 12px;
-        border-right: 1px solid rgba(255,255,255,.4);
-        border-bottom: 1px solid rgba(255,255,255,.4);
+        padding: 8px 18px; gap: 10px;
+        border-right: 1px solid rgba(255,255,255,.55);
+        border-bottom: none;
       }
-      .discovery-card:last-child { border-right: 1px solid rgba(255,255,255,.4); }
-      .discovery-card:nth-child(2n) { border-right: 0; }
-      .discovery-card:nth-child(n + 3) { border-bottom: 0; }
+      .discovery-card:last-child { border-right: 0; }
+      .disc-icon { width: 42px; height: 42px; }
+      .disc-title { font-size: 17px; }
+      .disc-desc { font-size: 12px; }
 
-      .site-footer { height: auto; }
-      .site-footer__inner {
-        grid-template-columns: 1fr 1fr; gap: 20px; padding: 22px 18px;
+      /* ── FOOTER ── */
+      .site-footer {
+        border-top: 1px solid rgba(255,255,255,.65);
       }
-      .footer-column { padding: 0; border-left: none !important; }
-      .footer-brand { grid-column: 1 / -1; }
-    }
-    @media (max-width: 560px) {
-      .site-footer__inner { grid-template-columns: 1fr; }
+      .site-footer__inner {
+        grid-template-columns: 210px 150px 150px 180px 135px 115px;
+        align-content: start;
+        padding: 18px 28px 12px;
+      }
+      .footer-column {
+        padding: 0 16px;
+        border-left: none !important;
+        border-right: 1px solid rgba(255,255,255,.5);
+      }
+      .footer-column:first-child { padding-left: 0; }
+      .footer-column:last-child { border-right: 0; }
+      .footer-brand img { width: 180px; }
+      .footer-column h2 { font-size: 13px; margin-bottom: 5px; }
+      .footer-column a { font-size: 11px; margin-bottom: 3px; line-height: 1.15; }
+      .footer-column p { font-size: 10.5px; }
+      .soc-grid {
+        grid-template-columns: repeat(2, 44px);
+        grid-auto-rows: 44px;
+        gap: 10px;
+      }
+      a.soc-btn { width: 44px; height: 44px; border-radius: 7px; }
     }
   </style>
 </head>
@@ -381,8 +466,25 @@
     <!-- HERO: 3 layered images -->
     <section class="hero" aria-label="The Construction Technology Directory">
       <img class="hero__construction" src="assets/ctd/hero-combined.png" alt="Construction professionals on site with AI-powered construction technology" loading="eager" fetchpriority="high">
+      <img class="hero__construction hero__construction--mobile" src="assets/ctd/mobile-hero.png" alt="Construction professionals on site with AI-powered construction technology" loading="eager">
       <img class="hero__title" src="assets/ctd/hero-title.png"
            alt="The Construction Technology Directory. Construction. Technology. Contractors. Connected." loading="eager">
+      <div class="hero__title-html">
+        <div class="hero__the">THE</div>
+        <h1>
+          <span class="hero__h-construction">CONSTRUCTION</span>
+          <span class="hero__h-technology">TECHNOLOGY</span>
+        </h1>
+        <div class="hero__directory-row">
+          <span class="hero__dir-line"></span>
+          <strong>DIRECTORY</strong>
+          <span class="hero__dir-line"></span>
+        </div>
+        <div class="hero__tagline">
+          CONSTRUCTION. TECHNOLOGY. CONTRACTORS.
+          <strong>CONNECTED.</strong>
+        </div>
+      </div>
     </section>
 
     <!-- WORKFLOW -->
