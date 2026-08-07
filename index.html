@@ -206,34 +206,40 @@
       width: 100%; height: 100%;
       display: grid;
       grid-template-columns: 1.35fr 1.1fr 1.15fr 1.2fr .95fr .95fr;
-      padding: 14px clamp(55px, 5.5vw, 92px) 12px;
+      align-content: center;
+      padding: 9px clamp(55px, 5.5vw, 92px) 7px;
     }
     .footer-column { padding: 0 clamp(12px, 1.2vw, 22px); min-width: 0; }
     .footer-column:first-child { padding-left: 0; }
     .footer-column:not(:first-child) { border-left: 1px solid rgba(255,255,255,.16); }
-    .footer-brand img { width: clamp(180px, 13vw, 220px); height: auto; margin-bottom: 8px; }
-    .footer-column p { margin: 0; color: rgba(255,255,255,.62); font-size: clamp(11px, .83vw, 13px); line-height: 1.4; }
+    .footer-brand img { width: clamp(170px, 12vw, 205px); height: auto; margin-bottom: 5px; }
+    .footer-column p { margin: 0; color: rgba(255,255,255,.62); font-size: clamp(10px, .78vw, 12px); line-height: 1.25; }
     .footer-column h2 {
-      margin: 0 0 9px; font-size: clamp(13px, 1vw, 16px); line-height: 1;
+      margin: 0 0 5px; font-size: clamp(12px, .92vw, 15px); line-height: 1;
       font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
-      padding-bottom: 6px; position: relative;
+      padding-bottom: 4px; position: relative;
     }
     .footer-column h2::after {
       content: ""; position: absolute; left: 0; bottom: 0;
-      width: 30px; height: 2px; background: var(--orange);
+      width: 28px; height: 2px; background: var(--orange);
     }
     .footer-column a {
-      display: block; margin: 0 0 5px; color: rgba(255,255,255,.72);
-      font-size: clamp(11px, .83vw, 14px); line-height: 1.33; transition: color .12s;
+      display: block; margin: 0 0 3px; color: rgba(255,255,255,.72);
+      font-size: clamp(10px, .78vw, 12.5px); line-height: 1.15; transition: color .12s;
     }
     .footer-column a:hover { color: #fff; }
-    .soc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; max-width: 108px; }
-    .soc-btn {
-      width: clamp(36px, 2.7vw, 44px); height: clamp(36px, 2.7vw, 44px);
-      border-radius: 9px; display: flex; align-items: center; justify-content: center;
-      transition: transform .12s, opacity .12s;
+    .soc-grid {
+      display: grid; grid-template-columns: repeat(2, clamp(32px, 2.4vw, 38px));
+      grid-auto-rows: clamp(32px, 2.4vw, 38px);
+      gap: 7px; margin-top: 1px;
     }
-    .soc-btn:hover { transform: scale(1.1); opacity: .9; }
+    .soc-btn {
+      width: 100%; height: 100%;
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      line-height: 0; transition: transform .12s, opacity .12s;
+    }
+    .soc-btn svg { width: 55%; height: 55%; display: block; }
+    .soc-btn:hover { transform: scale(1.08); opacity: .9; }
     .soc-li { background: #0077B5; }
     .soc-fb { background: #1877F2; }
     .soc-yt { background: #FF0000; }
@@ -558,7 +564,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
           </a>
           <a class="soc-btn soc-yt" href="#" aria-label="YouTube">
-            <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#FF0000" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><polygon points="9,7 19,12 9,17"/></svg>
           </a>
           <a class="soc-btn soc-ig" href="#" aria-label="Instagram">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
