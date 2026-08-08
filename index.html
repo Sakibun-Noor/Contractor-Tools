@@ -19,6 +19,9 @@
       --yellow: #ffbf00;
       --pale-blue: #edf8ff;
       --line-blue: #bcd8ef;
+      /* pinned to window.innerHeight at load by the script at page end;
+         this fallback applies before that runs / if JS is unavailable */
+      --app-height: 100dvh;
     }
     *, *::before, *::after { box-sizing: border-box; }
     html, body, #root { width: 100%; height: 100%; margin: 0; }
@@ -248,7 +251,11 @@
     .soc-ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
 
     /* ══════════════════════════════════════════
-       MOBILE LAYOUT (≤ 999px) — 981×1602 reference canvas, no scroll
+       MOBILE LAYOUT (≤ 999px) — 981×1602 reference proportions.
+       Every length is expressed as a share of the viewport
+       (1px of the 981-wide reference = 0.10194vw), so the layout
+       reproduces the reference exactly at 981px and scales with
+       the screen below it. No fixed 981px widths, no page scaling.
     ══════════════════════════════════════════ */
     @media (max-width: 999px) {
       /* page grid: 124 header + 1230 main + 248 footer = 1602 */
@@ -256,24 +263,24 @@
         grid-template-rows: 124fr 1230fr 248fr;
       }
 
-      /* ── HEADER (981 × 124) ── */
+      /* ── HEADER (124 / 1602) ── */
       .site-header {
         background: linear-gradient(90deg,#00143f,#001b55,#00143f);
       }
       .site-header__inner {
-        grid-template-columns: 255px 405px 1fr;
-        gap: 22px;
-        padding: 0 30px;
+        grid-template-columns: 255fr 405fr 321fr;
+        gap: 2.24vw;
+        padding: 0 3.06vw;
       }
-      .brand img { width: 215px; max-height: 100px; }
-      .global-search { height: 56px; grid-template-columns: 1fr 56px; }
-      .global-search input { font-size: 14px; padding: 0 18px; }
+      .brand img { width: 21.92vw; max-height: 80%; }
+      .global-search { height: 45%; grid-template-columns: 1fr 5.71vw; }
+      .global-search input { font-size: 1.43vw; padding: 0 1.83vw; }
       .header-nav {
         display: grid;
         grid-template-columns: repeat(4,1fr);
       }
-      .header-nav a { font-size: 13px; }
-      .header-nav a svg { width: 24px; height: 24px; }
+      .header-nav a { font-size: 1.33vw; gap: .6vw; }
+      .header-nav a svg { width: 2.45vw; height: 2.45vw; }
       .menu-btn { display: none; }
 
       /* ── MAIN CONTENT: 541 hero + 554 workflow + 135 discovery ── */
@@ -281,13 +288,13 @@
         grid-template-rows: 541fr 554fr 135fr;
       }
 
-      /* ── HERO ── */
+      /* ── HERO (541 / 1602) ── */
       .hero__construction { display: none; }
       .hero__construction--mobile {
         display: block;
         position: absolute; inset: 0;
         width: 100%; height: 100%;
-        object-fit: fill;
+        object-fit: cover; object-position: center;
         border: 0; border-radius: 0;
         z-index: 1;
       }
@@ -297,63 +304,65 @@
         position: absolute; z-index: 2;
         top: 45%; left: 49.5%;
         transform: translate(-50%,-50%);
-        width: 420px;
+        width: 42.81vw;
         text-align: center;
         color: #04184e;
         font-family: "Barlow Condensed","Roboto Condensed","Arial Narrow",sans-serif;
       }
       .hero__the {
-        font-size: 36px; line-height: .9; font-weight: 800;
+        font-size: 3.67vw; line-height: .9; font-weight: 800;
       }
       .hero__title-html h1 {
         margin: 0; line-height: .84; font-weight: 800;
       }
       .hero__h-construction {
-        display: block; font-size: 70px; white-space: nowrap; color: #04184e;
+        display: block; font-size: 7.14vw; white-space: nowrap; color: #04184e;
       }
       .hero__h-technology {
-        display: block; font-size: 72px; color: #ff5200; white-space: nowrap;
+        display: block; font-size: 7.34vw; color: #ff5200; white-space: nowrap;
       }
       .hero__directory-row {
-        width: 92%; margin: 10px auto 0;
+        width: 92%; margin: 1.02vw auto 0;
         display: grid; grid-template-columns: 1fr auto 1fr;
-        gap: 14px; align-items: center;
+        gap: 1.43vw; align-items: center;
       }
-      .hero__dir-line { height: 4px; background: #04184e; }
+      .hero__dir-line { height: .41vw; background: #04184e; }
       .hero__directory-row strong {
-        font-size: 29px; letter-spacing: .32em; line-height: 1;
+        font-size: 2.96vw; letter-spacing: .32em; line-height: 1;
       }
       .hero__tagline {
-        margin-top: 10px; font-size: 13px; font-weight: 700; white-space: nowrap;
+        margin-top: 1.02vw; font-size: 1.33vw; font-weight: 700; white-space: nowrap;
       }
       .hero__tagline strong { color: #ff5200; }
 
-      /* ── WORKFLOW: 6 cols × 2 rows (981 × 554) ── */
+      /* ── WORKFLOW: 6 cols × 2 rows (554 / 1602) ── */
       .workflow {
-        grid-template-rows: 96px 458px;
+        grid-template-rows: 96fr 458fr;
         background: linear-gradient(180deg,#f5fbff 0%,#eaf6ff 100%);
       }
       .workflow__heading {
-        font-size: 24px; gap: 20px;
+        font-size: 2.45vw; gap: 2.04vw;
       }
-      .wf-arrow { width: 36px; height: 26px; display: block; }
+      .wf-arrow { width: 3.67vw; height: 2.65vw; display: block; }
       .workflow__grid {
-        width: 920px; height: 458px;
+        width: 93.78%; height: 100%;
         grid-template-columns: repeat(6, minmax(0,1fr));
         grid-template-rows: repeat(2, minmax(0,1fr));
       }
       .workflow-card {
-        padding: 14px 8px; gap: 5px;
+        padding: 1.43vw .82vw; gap: .51vw;
         border-right: 1px solid #bdd7ec;
       }
       .workflow-card:nth-child(6n) { border-right: 0; }
       .workflow-card:nth-child(-n+6) { border-bottom: 1px solid #bdd7ec; }
-      .workflow-card img { height: 118px; max-width: 128px; }
+      .workflow-card img {
+        height: 12.03vw; max-height: 100%; max-width: 13.05vw;
+      }
       .workflow-card span {
-        font-size: 17px; line-height: 1.05; font-weight: 800; white-space: normal;
+        font-size: 1.73vw; line-height: 1.05; font-weight: 800; white-space: normal;
       }
 
-      /* ── DISCOVERY (981 × 135) ── */
+      /* ── DISCOVERY (135 / 1602) ── */
       .discovery {
         background: #001746;
       }
@@ -362,46 +371,51 @@
         grid-template-columns: repeat(4,1fr);
       }
       .discovery-card {
-        padding: 12px 24px; gap: 12px;
+        padding: 1.22vw 2.45vw; gap: 1.22vw;
         border-right: 1px solid rgba(255,255,255,.6);
         border-bottom: none;
       }
       .discovery-card:last-child { border-right: 0; }
-      .disc-icon { width: 46px; height: 46px; }
-      .disc-title { font-size: 18px; }
-      .disc-desc { font-size: 12.5px; }
+      .disc-icon { width: 4.69vw; height: 4.69vw; }
+      .disc-title { font-size: 1.83vw; }
+      .disc-desc { font-size: 1.27vw; }
 
-      /* ── FOOTER (981 × 248) ── */
+      /* ── FOOTER (248 / 1602) ── */
       .site-footer {
         border-top: 1px solid rgba(255,255,255,.7);
       }
       .site-footer__inner {
         grid-template-columns: 2.05fr 1.55fr 1.5fr 1.7fr 1.35fr 1.2fr;
         align-content: start;
-        padding: 20px 24px 14px;
+        padding: 2.04vw 2.45vw 1.43vw;
       }
       .footer-column {
-        padding: 0 13px;
+        padding: 0 1.33vw;
         border-left: none !important;
         border-right: 1px solid rgba(255,255,255,.55);
       }
       .footer-column:first-child { padding-left: 0; }
       .footer-column:last-child { border-right: 0; }
-      .footer-brand img { width: 185px; }
-      .footer-column h2 { font-size: 14px; margin-bottom: 9px; }
-      .footer-column a { font-size: 11.5px; margin-bottom: 3px; line-height: 1.35; }
-      .footer-column p { font-size: 11px; }
-      .soc-grid {
-        grid-template-columns: repeat(2, 46px);
-        grid-auto-rows: 46px;
-        gap: 10px;
+      .footer-brand img { width: 18.86vw; margin-bottom: .51vw; }
+      .footer-column h2 {
+        font-size: 1.43vw; margin-bottom: .92vw;
+        padding-bottom: .41vw;
       }
-      a.soc-btn { width: 46px; height: 46px; border-radius: 7px; }
+      .footer-column h2::after { width: 2.85vw; height: .2vw; }
+      .footer-column a { font-size: 1.17vw; margin-bottom: .31vw; line-height: 1.35; }
+      .footer-column p { font-size: 1.12vw; line-height: 1.25; }
+      .soc-grid {
+        grid-template-columns: repeat(2, 4.69vw);
+        grid-auto-rows: 4.69vw;
+        gap: 1.02vw;
+      }
+      a.soc-btn { width: 4.69vw; height: 4.69vw; border-radius: .71vw; }
     }
 
     /* ══════════════════════════════════════════
-       PHONE LAYOUT (≤ 600px) — fixed 981×1602 canvas
-       stretched on both axes to fill the whole viewport
+       PHONE (≤ 600px) — layout is built directly inside the
+       viewport. --app-height is pinned once at load so iOS
+       Safari's bars and the keyboard cannot reflow the page.
     ══════════════════════════════════════════ */
     @media (max-width: 600px) {
       html, body {
@@ -413,10 +427,10 @@
       .homepage {
         position: fixed;
         top: 0; left: 0;
-        margin: 0;
-        width: 981px;
-        height: 1602px;
-        transform-origin: top left;
+        width: 100vw;
+        height: var(--app-height);
+        margin: 0; padding: 0;
+        overflow: hidden;
       }
     }
   </style>
@@ -718,32 +732,24 @@
 </script>
 <script>
 (function() {
-  var hp = document.querySelector('.homepage');
-  var CANVAS_W = 981, CANVAS_H = 1602, BREAKPOINT = 600;
-
-  function scaleCanvas() {
-    var vw = window.innerWidth, vh = window.innerHeight;
-    // ignore transient 0-size reports (fires during some orientation changes)
-    if (!vw || !vh) return;
-    if (vw > BREAKPOINT) {
-      hp.style.transform = '';
-      hp.style.left = '';
-      hp.style.top = '';
-      return;
-    }
-    // stretch on both axes so the canvas fills the viewport edge to edge
-    hp.style.left = '0px';
-    hp.style.top = '0px';
-    hp.style.transform = 'scale(' + (vw / CANVAS_W) + ',' + (vh / CANVAS_H) + ')';
+  // Pin the phone viewport height ONCE at load.
+  //
+  // Deliberately not wired to resize or visualViewport: on iOS Safari
+  // those fire when the toolbar slides and when the keyboard opens, and
+  // reacting to them is what made the page jump and letterbox. Only a
+  // real orientation change justifies recomputing.
+  function setAppHeight() {
+    var h = window.innerHeight;
+    if (!h) return;
+    document.documentElement.style.setProperty('--app-height', h + 'px');
   }
 
-  window.addEventListener('resize', scaleCanvas);
-  window.addEventListener('orientationchange', scaleCanvas);
-  // iOS Safari: refit when the URL/toolbar collapses or expands
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', scaleCanvas);
-  }
-  scaleCanvas();
+  setAppHeight();
+
+  window.addEventListener('orientationchange', function() {
+    // innerHeight lags the rotation, so read it after the layout settles
+    setTimeout(setAppHeight, 150);
+  });
 })();
 </script>
 </body>
