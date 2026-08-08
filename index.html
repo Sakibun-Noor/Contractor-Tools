@@ -400,14 +400,20 @@
     }
 
     /* ══════════════════════════════════════════
-       PHONE LAYOUT (≤ 600px) — fixed 981×1602 canvas,
-       uniformly scaled to fit the viewport, no scroll
+       PHONE LAYOUT (≤ 600px) — fixed 981×1602 canvas
+       stretched on both axes to fill the whole viewport
     ══════════════════════════════════════════ */
     @media (max-width: 600px) {
-      html, body { height: 100%; overflow: hidden; background: var(--navy); }
+      html, body {
+        width: 100%; height: 100%;
+        margin: 0; padding: 0;
+        overflow: hidden;
+        background: var(--navy);
+      }
       .homepage {
         position: fixed;
         top: 0; left: 0;
+        margin: 0;
         width: 981px;
         height: 1602px;
         transform-origin: top left;
@@ -725,16 +731,18 @@
       hp.style.top = '';
       return;
     }
-    var scale = Math.min(vw / CANVAS_W, vh / CANVAS_H);
-    var left = (vw - CANVAS_W * scale) / 2;
-    var top = (vh - CANVAS_H * scale) / 2;
-    hp.style.transform = 'scale(' + scale + ')';
-    hp.style.left = left + 'px';
-    hp.style.top = top + 'px';
+    // stretch on both axes so the canvas fills the viewport edge to edge
+    hp.style.left = '0px';
+    hp.style.top = '0px';
+    hp.style.transform = 'scale(' + (vw / CANVAS_W) + ',' + (vh / CANVAS_H) + ')';
   }
 
   window.addEventListener('resize', scaleCanvas);
   window.addEventListener('orientationchange', scaleCanvas);
+  // iOS Safari: refit when the URL/toolbar collapses or expands
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', scaleCanvas);
+  }
   scaleCanvas();
 })();
 </script>
