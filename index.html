@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-visual">
   <title>The Construction Technology Directory — Find the Right Software for Your Construction Business</title>
   <meta name="description" content="Search 600+ construction software platforms across 12 categories. Estimating, CRM, Project Management, Accounting, AI and more — free to browse.">
   <link rel="icon" type="image/png" href="assets/logo.png">
@@ -19,9 +19,6 @@
       --yellow: #ffbf00;
       --pale-blue: #edf8ff;
       --line-blue: #bcd8ef;
-      /* pinned to window.innerHeight at load by the script at page end;
-         this fallback applies before that runs / if JS is unavailable */
-      --app-height: 100dvh;
     }
     *, *::before, *::after { box-sizing: border-box; }
     html, body, #root { width: 100%; height: 100%; margin: 0; }
@@ -71,13 +68,31 @@
       overflow: hidden; background: #fff; border-radius: 7px;
     }
     .global-search input {
-      min-width: 0; border: 0; outline: 0; padding: 0 24px;
+      min-width: 0; padding: 0 24px;
       color: #344866; font: inherit; font-size: clamp(15px, 1.05vw, 19px);
+      -webkit-appearance: none; appearance: none;
+      border: 0; outline: 0; border-radius: 0; box-shadow: none; background: #fff;
     }
     .global-search input::placeholder { color: #7c8ba6; }
+    /* kill the native search decorations Safari/Chrome inject */
+    .global-search input::-webkit-search-decoration,
+    .global-search input::-webkit-search-cancel-button,
+    .global-search input::-webkit-search-results-button,
+    .global-search input::-webkit-search-results-decoration { -webkit-appearance: none; display: none; }
+    /* full reset — the icon is the SVG below and nothing else */
     .global-search button {
-      border: 0; background: #fff; color: #001746;
+      -webkit-appearance: none; appearance: none;
+      margin: 0; padding: 0;
+      border: 0; border-radius: 0; outline: 0; box-shadow: none;
+      background: #fff; color: #001746;
       display: grid; place-items: center; cursor: pointer;
+      font: inherit; line-height: 0;
+    }
+    .global-search button::before,
+    .global-search button::after { content: none; display: none; }
+    .global-search button svg {
+      display: block; flex: none;
+      width: 24px; height: 24px;
     }
 
     .header-nav {
@@ -251,41 +266,52 @@
     .soc-ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
 
     /* ══════════════════════════════════════════
-       MOBILE LAYOUT (≤ 999px) — 981×1602 reference proportions.
-       Every length is expressed as a share of the viewport
-       (1px of the 981-wide reference = 0.10194vw), so the layout
-       reproduces the reference exactly at 981px and scales with
-       the screen below it. No fixed 981px widths, no page scaling.
+       MOBILE LAYOUT (≤ 999px)
+       Rows are percentages of the viewport: 9 / 31 / 34 / 9 / 17.
+       Every length is clamp(phone-floor, Xvw, reference-cap) where
+       the vw term is the 981-wide reference value (1 ref px =
+       0.10194vw) — so it matches the reference on a wide screen but
+       never collapses to unreadable sizes on a phone.
+       No fixed canvas widths, no page-level scaling.
     ══════════════════════════════════════════ */
     @media (max-width: 999px) {
-      /* page grid: 124 header + 1230 main + 248 footer = 1602 */
+      /* rows: header 9% + main 74% + footer 17% = 100% of the viewport */
       .homepage {
-        grid-template-rows: 124fr 1230fr 248fr;
+        grid-template-rows: 9fr 74fr 17fr;
       }
 
-      /* ── HEADER (124 / 1602) ── */
+      /* ── HEADER (9%) ── */
       .site-header {
         background: linear-gradient(90deg,#00143f,#001b55,#00143f);
       }
       .site-header__inner {
         grid-template-columns: 255fr 405fr 321fr;
-        gap: 2.24vw;
-        padding: 0 3.06vw;
+        gap: clamp(6px, 2.24vw, 22px);
+        padding: 0 clamp(10px, 3.06vw, 30px);
       }
-      .brand img { width: 21.92vw; max-height: 80%; }
-      .global-search { height: 45%; grid-template-columns: 1fr 5.71vw; }
-      .global-search input { font-size: 1.43vw; padding: 0 1.83vw; }
+      .brand img { width: clamp(98px, 21.92vw, 215px); max-height: 78%; }
+      .global-search {
+        height: 62%;
+        grid-template-columns: 1fr clamp(30px, 5.71vw, 56px);
+      }
+      .global-search input {
+        font-size: clamp(10.5px, 1.43vw, 14px);
+        padding: 0 clamp(8px, 1.83vw, 18px);
+      }
+      .global-search button svg {
+        width: clamp(15px, 2.45vw, 24px); height: clamp(15px, 2.45vw, 24px);
+      }
       .header-nav {
         display: grid;
         grid-template-columns: repeat(4,1fr);
       }
-      .header-nav a { font-size: 1.33vw; gap: .6vw; }
-      .header-nav a svg { width: 2.45vw; height: 2.45vw; }
+      .header-nav a { font-size: clamp(8px, 1.33vw, 13px); gap: clamp(2px, .6vw, 6px); }
+      .header-nav a svg { width: clamp(16px, 2.45vw, 24px); height: clamp(16px, 2.45vw, 24px); }
       .menu-btn { display: none; }
 
-      /* ── MAIN CONTENT: 541 hero + 554 workflow + 135 discovery ── */
+      /* ── MAIN: hero 31% + categories 34% + discovery 9% ── */
       .main-content {
-        grid-template-rows: 541fr 554fr 135fr;
+        grid-template-rows: 31fr 34fr 9fr;
       }
 
       /* ── HERO (541 / 1602) ── */
@@ -310,59 +336,67 @@
         font-family: "Barlow Condensed","Roboto Condensed","Arial Narrow",sans-serif;
       }
       .hero__the {
-        font-size: 3.67vw; line-height: .9; font-weight: 800;
+        font-size: clamp(13px, 3.67vw, 36px); line-height: .9; font-weight: 800;
       }
       .hero__title-html h1 {
         margin: 0; line-height: .84; font-weight: 800;
       }
       .hero__h-construction {
-        display: block; font-size: 7.14vw; white-space: nowrap; color: #04184e;
+        display: block; font-size: clamp(26px, 7.14vw, 70px);
+        white-space: nowrap; color: #04184e;
       }
       .hero__h-technology {
-        display: block; font-size: 7.34vw; color: #ff5200; white-space: nowrap;
+        display: block; font-size: clamp(27px, 7.34vw, 72px);
+        color: #ff5200; white-space: nowrap;
       }
       .hero__directory-row {
-        width: 92%; margin: 1.02vw auto 0;
+        width: 92%; margin: clamp(3px, 1.02vw, 10px) auto 0;
         display: grid; grid-template-columns: 1fr auto 1fr;
-        gap: 1.43vw; align-items: center;
+        gap: clamp(4px, 1.43vw, 14px); align-items: center;
       }
-      .hero__dir-line { height: .41vw; background: #04184e; }
+      .hero__dir-line { height: clamp(2px, .41vw, 4px); background: #04184e; }
       .hero__directory-row strong {
-        font-size: 2.96vw; letter-spacing: .32em; line-height: 1;
+        font-size: clamp(11px, 2.96vw, 29px); letter-spacing: .32em; line-height: 1;
       }
       .hero__tagline {
-        margin-top: 1.02vw; font-size: 1.33vw; font-weight: 700; white-space: nowrap;
+        margin-top: clamp(3px, 1.02vw, 10px);
+        font-size: clamp(7px, 1.33vw, 13px); font-weight: 700; white-space: nowrap;
       }
       .hero__tagline strong { color: #ff5200; }
 
-      /* ── WORKFLOW: 6 cols × 2 rows (554 / 1602) ── */
+      /* ── CATEGORIES: 6 cols × 2 rows (34%) ── */
       .workflow {
         grid-template-rows: 96fr 458fr;
         background: linear-gradient(180deg,#f5fbff 0%,#eaf6ff 100%);
       }
       .workflow__heading {
-        font-size: 2.45vw; gap: 2.04vw;
+        font-size: clamp(11px, 2.45vw, 24px); gap: clamp(7px, 2.04vw, 20px);
       }
-      .wf-arrow { width: 3.67vw; height: 2.65vw; display: block; }
+      .wf-arrow {
+        width: clamp(20px, 3.67vw, 36px); height: clamp(14px, 2.65vw, 26px); display: block;
+      }
       .workflow__grid {
         width: 93.78%; height: 100%;
         grid-template-columns: repeat(6, minmax(0,1fr));
         grid-template-rows: repeat(2, minmax(0,1fr));
       }
       .workflow-card {
-        padding: 1.43vw .82vw; gap: .51vw;
+        padding: clamp(4px, 1.43vw, 14px) clamp(2px, .82vw, 8px);
+        gap: clamp(2px, .51vw, 5px);
         border-right: 1px solid #bdd7ec;
       }
       .workflow-card:nth-child(6n) { border-right: 0; }
       .workflow-card:nth-child(-n+6) { border-bottom: 1px solid #bdd7ec; }
       .workflow-card img {
-        height: 12.03vw; max-height: 100%; max-width: 13.05vw;
+        height: clamp(48px, 12.03vw, 118px); max-height: 100%;
+        max-width: clamp(46px, 13.05vw, 128px);
       }
       .workflow-card span {
-        font-size: 1.73vw; line-height: 1.05; font-weight: 800; white-space: normal;
+        font-size: clamp(8px, 1.73vw, 17px);
+        line-height: 1.05; font-weight: 800; white-space: normal;
       }
 
-      /* ── DISCOVERY (135 / 1602) ── */
+      /* ── DISCOVERY (9%) ── */
       .discovery {
         background: #001746;
       }
@@ -371,51 +405,61 @@
         grid-template-columns: repeat(4,1fr);
       }
       .discovery-card {
-        padding: 1.22vw 2.45vw; gap: 1.22vw;
+        padding: clamp(4px, 1.22vw, 12px) clamp(4px, 2.45vw, 24px);
+        gap: clamp(3px, 1.22vw, 12px);
         border-right: 1px solid rgba(255,255,255,.6);
         border-bottom: none;
       }
       .discovery-card:last-child { border-right: 0; }
-      .disc-icon { width: 4.69vw; height: 4.69vw; }
-      .disc-title { font-size: 1.83vw; }
-      .disc-desc { font-size: 1.27vw; }
+      .disc-icon { width: clamp(20px, 4.69vw, 46px); height: clamp(20px, 4.69vw, 46px); }
+      .disc-title { font-size: clamp(9.5px, 1.83vw, 18px); }
+      .disc-desc { font-size: clamp(7.5px, 1.27vw, 12.5px); line-height: 1.2; }
 
-      /* ── FOOTER (248 / 1602) ── */
+      /* ── FOOTER (17%) ── */
       .site-footer {
         border-top: 1px solid rgba(255,255,255,.7);
       }
       .site-footer__inner {
+        height: 100%;
         grid-template-columns: 2.05fr 1.55fr 1.5fr 1.7fr 1.35fr 1.2fr;
-        align-content: start;
-        padding: 2.04vw 2.45vw 1.43vw;
+        align-content: stretch;
+        padding: clamp(6px, 2.04vw, 20px) clamp(6px, 2.45vw, 24px) clamp(5px, 1.43vw, 14px);
       }
       .footer-column {
-        padding: 0 1.33vw;
+        padding: 0 clamp(3px, 1.33vw, 13px);
         border-left: none !important;
         border-right: 1px solid rgba(255,255,255,.55);
       }
       .footer-column:first-child { padding-left: 0; }
       .footer-column:last-child { border-right: 0; }
-      .footer-brand img { width: 18.86vw; margin-bottom: .51vw; }
+      .footer-brand img { width: clamp(76px, 18.86vw, 185px); margin-bottom: clamp(2px, .51vw, 5px); }
       .footer-column h2 {
-        font-size: 1.43vw; margin-bottom: .92vw;
-        padding-bottom: .41vw;
+        font-size: clamp(8.5px, 1.43vw, 14px);
+        margin-bottom: clamp(3px, .92vw, 9px);
+        padding-bottom: clamp(2px, .41vw, 4px);
       }
-      .footer-column h2::after { width: 2.85vw; height: .2vw; }
-      .footer-column a { font-size: 1.17vw; margin-bottom: .31vw; line-height: 1.35; }
-      .footer-column p { font-size: 1.12vw; line-height: 1.25; }
+      .footer-column h2::after { width: clamp(14px, 2.85vw, 28px); height: 2px; }
+      .footer-column a {
+        font-size: clamp(7.5px, 1.17vw, 11.5px);
+        margin-bottom: clamp(1px, .31vw, 3px); line-height: 1.4;
+      }
+      .footer-column p { font-size: clamp(7px, 1.12vw, 11px); line-height: 1.3; }
       .soc-grid {
-        grid-template-columns: repeat(2, 4.69vw);
-        grid-auto-rows: 4.69vw;
-        gap: 1.02vw;
+        grid-template-columns: repeat(2, clamp(24px, 4.69vw, 46px));
+        grid-auto-rows: clamp(24px, 4.69vw, 46px);
+        gap: clamp(3px, 1.02vw, 10px);
       }
-      a.soc-btn { width: 4.69vw; height: 4.69vw; border-radius: .71vw; }
+      a.soc-btn {
+        width: clamp(24px, 4.69vw, 46px); height: clamp(24px, 4.69vw, 46px);
+        border-radius: clamp(4px, .71vw, 7px);
+      }
     }
 
     /* ══════════════════════════════════════════
-       PHONE (≤ 600px) — layout is built directly inside the
-       viewport. --app-height is pinned once at load so iOS
-       Safari's bars and the keyboard cannot reflow the page.
+       PHONE (≤ 600px) — the grid fills the visible viewport
+       directly. No canvas, no page-level transform.
+       interactive-widget=resizes-visual (viewport meta) keeps
+       dvh stable when the keyboard opens.
     ══════════════════════════════════════════ */
     @media (max-width: 600px) {
       html, body {
@@ -428,10 +472,18 @@
         position: fixed;
         top: 0; left: 0;
         width: 100vw;
-        height: var(--app-height);
+        height: 100vh;   /* fallback for older iOS */
+        height: 100dvh;
         margin: 0; padding: 0;
         overflow: hidden;
       }
+
+      /* Rebalanced for narrow screens: the nav can't shrink ("Update Info"
+         exactly fills its cell at this size) and the logo needs to grow,
+         so the spare width comes out of the search field — its placeholder
+         truncates anyway. Footer likewise shifts a little to the brand. */
+      .site-header__inner { grid-template-columns: 275fr 255fr 450fr; }
+      .site-footer__inner { grid-template-columns: 2.15fr 1.5fr 1.45fr 1.6fr 1.25fr 1.5fr; }
     }
   </style>
 </head>
@@ -727,28 +779,6 @@
       nav.classList.remove('open');
       btn.setAttribute('aria-expanded', 'false');
     }
-  });
-})();
-</script>
-<script>
-(function() {
-  // Pin the phone viewport height ONCE at load.
-  //
-  // Deliberately not wired to resize or visualViewport: on iOS Safari
-  // those fire when the toolbar slides and when the keyboard opens, and
-  // reacting to them is what made the page jump and letterbox. Only a
-  // real orientation change justifies recomputing.
-  function setAppHeight() {
-    var h = window.innerHeight;
-    if (!h) return;
-    document.documentElement.style.setProperty('--app-height', h + 'px');
-  }
-
-  setAppHeight();
-
-  window.addEventListener('orientationchange', function() {
-    // innerHeight lags the rotation, so read it after the layout settles
-    setTimeout(setAppHeight, 150);
   });
 })();
 </script>
