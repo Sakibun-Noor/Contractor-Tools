@@ -1,0 +1,216 @@
+/* ═══════════════════════════════════════════════════════════
+   CTD shared chrome — header + footer
+   Extracted from the homepage so every page carries identical
+   branding. Self-contained: it defines its own colour tokens
+   (--ctdc-*) rather than reading each page's --navy/--orange,
+   which differ between the homepage and the inner pages.
+
+   The homepage sizes these from its 100dvh grid. Here the
+   heights are viewport-relative with the same ratios, so a
+   scrolling page matches the homepage at the same window size.
+   ═══════════════════════════════════════════════════════════ */
+
+.site-header,
+.site-footer {
+  --ctdc-navy: #001746;
+  --ctdc-orange: #ff5a00;
+  --ctdc-font: "Roboto Condensed", "Arial Narrow", Arial, sans-serif;
+}
+
+/* ── HEADER ───────────────────────────────────────────────── */
+.site-header {
+  height: clamp(80px, 10.84vh, 102px);
+  flex: none;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(15, 62, 119, .24), transparent 38%),
+    linear-gradient(90deg, #00143f 0%, #001b55 50%, #00143f 100%);
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, .72);
+  font-family: var(--ctdc-font);
+}
+.site-header__inner {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: minmax(250px, 20%) minmax(480px, 1fr) minmax(440px, 31%);
+  align-items: center;
+  gap: clamp(22px, 3vw, 55px);
+  padding: 0 clamp(42px, 5.7vw, 96px);
+}
+.site-header .brand { display: flex; align-items: center; height: 100%; }
+.site-header .brand img {
+  display: block; width: clamp(205px, 14vw, 242px);
+  max-height: 86%; object-fit: contain;
+}
+
+.global-search {
+  height: clamp(48px, 5.5vh, 58px);
+  display: grid; grid-template-columns: 1fr 64px;
+  overflow: hidden; background: #fff; border-radius: 7px;
+}
+.global-search input {
+  min-width: 0; padding: 0 24px;
+  color: #344866; font-family: var(--ctdc-font); font-size: clamp(15px, 1.05vw, 19px);
+  -webkit-appearance: none; appearance: none;
+  border: 0; outline: 0; border-radius: 0; box-shadow: none; background: #fff;
+}
+.global-search input::placeholder { color: #7c8ba6; }
+/* kill the native search decorations Safari/Chrome inject */
+.global-search input::-webkit-search-decoration,
+.global-search input::-webkit-search-cancel-button,
+.global-search input::-webkit-search-results-button,
+.global-search input::-webkit-search-results-decoration { -webkit-appearance: none; display: none; }
+/* full reset — the icon is the SVG below and nothing else */
+.global-search button {
+  -webkit-appearance: none; appearance: none;
+  margin: 0; padding: 0;
+  border: 0; border-radius: 0; outline: 0; box-shadow: none;
+  background: #fff; color: #001746;
+  display: grid; place-items: center; cursor: pointer;
+  font: inherit; line-height: 0;
+}
+.global-search button::before,
+.global-search button::after { content: none; display: none; }
+.global-search button svg { display: block; flex: none; width: 24px; height: 24px; }
+
+.header-nav {
+  height: 100%;
+  display: grid; grid-template-columns: repeat(4, minmax(72px, 1fr));
+  align-items: center;
+}
+.header-nav a {
+  height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; color: #fff; text-decoration: none;
+  font-size: clamp(12px, .9vw, 16px); white-space: nowrap;
+  transition: color .15s;
+}
+.header-nav a svg { width: clamp(22px, 1.7vw, 28px); height: clamp(22px, 1.7vw, 28px); }
+.header-nav a:hover { color: #ffb066; }
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.site-footer {
+  min-height: clamp(150px, 17.96vh, 185px);
+  flex: none;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(15, 62, 119, .22), transparent 42%),
+    linear-gradient(90deg, #00143f 0%, #001b55 50%, #00143f 100%);
+  color: #fff;
+  border-top: 1px solid rgba(255, 255, 255, .7);
+  font-family: var(--ctdc-font);
+}
+.site-footer__inner {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: 1.35fr 1.1fr 1.15fr 1.2fr .95fr .95fr;
+  align-content: center;
+  padding: 9px clamp(55px, 5.5vw, 92px) 7px;
+}
+.footer-column { padding: 0 clamp(12px, 1.2vw, 22px); min-width: 0; }
+.footer-column:first-child { padding-left: 0; }
+.footer-column:not(:first-child) { border-left: 1px solid rgba(255, 255, 255, .16); }
+.footer-brand img { width: clamp(170px, 12vw, 205px); height: auto; margin-bottom: 5px; }
+.footer-column p {
+  margin: 0; color: rgba(255, 255, 255, .62);
+  font-size: clamp(10px, .78vw, 12px); line-height: 1.25;
+}
+.footer-column h2 {
+  margin: 0 0 5px; font-size: clamp(12px, .92vw, 15px); line-height: 1;
+  font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  padding-bottom: 4px; position: relative; color: #fff;
+}
+.footer-column h2::after {
+  content: ""; position: absolute; left: 0; bottom: 0;
+  width: 28px; height: 2px; background: var(--ctdc-orange);
+}
+.footer-column a {
+  display: block; margin: 0 0 3px; color: rgba(255, 255, 255, .72);
+  font-size: clamp(10px, .78vw, 12.5px); line-height: 1.15; transition: color .12s;
+}
+.footer-column a:hover { color: #fff; }
+
+.soc-grid {
+  display: grid; grid-template-columns: repeat(2, clamp(32px, 2.4vw, 38px));
+  grid-auto-rows: clamp(32px, 2.4vw, 38px);
+  gap: 7px; margin-top: 1px;
+}
+a.soc-btn {
+  width: 100%; height: 100%; margin: 0;
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  line-height: 0; transition: transform .12s, opacity .12s;
+}
+.soc-btn svg { width: 55%; height: 55%; display: block; flex: none; }
+a.soc-btn:hover { transform: scale(1.08); opacity: .9; }
+.soc-li { background: #0077B5; }
+.soc-fb { background: #1877F2; }
+.soc-yt { background: #FF0000; }
+.soc-ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+
+/* ── MOBILE (≤ 999px) ─────────────────────────────────────────
+   Same clamp(phone-floor, reference-vw, cap) scheme the homepage
+   uses, so the chrome stays readable on a phone.
+   ─────────────────────────────────────────────────────────── */
+@media (max-width: 999px) {
+  .site-header { height: clamp(64px, 9vh, 84px); }
+  .site-header__inner {
+    grid-template-columns: 255fr 405fr 321fr;
+    gap: clamp(6px, 2.24vw, 22px);
+    padding: 0 clamp(10px, 3.06vw, 30px);
+  }
+  .site-header .brand img { width: clamp(98px, 21.92vw, 215px); max-height: 78%; }
+  .global-search {
+    height: 62%;
+    grid-template-columns: 1fr clamp(30px, 5.71vw, 56px);
+  }
+  .global-search input {
+    font-size: clamp(10.5px, 1.43vw, 14px);
+    padding: 0 clamp(8px, 1.83vw, 18px);
+  }
+  .global-search button svg {
+    width: clamp(15px, 2.45vw, 24px); height: clamp(15px, 2.45vw, 24px);
+  }
+  .header-nav { grid-template-columns: repeat(4, 1fr); }
+  .header-nav a { font-size: clamp(8px, 1.33vw, 13px); gap: clamp(2px, .6vw, 6px); }
+  .header-nav a svg { width: clamp(16px, 2.45vw, 24px); height: clamp(16px, 2.45vw, 24px); }
+
+  .site-footer { min-height: clamp(120px, 17vh, 155px); }
+  .site-footer__inner {
+    grid-template-columns: 2.05fr 1.55fr 1.5fr 1.7fr 1.35fr 1.2fr;
+    align-content: center;
+    padding: clamp(6px, 2.04vw, 20px) clamp(6px, 2.45vw, 24px) clamp(5px, 1.43vw, 14px);
+  }
+  .footer-column {
+    padding: 0 clamp(3px, 1.33vw, 13px);
+    border-left: none !important;
+    border-right: 1px solid rgba(255, 255, 255, .55);
+  }
+  .footer-column:first-child { padding-left: 0; }
+  .footer-column:last-child { border-right: 0; }
+  .footer-brand img { width: clamp(76px, 18.86vw, 185px); margin-bottom: clamp(2px, .51vw, 5px); }
+  .footer-column h2 {
+    font-size: clamp(8.5px, 1.43vw, 14px);
+    margin-bottom: clamp(3px, .92vw, 9px);
+    padding-bottom: clamp(2px, .41vw, 4px);
+  }
+  .footer-column h2::after { width: clamp(14px, 2.85vw, 28px); height: 2px; }
+  .footer-column a {
+    font-size: clamp(7.5px, 1.17vw, 11.5px);
+    margin-bottom: clamp(1px, .31vw, 3px); line-height: 1.4;
+  }
+  .footer-column p { font-size: clamp(7px, 1.12vw, 11px); line-height: 1.3; }
+  .soc-grid {
+    grid-template-columns: repeat(2, clamp(24px, 4.69vw, 46px));
+    grid-auto-rows: clamp(24px, 4.69vw, 46px);
+    gap: clamp(3px, 1.02vw, 10px);
+  }
+  a.soc-btn {
+    width: clamp(24px, 4.69vw, 46px); height: clamp(24px, 4.69vw, 46px);
+    border-radius: clamp(4px, .71vw, 7px);
+  }
+}
+
+@media (max-width: 600px) {
+  /* nav can't shrink ("Update Info" fills its cell); the spare
+     width comes out of the search field, whose placeholder truncates */
+  .site-header__inner { grid-template-columns: 275fr 255fr 450fr; }
+  .site-footer__inner { grid-template-columns: 2.15fr 1.5fr 1.45fr 1.6fr 1.25fr 1.5fr; }
+}

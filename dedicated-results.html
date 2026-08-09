@@ -7,7 +7,8 @@
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/ctd-chrome.css">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100vh}
@@ -109,35 +110,52 @@
 <body>
 
 <!-- HEADER -->
-<header>
-  <div class="hdr">
-    <a class="logo" href="index.html">
-      <div class="mark">
-        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-          <rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/>
-          <rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/>
-          <rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/>
-        </svg>
-      </div>
-      <div class="txt">
-        <span class="pre">THE</span>
-        <span class="t">CONSTRUCTION</span>
-        <span class="pre">TECHNOLOGY</span>
-        <span class="pre">DIRECTORY</span>
-      </div>
+<!-- ═══════════ HEADER (shared CTD chrome) ═══════════ -->
+<header class="site-header">
+  <div class="site-header__inner">
+
+    <a class="brand" href="index.html">
+      <img src="assets/ctd/logo.png" alt="The Construction Technology Directory">
     </a>
-    <div class="hsearch">
-      <input type="text" id="hdr-q" placeholder="Search Company, Product, Category, Trade or Keyword" autocomplete="off" onkeydown="if(event.key==='Enter')doHdrSearch()">
-      <button class="go" onclick="doHdrSearch()" aria-label="Search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+
+    <form class="global-search" role="search" onsubmit="doHdrSearch();return false;">
+      <input type="search" name="q" id="hdr-q"
+        placeholder="Search Company, Product, Category, Trade or Keyword"
+        autocomplete="off" aria-label="Search the directory">
+      <button type="submit" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+        </svg>
       </button>
-    </div>
-    <nav class="hnav">
-      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>About Us</a>
-      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.12.987.35 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/></svg></span>Contact Us</a>
-      <a class="hlink" href="#"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>Add / Modify Info</a>
-      <a class="hlink" href="index.html"><span class="ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
+    </form>
+
+    <nav class="header-nav" aria-label="Primary">
+      <a href="#" aria-label="About Us">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.8" r="0.6" fill="currentColor" stroke="none"/>
+        </svg>
+        About Us
+      </a>
+      <a href="#" aria-label="Contact Us">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.987.347 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/>
+        </svg>
+        Contact Us
+      </a>
+      <a href="#" aria-label="Update Info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        Update Info
+      </a>
+      <a href="index.html" aria-label="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10l9-7 9 7v10a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 20z"/><polyline points="9 21 9 13 15 13 15 21"/>
+        </svg>
+        Home
+      </a>
     </nav>
+
   </div>
 </header>
 
@@ -207,27 +225,71 @@
 </main>
 
 <!-- FOOTER -->
-<footer>
-  <div class="ftr">
-    <div class="ftr-logo">
-      <a class="logo" href="index.html">
-        <div class="mark"><svg width="26" height="26" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="8" height="16" rx="1" fill="rgba(255,255,255,.92)"/><rect x="16" y="4" width="8" height="20" rx="1" fill="rgba(255,255,255,.92)"/><rect x="2" y="22" width="24" height="3" rx="1.5" fill="#F26A1B"/></svg></div>
-        <div class="txt"><span class="pre">THE</span><span class="t">CONSTRUCTION</span><span class="pre">TECHNOLOGY</span><span class="pre">DIRECTORY</span></div>
+<!-- ═══════════ FOOTER (shared CTD chrome) ═══════════ -->
+<footer class="site-footer">
+  <div class="site-footer__inner">
+
+    <div class="footer-column footer-brand">
+      <a href="index.html" aria-label="The Construction Technology Directory home">
+        <img src="assets/ctd/logo.png" alt="The Construction Technology Directory">
       </a>
-      <p>© 2024 The Construction Technology<br>Directory, LLC. All rights reserved.</p>
+      <p>© 2026 The Construction Technology<br>Directory, LLC.&nbsp; All rights reserved.</p>
     </div>
-    <div class="fcol"><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Add / Modify Info</a><a href="#">Marketing Opportunities</a></div>
-    <div class="fcol"><h4>DIRECTORY</h4><a href="#">Categories</a><a href="#">Subcategories</a><a href="#">Products</a><a href="#">Master Trades</a><a href="#">Divisions</a><a href="#">Trades</a></div>
-    <div class="fcol"><h4>RESOURCES</h4><a href="#">Technology Guides</a><a href="#">Find</a><a href="#">Learn</a><a href="#">Research</a><a href="#">Insights</a><a href="#">Insights &amp; Glossary</a></div>
-    <div class="fcol"><h4>SITE INFO</h4><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Site Map</a><a href="#">Disclaimer</a></div>
-    <div class="fcol"><h4>FOLLOW US</h4>
-      <div class="soc">
-        <a class="si-li" href="#" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-        <a class="si-fb" href="#" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-        <a class="si-yt" href="#" title="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg></a>
-        <a class="si-ig" href="#" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+
+    <div class="footer-column">
+      <h2>Company</h2>
+      <a href="#">About Us</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Update Info</a>
+      <a href="#">Marketing Opportunities</a>
+    </div>
+
+    <div class="footer-column">
+      <h2>Directory</h2>
+      <a href="#">Categories</a>
+      <a href="#">Subcategories</a>
+      <a href="#">Products</a>
+      <a href="#">Master Trades</a>
+      <a href="#">Divisions</a>
+      <a href="#">Trades</a>
+    </div>
+
+    <div class="footer-column">
+      <h2>Resources</h2>
+      <a href="#">Technology Guides</a>
+      <a href="#">Find</a>
+      <a href="#">Learn</a>
+      <a href="#">Research</a>
+      <a href="#">Insights</a>
+      <a href="#">FAQs / Glossary</a>
+    </div>
+
+    <div class="footer-column">
+      <h2>Site Info</h2>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Site Map</a>
+      <a href="#">Disclaimer</a>
+    </div>
+
+    <div class="footer-column">
+      <h2>Follow Us</h2>
+      <div class="soc-grid">
+        <a class="soc-btn soc-li" href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a class="soc-btn soc-fb" href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+        <a class="soc-btn soc-yt" href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="#fff"><polygon points="9,7 19,12 9,17"/></svg>
+        </a>
+        <a class="soc-btn soc-ig" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
       </div>
     </div>
+
   </div>
 </footer>
 
