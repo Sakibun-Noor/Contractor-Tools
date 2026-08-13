@@ -280,12 +280,24 @@
         grid-template-rows: 9fr 74fr 17fr;
       }
 
-      /* ── HEADER (9%) ── */
+      /* ── HEADER (9%) ──
+         Desktop shows all 4 nav links inline; on mobile they collapse
+         into a single menu button so the search field can take the
+         freed width. .site-header needs position:relative + overflow:
+         visible so the dropdown (position:absolute, below the header)
+         isn't clipped by the unconditional .homepage > * { overflow:
+         hidden } rule — that only touches .site-header's own box, the
+         fixed row heights on .homepage are untouched by it. */
       .site-header {
+        position: relative;
+        overflow: visible;
         background: linear-gradient(90deg,#00143f,#001b55,#00143f);
       }
       .site-header__inner {
-        grid-template-columns: 255fr 405fr 321fr;
+        /* logo and menu button get clamp()-based tracks with a
+           guaranteed floor so the menu button stays tappable at any
+           width; search takes the 1fr remainder */
+        grid-template-columns: clamp(98px, 21.92vw, 215px) 1fr clamp(36px, 5.71vw, 56px);
         gap: clamp(6px, 2.24vw, 22px);
         padding: 0 clamp(10px, 3.06vw, 30px);
       }
@@ -299,15 +311,41 @@
         padding: 0 clamp(8px, 1.83vw, 18px);
       }
       .global-search button svg {
-        width: clamp(15px, 2.45vw, 24px); height: clamp(15px, 2.45vw, 24px);
+        width: clamp(14px, 2.2vw, 20px); height: clamp(14px, 2.2vw, 20px);
       }
-      .header-nav {
-        display: grid;
-        grid-template-columns: repeat(4,1fr);
+
+      /* the 4 links collapse into one menu button; .header-nav.open
+         is the dropdown panel toggled by the existing menu-btn script */
+      .header-nav { display: none; }
+      .menu-btn {
+        display: flex; align-items: center; justify-content: center;
+        width: 100%; height: 62%;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.35);
+        border-radius: 7px;
+        cursor: pointer; color: #fff;
       }
-      .header-nav a { font-size: clamp(8px, 1.33vw, 13px); gap: clamp(2px, .6vw, 6px); }
-      .header-nav a svg { width: clamp(16px, 2.45vw, 24px); height: clamp(16px, 2.45vw, 24px); }
-      .menu-btn { display: none; }
+      .menu-btn svg {
+        width: clamp(14px, 2.2vw, 20px); height: clamp(14px, 2.2vw, 20px);
+      }
+      .header-nav.open {
+        display: flex; flex-direction: column;
+        position: absolute; z-index: 50;
+        top: 100%; left: 0; right: 0;
+        background: #00143f;
+        border-top: 1px solid rgba(255,255,255,.25);
+        box-shadow: 0 10px 24px rgba(0,0,0,.35);
+        padding: 4px clamp(10px, 3.06vw, 30px) 8px;
+      }
+      .header-nav.open a {
+        flex-direction: row; justify-content: flex-start;
+        height: auto; gap: 10px;
+        padding: 11px 2px;
+        font-size: clamp(12px, 3vw, 15px);
+        border-bottom: 1px solid rgba(255,255,255,.14);
+      }
+      .header-nav.open a:last-child { border-bottom: 0; }
+      .header-nav.open a svg { width: 18px; height: 18px; flex: none; }
 
       /* ── MAIN: hero 31% + categories 34% + discovery 9% ── */
       .main-content {
@@ -394,6 +432,8 @@
       .workflow-card span {
         font-size: clamp(8px, 1.73vw, 17px);
         line-height: 1.05; font-weight: 800; white-space: normal;
+        max-width: 100%;
+        overflow-wrap: anywhere; word-break: break-word; hyphens: auto;
       }
 
       /* ── DISCOVERY (9%) ── */
@@ -478,11 +518,10 @@
         overflow: hidden;
       }
 
-      /* Rebalanced for narrow screens: the nav can't shrink ("Update Info"
-         exactly fills its cell at this size) and the logo needs to grow,
-         so the spare width comes out of the search field — its placeholder
-         truncates anyway. Footer likewise shifts a little to the brand. */
-      .site-header__inner { grid-template-columns: 275fr 255fr 450fr; }
+      /* The header's clamp()-based columns already hold their own at
+         this width (the old nav-vs-search tug-of-war is gone now that
+         the nav collapsed into a menu button), so only the footer
+         needs a narrow-screen rebalance toward the brand column. */
       .site-footer__inner { grid-template-columns: 2.15fr 1.5fr 1.45fr 1.6fr 1.25fr 1.5fr; }
     }
   </style>
@@ -703,7 +742,7 @@
         <a href="/" aria-label="The Construction Technology Directory home">
           <img src="assets/ctd/logo.png" alt="The Construction Technology Directory">
         </a>
-        <p>© 2026 The Construction Technology<br>Directory, LLC.&nbsp; All rights reserved.</p>
+        <p>© 2026 The Construction Technology Directory, LLC<br>All rights reserved.</p>
       </div>
 
       <div class="footer-column">
@@ -711,7 +750,7 @@
         <a href="#">About Us</a>
         <a href="#">Contact Us</a>
         <a href="#">Update Info</a>
-        <a href="#">Marketing Opportunities</a>
+        <a href="#">Marketing Info</a>
       </div>
 
       <div class="footer-column">
@@ -726,7 +765,7 @@
 
       <div class="footer-column">
         <h2>Resources</h2>
-        <a href="#">Technology Guides</a>
+        <a href="#">Tech Guides</a>
         <a href="#">Find</a>
         <a href="#">Learn</a>
         <a href="#">Research</a>
@@ -737,7 +776,7 @@
       <div class="footer-column">
         <h2>Site Info</h2>
         <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
+        <a href="#">Usage Terms</a>
         <a href="#">Site Map</a>
         <a href="#">Disclaimer</a>
       </div>
