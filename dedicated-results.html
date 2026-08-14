@@ -175,21 +175,15 @@
       </div>
     </div>
     <div class="ptop-r">
-      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
-      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
-      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
+      <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
+      <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
+      <button class="btn-act" onclick="CTD_shareResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
       <a class="btn-act btn-adv" href="advanced-search-results.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Advanced Search</a>
     </div>
   </div>
 
-  <!-- Active filter chips -->
-  <div class="chips" id="chips-row">
-    <div class="chip"><b>Category:</b>&nbsp;<span>Estimating &amp; Takeoff</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-    <div class="chip"><b>Subcategory:</b>&nbsp;<span>Digital Takeoff</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-    <div class="chip"><b>Product:</b>&nbsp;<span>Quantity Takeoff Software</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-    <div class="chip"><b>Master Trade:</b>&nbsp;<span>General Construction &amp; Project Delivery</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-    <div class="chip"><b>Serving:</b>&nbsp;<span>General Contractors</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-  </div>
+  <!-- Active filter chips — populated live from the current filters -->
+  <div class="chips" id="chips-row"></div>
 
   <!-- Table -->
   <div class="tablewrap">
@@ -203,9 +197,9 @@
             <th style="width:10%">DESCRIPTION</th>
             <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
-            <th style="width:9%">CATEGORIES <span class="sic">↑↓</span></th>
+            <th style="width:9%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
             <th style="width:8.5%">DIVISIONS</th>
-            <th style="width:11%">TRADES SERVED <span class="sic">↑↓</span></th>
+            <th style="width:11%">TRADES SERVED <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
             <th style="width:8%">MASTER TRADES</th>
             <th style="width:10.5%">AVAILABLE ON</th>
             <th style="width:8%">ACTIONS</th>
@@ -294,48 +288,124 @@
 </footer>
 
 <script src="assets/tools-data.js"></script>
+<script src="assets/filters.js"></script>
+<script src="assets/actions.js"></script>
 <script>
 (function(){
-  var CM={'accounting-payroll':'Accounting & Payroll','crm-sales':'CRM & Sales','construction-leads':'Leads, Bids & Estimates','estimating-takeoff':'Estimating & Takeoff','project-management':'Project Management','field-service-dispatch':'Field Service & Dispatch','safety-compliance':'Safety & Compliance','fleet-equipment':'Fleet & Equipment','marketing-reputation':'Marketing & Reputation','ai-automation':'AI & Automation','document-management':'Document Management','procurement-purchasing':'Back Office Operations'};
-  var DIV_MAP={'accounting-payroll':['00 – General','01 – General Req.'],'crm-sales':['00 – General'],'construction-leads':['01 – General Req.'],'estimating-takeoff':['03 – Concrete','04 – Masonry','09 – Metals'],'project-management':['01 – General Req.','00 – General'],'field-service-dispatch':['01 – General Req.'],'safety-compliance':['01 – General Req.'],'fleet-equipment':['01 – General Req.','34 – Transportation'],'marketing-reputation':['00 – General'],'ai-automation':['01 – General Req.'],'document-management':['01 – General Req.'],'procurement-purchasing':['00 – General','01 – General Req.']};
-  var MT_MAP={'accounting-payroll':'General Construction & Project Delivery','crm-sales':'General Construction & Project Delivery','construction-leads':'General Construction & Project Delivery','estimating-takeoff':'General Construction & Project Delivery','project-management':'General Construction & Project Delivery','field-service-dispatch':'General Construction & Project Delivery','safety-compliance':'General Construction & Project Delivery','fleet-equipment':'Mechanical Trades','marketing-reputation':'General Construction & Project Delivery','ai-automation':'All Master Trades','document-management':'General Construction & Project Delivery','procurement-purchasing':'General Construction & Project Delivery'};
-  function avail(sz){var r=['Cloud Based'];if(/Enterprise|Mid/i.test(sz||'')){r.push('Mobile App (iOS/Android)');}else{r.push('Web Access');}if(/Enterprise/i.test(sz||''))r.push('API Available');return r;}
+  var vocab=CTD_FILTERS.build(window.TOOLS||[]);
+  var CM=vocab.CM, DIV_MAP=vocab.DIV_MAP, MT_MAP=vocab.MT_MAP, avail=CTD_FILTERS.avail;
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true;
+  var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true,activeFilters={};
 
-  function prep(){
-    var sp=new URLSearchParams(window.location.search);
-    var q=(sp.get('q')||'').trim();
-    var cat=(sp.get('cat')||'').trim();
-    var all=(window.TOOLS||[]).slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);});
-    function esc2(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-    if(q){
-      var ql=q.toLowerCase();
-      DATA=all.filter(function(t){return(t.n||'').toLowerCase().includes(ql)||(t.x||'').toLowerCase().includes(ql)||(t.sub||'').toLowerCase().includes(ql)||((t.c||[]).join(' ')).includes(ql);});
-      var hq=document.getElementById('hdr-q');if(hq)hq.value=q;
-      var ph=document.querySelector('.phead');if(ph)ph.textContent='Search Results: '+q;
-      var cr=document.getElementById('chips-row');if(cr)cr.innerHTML='<div class="chip"><b>Search:</b>&nbsp;<span>'+esc2(q)+'</span></div>';
-    }else if(cat){
-      DATA=all.filter(function(t){return(t.c||[]).indexOf(cat)>-1;});
-      var catName=CM[cat]||cat;
-      var ph=document.querySelector('.phead');if(ph)ph.textContent=catName+' Vendors';
-      var cr=document.getElementById('chips-row');if(cr)cr.innerHTML='<div class="chip"><b>Category:</b>&nbsp;<span>'+esc2(catName)+'</span></div>';
-    }else{
-      DATA=all;
+  function catNamesOf(t){return (t.c||[]).map(function(c){return CM[c]||c;});}
+  function divsOf(t){
+    var divs=[];(t.c||[]).forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
+    return divs.filter(function(v,i,a){return a.indexOf(v)===i;});
+  }
+  function mtsOf(t){
+    return (t.c||[]).map(function(c){return MT_MAP[c]||'General Construction & Project Delivery';})
+      .filter(function(v,i,a){return a.indexOf(v)===i;});
+  }
+
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Trade',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+
+  function labelFor(key,value){
+    if(key==='cat')return CM[value]||value;
+    return value;
+  }
+
+  function renderChips(){
+    var cr=document.getElementById('chips-row');
+    if(!cr)return;
+    var html='';
+    Object.keys(activeFilters).forEach(function(k){
+      var vals=activeFilters[k];
+      if(k==='q'){
+        if(vals)html+='<div class="chip"><b>Search:</b>&nbsp;<span>'+esc(vals)+'</span><span class="cx" data-k="q" data-v="">×</span></div>';
+        return;
+      }
+      (vals||[]).forEach(function(v){
+        html+='<div class="chip"><b>'+esc(FILTER_LABELS[k]||k)+':</b>&nbsp;<span>'+esc(labelFor(k,v))+'</span><span class="cx" data-k="'+esc(k)+'" data-v="'+esc(v)+'">×</span></div>';
+      });
+    });
+    cr.innerHTML=html;
+    cr.querySelectorAll('.cx').forEach(function(x){
+      x.addEventListener('click',function(){
+        var k=this.getAttribute('data-k'),v=this.getAttribute('data-v');
+        if(k==='q')delete activeFilters.q;
+        else if(activeFilters[k]){
+          activeFilters[k]=activeFilters[k].filter(function(x2){return x2!==v;});
+          if(!activeFilters[k].length)delete activeFilters[k];
+        }
+        applyFiltersAndRender(true);
+      });
+    });
+  }
+
+  function applyFiltersAndRender(updateUrl){
+    DATA=CTD_FILTERS.apply((window.TOOLS||[]).slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);}), activeFilters, vocab);
+    if(sortCol!=='rk')doSort();
+    page=1;
+    renderChips();
+    var ph=document.querySelector('.phead');
+    if(ph){
+      if(activeFilters.q)ph.textContent='Search Results: '+activeFilters.q;
+      else if(activeFilters.cat&&activeFilters.cat.length===1&&Object.keys(activeFilters).length===1)ph.textContent=(CM[activeFilters.cat[0]]||activeFilters.cat[0])+' Vendors';
+      else ph.textContent='DEDICATED SEARCH RESULTS PAGE';
+    }
+    if(updateUrl){
+      var sp=CTD_FILTERS.toParams(activeFilters);
+      var refParam=new URLSearchParams(window.location.search).get('ref');
+      if(refParam)sp.set('ref',refParam);
+      history.replaceState(null,'','dedicated-results.html'+(sp.toString()?'?'+sp.toString():''));
     }
     render();
   }
 
+  function prep(){
+    activeFilters=CTD_FILTERS.readParams(window.location.search);
+    // drop empty arrays / empty q so activeFilters only holds real state
+    Object.keys(activeFilters).forEach(function(k){
+      if(k==='q'){ if(!activeFilters.q)delete activeFilters.q; }
+      else if(!activeFilters[k].length)delete activeFilters[k];
+    });
+    var hq=document.getElementById('hdr-q');
+    if(hq&&activeFilters.q)hq.value=activeFilters.q;
+    applyFiltersAndRender(false);
+  }
+
+  // "+N more…" cells: stores the full item list + its own formatter so
+  // expanding preserves real links (e.g. category hrefs), and collapsing
+  // just re-renders the current page (simplest correct reset).
+  var MORE_STORE=[];
+  function moreCell(items,shown,formatItem){
+    if(items.length<=shown)return items.map(formatItem).join('');
+    var idx=MORE_STORE.length;
+    MORE_STORE.push({items:items,formatItem:formatItem});
+    return items.slice(0,shown).map(formatItem).join('')
+      +'<a class="more" href="javascript:void(0)" onclick="CTD_toggleMore(this,'+idx+')">+'+(items.length-shown)+' more…</a>';
+  }
+  window.CTD_toggleMore=function(el,idx){
+    var entry=MORE_STORE[idx];
+    var td=el.closest('td');
+    td.innerHTML=entry.items.map(entry.formatItem).join('')
+      +'<a class="more" href="javascript:void(0)" onclick="CTD_collapseMore()">show less</a>';
+  };
+  // inline onclick="" runs in global scope, so render (closure-local)
+  // needs a window-exposed wrapper to be reachable from the "show less" link
+  window.CTD_collapseMore=function(){render();};
+
   function render(){
     var s=(page-1)*rpp,e=s+rpp,rows=DATA.slice(s,e),total=DATA.length;
     document.getElementById('vendor-count').textContent=total.toLocaleString()+' Vendors Found';
+    MORE_STORE=[];
     var h='';
     rows.forEach(function(t,i){
       var idx=s+i+1;
-      var cats=(t.c||[]),catNames=cats.map(function(c){return CM[c]||c;});
-      var divs=[]; cats.forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
-      divs=divs.filter(function(v,i,a){return a.indexOf(v)===i;}).slice(0,3);
-      var mts=cats.map(function(c){return MT_MAP[c]||'General Construction & Project Delivery';}).filter(function(v,i,a){return a.indexOf(v)===i;});
+      var catPairs=(t.c||[]).map(function(c){return {slug:c,name:CM[c]||c};});
+      var catNames=catPairs.map(function(p){return p.name;});
+      var divs=divsOf(t);
+      var mts=mtsOf(t);
       var tr=(t.tr||['General Contractors']);
       var av=avail(t.sz);
       var desc=(t.x||'').slice(0,110)+(t.x&&t.x.length>110?'…':'');
@@ -345,18 +415,18 @@
       h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
       h+='<td><span class="vn">'+esc(t.n)+'</span><a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a></td>';
       h+='<td style="font-size:9.5px;line-height:1.5;color:#4a5568">'+esc(desc)+'</td>';
-      h+='<td><a class="bl" href="#">'+esc(prod)+'</a>'+(catNames.length>1?'<a class="more" href="#">more...</a>':'')+'</td>';
-      h+='<td><a class="bl" href="#">'+esc(t.sub||catNames[0]||'')+'</a>'+(catNames.length>1?'<a class="more" href="#">more...</a>':'')+'</td>';
-      h+='<td>'+catNames.slice(0,2).map(function(c){return'<a class="bl" style="display:block;margin-bottom:2px" href="#">'+esc(c)+'</a>';}).join('')+(catNames.length>2?'<a class="more" href="#">more...</a>':'')+'</td>';
-      h+='<td>'+divs.slice(0,2).map(function(d){return'<div style="font-size:10px;margin-bottom:2px">'+esc(d)+'</div>';}).join('')+(divs.length>2?'<a class="more" href="#">more...</a>':'')+'</td>';
-      h+='<td>'+tr.slice(0,3).map(function(r){return'<div style="font-size:10px;margin-bottom:2px">'+esc(r)+'</div>';}).join('')+(tr.length>3?'<a class="more" href="#">more...</a>':'')+'</td>';
-      h+='<td>'+mts.slice(0,2).map(function(m){return'<div style="font-size:10px;margin-bottom:2px">'+esc(m)+'</div>';}).join('')+(mts.length>2?'<a class="more" href="#">more...</a>':'')+'</td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
+      h+='<td data-fmt="link">'+moreCell(catPairs,2,function(p){return'<a class="bl" style="display:block;margin-bottom:2px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
+      h+='<td data-fmt="text">'+moreCell(divs,2,function(d){return'<div style="font-size:10px;margin-bottom:2px">'+esc(d)+'</div>';})+'</td>';
+      h+='<td data-fmt="text">'+moreCell(tr,3,function(r){return'<div style="font-size:10px;margin-bottom:2px">'+esc(r)+'</div>';})+'</td>';
+      h+='<td data-fmt="text">'+moreCell(mts,2,function(m){return'<div style="font-size:10px;margin-bottom:2px">'+esc(m)+'</div>';})+'</td>';
       h+='<td>'+av.map(function(a){return'<div class="avl"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+'</td>';
       h+='<td style="min-width:88px"><a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'">View Profile</a><a class="btn-vw" href="https://'+esc(t.d)+'" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Visit Website</a></td>';
       h+='</tr>';
     });
     document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="12" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
-    var tp=Math.ceil(total/rpp),ps=s+1,pe=Math.min(e,total);
+    var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent='Showing '+ps+' to '+pe+' of '+total.toLocaleString()+' vendors';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';
     var lo=Math.max(1,page-2),hi=Math.min(tp,page+2);
@@ -370,11 +440,50 @@
   window.goPage=function(p){page=p;render();window.scrollTo({top:80,behavior:'smooth'});};
   window.setRpp=function(v){rpp=v;page=1;render();};
   window.doHdrSearch=function(){
-    var q=(document.getElementById('hdr-q').value||'').trim().toLowerCase();
-    DATA=(q?((window.TOOLS||[]).filter(function(t){return(t.n||'').toLowerCase().includes(q)||(t.x||'').toLowerCase().includes(q)||(t.sub||'').toLowerCase().includes(q)||((t.c||[]).join(' ')).includes(q);})):(window.TOOLS||[]).slice()).sort(function(a,b){return(a.rk||999)-(b.rk||999);});
-    page=1;render();
+    var q=(document.getElementById('hdr-q').value||'').trim();
+    activeFilters={};
+    if(q)activeFilters.q=q;
+    applyFiltersAndRender(true);
   };
-  window.sortBy=function(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}DATA.sort(function(a,b){var va=a[col]||'',vb=b[col]||'';return typeof va==='string'?(sortAsc?va.localeCompare(vb):vb.localeCompare(va)):(sortAsc?va-vb:vb-va);});page=1;render();};
+
+  // sortBy supports plain scalar fields (n, sub, rk) and two derived
+  // virtual columns (catNames / trNames) built from array fields that
+  // don't sort directly.
+  function sortValue(t,col){
+    if(col==='catNames')return catNamesOf(t).join(', ');
+    if(col==='trNames')return (t.tr||[]).join(', ');
+    return t[col]||'';
+  }
+  function doSort(){
+    DATA.sort(function(a,b){
+      var va=sortValue(a,sortCol),vb=sortValue(b,sortCol);
+      return typeof va==='string'?(sortAsc?va.localeCompare(vb):vb.localeCompare(va)):(sortAsc?va-vb:vb-va);
+    });
+  }
+  window.sortBy=function(col){
+    if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}
+    doSort();page=1;render();
+  };
+
+  // ── Save Search / Export / Share ──
+  window.CTD_saveSearch=function(){
+    var label=document.querySelector('.phead').textContent+' ('+DATA.length+' vendors)';
+    CTD_ACTIONS.saveSearch(label, window.location.href);
+  };
+  window.CTD_exportResults=function(){
+    CTD_ACTIONS.exportCsv(DATA, [
+      {label:'Vendor',get:function(t){return t.n;}},
+      {label:'Website',get:function(t){return t.d;}},
+      {label:'Description',get:function(t){return t.x;}},
+      {label:'Product/Subcategory',get:function(t){return t.sub;}},
+      {label:'Categories',get:function(t){return catNamesOf(t).join('; ');}},
+      {label:'Divisions',get:function(t){return divsOf(t).join('; ');}},
+      {label:'Trades Served',get:function(t){return (t.tr||[]).join('; ');}},
+      {label:'Master Trades',get:function(t){return mtsOf(t).join('; ');}},
+      {label:'Available On',get:function(t){return avail(t.sz).join('; ');}}
+    ], 'ctd-vendor-results.csv');
+  };
+  window.CTD_shareResults=function(){ CTD_ACTIONS.shareUrl(window.location.href); };
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',prep);else prep();
 })();

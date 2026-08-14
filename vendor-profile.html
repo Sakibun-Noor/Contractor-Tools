@@ -43,7 +43,9 @@
     .vendor-top{display:grid;grid-template-columns:335px minmax(0,1fr);gap:32px;margin-bottom:28px;align-items:start}
     .vcard{border:1px solid var(--line);border-radius:10px;padding:24px;text-align:center;background:#fff}
     .vcard-logo{max-width:200px;max-height:70px;object-fit:contain;margin:0 auto 12px;display:block}
-    .vcard-name-big{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:4px;display:none}
+    .vcard-wordmark{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 0 10px}
+    .vcard-wordmark-icon{width:40px;height:40px;border-radius:9px;object-fit:contain;background:#f3f6fb;padding:6px}
+    .vcard-wordmark-text{font-size:30px;font-weight:900;color:var(--ink);letter-spacing:-.02em;line-height:1.05;word-break:break-word}
     .vcard-domain{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--vlink);margin-bottom:18px}
     .vcard-domain:hover{text-decoration:underline}
     .btn-visit{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;background:var(--blue);color:#fff;border-radius:7px;font-size:14px;font-weight:700;margin-bottom:10px;width:100%;cursor:pointer;text-decoration:none}
@@ -189,9 +191,9 @@
       <span id="bread-name">Vendor</span>
     </div>
     <div class="top-actions">
-      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
-      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
-      <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
+      <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Page</button>
+      <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Profile</button>
+      <button class="btn-act" onclick="CTD_shareResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
     </div>
   </div>
 
@@ -199,9 +201,7 @@
   <div class="vendor-top">
     <!-- Left card -->
     <div class="vcard">
-      <div id="vcard-logo-wrap">
-        <div id="vcard-logo-text" class="vcard-name-big"></div>
-      </div>
+      <div id="vcard-logo-wrap"></div>
       <a id="vcard-domain" class="vcard-domain" href="#" target="_blank" rel="noopener">
         <span id="vcard-domain-text"></span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -210,13 +210,13 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
         Visit Website
       </a>
-      <a class="btn-demo" href="#">
+      <a id="btn-demo" class="btn-demo" href="#" target="_blank" rel="noopener">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Request a Demo
       </a>
-      <button class="btn-save">
+      <button class="btn-save" id="btn-save-vendor" onclick="CTD_toggleSaveVendor()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-        Save Vendor
+        <span id="btn-save-vendor-label">Save Vendor</span>
       </button>
     </div>
 
@@ -371,15 +371,17 @@
 </footer>
 
 <script src="assets/tools-data.js"></script>
+<script src="assets/filters.js"></script>
+<script src="assets/actions.js"></script>
 <script>
 (function(){
-  var CM={'accounting-payroll':'Accounting & Payroll','crm-sales':'CRM & Sales','construction-leads':'Leads, Bids & Estimates','estimating-takeoff':'Estimating & Takeoff','project-management':'Project Management','field-service-dispatch':'Field Service & Dispatch','safety-compliance':'Safety & Compliance','fleet-equipment':'Fleet & Equipment','marketing-reputation':'Marketing & Reputation','ai-automation':'AI & Automation','document-management':'Document Management','procurement-purchasing':'Back Office Operations'};
-  var DIV_MAP={'accounting-payroll':['00 – General','01 – General Req.'],'crm-sales':['00 – General'],'construction-leads':['01 – General Req.'],'estimating-takeoff':['03 – Concrete','04 – Masonry','05 – Metals','06 – Wood & Plastics','09 – Finishes'],'project-management':['01 – General Req.','03 – Concrete','04 – Masonry','05 – Metals'],'field-service-dispatch':['01 – General Req.','03 – Concrete','04 – Masonry'],'safety-compliance':['01 – General Req.'],'fleet-equipment':['01 – General Req.','34 – Transportation'],'marketing-reputation':['00 – General'],'ai-automation':['01 – General Req.'],'document-management':['01 – General Req.'],'procurement-purchasing':['00 – General','01 – General Req.']};
-  var MT_MAP={'accounting-payroll':'General Construction & Project Delivery','crm-sales':'General Construction & Project Delivery','construction-leads':'General Construction & Project Delivery','estimating-takeoff':'General Construction & Project Delivery','project-management':'General Construction & Project Delivery','field-service-dispatch':'General Construction & Project Delivery','safety-compliance':'General Construction & Project Delivery','fleet-equipment':'Mechanical Trades','marketing-reputation':'General Construction & Project Delivery','ai-automation':'All Master Trades','document-management':'General Construction & Project Delivery','procurement-purchasing':'General Construction & Project Delivery'};
+  var CM=CTD_FILTERS.CM, DIV_MAP=CTD_FILTERS.DIV_MAP, MT_MAP=CTD_FILTERS.MT_MAP;
   var FACTS={procore:{founded:'2002',hq:'Carpinteria, CA, USA',emp:'2,500+',addr:'1000 Brooks St., Carpinteria, CA 93013, USA',phone:'(805) 654-9443',email:'info@procore.com',pricing:'Subscription / SaaS',trial:'Yes',customers:'Small to Enterprise Construction Firms',industries:'Commercial, Industrial, Infrastructure, Residential',lang:'English, Spanish, French, German, Portuguese'},autodesk:{founded:'1982',hq:'San Francisco, CA, USA',emp:'10,000+',addr:'111 McInnis Pkwy, San Rafael, CA 94903',phone:'(415) 507-5000',email:'info@autodesk.com',pricing:'Subscription',trial:'Yes',customers:'Mid to Enterprise Construction Firms',industries:'Commercial, Infrastructure, Industrial',lang:'English, French, German, Spanish, Japanese'}};
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function li(text){return'<li>'+esc(text)+'</li>';}
   function setEl(id,val){var el=document.getElementById(id);if(el)el.textContent=val||'—';}
+
+  var CURRENT_TOOL=null;
 
   function load(){
     var params=new URLSearchParams(window.location.search);
@@ -387,14 +389,19 @@
     var tools=window.TOOLS||[];
     var t=tools.find(function(x){return x.s===slug;})||tools[0];
     if(!t)return;
+    CURRENT_TOOL=t;
 
     // Title
     document.title=t.n+' — The Construction Technology Directory';
     setEl('bread-name',t.n);
 
-    // Logo / name
+    // Logo / name — no per-vendor logo art exists in this dataset, so
+    // render a large wordmark-style name; try the vendor's real favicon
+    // (assets/icons/{domain}.ico, present for ~30% of vendors) as a
+    // small mark beside it, falling back to text-only if it 404s.
     var logoWrap=document.getElementById('vcard-logo-wrap');
-    logoWrap.innerHTML='<div style="font-size:22px;font-weight:900;color:var(--ink);padding:16px 0 8px;letter-spacing:-.01em">'+esc(t.n)+'</div>';
+    var iconHtml=t.d?'<img class="vcard-wordmark-icon" src="assets/icons/'+esc(t.d)+'.ico" alt="" onerror="this.remove()">':'';
+    logoWrap.innerHTML='<div class="vcard-wordmark">'+iconHtml+'<div class="vcard-wordmark-text">'+esc(t.n)+'</div></div>';
 
     // Domain
     var domEl=document.getElementById('vcard-domain-text');
@@ -403,6 +410,13 @@
     if(visitEl&&t.d)visitEl.href='https://'+t.d;
     var domLink=document.getElementById('vcard-domain');
     if(domLink&&t.d)domLink.href='https://'+t.d;
+    // No vendor-specific demo-request URL exists in the dataset — the
+    // vendor's real site (the only genuine URL we have) is the honest
+    // destination rather than fabricating a /demo path that may not exist.
+    var demoEl=document.getElementById('btn-demo');
+    if(demoEl&&t.d)demoEl.href='https://'+t.d;
+
+    updateSaveVendorButton();
 
     // Overview
     setEl('v-name',t.n);
@@ -463,6 +477,45 @@
   }
 
   window.doHdrSearch=function(){window.location.href='dedicated-results.html?q='+(document.getElementById('hdr-q').value||'');};
+
+  function updateSaveVendorButton(){
+    var label=document.getElementById('btn-save-vendor-label');
+    var btn=document.getElementById('btn-save-vendor');
+    if(!label||!CURRENT_TOOL)return;
+    var saved=CTD_ACTIONS.isVendorSaved(CURRENT_TOOL.s);
+    label.textContent=saved?'Saved ✓':'Save Vendor';
+    if(btn)btn.style.color=saved?'var(--green)':'';
+  }
+  window.CTD_toggleSaveVendor=function(){
+    if(!CURRENT_TOOL)return;
+    CTD_ACTIONS.toggleSaveVendor(CURRENT_TOOL.s, CURRENT_TOOL.n);
+    updateSaveVendorButton();
+  };
+
+  window.CTD_saveSearch=function(){
+    if(!CURRENT_TOOL)return;
+    CTD_ACTIONS.saveSearch(CURRENT_TOOL.n+' — Vendor Profile', window.location.href);
+  };
+  window.CTD_exportResults=function(){
+    if(!CURRENT_TOOL)return;
+    var t=CURRENT_TOOL;
+    var cats=(t.c||[]).map(function(c){return CM[c]||c;});
+    var divs=[];(t.c||[]).forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
+    divs=divs.filter(function(v,i,a){return a.indexOf(v)===i;});
+    var mts=(t.c||[]).map(function(c){return MT_MAP[c]||'General Construction & Project Delivery';}).filter(function(v,i,a){return a.indexOf(v)===i;});
+    CTD_ACTIONS.exportCsv([t], [
+      {label:'Vendor',get:function(){return t.n;}},
+      {label:'Website',get:function(){return t.d;}},
+      {label:'Description',get:function(){return t.x;}},
+      {label:'Product/Subcategory',get:function(){return t.sub;}},
+      {label:'Categories',get:function(){return cats.join('; ');}},
+      {label:'Divisions',get:function(){return divs.join('; ');}},
+      {label:'Trades Served',get:function(){return (t.tr||[]).join('; ');}},
+      {label:'Master Trades',get:function(){return mts.join('; ');}},
+      {label:'Company Size',get:function(){return t.sz;}}
+    ], t.s+'-profile.csv');
+  };
+  window.CTD_shareResults=function(){ CTD_ACTIONS.shareUrl(window.location.href); };
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else load();
 })();

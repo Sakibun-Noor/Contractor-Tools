@@ -190,97 +190,68 @@
   <aside class="sidebar">
 
     <!-- Categories -->
-    <div class="sb-card sb-cat">
+    <div class="sb-card sb-cat" data-filter="cat">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         <h3>CATEGORIES</h3><span class="chev">▲</span>
       </div>
-      <div class="sb-body">
-        <div class="sb-item"><input type="checkbox" id="c1"><label for="c1" class="sb-lbl">Project Management</label><span class="sb-ct">142</span></div>
-        <div class="sb-item"><input type="checkbox" id="c2"><label for="c2" class="sb-lbl">Estimating &amp; Takeoff</label><span class="sb-ct">126</span></div>
-        <div class="sb-item"><input type="checkbox" id="c3"><label for="c3" class="sb-lbl">Document Management</label><span class="sb-ct">108</span></div>
-        <div class="sb-item"><input type="checkbox" id="c4"><label for="c4" class="sb-lbl">Field Service &amp; Dispatch</label><span class="sb-ct">100</span></div>
-        <div class="sb-item"><input type="checkbox" id="c5"><label for="c5" class="sb-lbl">Accounting &amp; Payroll</label><span class="sb-ct">72</span></div>
+      <div class="sb-body" id="sb-body-cat">
         <a class="sb-more" href="dedicated-search.html">view more categories</a>
       </div>
     </div>
 
     <!-- Subcategories -->
-    <div class="sb-card sb-cat">
+    <div class="sb-card sb-cat" data-filter="sub">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         <h3>SUBCATEGORIES</h3><span class="chev">▲</span>
       </div>
-      <div class="sb-body">
-        <div class="sb-item"><input type="checkbox" id="sc1"><label for="sc1" class="sb-lbl">Project Scheduling</label><span class="sb-ct">86</span></div>
-        <div class="sb-item"><input type="checkbox" id="sc2"><label for="sc2" class="sb-lbl">Daily Logs</label><span class="sb-ct">64</span></div>
-        <div class="sb-item"><input type="checkbox" id="sc3"><label for="sc3" class="sb-lbl">BIM</label><span class="sb-ct">54</span></div>
-        <div class="sb-item"><input type="checkbox" id="sc4"><label for="sc4" class="sb-lbl">Project Controls</label><span class="sb-ct">52</span></div>
-        <div class="sb-item"><input type="checkbox" id="sc5"><label for="sc5" class="sb-lbl">Time Tracking</label><span class="sb-ct">32</span></div>
+      <div class="sb-body" id="sb-body-sub">
         <a class="sb-more" href="dedicated-search.html">view more subcategories</a>
       </div>
     </div>
 
-    <!-- Products -->
-    <div class="sb-card sb-cat">
+    <!-- Products (dataset has no separate product field — same real
+         t.sub values as Subcategories, see note near the script) -->
+    <div class="sb-card sb-cat" data-filter="sub">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <h3>PRODUCTS</h3><span class="chev">▲</span>
       </div>
-      <div class="sb-body">
-        <div class="sb-item"><input type="checkbox" id="p1"><label for="p1" class="sb-lbl">Project Management</label><span class="sb-ct">142</span></div>
-        <div class="sb-item"><input type="checkbox" id="p2"><label for="p2" class="sb-lbl">Scheduling</label><span class="sb-ct">72</span></div>
-        <div class="sb-item"><input type="checkbox" id="p3"><label for="p3" class="sb-lbl">Estimating</label><span class="sb-ct">68</span></div>
-        <div class="sb-item"><input type="checkbox" id="p4"><label for="p4" class="sb-lbl">BIM</label><span class="sb-ct">64</span></div>
-        <div class="sb-item"><input type="checkbox" id="p5"><label for="p5" class="sb-lbl">Field Management</label><span class="sb-ct">58</span></div>
+      <div class="sb-body" id="sb-body-prod">
         <a class="sb-more" href="dedicated-search.html">view more products</a>
       </div>
     </div>
 
     <!-- Master Trades -->
-    <div class="sb-card sb-mt">
+    <div class="sb-card sb-mt" data-filter="mt">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <h3>MASTER TRADES</h3><span class="chev">▲</span>
       </div>
-      <div class="sb-body">
-        <div class="sb-item"><input type="checkbox" id="mt1"><label for="mt1" class="sb-lbl">General Construction</label><span class="sb-ct">256</span></div>
-        <div class="sb-item"><input type="checkbox" id="mt2"><label for="mt2" class="sb-lbl">Project Delivery</label><span class="sb-ct">130</span></div>
-        <div class="sb-item"><input type="checkbox" id="mt3"><label for="mt3" class="sb-lbl">Mechanical</label><span class="sb-ct">112</span></div>
-        <div class="sb-item"><input type="checkbox" id="mt4"><label for="mt4" class="sb-lbl">Electrical &amp; Technology</label><span class="sb-ct">110</span></div>
-        <div class="sb-item"><input type="checkbox" id="mt5"><label for="mt5" class="sb-lbl">Civil &amp; Utilities</label><span class="sb-ct">96</span></div>
+      <div class="sb-body" id="sb-body-mt">
         <a class="sb-more" href="dedicated-search.html">view more master trades</a>
       </div>
     </div>
 
     <!-- Divisions -->
-    <div class="sb-card sb-div">
+    <div class="sb-card sb-div" data-filter="div">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 17h6m-3-3v6"/></svg>
         <h3>DIVISIONS</h3><span class="chev">▲</span>
       </div>
-      <div class="sb-body">
-        <div class="sb-item"><input type="checkbox" id="dv1"><label for="dv1" class="sb-lbl">General Requirements (01)</label><span class="sb-ct">64</span></div>
-        <div class="sb-item"><input type="checkbox" id="dv2"><label for="dv2" class="sb-lbl">Concrete (03)</label><span class="sb-ct">58</span></div>
-        <div class="sb-item"><input type="checkbox" id="dv3"><label for="dv3" class="sb-lbl">Thermal &amp; Moisture (07)</label><span class="sb-ct">54</span></div>
-        <div class="sb-item"><input type="checkbox" id="dv4"><label for="dv4" class="sb-lbl">Finishes (09)</label><span class="sb-ct">52</span></div>
-        <div class="sb-item"><input type="checkbox" id="dv5"><label for="dv5" class="sb-lbl">Electrical (26)</label><span class="sb-ct">50</span></div>
+      <div class="sb-body" id="sb-body-div">
         <a class="sb-more" href="dedicated-search.html">view more divisions</a>
       </div>
     </div>
 
     <!-- Trades -->
-    <div class="sb-card sb-tr">
+    <div class="sb-card sb-tr" data-filter="tr">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
         <h3>TRADES</h3><span class="chev">▲</span>
       </div>
-      <div class="sb-body">
-        <div class="sb-item"><input type="checkbox" id="tr1"><label for="tr1" class="sb-lbl">Project Management</label><span class="sb-ct">142</span></div>
-        <div class="sb-item"><input type="checkbox" id="tr2"><label for="tr2" class="sb-lbl">Superintendent</label><span class="sb-ct">100</span></div>
-        <div class="sb-item"><input type="checkbox" id="tr3"><label for="tr3" class="sb-lbl">Estimating</label><span class="sb-ct">86</span></div>
-        <div class="sb-item"><input type="checkbox" id="tr4"><label for="tr4" class="sb-lbl">Labor Management</label><span class="sb-ct">72</span></div>
-        <div class="sb-item"><input type="checkbox" id="tr5"><label for="tr5" class="sb-lbl">Scheduling</label><span class="sb-ct">64</span></div>
+      <div class="sb-body" id="sb-body-tr">
         <a class="sb-more" href="dedicated-search.html">view more trades</a>
       </div>
     </div>
@@ -302,20 +273,15 @@
         </div>
       </div>
       <div class="ptop-r">
-        <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
-        <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
-        <button class="btn-act"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
+        <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
+        <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
+        <button class="btn-act" onclick="CTD_shareResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
         <a class="btn-act btn-sel" href="dedicated-search.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dedicated Selection</a>
       </div>
     </div>
 
-    <!-- Active chips -->
-    <div class="chips">
-      <div style="font-size:12px;font-weight:700;color:var(--ink);align-self:center;white-space:nowrap">ACTIVE FILTERS:</div>
-      <div class="chip"><span>United States</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-      <div class="chip"><span>Project Management</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-      <div class="chip"><span>SaaS</span><span class="cx" onclick="this.closest('.chip').remove()">×</span></div>
-    </div>
+    <!-- Active chips — populated live from the current filters -->
+    <div class="chips" id="chips-row"></div>
 
     <!-- Advanced Filters Panel -->
     <div class="af-panel">
@@ -324,42 +290,18 @@
         <h3>ADVANCED FILTERS</h3>
         <span class="chev">▲</span>
       </div>
-      <div class="af-body" id="af-body">
+      <div class="af-body" id="af-body" style="grid-template-columns:repeat(2,1fr)">
+        <!-- Only dimensions with real backing data in tools-data.js are
+             offered here — Evaluation Options / Company Type / Markets
+             Served / Purchase Options had no underlying data for any
+             vendor, so checking them could never have narrowed results. -->
         <div class="af-grp">
-          <h4>EVALUATION OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-          <div class="af-item"><input type="checkbox" id="ev1"><label for="ev1">Free Trial / Freemium</label></div>
-          <div class="af-item"><input type="checkbox" id="ev2"><label for="ev2">Demo Available</label></div>
-          <div class="af-item"><input type="checkbox" id="ev3"><label for="ev3">Peer Reviewed</label></div>
-        </div>
-        <div class="af-grp">
-          <h4>COMPANY TYPE <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-          <div class="af-item"><input type="checkbox" id="ct1"><label for="ct1">Public Company</label></div>
-          <div class="af-item"><input type="checkbox" id="ct2"><label for="ct2">Private Company</label></div>
-        </div>
-        <div class="af-grp">
-          <h4>MARKETS SERVED <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-          <div class="af-item"><input type="checkbox" id="ms1"><label for="ms1">Civil / Heavy Highway</label></div>
-          <div class="af-item"><input type="checkbox" id="ms2"><label for="ms2">Commercial</label></div>
-          <div class="af-item"><input type="checkbox" id="ms3"><label for="ms3">Education</label></div>
-          <div class="af-item"><input type="checkbox" id="ms4"><label for="ms4">Energy / Utilities</label></div>
-          <div class="af-item"><input type="checkbox" id="ms5"><label for="ms5">Government / Public Works</label></div>
-          <div class="af-item"><input type="checkbox" id="ms6"><label for="ms6">Healthcare</label></div>
-          <div class="af-item"><input type="checkbox" id="ms7"><label for="ms7">Industrial</label></div>
-          <div class="af-item"><input type="checkbox" id="ms8"><label for="ms8">Infrastructure</label></div>
-          <div class="af-item"><input type="checkbox" id="ms9"><label for="ms9">Residential</label></div>
-          <div class="af-item"><input type="checkbox" id="ms10"><label for="ms10">Retail / Hospitality</label></div>
-        </div>
-        <div class="af-grp">
-          <h4>PURCHASE OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-          <div class="af-item"><input type="checkbox" id="po1"><label for="po1">Subscription</label></div>
-          <div class="af-item"><input type="checkbox" id="po2"><label for="po2">One-Time Purchase</label></div>
-          <div class="af-item"><input type="checkbox" id="po3"><label for="po3">Contract Per Quarter</label></div>
+          <h4>COMPANY SIZE <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-size"></div>
         </div>
         <div class="af-grp">
           <h4>AVAILABLE ON <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-          <div class="af-item"><input type="checkbox" id="ao1"><label for="ao1">Web Browser</label></div>
-          <div class="af-item"><input type="checkbox" id="ao2"><label for="ao2">Mobile App</label></div>
-          <div class="af-item"><input type="checkbox" id="ao3"><label for="ao3">Desktop Software</label></div>
+          <div id="af-avail"></div>
         </div>
       </div>
     </div>
@@ -373,11 +315,11 @@
               <th style="width:3%" class="ck"><input type="checkbox" onchange="document.querySelectorAll('.rck').forEach(function(c){c.checked=this.checked;}.bind(this))"></th>
               <th style="width:4%">#</th>
               <th style="width:18%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
-              <th style="width:14%">PRODUCTS <span class="sic">↑↓</span></th>
-              <th style="width:13%">SUBCATEGORIES <span class="sic">↑↓</span></th>
-              <th style="width:14%">CATEGORIES <span class="sic">↑↓</span></th>
-              <th style="width:14%">DIVISIONS <span class="sic">↑↓</span></th>
-              <th style="width:12%">MASTER TRADES <span class="sic">↑↓</span></th>
+              <th style="width:14%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+              <th style="width:13%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+              <th style="width:14%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
+              <th style="width:14%">DIVISIONS <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
+              <th style="width:12%">MASTER TRADES <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
               <th style="width:8%">ACTIONS</th>
             </tr>
           </thead>
@@ -465,41 +407,181 @@
 </footer>
 
 <script src="assets/tools-data.js"></script>
+<script src="assets/filters.js"></script>
+<script src="assets/actions.js"></script>
 <script>
 (function(){
-  var CM={'accounting-payroll':'Accounting & Payroll','crm-sales':'CRM & Sales','construction-leads':'Leads, Bids & Estimates','estimating-takeoff':'Estimating & Takeoff','project-management':'Project Management','field-service-dispatch':'Field Service & Dispatch','safety-compliance':'Safety & Compliance','fleet-equipment':'Fleet & Equipment','marketing-reputation':'Marketing & Reputation','ai-automation':'AI & Automation','document-management':'Document Management','procurement-purchasing':'Back Office Operations'};
-  var DIV_MAP={'accounting-payroll':['00 – General','01 – General Req.'],'crm-sales':['00 – General'],'construction-leads':['01 – General Req.'],'estimating-takeoff':['03 – Concrete','04 – Masonry'],'project-management':['01 – General Req.','00 – General'],'field-service-dispatch':['01 – General Req.'],'safety-compliance':['01 – General Req.'],'fleet-equipment':['01 – General Req.'],'marketing-reputation':['00 – General'],'ai-automation':['01 – General Req.'],'document-management':['01 – General Req.'],'procurement-purchasing':['00 – General']};
-  var MT_MAP={'accounting-payroll':'General Construction & Project Delivery','crm-sales':'General Construction & Project Delivery','construction-leads':'General Construction & Project Delivery','estimating-takeoff':'General Construction & Project Delivery','project-management':'General Construction & Project Delivery','field-service-dispatch':'General Construction & Project Delivery','safety-compliance':'General Construction & Project Delivery','fleet-equipment':'Mechanical Trades','marketing-reputation':'General Construction & Project Delivery','ai-automation':'All Master Trades','document-management':'General Construction & Project Delivery','procurement-purchasing':'General Construction & Project Delivery'};
+  var TOOLS=window.TOOLS||[];
+  var vocab=CTD_FILTERS.build(TOOLS);
+  var CM=vocab.CM;
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true;
+  var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true,activeFilters={},idSeq=0;
 
-  function prep(){DATA=(window.TOOLS||[]).slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);});render();}
+  function catNamesOf(t){return (t.c||[]).map(function(c){return CM[c]||c;});}
+  function catPairsOf(t){return (t.c||[]).map(function(c){return {slug:c,name:CM[c]||c};});}
+  function divsOf(t){var divs=[];(t.c||[]).forEach(function(c){if(vocab.DIV_MAP[c])divs=divs.concat(vocab.DIV_MAP[c]);});return divs.filter(function(v,i,a){return a.indexOf(v)===i;});}
+  function mtsOf(t){return (t.c||[]).map(function(c){return vocab.MT_MAP[c]||'General Construction & Project Delivery';}).filter(function(v,i,a){return a.indexOf(v)===i;});}
+
+  // ── Sidebar + Advanced Filters: populated from real data ──
+  function renderList(container,items,filterKey,limit){
+    var shown=limit?items.slice(0,limit):items;
+    container.innerHTML=shown.map(function(it){
+      var id='sb-'+(idSeq++);
+      return '<div class="sb-item"><input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'">'
+        +'<label for="'+id+'" class="sb-lbl">'+esc(it.label)+'</label><span class="sb-ct">'+it.count+'</span></div>';
+    }).join('');
+  }
+  // Categories (12), Master Trades (3), Divisions (8) and Trades (11)
+  // are all short enough to show in full — truncating them risked a
+  // filter arriving via URL for an item outside the visible slice,
+  // which filters correctly but can't show as checked in the sidebar.
+  // Subcategories/Products (71 real values) still need a cap.
+  renderList(document.getElementById('sb-body-cat'), vocab.categories, 'cat');
+  renderList(document.getElementById('sb-body-sub'), vocab.subcategories, 'sub', 8);
+  renderList(document.getElementById('sb-body-prod'), vocab.subcategories, 'sub', 8);
+  renderList(document.getElementById('sb-body-mt'), vocab.masterTrades, 'mt');
+  renderList(document.getElementById('sb-body-div'), vocab.divisions, 'div');
+  renderList(document.getElementById('sb-body-tr'), vocab.trades, 'tr');
+  // the "view more…" links were static <a> elements already inside each
+  // sb-body — renderList above overwrote their container's innerHTML, so
+  // re-append them
+  [['sb-body-cat','categories'],['sb-body-sub','subcategories'],['sb-body-prod','products'],
+   ['sb-body-mt','master trades'],['sb-body-div','divisions'],['sb-body-tr','trades']].forEach(function(pair){
+    var el=document.getElementById(pair[0]);
+    var a=document.createElement('a');
+    a.className='sb-more'; a.href='dedicated-search.html'; a.textContent='view more '+pair[1];
+    el.appendChild(a);
+  });
+
+  function renderAfList(container,items,filterKey){
+    container.innerHTML=items.map(function(it){
+      var id='af-'+(idSeq++);
+      return '<div class="af-item"><input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'">'
+        +'<label for="'+id+'">'+esc(it.label)+' <span style="color:var(--muted)">('+it.count+')</span></label></div>';
+    }).join('');
+  }
+  renderAfList(document.getElementById('af-size'), vocab.sizes, 'sz');
+  renderAfList(document.getElementById('af-avail'), vocab.availableOn, 'avail');
+
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Trade',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
+
+  function renderChips(){
+    var cr=document.getElementById('chips-row');
+    if(!cr)return;
+    var html='';
+    Object.keys(activeFilters).forEach(function(k){
+      if(k==='q'){
+        if(activeFilters.q)html+='<div class="chip"><b>Search:</b>&nbsp;<span>'+esc(activeFilters.q)+'</span><span class="cx" data-k="q" data-v="">×</span></div>';
+        return;
+      }
+      (activeFilters[k]||[]).forEach(function(v){
+        html+='<div class="chip"><b>'+esc(FILTER_LABELS[k]||k)+':</b>&nbsp;<span>'+esc(labelFor(k,v))+'</span><span class="cx" data-k="'+esc(k)+'" data-v="'+esc(v)+'">×</span></div>';
+      });
+    });
+    if(html)html='<div style="font-size:12px;font-weight:700;color:var(--ink);align-self:center;white-space:nowrap">ACTIVE FILTERS:</div>'+html;
+    cr.innerHTML=html;
+    cr.querySelectorAll('.cx').forEach(function(x){
+      x.addEventListener('click',function(){
+        var k=this.getAttribute('data-k'),v=this.getAttribute('data-v');
+        if(k==='q')delete activeFilters.q;
+        else if(activeFilters[k]){
+          activeFilters[k]=activeFilters[k].filter(function(x2){return x2!==v;});
+          if(!activeFilters[k].length)delete activeFilters[k];
+        }
+        // keep the matching checkbox in sync
+        document.querySelectorAll('[data-filter="'+k+'"][value="'+CSS.escape(v)+'"]').forEach(function(cb){cb.checked=false;});
+        applyFiltersAndRender();
+      });
+    });
+  }
+
+  function collectFilters(){
+    var f={cat:[],sub:[],tr:[],div:[],mt:[],avail:[],sz:[]};
+    document.querySelectorAll('[data-filter]:checked').forEach(function(cb){
+      var k=cb.getAttribute('data-filter');
+      if(f[k]&&f[k].indexOf(cb.value)===-1)f[k].push(cb.value);
+    });
+    Object.keys(f).forEach(function(k){if(!f[k].length)delete f[k];});
+    if(activeFilters.q)f.q=activeFilters.q;
+    return f;
+  }
+
+  function applyFiltersAndRender(){
+    activeFilters=collectFilters();
+    DATA=CTD_FILTERS.apply(TOOLS.slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);}), activeFilters, vocab);
+    if(sortCol!=='rk')doSort();
+    page=1;
+    renderChips();
+    var sp=CTD_FILTERS.toParams(activeFilters);
+    history.replaceState(null,'','advanced-search-results.html'+(sp.toString()?'?'+sp.toString():''));
+    render();
+  }
+
+  function prep(){
+    activeFilters=CTD_FILTERS.readParams(window.location.search);
+    Object.keys(activeFilters).forEach(function(k){
+      if(k==='q'){if(!activeFilters.q)delete activeFilters.q;}
+      else if(!activeFilters[k].length)delete activeFilters[k];
+    });
+    // pre-check any boxes matching filters that arrived via URL
+    Object.keys(activeFilters).forEach(function(k){
+      if(k==='q')return;
+      activeFilters[k].forEach(function(v){
+        document.querySelectorAll('[data-filter="'+k+'"][value="'+CSS.escape(v)+'"]').forEach(function(cb){cb.checked=true;});
+      });
+    });
+    var hq=document.getElementById('hdr-q');
+    if(hq&&activeFilters.q)hq.value=activeFilters.q;
+    DATA=CTD_FILTERS.apply(TOOLS.slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);}), activeFilters, vocab);
+    renderChips();
+    render();
+  }
+
+  document.addEventListener('change',function(e){
+    if(e.target.matches('[data-filter]'))applyFiltersAndRender();
+  });
+
+  var MORE_STORE=[];
+  function moreCell(items,shown,formatItem){
+    if(items.length<=shown)return items.map(formatItem).join('');
+    var idx=MORE_STORE.length;
+    MORE_STORE.push({items:items,formatItem:formatItem});
+    return items.slice(0,shown).map(formatItem).join('')
+      +'<a class="more" href="javascript:void(0)" onclick="CTD_toggleMore(this,'+idx+')">+'+(items.length-shown)+' more…</a>';
+  }
+  window.CTD_toggleMore=function(el,idx){
+    var entry=MORE_STORE[idx];
+    var td=el.closest('td');
+    td.innerHTML=entry.items.map(entry.formatItem).join('')
+      +'<a class="more" href="javascript:void(0)" onclick="CTD_collapseMore()">show less</a>';
+  };
+  window.CTD_collapseMore=function(){render();};
 
   function render(){
     var s=(page-1)*rpp,e=s+rpp,rows=DATA.slice(s,e),total=DATA.length;
     document.getElementById('vendor-count').textContent=total.toLocaleString()+' Vendor Matches';
+    MORE_STORE=[];
     var h='';
     rows.forEach(function(t,i){
       var idx=s+i+1;
-      var cats=(t.c||[]),catNames=cats.map(function(c){return CM[c]||c;});
-      var divs=[];cats.forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
-      divs=divs.filter(function(v,i,a){return a.indexOf(v)===i;});
-      var mts=cats.map(function(c){return MT_MAP[c]||'General Construction & Project Delivery';}).filter(function(v,i,a){return a.indexOf(v)===i;});
+      var catPairs=catPairsOf(t),catNames=catNamesOf(t);
+      var divs=divsOf(t),mts=mtsOf(t);
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
       h+='<td class="ck"><input type="checkbox" class="rck"></td>';
       h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
       h+='<td><span class="vn">'+esc(t.n)+'</span><a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a></td>';
-      h+='<td><a class="bl" href="#">'+esc(prod)+'</a>'+(catNames.length>1?'<a class="more" href="dedicated-search.html">more...</a>':'')+'</td>';
-      h+='<td><a class="bl" href="#">'+esc(t.sub||catNames[0]||'')+'</a>'+(catNames.length>1?'<a class="more" href="dedicated-search.html">more...</a>':'')+'</td>';
-      h+='<td>'+catNames.slice(0,2).map(function(c){return'<a class="bl" style="display:block;margin-bottom:2px" href="#">'+esc(c)+'</a>';}).join('')+(catNames.length>2?'<a class="more" href="dedicated-search.html">more...</a>':'')+'</td>';
-      h+='<td>'+divs.slice(0,2).map(function(d){return'<div style="font-size:10px;margin-bottom:2px">'+esc(d)+'</div>';}).join('')+(divs.length>2?'<a class="more" href="dedicated-search.html">more...</a>':'')+'</td>';
-      h+='<td>'+mts.slice(0,1).map(function(m){return'<div style="font-size:10px;margin-bottom:2px">'+esc(m)+'</div>';}).join('')+(mts.length>1?'<a class="more" href="dedicated-search.html">more...</a>':'')+'</td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
+      h+='<td>'+moreCell(catPairs,2,function(p){return'<a class="bl" style="display:block;margin-bottom:2px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
+      h+='<td>'+moreCell(divs,2,function(d){return'<div style="font-size:10px;margin-bottom:2px">'+esc(d)+'</div>';})+'</td>';
+      h+='<td>'+moreCell(mts,1,function(m){return'<div style="font-size:10px;margin-bottom:2px">'+esc(m)+'</div>';})+'</td>';
       h+='<td><a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>View Profile</a></td>';
       h+='</tr>';
     });
     document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="9" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
-    var tp=Math.ceil(total/rpp),ps=s+1,pe=Math.min(e,total);
+    var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent=total.toLocaleString()+' vendors found';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';
     var lo=Math.max(1,page-2),hi=Math.min(tp,page+2);
@@ -512,10 +594,47 @@
 
   window.goPage=function(p){page=p;render();};
   window.setRpp=function(v){rpp=v;page=1;render();};
-  window.doHdrSearch=function(){var q=(document.getElementById('hdr-q').value||'').trim().toLowerCase();DATA=(q?((window.TOOLS||[]).filter(function(t){return(t.n||'').toLowerCase().includes(q)||(t.x||'').toLowerCase().includes(q)||(t.sub||'').toLowerCase().includes(q)||((t.c||[]).join(' ')).includes(q);})):(window.TOOLS||[]).slice()).sort(function(a,b){return(a.rk||999)-(b.rk||999);});page=1;render();};
-  window.sortBy=function(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}DATA.sort(function(a,b){var va=a[col]||'',vb=b[col]||'';return typeof va==='string'?(sortAsc?va.localeCompare(vb):vb.localeCompare(va)):(sortAsc?va-vb:vb-va);});page=1;render();};
+  window.doHdrSearch=function(){
+    var q=(document.getElementById('hdr-q').value||'').trim();
+    activeFilters.q=q||undefined;
+    if(!q)delete activeFilters.q;
+    DATA=CTD_FILTERS.apply(TOOLS.slice().sort(function(a,b){return(a.rk||999)-(b.rk||999);}), activeFilters, vocab);
+    page=1;renderChips();render();
+  };
+
+  function sortValue(t,col){
+    if(col==='catNames')return catNamesOf(t).join(', ');
+    if(col==='divNames')return divsOf(t).join(', ');
+    if(col==='mtNames')return mtsOf(t).join(', ');
+    return t[col]||'';
+  }
+  function doSort(){
+    DATA.sort(function(a,b){
+      var va=sortValue(a,sortCol),vb=sortValue(b,sortCol);
+      return typeof va==='string'?(sortAsc?va.localeCompare(vb):vb.localeCompare(va)):(sortAsc?va-vb:vb-va);
+    });
+  }
+  window.sortBy=function(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}doSort();page=1;render();};
   window.toggleSB=function(hd){var body=hd.nextElementSibling;var chev=hd.querySelector('.chev');if(body.style.display==='none'){body.style.display='';chev.textContent='▲';}else{body.style.display='none';chev.textContent='▼';}};
   window.toggleAF=function(hd){var body=document.getElementById('af-body');var chev=hd.querySelector('.chev');if(body.style.display==='none'){body.style.display='grid';chev.textContent='▲';}else{body.style.display='none';chev.textContent='▼';}};
+
+  // ── Save Search / Export / Share ──
+  window.CTD_saveSearch=function(){
+    var label='Advanced Search Results ('+DATA.length+' vendors)';
+    CTD_ACTIONS.saveSearch(label, window.location.href);
+  };
+  window.CTD_exportResults=function(){
+    CTD_ACTIONS.exportCsv(DATA, [
+      {label:'Vendor',get:function(t){return t.n;}},
+      {label:'Website',get:function(t){return t.d;}},
+      {label:'Description',get:function(t){return t.x;}},
+      {label:'Product/Subcategory',get:function(t){return t.sub;}},
+      {label:'Categories',get:function(t){return catNamesOf(t).join('; ');}},
+      {label:'Divisions',get:function(t){return divsOf(t).join('; ');}},
+      {label:'Master Trades',get:function(t){return mtsOf(t).join('; ');}}
+    ], 'ctd-advanced-search-results.csv');
+  };
+  window.CTD_shareResults=function(){ CTD_ACTIONS.shareUrl(window.location.href); };
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',prep);else prep();
 })();
