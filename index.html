@@ -115,9 +115,6 @@
     .hero__construction--mobile { display: none; }
     .hero__title-html { display: none; }
     .disc-desc--mobile { display: none; }
-    /* .footer-column a { display:block } (0,1,1) outweighs a bare
-       .footer-mobile-only class (0,1,0) — match its specificity */
-    .footer-column a.footer-mobile-only { display: none; }
 
     /* ══════════ MAIN CONTENT ══════════ */
     .main-content {
@@ -324,45 +321,65 @@
         width: clamp(14px, 2.2vw, 20px); height: clamp(14px, 2.2vw, 20px);
       }
 
-      /* the 4 links collapse into one menu button; .header-nav.open
-         is the dropdown panel toggled by the existing menu-btn script */
-      .header-nav { display: none; }
+      /* the 4 links collapse into a text "MENU" button; .header-nav
+         becomes a 2x2 dropdown grid, overlaid absolutely below the
+         header so it never affects the no-scroll grid's row heights.
+         display stays "grid" at all times (closed or open) so
+         opacity/transform can transition — display:none can't
+         animate — and visibility+pointer-events keep it inert and
+         untappable while closed. */
       .menu-btn {
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        gap: clamp(1px, .3vw, 3px);
+        display: flex; align-items: center; justify-content: center;
         width: 100%; height: 62%;
         background: rgba(255,255,255,.12);
         border: 1px solid rgba(255,255,255,.35);
         border-radius: 7px;
         cursor: pointer; color: #fff;
+        font-family: inherit;
+        font-size: clamp(9px, 1.9vw, 13px);
+        font-weight: 800; letter-spacing: .06em;
       }
-      .menu-btn__label {
-        display: block;
-        font-size: clamp(7px, 1.2vw, 10px);
-        font-weight: 700; letter-spacing: .03em; line-height: 1;
-        text-transform: uppercase;
-      }
-      .menu-btn svg {
-        width: clamp(13px, 2vw, 18px); height: clamp(13px, 2vw, 18px);
-      }
-      .header-nav.open {
-        display: flex; flex-direction: column;
+      .header-nav {
+        display: grid;
+        height: auto; /* base rule sets height:100%, which under
+          position:absolute would size this to .site-header's own
+          height (its nearest positioned ancestor) instead of the
+          dropdown's actual 2-row content height */
+        grid-template-columns: repeat(2, 1fr);
+        gap: clamp(6px, 1.6vw, 10px);
         position: absolute; z-index: 50;
         top: 100%; left: 0; right: 0;
         background: #00143f;
         border-top: 1px solid rgba(255,255,255,.25);
-        box-shadow: 0 10px 24px rgba(0,0,0,.35);
-        padding: 4px clamp(10px, 3.06vw, 30px) 8px;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 12px 28px rgba(0,0,0,.4);
+        padding: clamp(8px, 2.5vw, 14px) clamp(10px, 3.06vw, 30px) clamp(10px, 3vw, 16px);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
       }
-      .header-nav.open a {
-        flex-direction: row; justify-content: flex-start;
-        height: auto; gap: 10px;
-        padding: 11px 2px;
-        font-size: clamp(12px, 3vw, 15px);
-        border-bottom: 1px solid rgba(255,255,255,.14);
+      .header-nav.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+        transition: opacity .18s ease, transform .18s ease, visibility 0s linear 0s;
       }
-      .header-nav.open a:last-child { border-bottom: 0; }
-      .header-nav.open a svg { width: 18px; height: 18px; flex: none; }
+      .header-nav a {
+        height: auto; min-height: 58px;
+        gap: 7px;
+        padding: clamp(10px, 3vw, 14px) 6px;
+        font-size: clamp(11px, 2.9vw, 14px);
+        border-radius: 9px;
+        background: rgba(255,255,255,.05);
+        transition: background .12s, color .15s;
+      }
+      .header-nav a:hover, .header-nav a:active { background: rgba(255,255,255,.14); }
+      .header-nav a svg {
+        width: clamp(20px, 5vw, 26px); height: clamp(20px, 5vw, 26px);
+      }
 
       /* ── MAIN: hero 31% + categories 34% + discovery 9% ── */
       .main-content {
@@ -481,23 +498,13 @@
       .disc-desc--desktop { display: none; }
       .disc-desc--mobile { display: block; }
 
-      /* ── FOOTER (17%) ──
-         Company/Directory/Resources/Site Info drop the items listed
-         via .footer-desktop-only (hidden here, still shown on desktop);
-         Resources' combined "FAQs / Glossary" splits into two
-         .footer-mobile-only lines. Site Info's remaining pair sits on
-         one row via .site-info-pair. Fewer items + the removed columns'
-         width feeding Site Info both make room for the doubled gap
-         between items below. */
+      /* ── FOOTER (17%) ── */
       .site-footer {
         border-top: 1px solid rgba(255,255,255,.7);
       }
       .site-footer__inner {
         height: 100%;
-        /* Site Info only has to hold "Privacy Policy" + "Usage Terms"
-           on one line, so it takes the lion's share of what Directory
-           and Resources gave up now that they carry fewer/shorter items */
-        grid-template-columns: 1.6fr 1.35fr 1.4fr 1fr 2.75fr 1.2fr;
+        grid-template-columns: 2.05fr 1.55fr 1.5fr 1.7fr 1.35fr 1.2fr;
         align-content: stretch;
         padding: clamp(6px, 2.04vw, 20px) clamp(6px, 2.45vw, 24px) clamp(5px, 1.43vw, 14px);
       }
@@ -508,10 +515,6 @@
       }
       .footer-column:first-child { padding-left: 0; }
       .footer-column:last-child { border-right: 0; }
-      /* .footer-column a { display:block } (0,1,1) outweighs a bare
-         .footer-desktop-only class (0,1,0), so match its specificity */
-      .footer-column a.footer-desktop-only { display: none; }
-      .footer-column a.footer-mobile-only { display: block; }
       .footer-brand img { width: clamp(76px, 18.86vw, 185px); margin-bottom: clamp(2px, .51vw, 5px); }
       .footer-column h2 {
         font-size: clamp(8.5px, 1.43vw, 14px);
@@ -521,23 +524,7 @@
       .footer-column h2::after { width: clamp(14px, 2.85vw, 28px); height: 2px; }
       .footer-column a {
         font-size: clamp(7.5px, 1.17vw, 11.5px);
-        line-height: 1.4;
-        /* double-spaced: a full blank line between each item, not just
-           between heading and the first item */
-        margin-bottom: 1.3em;
-      }
-      .footer-column > a:last-of-type,
-      .site-info-pair a:last-child { margin-bottom: 0; }
-      .site-info-pair {
-        display: flex; flex-wrap: nowrap;
-        gap: clamp(4px, .8vw, 8px);
-        margin-bottom: 1.3em;
-      }
-      /* smaller than the regular clamp(7.5,1.17vw,11.5) footer-link
-         size — needed to get both phrases on one line at phone widths */
-      .footer-column .site-info-pair a {
-        font-size: clamp(6px, 1vw, 9.5px);
-        margin-bottom: 0; white-space: nowrap;
+        margin-bottom: clamp(1px, .31vw, 3px); line-height: 1.4;
       }
       .footer-column p { font-size: clamp(7px, 1.12vw, 11px); line-height: 1.3; }
       .soc-grid {
@@ -576,10 +563,9 @@
 
       /* The header's clamp()-based columns already hold their own at
          this width (the old nav-vs-search tug-of-war is gone now that
-         the nav collapsed into a menu button). The footer's ≤999px
-         ratio (which now favors Site Info so "Privacy Policy" and
-         "Usage Terms" fit on one line) carries down to phone widths
-         too, so no separate override is needed here any more. */
+         the nav collapsed into a menu button), so only the footer
+         needs a narrow-screen rebalance toward the brand column. */
+      .site-footer__inner { grid-template-columns: 2.15fr 1.5fr 1.45fr 1.6fr 1.25fr 1.5fr; }
     }
   </style>
 </head>
@@ -606,12 +592,7 @@
         </button>
       </form>
 
-      <button class="menu-btn" id="menu-btn" aria-label="Open navigation menu" aria-expanded="false">
-        <span class="menu-btn__label">Menu</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
+      <button class="menu-btn" id="menu-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="header-nav">MENU</button>
 
       <nav class="header-nav" id="header-nav" aria-label="Primary">
         <a href="#" aria-label="About Us">
@@ -814,10 +795,10 @@
 
       <div class="footer-column">
         <h2>Directory</h2>
-        <a href="#" class="footer-desktop-only">Categories</a>
+        <a href="#">Categories</a>
         <a href="#">Subcategories</a>
         <a href="#">Products</a>
-        <a href="#" class="footer-desktop-only">Master Trades</a>
+        <a href="#">Master Trades</a>
         <a href="#">Divisions</a>
         <a href="#">Trades</a>
       </div>
@@ -825,23 +806,19 @@
       <div class="footer-column">
         <h2>Resources</h2>
         <a href="#">Tech Guides</a>
-        <a href="#" class="footer-desktop-only">Find</a>
-        <a href="#" class="footer-desktop-only">Learn</a>
-        <a href="#" class="footer-desktop-only">Research</a>
-        <a href="#" class="footer-desktop-only">Insights</a>
-        <a href="#" class="footer-desktop-only">FAQs / Glossary</a>
-        <a href="#" class="footer-mobile-only">FAQs</a>
-        <a href="#" class="footer-mobile-only">Glossary</a>
+        <a href="#">Find</a>
+        <a href="#">Learn</a>
+        <a href="#">Research</a>
+        <a href="#">Insights</a>
+        <a href="#">FAQs / Glossary</a>
       </div>
 
       <div class="footer-column">
         <h2>Site Info</h2>
-        <div class="site-info-pair">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Usage Terms</a>
-        </div>
-        <a href="#" class="footer-desktop-only">Site Map</a>
-        <a href="#" class="footer-desktop-only">Disclaimer</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Usage Terms</a>
+        <a href="#">Site Map</a>
+        <a href="#">Disclaimer</a>
       </div>
 
       <div class="footer-column">
@@ -872,15 +849,24 @@
   var btn = document.getElementById('menu-btn');
   var nav = document.getElementById('header-nav');
   if (!btn || !nav) return;
-  btn.addEventListener('click', function() {
-    var open = nav.classList.toggle('open');
+
+  function setOpen(open) {
+    nav.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'CLOSE' : 'MENU';
+  }
+
+  btn.addEventListener('click', function() {
+    setOpen(!nav.classList.contains('open'));
   });
   document.addEventListener('click', function(e) {
-    if (!btn.contains(e.target) && !nav.contains(e.target)) {
-      nav.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    }
+    if (!btn.contains(e.target) && !nav.contains(e.target)) setOpen(false);
+  });
+  nav.addEventListener('click', function(e) {
+    if (e.target.closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', function(e) {
+    if ((e.key === 'Escape' || e.key === 'Esc') && nav.classList.contains('open')) setOpen(false);
   });
 })();
 </script>
