@@ -11,105 +11,99 @@
   <link rel="stylesheet" href="assets/ctd-chrome.css">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
-    *{box-sizing:border-box}html,body{margin:0;padding:0;min-height:100vh}
-    body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
+    body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
     a{text-decoration:none;color:inherit}input,select,button{font-family:inherit}
-    /* HEADER */
-    header{background:var(--navy);position:sticky;top:0;z-index:60;flex-shrink:0}
-    .hdr{display:flex;align-items:center;gap:20px;padding:12px 26px;max-width:1620px;margin:0 auto}
-    .logo{display:flex;align-items:center;gap:11px;flex:none;text-decoration:none}
-    .logo .mark{width:46px;height:46px;background:linear-gradient(150deg,#2a5fd6,#1C57B8);border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}
-    .logo .txt{display:flex;flex-direction:column;color:#fff;gap:1px}
-    .logo .txt .pre{font-size:7.5px;font-weight:800;letter-spacing:.22em;opacity:.85}
-    .logo .txt .t{font-size:13.5px;font-weight:900;color:var(--orange);letter-spacing:.01em;line-height:1.1}
-    .hsearch{flex:1;position:relative;max-width:800px}
-    .hsearch input{width:100%;padding:12px 50px 12px 18px;border-radius:10px;border:none;font-size:14px;color:var(--ink);outline:none}
-    .hsearch .go{position:absolute;right:5px;top:5px;bottom:5px;width:40px;border:none;border-radius:8px;background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
-    .hnav{display:flex;gap:18px;flex:none}
-    .hlink{display:flex;flex-direction:column;align-items:center;gap:4px;color:#fff;font-size:11px;font-weight:600;text-decoration:none}
-    .hlink .ic{width:24px;height:24px;border:1.5px solid rgba(255,255,255,.6);border-radius:50%;display:flex;align-items:center;justify-content:center}
-    .hlink:hover{color:var(--orange)}.hlink:hover .ic{border-color:var(--orange)}
+    /* ── SHELL: header + main locked to exactly 100dvh; footer lives
+       outside in normal flow, revealed only by scrolling. ── */
+    .page-above-fold{
+      width:100%;height:100dvh;min-height:0;
+      display:grid;grid-template-rows:auto minmax(0,1fr);
+      overflow:hidden;
+    }
+    .page-above-fold>*{min-width:0;min-height:0;overflow:hidden}
     /* MAIN */
-    main{flex:1;max-width:1620px;margin:0 auto;width:100%;padding:20px 26px 36px}
+    main{
+      height:100%;min-height:0;overflow:hidden;
+      max-width:1620px;margin:0 auto;width:100%;
+      padding:6px clamp(18px,2.2vw,26px) 6px;
+      display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
+      gap:4px;
+    }
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--vlink);font-weight:600;text-decoration:none}
+    .back-link:hover{text-decoration:underline}
     /* TOP ROW */
-    .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:4px}
-    .ptop-l .phead{font-size:26px;font-weight:900;letter-spacing:-.01em;color:var(--navy);margin:0 0 7px}
-    .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:500}
-    .ptop-r{display:flex;gap:10px;flex-wrap:wrap;padding-top:4px}
-    .btn-act{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12.5px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+    .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .ptop-l .phead{font-size:clamp(18px,2.4vh,26px);font-weight:900;letter-spacing:-.01em;color:var(--navy);margin:0 0 5px}
+    .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500}
+    .ptop-r{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-act{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
     .btn-act:hover{border-color:var(--navy)}.btn-act svg{color:var(--blue)}
     /* CHIPS */
-    .chips{display:flex;flex-wrap:wrap;gap:8px;padding:10px 0 12px}
-    .chip{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border:1.5px solid #c8d6ee;border-radius:5px;background:#fff;font-size:12px;white-space:nowrap}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;overflow:hidden}
+    .chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border:1.5px solid #c8d6ee;border-radius:5px;background:#fff;font-size:11px;white-space:nowrap}
     .chip b{color:var(--navy);font-weight:700}.chip span{color:var(--ink)}
     .chip .cx{cursor:pointer;color:var(--blue);font-size:13px;margin-left:3px;opacity:.7;line-height:1}
     .chip .cx:hover{opacity:1;color:#c00}
     /* TABLE */
-    .tablewrap{border:1px solid var(--line);border-radius:7px;overflow:hidden}
-    .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-    table.res{width:100%;border-collapse:collapse;font-size:10.5px;table-layout:fixed;min-width:1200px}
-    table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:10px 8px;white-space:nowrap;letter-spacing:.02em;font-size:10.5px;border-right:1px solid rgba(255,255,255,.1)}
+    .tablewrap{border:1px solid var(--line);border-radius:7px;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
+    .tscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
+    table.res{width:100%;height:100%;border-collapse:collapse;font-size:clamp(9px,1.05vh,10.5px);table-layout:fixed;min-width:1200px}
+    table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:clamp(5px,.8vh,10px) 8px;white-space:nowrap;letter-spacing:.02em;font-size:clamp(9px,1.05vh,10.5px);border-right:1px solid rgba(255,255,255,.1)}
     table.res th:last-child{border-right:none}
     .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px}
     .sic:hover{opacity:1}
-    table.res td{padding:9px 8px;vertical-align:top;border-bottom:1px solid #EEF1F6;border-right:1px solid #EEF1F6;line-height:1.4;font-size:10.5px}
+    table.res td{padding:clamp(2px,.42vh,8px) 7px;vertical-align:top;border-bottom:1px solid #EEF1F6;border-right:1px solid #EEF1F6;line-height:1.15;font-size:clamp(8.5px,1vh,10.5px)}
     table.res td:last-child{border-right:none}
+    /* every cell is forced to a deterministic, uniform row height —
+       long descriptions/division names truncate with an ellipsis
+       instead of wrapping, which is what let a stray long value blow
+       out the fixed-height table budget on some viewports */
+    table.res td div, table.res td > a.bl, table.res td.desc-cell{
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+    }
     table.res tr:nth-child(even) td{background:var(--cream)}
     table.res tr:hover td{background:#eff3ff}
     .ck{text-align:center;vertical-align:middle!important;padding:0!important}
-    .vn{font-weight:700;font-size:11px;color:var(--ink);display:block;margin-bottom:2px}
-    .vd{color:var(--vlink);font-size:9.5px}
+    .vn{font-weight:700;font-size:clamp(9.5px,1.1vh,11px);color:var(--ink);display:block;margin-bottom:1px}
+    .vd{color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px)}
     .bl{color:var(--vlink)}.bl:hover{text-decoration:underline}
-    .more{display:block;color:var(--vlink);font-size:9.5px;font-style:italic;margin-top:3px}
-    .avl{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--muted);margin-bottom:3px}
-    .btn-vp{display:block;padding:5px 8px;background:var(--navy);color:#fff;border-radius:4px;font-size:10px;font-weight:700;text-align:center;margin-bottom:4px;cursor:pointer;text-decoration:none;white-space:nowrap}
+    .more{display:block;color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px);font-style:italic;margin-top:3px}
+    .avl{display:flex;align-items:center;gap:4px;font-size:clamp(8.5px,.95vh,9.5px);color:var(--muted);margin-bottom:1px}
+    .btn-vp{display:block;padding:clamp(3px,.55vh,5px) 8px;background:var(--navy);color:#fff;border-radius:4px;font-size:clamp(9px,1vh,10px);font-weight:700;text-align:center;margin-bottom:4px;cursor:pointer;text-decoration:none;white-space:nowrap}
     .btn-vp:hover{background:var(--navy-deep)}
-    .btn-vw{display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 8px;border:1.5px solid var(--line);color:var(--ink);border-radius:4px;font-size:10px;font-weight:600;cursor:pointer;background:#fff;white-space:nowrap;text-decoration:none}
+    .btn-vw{display:flex;align-items:center;justify-content:center;gap:4px;padding:clamp(3px,.55vh,5px) 8px;border:1.5px solid var(--line);color:var(--ink);border-radius:4px;font-size:clamp(9px,1vh,10px);font-weight:600;cursor:pointer;background:#fff;white-space:nowrap;text-decoration:none}
     .btn-vw:hover{border-color:var(--navy)}
     /* PAGINATION */
-    .pgbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+    .pgbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0 0;flex-wrap:wrap;font-size:12px;color:var(--muted)}
     .pgnums{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
     .pgbtn{padding:6px 11px;border:1.5px solid var(--line);border-radius:5px;background:#fff;font-size:12.5px;cursor:pointer;color:var(--ink);font-weight:500;min-width:34px;text-align:center}
     .pgbtn:hover,.pgbtn.act{background:var(--navy);color:#fff;border-color:var(--navy)}
     .pgrpp{display:flex;align-items:center;gap:8px}
     .pgrpp select{border:1.5px solid var(--line);border-radius:5px;padding:6px 10px;font-size:12.5px;background:#fff;cursor:pointer;outline:none;color:var(--ink)}
-    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--vlink);font-weight:600;margin-bottom:14px;text-decoration:none}
-    .back-link:hover{text-decoration:underline}
     .btn-adv{background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important}
     .btn-adv:hover{background:#00235f!important}
     .btn-adv svg{color:#fff!important}
-    /* FOOTER */
-    footer{background:var(--navy);color:#fff;flex-shrink:0}
-    .ftr{display:grid;grid-template-columns:190px repeat(5,1fr);gap:28px;max-width:1620px;margin:0 auto;padding:36px 26px 28px}
-    .ftr-logo{display:flex;flex-direction:column}
-    .ftr-logo .logo{margin-bottom:12px}
-    .ftr-logo p{font-size:11px;opacity:.55;line-height:1.6;margin:8px 0 0}
-    .fcol h4{font-size:10px;font-weight:800;letter-spacing:.18em;opacity:.75;margin:0 0 12px}
-    .fcol a{display:block;font-size:12px;opacity:.65;margin-bottom:8px;line-height:1.35;color:#fff}
-    .fcol a:hover{opacity:1}
-    .soc{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
-    .soc a{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;margin:0;opacity:1;transition:transform .12s}
-    .soc a:hover{transform:scale(1.1)}
-    .si-li{background:#0077B5}.si-fb{background:#1877F2}.si-yt{background:#FF0000}
-    .si-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
-    @media(max-width:760px){
-      .hdr{flex-wrap:wrap;padding:10px 14px;gap:8px}
-      .hsearch{order:3;width:100%;flex:none}
-      .hnav{gap:10px}
-      .hlink{font-size:9.5px}.hlink .ic{width:20px;height:20px}
-      main{padding:14px 14px 28px}
-      .ptop{flex-direction:column;gap:10px}
+    /* Below desktop, the 100dvh no-scroll shell isn't appropriate —
+       a dense results table needs room to breathe on a phone, so let
+       the page grow and scroll naturally like it did before. */
+    @media(max-width:999px){
+      .page-above-fold{height:auto;display:block;overflow:visible}
+      .page-above-fold>*{overflow:visible}
+      main{height:auto;overflow:visible;display:block;padding:14px 14px 28px}
+      .ptop{flex-direction:column;gap:10px;margin-bottom:4px}
       .ptop-l .phead{font-size:20px}
-      table.res{min-width:1200px}
-      .pgbar{gap:8px}
-      .ftr{grid-template-columns:1fr 1fr;gap:18px}
-      .ftr-logo{grid-column:1/-1}
+      .chips{padding:6px 0}
+      .tablewrap{height:auto}
+      .tscroll{overflow-y:visible}
+      table.res{height:auto;min-width:1200px}
+      .pgbar{gap:8px;padding:14px 0}
     }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<div class="page-above-fold">
 <!-- ═══════════ HEADER (shared CTD chrome) ═══════════ -->
 <header class="site-header">
   <div class="site-header__inner">
@@ -217,8 +211,8 @@
     <div class="pgrpp">Results per page:&nbsp;<select id="pg-rpp" onchange="setRpp(+this.value)"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></div>
   </div>
 </main>
+</div>
 
-<!-- FOOTER -->
 <!-- ═══════════ FOOTER (shared CTD chrome) ═══════════ -->
 <footer class="site-footer">
   <div class="site-footer__inner">
@@ -234,28 +228,23 @@
       <h2>Company</h2>
       <a href="#">About Us</a>
       <a href="#">Contact Us</a>
-      <a href="#">Update Info</a>
+      <a href="#">Add / Modify Info</a>
       <a href="#">Marketing Opportunities</a>
     </div>
 
     <div class="footer-column">
       <h2>Directory</h2>
       <a href="#">Categories</a>
-      <a href="#">Subcategories</a>
       <a href="#">Products</a>
       <a href="#">Master Trades</a>
-      <a href="#">Divisions</a>
       <a href="#">Trades</a>
     </div>
 
     <div class="footer-column">
       <h2>Resources</h2>
       <a href="#">Technology Guides</a>
-      <a href="#">Find</a>
-      <a href="#">Learn</a>
-      <a href="#">Research</a>
-      <a href="#">Insights</a>
-      <a href="#">FAQs / Glossary</a>
+      <a href="#">FAQ</a>
+      <a href="#">Glossary</a>
     </div>
 
     <div class="footer-column">
@@ -408,20 +397,20 @@
       var mts=mtsOf(t);
       var tr=(t.tr||['General Contractors']);
       var av=avail(t.sz);
-      var desc=(t.x||'').slice(0,110)+(t.x&&t.x.length>110?'…':'');
+      var desc=(t.x||'').slice(0,85)+(t.x&&t.x.length>85?'…':'');
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
       h+='<td class="ck"><input type="checkbox" class="rck"></td>';
       h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
       h+='<td><span class="vn">'+esc(t.n)+'</span><a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a></td>';
-      h+='<td style="font-size:9.5px;line-height:1.5;color:#4a5568">'+esc(desc)+'</td>';
+      h+='<td class="desc-cell" style="font-size:9px;line-height:1.2;color:#4a5568">'+esc(desc)+'</td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
-      h+='<td data-fmt="link">'+moreCell(catPairs,2,function(p){return'<a class="bl" style="display:block;margin-bottom:2px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
-      h+='<td data-fmt="text">'+moreCell(divs,2,function(d){return'<div style="font-size:10px;margin-bottom:2px">'+esc(d)+'</div>';})+'</td>';
-      h+='<td data-fmt="text">'+moreCell(tr,3,function(r){return'<div style="font-size:10px;margin-bottom:2px">'+esc(r)+'</div>';})+'</td>';
-      h+='<td data-fmt="text">'+moreCell(mts,2,function(m){return'<div style="font-size:10px;margin-bottom:2px">'+esc(m)+'</div>';})+'</td>';
-      h+='<td>'+av.map(function(a){return'<div class="avl"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+'</td>';
+      h+='<td data-fmt="link">'+moreCell(catPairs,1,function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
+      h+='<td data-fmt="text">'+moreCell(divs,1,function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';})+'</td>';
+      h+='<td data-fmt="text">'+moreCell(tr,1,function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';})+'</td>';
+      h+='<td data-fmt="text">'+moreCell(mts,1,function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';})+'</td>';
+      h+='<td>'+av.slice(0,2).map(function(a){return'<div class="avl"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+(av.length>2?'<div class="avl" style="font-style:italic">+'+(av.length-2)+' more</div>':'')+'</td>';
       h+='<td style="min-width:88px"><a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'">View Profile</a><a class="btn-vw" href="https://'+esc(t.d)+'" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Visit Website</a></td>';
       h+='</tr>';
     });

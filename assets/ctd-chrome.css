@@ -19,7 +19,7 @@
 
 /* ── HEADER ───────────────────────────────────────────────── */
 .site-header {
-  height: clamp(80px, 10.84vh, 102px);
+  height: clamp(68px, 7.2vh, 82px);
   flex: none;
   background:
     radial-gradient(circle at 50% 0%, rgba(15, 62, 119, .24), transparent 38%),
@@ -31,20 +31,20 @@
 .site-header__inner {
   width: 100%; height: 100%;
   display: grid;
-  grid-template-columns: minmax(250px, 20%) minmax(480px, 1fr) minmax(440px, 31%);
+  grid-template-columns: minmax(210px, 17%) minmax(420px, 1fr) minmax(370px, 26%);
   align-items: center;
-  gap: clamp(22px, 3vw, 55px);
-  padding: 0 clamp(42px, 5.7vw, 96px);
+  gap: clamp(14px, 2vw, 34px);
+  padding: 0 clamp(24px, 3.4vw, 60px);
 }
 .site-header .brand { display: flex; align-items: center; height: 100%; }
 .site-header .brand img {
-  display: block; width: clamp(205px, 14vw, 242px);
-  max-height: 86%; object-fit: contain;
+  display: block; width: clamp(178px, 11.6vw, 210px);
+  max-height: 80%; object-fit: contain;
 }
 
 .global-search {
-  height: clamp(48px, 5.5vh, 58px);
-  display: grid; grid-template-columns: 1fr 64px;
+  height: clamp(40px, 4.6vh, 48px);
+  display: grid; grid-template-columns: 1fr 56px;
   overflow: hidden; background: #fff; border-radius: 7px;
 }
 .global-search input {
@@ -74,22 +74,24 @@
 
 .header-nav {
   height: 100%;
-  display: grid; grid-template-columns: repeat(4, minmax(72px, 1fr));
+  display: grid; grid-template-columns: repeat(4, minmax(62px, 1fr));
   align-items: center;
 }
 .header-nav a {
   height: 100%;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 6px; color: #fff; text-decoration: none;
-  font-size: clamp(12px, .9vw, 16px); white-space: nowrap;
+  gap: 5px; color: #fff; text-decoration: none;
+  font-size: clamp(11px, .78vw, 14px); white-space: nowrap;
   transition: color .15s;
 }
-.header-nav a svg { width: clamp(22px, 1.7vw, 28px); height: clamp(22px, 1.7vw, 28px); }
+.header-nav a svg { width: clamp(19px, 1.45vw, 24px); height: clamp(19px, 1.45vw, 24px); }
 .header-nav a:hover { color: #ffb066; }
 
 /* ── FOOTER ───────────────────────────────────────────────── */
+/* No forced min-height any more: the footer lives outside the
+   page-above-fold shell in normal flow, so it's free to size to
+   its own content instead of being squeezed into a viewport slice. */
 .site-footer {
-  min-height: clamp(150px, 17.96vh, 185px);
   flex: none;
   background:
     radial-gradient(circle at 50% 0%, rgba(15, 62, 119, .22), transparent 42%),
@@ -99,11 +101,11 @@
   font-family: var(--ctdc-font);
 }
 .site-footer__inner {
-  width: 100%; height: 100%;
+  width: 100%;
   display: grid;
   grid-template-columns: 1.35fr 1.1fr 1.15fr 1.2fr .95fr .95fr;
   align-content: center;
-  padding: 9px clamp(55px, 5.5vw, 92px) 7px;
+  padding: 22px clamp(55px, 5.5vw, 92px) 20px;
 }
 .footer-column { padding: 0 clamp(12px, 1.2vw, 22px); min-width: 0; }
 .footer-column:first-child { padding-left: 0; }
@@ -129,8 +131,8 @@
 .footer-column a:hover { color: #fff; }
 
 .soc-grid {
-  display: grid; grid-template-columns: repeat(2, clamp(32px, 2.4vw, 38px));
-  grid-auto-rows: clamp(32px, 2.4vw, 38px);
+  display: grid; grid-template-columns: repeat(2, clamp(28px, 2.1vw, 34px));
+  grid-auto-rows: clamp(28px, 2.1vw, 34px);
   gap: 7px; margin-top: 1px;
 }
 a.soc-btn {

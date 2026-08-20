@@ -21,9 +21,9 @@
       --line-blue: #bcd8ef;
     }
     *, *::before, *::after { box-sizing: border-box; }
-    html, body, #root { width: 100%; height: 100%; margin: 0; }
+    html, body, #root { width: 100%; margin: 0; }
     body {
-      overflow: hidden;
+      overflow-x: hidden;
       background: var(--navy);
       font-family: "Roboto Condensed", "Arial Narrow", Arial, sans-serif;
       color: #001746;
@@ -33,18 +33,24 @@
     img { display: block; max-width: 100%; }
     button, input { font-family: inherit; }
 
-    /* ══════════ TOP-LEVEL VIEWPORT GRID ══════════ */
-    .homepage {
+    /* ══════════ TOP-LEVEL SHELL ══════════
+       .page-above-fold is locked to exactly 100dvh (header + main
+       content, zero scroll). .site-footer lives outside it, in
+       normal flow, so it's the only thing a scroll can reveal. */
+    .homepage { width: 100%; }
+    .page-above-fold {
       width: 100%;
       height: 100dvh;
+      min-height: 0;
       display: grid;
-      grid-template-rows: 102fr 670fr 169fr;
+      grid-template-rows: auto minmax(0, 1fr);
       overflow: hidden;
     }
-    .homepage > * { min-width: 0; min-height: 0; overflow: hidden; }
+    .page-above-fold > * { min-width: 0; min-height: 0; overflow: hidden; }
 
     /* ══════════ HEADER ══════════ */
     .site-header {
+      height: clamp(68px, 7.2vh, 82px);
       background:
         radial-gradient(circle at 50% 0%, rgba(15, 62, 119, .24), transparent 38%),
         linear-gradient(90deg, #00143f 0%, #001b55 50%, #00143f 100%);
@@ -119,7 +125,7 @@
     /* ══════════ MAIN CONTENT ══════════ */
     .main-content {
       display: grid;
-      grid-template-rows: 345fr 234fr 91fr;
+      grid-template-rows: 52fr 34fr 14fr;
       min-height: 0; overflow: hidden;
     }
     .main-content > section { min-height: 0; min-width: 0; overflow: hidden; }
@@ -296,10 +302,24 @@
        No fixed canvas widths, no page-level scaling.
     ══════════════════════════════════════════ */
     @media (max-width: 999px) {
-      /* rows: header 9% + main 74% + footer 17% = 100% of the viewport */
+      /* mobile keeps the original locked-canvas behavior: header,
+         main and footer all forced into exactly 100dvh, zero scroll
+         anywhere. The desktop-only page-above-fold/footer split
+         above doesn't apply here. */
+      html, body { height: 100%; overflow: hidden; }
       .homepage {
-        grid-template-rows: 9fr 74fr 17fr;
+        height: 100dvh;
+        display: grid;
+        grid-template-rows: 83fr 17fr;
+        overflow: hidden;
       }
+      .page-above-fold {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 9fr 74fr;
+        overflow: hidden;
+      }
+      .site-header { height: 100%; }
 
       /* ── HEADER (9%) ──
          Desktop shows all 4 nav links inline; on mobile they collapse
@@ -604,6 +624,7 @@
 <body>
 
 <div class="homepage">
+<div class="page-above-fold">
 
   <!-- ═══════════ HEADER ═══════════ -->
   <header class="site-header">
@@ -805,6 +826,8 @@
     </section>
 
   </main>
+
+</div>
 
   <!-- ═══════════ FOOTER ═══════════ -->
   <footer class="site-footer">
