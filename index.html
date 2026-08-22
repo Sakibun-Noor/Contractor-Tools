@@ -51,21 +51,22 @@
 
   <!-- ─────────── HEADER ─────────── -->
   <header class="min-w-0 bg-ctd-navy text-white">
-    <div class="mx-auto flex h-[clamp(58px,8.4vh,86px)] max-w-[1760px] items-center
-                gap-[clamp(12px,2.2vw,44px)] px-[clamp(14px,2.4vw,46px)]
+    <div class="mx-auto flex h-[clamp(76px,11.8vh,118px)] max-w-[1760px] items-center
+                justify-between gap-[clamp(10px,1.6vw,28px)] px-[clamp(14px,2.4vw,46px)]
                 max-lg:h-auto max-lg:flex-wrap max-lg:gap-3 max-lg:py-3">
 
-      <a href="/" class="flex-none" aria-label="The Construction Technology Directory — home">
+      <a href="/" class="flex h-full flex-none items-center" aria-label="The Construction Technology Directory — home">
         <img src="assets/ctd/logo.png" alt="The Construction Technology Directory"
-             class="h-[clamp(34px,5.6vh,60px)] w-auto object-contain max-lg:h-11">
+             class="h-[82%] max-w-[clamp(150px,16.7vw,322px)] w-auto object-contain max-lg:h-11 max-lg:w-auto">
       </a>
 
-      <form class="relative min-w-0 flex-1 max-lg:order-3 max-lg:w-full max-lg:flex-none"
+      <form class="relative min-w-0 flex-none w-[clamp(300px,42.5vw,816px)]
+                    max-lg:order-3 max-lg:w-full"
             role="search" action="dedicated-results.html" method="get">
         <label for="hdr-q" class="sr-only">Search the directory</label>
         <input id="hdr-q" name="q" type="search" autocomplete="off"
                placeholder="Search Company, Product, Category, Trade or Keyword"
-               class="h-[clamp(34px,4.8vh,48px)] w-full appearance-none rounded-lg border-0 bg-white
+               class="h-[clamp(38px,5.4vh,52px)] w-full appearance-none rounded-lg border-0 bg-white
                       pl-[clamp(12px,1.2vw,22px)] pr-12 text-[clamp(11px,1vw,15px)] text-slate-700
                       outline-none placeholder:text-slate-400 max-lg:h-10">
         <button type="submit" aria-label="Search"
@@ -75,21 +76,29 @@
       </form>
 
       <nav aria-label="Primary"
-           class="flex flex-none items-center gap-[clamp(8px,1.9vw,36px)] max-lg:ml-auto max-lg:gap-5">
+           class="flex flex-none items-center gap-[clamp(10px,2.6vw,46px)] max-lg:ml-auto max-lg:gap-5">
         <a href="#" class="flex flex-col items-center gap-1 transition hover:text-ctd-orange">
-          <i class="fa-solid fa-circle-info text-[clamp(14px,1.55vw,23px)]"></i>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-[clamp(16px,1.7vw,25px)] w-[clamp(16px,1.7vw,25px)]">
+            <circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.8" r="0.6" fill="currentColor" stroke="none"/>
+          </svg>
           <span class="whitespace-nowrap text-[clamp(8px,0.78vw,13px)] font-medium">About Us</span>
         </a>
         <a href="#" class="flex flex-col items-center gap-1 transition hover:text-ctd-orange">
-          <i class="fa-solid fa-phone text-[clamp(14px,1.55vw,23px)]"></i>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-[clamp(16px,1.7vw,25px)] w-[clamp(16px,1.7vw,25px)]">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.987.347 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/>
+          </svg>
           <span class="whitespace-nowrap text-[clamp(8px,0.78vw,13px)] font-medium">Contact Us</span>
         </a>
         <a href="#" class="flex flex-col items-center gap-1 transition hover:text-ctd-orange">
-          <i class="fa-solid fa-circle-plus text-[clamp(14px,1.55vw,23px)]"></i>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-[clamp(16px,1.7vw,25px)] w-[clamp(16px,1.7vw,25px)]">
+            <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
           <span class="whitespace-nowrap text-[clamp(8px,0.78vw,13px)] font-medium">Update Info</span>
         </a>
         <a href="/" class="flex flex-col items-center gap-1 transition hover:text-ctd-orange">
-          <i class="fa-solid fa-house text-[clamp(14px,1.55vw,23px)]"></i>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-[clamp(16px,1.7vw,25px)] w-[clamp(16px,1.7vw,25px)]">
+            <path d="M3 10l9-7 9 7v10a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 20z"/><polyline points="9 21 9 13 15 13 15 21"/>
+          </svg>
           <span class="whitespace-nowrap text-[clamp(8px,0.78vw,13px)] font-medium">Home</span>
         </a>
       </nav>
@@ -107,10 +116,11 @@
 
   <!-- ─────────── WORKFLOW SOLUTIONS GRID ─────────── -->
   <section aria-label="Workflow categories"
-           class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden bg-white max-lg:block">
+           class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden
+                  bg-gradient-to-b from-[#DCEEFB] to-[#E9F5FD] max-lg:block">
 
     <h2 class="m-0 flex items-center justify-center gap-[clamp(8px,1.9vw,30px)]
-               px-4 py-[clamp(5px,1.15vh,16px)] text-center text-[clamp(11px,1.24vw,21px)]
+               px-4 py-[clamp(4px,0.9vh,13px)] text-center text-[clamp(11px,1.24vw,21px)]
                font-extrabold uppercase leading-none tracking-tight text-ctd-navy">
       <svg class="w-[clamp(20px,2.1vw,38px)] flex-none text-ctd-orange" viewBox="0 0 48 32" fill="none" aria-hidden="true">
         <path d="M44 6 Q28 0 16 14 Q8 22 12 28" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
@@ -129,63 +139,63 @@
                 max-lg:h-auto max-lg:grid-cols-3 max-lg:grid-rows-none max-lg:pb-4
                 max-sm:grid-cols-2">
 
-      <a href="dedicated-results.html?cat=accounting-payroll" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-calculator text-[clamp(16px,3.15vh,34px)] text-ctd-blue transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=accounting-payroll" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/accounting-payroll.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Accounting</span>
       </a>
 
-      <a href="dedicated-results.html?cat=crm-sales" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-users text-[clamp(16px,3.15vh,34px)] text-ctd-sky transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=crm-sales" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/crm-sales.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">CRM Sales</span>
       </a>
 
-      <a href="dedicated-results.html?cat=construction-leads" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-clipboard-list text-[clamp(16px,3.15vh,34px)] text-ctd-green transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=construction-leads" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/construction-leads.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Leads, Bids</span>
       </a>
 
-      <a href="dedicated-results.html?cat=estimating-takeoff" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-cube text-[clamp(16px,3.15vh,34px)] text-ctd-blue transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=estimating-takeoff" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/estimating-takeoff.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Estimating, Takeoff</span>
       </a>
 
-      <a href="dedicated-results.html?cat=project-management" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-calendar-check text-[clamp(16px,3.15vh,34px)] text-ctd-sky transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=project-management" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/project-management.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Project Management</span>
       </a>
 
-      <a href="dedicated-results.html?cat=field-service-dispatch" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-truck-fast text-[clamp(16px,3.15vh,34px)] text-ctd-navy transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=field-service-dispatch" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/field-service-dispatch.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Dispatch</span>
       </a>
 
-      <a href="dedicated-results.html?cat=safety-compliance" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-shield-halved text-[clamp(16px,3.15vh,34px)] text-ctd-green transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=safety-compliance" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/safety-compliance.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Compliance</span>
       </a>
 
-      <a href="dedicated-results.html?cat=fleet-equipment" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-truck text-[clamp(16px,3.15vh,34px)] text-ctd-navy transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=fleet-equipment" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/fleet-equipment.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Fleet</span>
       </a>
 
-      <a href="dedicated-results.html?cat=marketing-reputation" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-bullhorn text-[clamp(16px,3.15vh,34px)] text-ctd-blue transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=marketing-reputation" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/marketing-reputation.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Marketing</span>
       </a>
 
-      <a href="dedicated-results.html?cat=ai-automation" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-microchip text-[clamp(16px,3.15vh,34px)] text-ctd-sky transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=ai-automation" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/ai-automation.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">AI Automation</span>
       </a>
 
-      <a href="dedicated-results.html?cat=document-management" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-file-lines text-[clamp(16px,3.15vh,34px)] text-ctd-navy transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=document-management" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/document-management.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Documentation</span>
       </a>
 
-      <a href="dedicated-results.html?cat=procurement-purchasing" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(2px,0.85vh,10px)] border-b border-r border-ctd-line px-1 py-[clamp(3px,0.9vh,14px)] text-center transition hover:bg-slate-50 max-lg:min-h-[92px]">
-        <i class="fa-solid fa-cart-shopping text-[clamp(16px,3.15vh,34px)] text-ctd-green transition group-hover:-translate-y-0.5"></i>
+      <a href="dedicated-results.html?cat=procurement-purchasing" class="group flex min-h-0 flex-col items-center justify-center gap-[clamp(1px,0.5vh,7px)] border-b border-r border-ctd-line px-1 py-[clamp(2px,0.5vh,8px)] text-center transition hover:bg-white/60 max-lg:min-h-[92px]">
+        <img src="assets/logos/procurement-purchasing.png" alt="" class="h-[clamp(26px,5.8vh,58px)] w-auto object-contain transition group-hover:-translate-y-0.5">
         <span class="text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Purchasing</span>
       </a>
 
@@ -197,32 +207,32 @@
     <div class="mx-auto grid h-full max-w-[1620px] grid-cols-4 px-[clamp(8px,3.2vw,64px)]
                 max-lg:grid-cols-2 max-sm:grid-cols-1">
 
-      <a href="dedicated-results.html" class="flex items-center gap-[clamp(7px,1.15vw,18px)] border-r border-white/25 px-[clamp(6px,1.4vw,26px)] py-[clamp(6px,1.5vh,18px)] transition hover:bg-white/5 max-lg:border-b">
-        <i class="fa-solid fa-magnifying-glass flex-none text-[clamp(17px,2.9vh,32px)] text-ctd-sky"></i>
+      <a href="dedicated-results.html" class="flex items-center gap-[clamp(8px,1.3vw,20px)] border-r border-white/25 px-[clamp(6px,1.4vw,26px)] py-[clamp(10px,2.3vh,28px)] transition hover:bg-white/5 max-lg:border-b">
+        <i class="fa-solid fa-magnifying-glass flex-none text-[clamp(24px,4.6vh,50px)] text-ctd-sky"></i>
         <span class="min-w-0">
           <span class="block text-[clamp(10px,1.1vw,18px)] font-extrabold uppercase leading-tight tracking-wide text-ctd-sky">Find</span>
           <span class="block text-[clamp(8px,0.82vw,13.5px)] leading-snug text-white/80">Locate construction technology providers.</span>
         </span>
       </a>
 
-      <a href="#" class="flex items-center gap-[clamp(7px,1.15vw,18px)] border-r border-white/25 px-[clamp(6px,1.4vw,26px)] py-[clamp(6px,1.5vh,18px)] transition hover:bg-white/5 max-lg:border-b max-lg:border-r-0">
-        <i class="fa-solid fa-graduation-cap flex-none text-[clamp(17px,2.9vh,32px)] text-ctd-orange"></i>
+      <a href="#" class="flex items-center gap-[clamp(8px,1.3vw,20px)] border-r border-white/25 px-[clamp(6px,1.4vw,26px)] py-[clamp(10px,2.3vh,28px)] transition hover:bg-white/5 max-lg:border-b max-lg:border-r-0">
+        <i class="fa-solid fa-graduation-cap flex-none text-[clamp(24px,4.6vh,50px)] text-ctd-orange"></i>
         <span class="min-w-0">
           <span class="block text-[clamp(10px,1.1vw,18px)] font-extrabold uppercase leading-tight tracking-wide text-ctd-orange">Learn</span>
           <span class="block text-[clamp(8px,0.82vw,13.5px)] leading-snug text-white/80">Understand software before you buy.</span>
         </span>
       </a>
 
-      <a href="#" class="flex items-center gap-[clamp(7px,1.15vw,18px)] border-r border-white/25 px-[clamp(6px,1.4vw,26px)] py-[clamp(6px,1.5vh,18px)] transition hover:bg-white/5 max-sm:border-b">
-        <i class="fa-solid fa-building-circle-check flex-none text-[clamp(17px,2.9vh,32px)] text-ctd-green"></i>
+      <a href="#" class="flex items-center gap-[clamp(8px,1.3vw,20px)] border-r border-white/25 px-[clamp(6px,1.4vw,26px)] py-[clamp(10px,2.3vh,28px)] transition hover:bg-white/5 max-sm:border-b">
+        <i class="fa-solid fa-building-circle-check flex-none text-[clamp(24px,4.6vh,50px)] text-ctd-green"></i>
         <span class="min-w-0">
           <span class="block text-[clamp(10px,1.1vw,18px)] font-extrabold uppercase leading-tight tracking-wide text-ctd-green">Research</span>
           <span class="block text-[clamp(8px,0.82vw,13.5px)] leading-snug text-white/80">Research trusted technology providers.</span>
         </span>
       </a>
 
-      <a href="#" class="flex items-center gap-[clamp(7px,1.15vw,18px)] px-[clamp(6px,1.4vw,26px)] py-[clamp(6px,1.5vh,18px)] transition hover:bg-white/5">
-        <i class="fa-solid fa-lightbulb flex-none text-[clamp(17px,2.9vh,32px)] text-ctd-yellow"></i>
+      <a href="#" class="flex items-center gap-[clamp(8px,1.3vw,20px)] px-[clamp(6px,1.4vw,26px)] py-[clamp(10px,2.3vh,28px)] transition hover:bg-white/5">
+        <i class="fa-solid fa-lightbulb flex-none text-[clamp(24px,4.6vh,50px)] text-ctd-yellow"></i>
         <span class="min-w-0">
           <span class="block text-[clamp(10px,1.1vw,18px)] font-extrabold uppercase leading-tight tracking-wide text-ctd-yellow">Insights</span>
           <span class="block text-[clamp(8px,0.82vw,13.5px)] leading-snug text-white/80">Stay informed about construction technology.</span>
