@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010312">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010425">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -45,7 +45,7 @@
     .sb-more{color:var(--blue);font-size:11.5px;font-weight:600;margin-top:4px;display:block}
     .sb-more:hover{text-decoration:underline}
     /* cat = green, mt/div/trade = orange */
-    .sb-cat h3{color:var(--green)}.sb-mt h3{color:var(--orange)}.sb-div h3{color:var(--orange)}.sb-tr h3{color:var(--orange)}
+    .sb-cat h3{color:var(--green)}.sb-sz h3{color:var(--green)}.sb-mt h3{color:var(--orange)}.sb-div h3{color:var(--orange)}.sb-tr h3{color:var(--orange)}
     /* MAIN */
     .main-col{
       padding:8px clamp(18px,2vw,26px) 6px;min-width:0;
@@ -71,16 +71,19 @@
     .af-hd{display:flex;align-items:center;gap:10px;padding:6px 14px;background:var(--navy);color:#fff;cursor:pointer;user-select:none}
     .af-hd h3{margin:0;font-size:12px;font-weight:700;letter-spacing:.04em;flex:1}
     .af-hd .chev{font-size:12px;transition:transform .2s}
-    .af-body{padding:8px 16px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px 24px;max-height:16vh;overflow-y:auto}
+    .af-body{padding:8px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 24px;max-height:none;overflow:visible}
+    .af-col{min-width:0;display:flex;flex-direction:column;gap:8px}
+    .af-col:not(:last-child){border-right:1px solid var(--line);padding-right:24px}
+    .af-item.is-pending{opacity:.45}
+    .af-item.is-pending label{cursor:default}
     .af-grp h4{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink)}
     .af-item{display:flex;align-items:center;gap:7px;font-size:11px;padding:2px 0}
     .af-item input{accent-color:var(--blue);width:13px;height:13px;flex:none}
-    /* dividers */
-    .af-body .af-grp:not(:last-child){border-right:1px solid var(--line);padding-right:24px}
     /* TABLE */
     .tablewrap{border:1px solid var(--line);border-radius:7px;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
-    .tscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
-    table.res{width:100%;height:100%;border-collapse:collapse;font-size:clamp(8.5px,1vh,10.5px);table-layout:fixed;min-width:900px}
+    .tscroll{overflow:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
+    table.res thead th{position:sticky;top:0;z-index:1}
+    table.res{width:100%;border-collapse:collapse;font-size:clamp(8.5px,1vh,10.5px);table-layout:fixed;min-width:900px}
     table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:clamp(5px,.8vh,10px) 8px;white-space:nowrap;letter-spacing:.02em;font-size:clamp(8.5px,1vh,10.5px);border-right:1px solid rgba(255,255,255,.1)}
     table.res th:last-child{border-right:none}
     .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px}
@@ -257,6 +260,17 @@
       </div>
     </div>
 
+    <!-- Company Size was in the Advanced Filters panel; the reference design
+         drops it from there. It has real data for all 1,463 vendors, so rather
+         than lose a working filter it moves here. -->
+    <div class="sb-card sb-sz" data-filter="sz">
+      <div class="sb-hd" onclick="toggleSB(this)">
+        <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10l4-3v14"/><path d="M13 21V6l6-3v18"/></svg>
+        <h3>COMPANY SIZE</h3><span class="chev">▲</span>
+      </div>
+      <div class="sb-body" id="sb-body-sz"></div>
+    </div>
+
   </aside>
 
   <!-- MAIN -->
@@ -291,18 +305,39 @@
         <h3>ADVANCED FILTERS</h3>
         <span class="chev">▲</span>
       </div>
-      <div class="af-body" id="af-body" style="grid-template-columns:repeat(2,1fr)">
-        <!-- Only dimensions with real backing data in tools-data.js are
-             offered here — Evaluation Options / Company Type / Markets
-             Served / Purchase Options had no underlying data for any
-             vendor, so checking them could never have narrowed results. -->
-        <div class="af-grp">
-          <h4>COMPANY SIZE <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-          <div id="af-size"></div>
+      <!-- AS-06 — five groups in three columns, per the reference design.
+           Evaluation Options / Purchase Options / Company Type / Markets Served
+           have no backing column in the vendor data (spec item 4.1), so their
+           checkboxes render disabled with a 0 count rather than pretending to
+           filter. Available On and Company Size do have data and stay live —
+           Company Size moves to the sidebar, since the reference drops it from
+           this panel. -->
+      <div class="af-body" id="af-body" style="grid-template-columns:repeat(3,1fr)">
+        <div class="af-col">
+          <div class="af-grp">
+            <h4>EVALUATION OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+            <div id="af-eval"></div>
+          </div>
+          <div class="af-grp">
+            <h4>PURCHASE OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+            <div id="af-purchase"></div>
+          </div>
         </div>
-        <div class="af-grp">
-          <h4>AVAILABLE ON <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-          <div id="af-avail"></div>
+        <div class="af-col">
+          <div class="af-grp">
+            <h4>COMPANY TYPE <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+            <div id="af-ctype"></div>
+          </div>
+          <div class="af-grp">
+            <h4>AVAILABLE ON <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+            <div id="af-avail"></div>
+          </div>
+        </div>
+        <div class="af-col">
+          <div class="af-grp">
+            <h4>MARKETS SERVED <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+            <div id="af-markets"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -416,10 +451,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609010312"></script>
-<script src="assets/taxonomy-data.js?v=202609010312"></script>
-<script src="assets/filters.js?v=202609010312"></script>
-<script src="assets/actions.js?v=202609010312"></script>
+<script src="assets/tools-data.js?v=202609010425"></script>
+<script src="assets/taxonomy-data.js?v=202609010425"></script>
+<script src="assets/filters.js?v=202609010425"></script>
+<script src="assets/actions.js?v=202609010425"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -444,37 +479,88 @@
         +'<label for="'+id+'" class="sb-lbl">'+esc(it.label)+'</label><span class="sb-ct">'+it.count+'</span></div>';
     }).join('');
   }
-  // Categories (12), Master Trades (11), Divisions and Trades
-  // are all short enough to show in full — truncating them risked a
-  // filter arriving via URL for an item outside the visible slice,
-  // which filters correctly but can't show as checked in the sidebar.
-  // Subcategories/Products (71 real values) still need a cap.
-  renderList(document.getElementById('sb-body-cat'), vocab.categories, 'cat');
-  renderList(document.getElementById('sb-body-sub'), vocab.subcategories, 'sub', 8);
-  renderList(document.getElementById('sb-body-prod'), vocab.subcategories, 'sub', 8);
-  renderList(document.getElementById('sb-body-mt'), vocab.masterTrades, 'mt');
-  renderList(document.getElementById('sb-body-div'), vocab.divisions, 'div');
-  renderList(document.getElementById('sb-body-tr'), vocab.trades, 'tr');
-  // the "view more…" links were static <a> elements already inside each
-  // sb-body — renderList above overwrote their container's innerHTML, so
-  // re-append them
-  [['sb-body-cat','categories'],['sb-body-sub','subcategories'],['sb-body-prod','products'],
-   ['sb-body-mt','master trades'],['sb-body-div','divisions'],['sb-body-tr','trades']].forEach(function(pair){
-    var el=document.getElementById(pair[0]);
-    var a=document.createElement('a');
-    a.className='sb-more'; a.href='dedicated-search.html'; a.textContent='view more '+pair[1];
-    el.appendChild(a);
-  });
+  // AS-07 — each facet shows 5 rows then "view more", matching the reference.
+  // Showing every option made the sidebar 2,218px inside a 796px box.
+  //
+  // The previous code rendered everything on purpose: truncating risks a filter
+  // arriving via URL for an item outside the visible slice, which filters
+  // correctly but can't show as checked. That is handled below by expanding any
+  // facet that has an active filter hidden in its tail, so the guarantee holds.
+  var SB_LIMIT = 5;
+  var SB_FACETS = [
+    ['sb-body-cat',  'categories',     'cat', function(){return vocab.categories;}],
+    ['sb-body-sub',  'subcategories',  'sub', function(){return vocab.subcategories;}],
+    ['sb-body-prod', 'products',       'sub', function(){return vocab.subcategories;}],
+    ['sb-body-mt',   'master trades',  'mt',  function(){return vocab.masterTrades;}],
+    ['sb-body-div',  'divisions',      'div', function(){return vocab.divisions;}],
+    ['sb-body-tr',   'trades',         'tr',  function(){return vocab.trades;}],
+    ['sb-body-sz',   'company sizes',  'sz',  function(){return vocab.sizes;}]
+  ];
+  var sbExpanded = {};
+
+  function renderFacet(id, noun, key, items){
+    var el = document.getElementById(id);
+    if (!el) return;
+    var active = activeFilters[key] || [];
+    // if a checked value sits past the cut, show the whole list so it's visible
+    var hiddenActive = items.slice(SB_LIMIT).some(function(i){ return active.indexOf(i.value) > -1; });
+    var expanded = sbExpanded[id] || hiddenActive;
+    var limit = expanded ? 0 : SB_LIMIT;
+
+    renderList(el, items, key, limit);
+    if (items.length > SB_LIMIT) {
+      var a = document.createElement('a');
+      a.className = 'sb-more';
+      a.href = 'javascript:void(0)';
+      a.textContent = expanded ? 'show fewer' : ('view more ' + noun);
+      a.onclick = function(){ sbExpanded[id] = !expanded; renderSidebar(); syncChecks(); };
+      el.appendChild(a);
+    }
+  }
+  function renderSidebar(){
+    SB_FACETS.forEach(function(f){ renderFacet(f[0], f[1], f[2], f[3]()); });
+  }
+  // re-tick boxes after a re-render, since innerHTML wipes checked state
+  function syncChecks(){
+    document.querySelectorAll('.sidebar input[data-filter]').forEach(function(c){
+      var vals = activeFilters[c.getAttribute('data-filter')] || [];
+      c.checked = vals.indexOf(c.value) > -1;
+    });
+  }
+  renderSidebar();
 
   function renderAfList(container,items,filterKey){
+    if(!container) return;
     container.innerHTML=items.map(function(it){
       var id='af-'+(idSeq++);
-      return '<div class="af-item"><input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'">'
+      var pend=!it.count;
+      return '<div class="af-item'+(pend?' is-pending':'')+'"'+(pend?' title="No vendor data for this option yet"':'')+'>'
+        +'<input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'"'+(pend?' disabled':'')+'>'
         +'<label for="'+id+'">'+esc(it.label)+' <span style="color:var(--muted)">('+it.count+')</span></label></div>';
     }).join('');
   }
-  renderAfList(document.getElementById('af-size'), vocab.sizes, 'sz');
+  // Options with no backing column render at 0 and disabled — see spec 4.1.
+  function stub(labels){ return labels.map(function(l){ return {value:l,label:l,count:0}; }); }
+
+  renderAfList(document.getElementById('af-eval'), stub([
+    'Free Trial / Freemium','Demo on Available','Peer Reviewed'
+  ]), 'eval');
+  renderAfList(document.getElementById('af-purchase'), stub([
+    'Subscription','One-Time Purchase','Contract Per Quarter'
+  ]), 'purchase');
+  renderAfList(document.getElementById('af-ctype'), stub([
+    'Public Company','Private Company'
+  ]), 'ctype');
+  // Available On is real data and stays live.
   renderAfList(document.getElementById('af-avail'), vocab.availableOn, 'avail');
+  // Markets Served: 7 of the reference's 10. Dropped "Indutrdura" (a typo in
+  // the artwork), plus Industrial and Infrastructure, which both overlap
+  // Civil / Heavy Highway — leaving seven non-overlapping markets that fit
+  // the column without scrolling.
+  renderAfList(document.getElementById('af-markets'), stub([
+    'Civil / Heavy Highway','Commercial','Education','Energy / Utilities',
+    'Government / Public Works','Healthcare','Retail / Hospitality'
+  ]), 'market');
 
   var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Trade',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
   function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
@@ -537,6 +623,10 @@
       if(k==='q'){if(!activeFilters.q)delete activeFilters.q;}
       else if(!activeFilters[k].length)delete activeFilters[k];
     });
+    // Re-render the sidebar now that activeFilters is known: a facet whose
+    // checked value sits past the 5-row cut expands itself so the box is
+    // visible. renderSidebar ran once at load, before the URL was parsed.
+    renderSidebar();
     // pre-check any boxes matching filters that arrived via URL
     Object.keys(activeFilters).forEach(function(k){
       if(k==='q')return;
