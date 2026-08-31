@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010142">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010312">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -17,7 +17,11 @@
     /* ── SHELL: header + main locked to exactly 100dvh; footer lives
        outside in normal flow, revealed only by scrolling. ── */
     .page-above-fold{
-      width:100%;height:100dvh;min-height:0;
+      width:100%;
+      /* vh first: dvh is unsupported before Chrome/Edge 108, Safari 15.4,
+         Firefox 101. Without a fallback the declaration is discarded, the
+         shell loses its height and the rows collapse into each other. */
+      height:100vh;height:100dvh;min-height:0;
       display:grid;grid-template-rows:auto minmax(0,1fr);
       overflow:hidden;
     }
@@ -329,8 +333,11 @@
     <div class="footer-column">
       <h2>Resources</h2>
       <a href="#">Technology Guides</a>
-      <a href="#">FAQ</a>
-      <a href="#">Glossary</a>
+      <a href="results.html">Find</a>
+      <a href="#">Learn</a>
+      <a href="#">Research</a>
+      <a href="#">Insights</a>
+      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">·</span><a href="#">Glossary</a></p>
     </div>
 
     <div class="footer-column">
@@ -356,16 +363,28 @@
         <a class="soc-btn soc-ig" href="#" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         </a>
+        <a class="soc-btn soc-tt" href="#" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+        </a>
+        <a class="soc-btn soc-hz" href="#" aria-label="Houzz">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2L2 8v14h8v-6h4v6h8V8z"/></svg>
+        </a>
+        <a class="soc-btn soc-pt" href="#" aria-label="Pinterest">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 0a12 12 0 00-4.37 23.17c-.1-.94-.2-2.39.04-3.41l1.46-6.19s-.37-.74-.37-1.84c0-1.73.99-3.02 2.23-3.02 1.05 0 1.56.79 1.56 1.74 0 1.06-.67 2.64-1.02 4.11-.29 1.23.61 2.23 1.82 2.23 2.18 0 3.86-2.3 3.86-5.62 0-2.94-2.11-4.99-5.13-4.99-3.5 0-5.55 2.62-5.55 5.33 0 1.06.41 2.19.91 2.81a.37.37 0 01.09.35l-.34 1.37c-.05.22-.18.27-.42.16-1.57-.73-2.55-3.03-2.55-4.88 0-3.96 2.88-7.6 8.3-7.6 4.36 0 7.75 3.1 7.75 7.25 0 4.33-2.73 7.81-6.51 7.81-1.27 0-2.47-.66-2.88-1.44l-.78 2.93c-.28 1.09-1.05 2.45-1.57 3.28A12 12 0 1012 0z"/></svg>
+        </a>
+        <a class="soc-btn soc-x" href="#" aria-label="X">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
       </div>
     </div>
 
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609010142"></script>
-<script src="assets/taxonomy-data.js?v=202609010142"></script>
-<script src="assets/filters.js?v=202609010142"></script>
-<script src="assets/actions.js?v=202609010142"></script>
+<script src="assets/tools-data.js?v=202609010312"></script>
+<script src="assets/taxonomy-data.js?v=202609010312"></script>
+<script src="assets/filters.js?v=202609010312"></script>
+<script src="assets/actions.js?v=202609010312"></script>
 <script>
 (function(){
   var CM=CTD_FILTERS.CM, DIV_MAP=CTD_FILTERS.DIV_MAP, MT_MAP=CTD_FILTERS.MT_MAP;

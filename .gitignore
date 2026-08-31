@@ -15,3 +15,6 @@ desktop.ini
 *.log
 
 .git-commit-msg.txt
+
+# local backup of the pre-2026-09-01 category icons; git history has them
+assets/logos-original/

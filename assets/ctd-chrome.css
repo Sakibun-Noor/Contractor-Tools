@@ -130,10 +130,19 @@
 }
 .footer-column a:hover { color: #fff; }
 
+/* FAQ · Glossary share one line, matching the homepage footer. */
+.footer-column p.foot-inline {
+  margin: 0 0 3px; display: flex; align-items: center; gap: 6px;
+}
+.footer-column p.foot-inline a { display: inline; margin: 0; }
+.footer-column p.foot-inline span { color: rgba(255, 255, 255, .38); }
+
+/* 4 across, 2 down. Eight icons stacked 2-across made this column twice the
+   height of its neighbours and stretched the whole footer. */
 .soc-grid {
-  display: grid; grid-template-columns: repeat(2, clamp(28px, 2.1vw, 34px));
-  grid-auto-rows: clamp(28px, 2.1vw, 34px);
-  gap: 7px; margin-top: 1px;
+  display: grid; grid-template-columns: repeat(4, clamp(26px, 1.9vw, 32px));
+  grid-auto-rows: clamp(26px, 1.9vw, 32px);
+  gap: 6px; margin-top: 1px;
 }
 a.soc-btn {
   width: 100%; height: 100%; margin: 0;
@@ -146,6 +155,10 @@ a.soc-btn:hover { transform: scale(1.08); opacity: .9; }
 .soc-fb { background: #1877F2; }
 .soc-yt { background: #FF0000; }
 .soc-ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+.soc-tt { background: #010101; }
+.soc-hz { background: #4DBC15; }
+.soc-pt { background: #BD081C; }
+.soc-x  { background: #010101; }
 
 /* ── MOBILE (≤ 999px) ─────────────────────────────────────────
    Same clamp(phone-floor, reference-vw, cap) scheme the homepage
@@ -200,12 +213,12 @@ a.soc-btn:hover { transform: scale(1.08); opacity: .9; }
   }
   .footer-column p { font-size: clamp(7px, 1.12vw, 11px); line-height: 1.3; }
   .soc-grid {
-    grid-template-columns: repeat(2, clamp(24px, 4.69vw, 46px));
-    grid-auto-rows: clamp(24px, 4.69vw, 46px);
-    gap: clamp(3px, 1.02vw, 10px);
+    grid-template-columns: repeat(4, clamp(22px, 4.1vw, 38px));
+    grid-auto-rows: clamp(22px, 4.1vw, 38px);
+    gap: clamp(3px, .9vw, 8px);
   }
   a.soc-btn {
-    width: clamp(24px, 4.69vw, 46px); height: clamp(24px, 4.69vw, 46px);
+    width: 100%; height: 100%;
     border-radius: clamp(4px, .71vw, 7px);
   }
 }
