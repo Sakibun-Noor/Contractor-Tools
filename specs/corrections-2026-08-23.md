@@ -496,6 +496,18 @@ the pagination bar is visible; the **only** thing below the fold is the footer.
 > `dedicated-search.html` already used. Worth remembering: `display:none` on a child of a
 > fixed `grid-template-rows` silently re-maps every subsequent row.
 
+#### SR-11 · Vendor list too short ✅
+**Doc** `hh.docx` — "This box has a very little space, only 3 items we can see… make these
+buttons more small, little text size, and you find more scopes on your own to make the
+vendor list box more taller."
+**Cause** A side-effect of `SR-10`. Once the page was locked to `100dvh`, the table only
+got what the regions above it left — 361px at 1536×864, against a 69px row height driven
+entirely by the Actions cell. Four rows.
+**Fix** Full spec and measurements in **`specs/search-results-density-fix.md`**.
+Actions block, panel, title row, pager and grid gaps all tightened; row height 69 → 50.
+**Result 4 rows → 8** at 1536×864, 12 at 1920×1080, with all earlier corrections intact
+(two-row Actions, 9 columns, mobile 40px touch targets).
+
 #### V-04 · Vendor logo enlarged ⚠️
 **Doc** "In vendor page the logo is very small… Make it bigger like that and I am using
 this as example, you will make all the logos big."

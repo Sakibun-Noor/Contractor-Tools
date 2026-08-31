@@ -27,18 +27,18 @@
     .page-above-fold>*{min-width:0;min-height:0;overflow:hidden}
     main{
       max-width:1620px;margin:0 auto;width:100%;
-      padding:10px clamp(14px,2.2vw,26px) 8px;
+      padding:8px clamp(14px,2.2vw,26px) 8px;
       height:100%;min-height:0;overflow:hidden;
       display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
-      gap:8px;
+      gap:6px;
     }
 
     /* ── TITLE ROW ── */
     .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
-    .ptop-l .phead{font-size:clamp(22px,2.9vw,32px);font-weight:900;letter-spacing:-.02em;color:var(--navy);margin:0 0 4px}
-    .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--ink)}
+    .ptop-l .phead{font-size:clamp(20px,2.3vw,26px);font-weight:900;letter-spacing:-.02em;color:var(--navy);margin:0 0 4px}
+    .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink)}
     .ptop-r{display:flex;gap:9px;flex-wrap:wrap}
-    .btn-act{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12.5px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap;min-height:40px}
+    .btn-act{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap;min-height:32px}
     .btn-act:hover{border-color:var(--navy)}
     .btn-act svg{color:var(--blue);flex:none}
     .btn-adv{background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -52,7 +52,7 @@
        pagination row to zero height. */
     .chips-row.is-empty{visibility:hidden;height:0;min-height:0;gap:0;overflow:hidden}
     .chips-label{font-size:11.5px;font-weight:700;color:var(--ink);white-space:nowrap}
-    .chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border:1.5px solid #c8d6ee;border-radius:5px;background:#fff;font-size:11.5px;white-space:nowrap}
+    .chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border:1.5px solid #c8d6ee;border-radius:5px;background:#fff;font-size:11.5px;white-space:nowrap}
     .chip b{color:var(--navy);font-weight:700}
     .chip .cx{cursor:pointer;color:var(--blue);font-size:14px;margin-left:2px;opacity:.7;line-height:1;background:none;border:0;padding:0}
     .chip .cx:hover{opacity:1;color:#c00}
@@ -60,28 +60,28 @@
     .clear-all:hover{text-decoration:underline}
 
     /* ── TWO-QUESTION PANEL ── */
-    .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .qcard{border:1px solid var(--line);border-radius:9px;background:#fff;padding:14px 16px 12px;box-shadow:0 1px 2px rgba(15,27,45,.04),0 8px 22px -18px rgba(15,27,45,.35)}
-    .qcard-hd{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+    .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .qcard{border:1px solid var(--line);border-radius:9px;background:#fff;padding:10px 12px 8px;box-shadow:0 1px 2px rgba(15,27,45,.04),0 8px 22px -18px rgba(15,27,45,.35)}
+    .qcard-hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
     .qcard-hd h2{margin:0;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--ink);white-space:nowrap}
-    .qsearch{flex:1;min-width:150px;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:7px;padding:7px 11px;background:#f8fafc}
+    .qsearch{flex:1;min-width:150px;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:7px;padding:5px 9px;background:#f8fafc}
     .qsearch svg{flex:none;color:var(--muted)}
     .qsearch input{border:0;background:none;outline:none;flex:1;min-width:0;font-size:12.5px;color:var(--ink)}
-    .qnote{margin:0 0 10px;padding:7px 10px;border-left:2px solid var(--orange);background:#fdf4ee;border-radius:0 4px 4px 0;font-size:11.5px;line-height:1.45;color:#6b4a34}
-    .qcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 16px}
+    .qnote{margin:0 0 7px;padding:5px 9px;border-left:2px solid var(--orange);background:#fdf4ee;border-radius:0 4px 4px 0;font-size:11px;line-height:1.4;color:#6b4a34}
+    .qcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 16px}
     .qcol{min-width:0}
-    .qcol h3{display:flex;align-items:center;gap:6px;margin:0 0 7px;font-size:11px;font-weight:800;letter-spacing:.07em}
+    .qcol h3{display:flex;align-items:center;gap:6px;margin:0 0 5px;font-size:11px;font-weight:800;letter-spacing:.07em}
     .qcol h3 svg{width:14px;height:14px;flex:none}
     .qcol-blue h3{color:var(--blue)}
     .qcol-green h3{color:var(--green)}
     .qcol-orange h3{color:var(--orange)}
-    .qcol ul{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column;gap:3px}
+    .qcol ul{list-style:none;margin:0 0 4px;padding:0;display:flex;flex-direction:column;gap:2px}
     .qcol li{min-width:0}
-    .qcol li a{display:block;font-size:12px;line-height:1.35;color:var(--vlink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 0}
+    .qcol li a{display:block;font-size:11.5px;line-height:1.35;color:var(--vlink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:1px 0}
     .qcol li a:hover{text-decoration:underline}
     .qcol li.is-pending a{color:var(--muted);cursor:default;pointer-events:none}
     .qcol li .qct{color:var(--muted);font-size:11px}
-    .qall{display:inline-block;font-size:11.5px;font-weight:700;color:var(--blue);padding:2px 0}
+    .qall{display:inline-block;font-size:11.5px;font-weight:700;color:var(--blue);padding:1px 0}
     .qall:hover{text-decoration:underline}
     .qempty{font-size:11.5px;color:var(--muted);font-style:italic;padding:2px 0}
 
@@ -98,7 +98,7 @@
     table.res th:last-child{border-right:none}
     .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px;letter-spacing:-1px}
     .sic:hover{opacity:1}
-    table.res td{padding:8px;vertical-align:top;border-bottom:1px solid #EEF1F6;border-right:1px solid #EEF1F6;line-height:1.3;font-size:11px}
+    table.res td{padding:5px 8px;vertical-align:top;border-bottom:1px solid #EEF1F6;border-right:1px solid #EEF1F6;line-height:1.3;font-size:11px}
     table.res td:last-child{border-right:none}
     table.res tr:nth-child(even) td{background:var(--cream)}
     table.res tr:hover td{background:#eff3ff}
@@ -117,22 +117,22 @@
     .tpend{color:var(--muted)}
 
     /* ACTIONS — globe + bookmark on top, View Profile beneath (SR-03) */
-    .act-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px}
-    .act-ic{display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;background:none;color:var(--blue);cursor:pointer;border-radius:3px;text-decoration:none}
+    .act-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:3px}
+    .act-ic{display:grid;place-items:center;width:18px;height:18px;padding:0;border:0;background:none;color:var(--blue);cursor:pointer;border-radius:3px;text-decoration:none}
     .act-ic:hover{color:var(--navy);background:var(--cream)}
     .act-ic:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
     .act-ic.on{color:var(--orange)}
     .act-ic.on svg{fill:currentColor}
-    .btn-vp{display:block;width:100%;padding:5px 6px;background:var(--navy);color:#fff;border-radius:4px;font-size:10px;font-weight:700;text-align:center;text-decoration:none;white-space:nowrap}
+    .btn-vp{display:block;width:100%;padding:3px 6px;background:var(--navy);color:#fff;border-radius:4px;font-size:9.5px;font-weight:700;text-align:center;text-decoration:none;white-space:nowrap}
     .btn-vp:hover{background:var(--navy-deep)}
 
     /* ── PAGINATION ── */
     .pgbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
     .pgnums{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
-    .pgbtn{padding:7px 12px;border:1.5px solid var(--line);border-radius:5px;background:#fff;font-size:12.5px;cursor:pointer;color:var(--ink);font-weight:500;min-width:36px;min-height:36px;text-align:center}
+    .pgbtn{padding:5px 10px;border:1.5px solid var(--line);border-radius:5px;background:#fff;font-size:12px;cursor:pointer;color:var(--ink);font-weight:500;min-width:32px;min-height:30px;text-align:center}
     .pgbtn:hover,.pgbtn.act{background:var(--navy);color:#fff;border-color:var(--navy)}
     .pgrpp{display:flex;align-items:center;gap:8px}
-    .pgrpp select{border:1.5px solid var(--line);border-radius:5px;padding:7px 10px;font-size:12.5px;background:#fff;cursor:pointer;outline:none;color:var(--ink);min-height:36px}
+    .pgrpp select{border:1.5px solid var(--line);border-radius:5px;padding:5px 9px;font-size:12px;background:#fff;cursor:pointer;outline:none;color:var(--ink);min-height:30px}
 
     /* ── MOBILE (spec: search-page-mobile.md) ──
        Below desktop the locked 100dvh shell isn't appropriate — the panel and
@@ -156,8 +156,10 @@
       .qcard-hd h2{white-space:normal}
       .pgbar{flex-direction:column;align-items:flex-start;gap:10px}
       .pgrpp{width:100%;justify-content:space-between}
-      /* mobile spec: touch targets ≥ 40px tall */
-      .pgbtn{min-height:40px;min-width:40px}
+      /* mobile spec: touch targets ≥ 40px tall. The desktop sizes were reduced
+         in the SR-11 density pass, so they have to be re-asserted here. */
+      .btn-act{min-height:40px;padding:8px 14px}
+      .pgbtn{min-height:40px;min-width:40px;padding:8px 12px}
       .pgrpp select{min-height:40px}
       .qcol li a{display:flex;align-items:center;min-height:40px;padding:0}
       .qall{display:flex;align-items:center;min-height:40px;padding:0}
@@ -254,10 +256,9 @@
           <input type="text" placeholder="Start typing…" aria-label="Filter master trades, divisions and trades" data-qfilter="do">
         </div>
       </div>
-      <p class="qnote" id="do-note">
-        Vendor classification against these levels is in progress — the lists below are the
-        full construction hierarchy, but filtering by them is not live yet.
-      </p>
+      <!-- Deliberately one line: at two lines this banner cost ~17px of the
+           vendor table's height budget on a 864px-tall viewport. -->
+      <p class="qnote" id="do-note">Filtering by these isn’t live yet — vendor classification is in progress.</p>
       <div class="qcols">
         <div class="qcol qcol-blue">
           <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg>MASTER TRADE</h3>
