@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dedicated Search Results — The Construction Technology Directory</title>
+  <title>Dedicated Results — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010142">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -64,12 +64,21 @@
     }
     table.res tr:nth-child(even) td{background:var(--cream)}
     table.res tr:hover td{background:#eff3ff}
-    .ck{text-align:center;vertical-align:middle!important;padding:0!important}
+    .vcell{display:flex;align-items:center;gap:6px;min-width:0}
+    .vmeta{min-width:0;overflow:hidden}
+    .vico{width:16px;height:16px;flex:none;border-radius:3px;object-fit:contain;background:#fff}
+    .vico-fb{display:grid;place-items:center;background:var(--navy);color:#fff;font-size:9px;font-weight:700;line-height:1}
     .vn{font-weight:700;font-size:clamp(9.5px,1.1vh,11px);color:var(--ink);display:block;margin-bottom:1px}
     .vd{color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px)}
     .bl{color:var(--vlink)}.bl:hover{text-decoration:underline}
     .more{display:block;color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px);font-style:italic;margin-top:3px}
     .avl{display:flex;align-items:center;gap:4px;font-size:clamp(8.5px,.95vh,9.5px);color:var(--muted);margin-bottom:1px}
+    .act-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px}
+    .act-ic{display:grid;place-items:center;width:22px;height:22px;padding:0;border:0;background:none;color:var(--blue);cursor:pointer;border-radius:3px;text-decoration:none}
+    .act-ic:hover{color:var(--navy);background:var(--cream)}
+    .act-ic:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+    .act-ic.on{color:var(--orange)}
+    .act-ic.on svg{fill:currentColor}
     .btn-vp{display:block;padding:clamp(3px,.55vh,5px) 8px;background:var(--navy);color:#fff;border-radius:4px;font-size:clamp(9px,1vh,10px);font-weight:700;text-align:center;margin-bottom:4px;cursor:pointer;text-decoration:none;white-space:nowrap}
     .btn-vp:hover{background:var(--navy-deep)}
     .btn-vw{display:flex;align-items:center;justify-content:center;gap:4px;padding:clamp(3px,.55vh,5px) 8px;border:1.5px solid var(--line);color:var(--ink);border-radius:4px;font-size:clamp(9px,1vh,10px);font-weight:600;cursor:pointer;background:#fff;white-space:nowrap;text-decoration:none}
@@ -155,16 +164,15 @@
 
 <!-- MAIN -->
 <main>
-  <a class="back-link" id="page-back" href="index.html">
+  <a class="back-link" id="page-back" href="dedicated-search.html">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    <span id="back-label">Back to Home</span>
+    <span id="back-label">Back to Dedicated Search</span>
   </a>
-  <script>(function(){var sp=new URLSearchParams(window.location.search);if(sp.get('ref')==='selection'){var l=document.getElementById('page-back');var t=document.getElementById('back-label');if(l)l.href='dedicated-search.html';if(t)t.textContent='Back to Dedicated Selection';}})();</script>
   <div class="ptop">
     <div class="ptop-l">
-      <h1 class="phead">DEDICATED SEARCH RESULTS PAGE</h1>
+      <h1 class="phead">DEDICATED RESULTS PAGE</h1>
       <div class="pcount">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
         <span id="vendor-count">Loading…</span>
       </div>
     </div>
@@ -172,7 +180,7 @@
       <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
       <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
       <button class="btn-act" onclick="CTD_shareResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
-      <a class="btn-act btn-adv" href="advanced-search-results.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Advanced Search</a>
+      <a class="btn-act btn-adv" href="advanced-search-results.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>Change Search</a>
     </div>
   </div>
 
@@ -185,21 +193,20 @@
       <table class="res" id="res-table">
         <thead>
           <tr>
-            <th style="width:2.5%" class="ck"><input type="checkbox" id="chk-all" onchange="document.querySelectorAll('.rck').forEach(function(c){c.checked=this.checked;}.bind(this))"></th>
             <th style="width:3%">#</th>
-            <th style="width:10%">VENDOR <span class="sic" onclick="sortBy('n')">↑↓</span></th>
-            <th style="width:10%">DESCRIPTION</th>
+            <th style="width:11%">VENDOR <span class="sic" onclick="sortBy('n')">↑↓</span></th>
+            <th style="width:11%">DESCRIPTION</th>
             <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
+            <th style="width:11%">TRADES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
             <th style="width:8.5%">DIVISIONS</th>
-            <th style="width:11%">TRADES SERVED <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
             <th style="width:8%">MASTER TRADES</th>
-            <th style="width:10.5%">AVAILABLE ON</th>
-            <th style="width:8%">ACTIONS</th>
+            <th style="width:10.5%">QUICK FACTS <span class="sic" onclick="sortBy('sz')">↑↓</span></th>
+            <th>ACTIONS</th>
           </tr>
         </thead>
-        <tbody id="res-tbody"><tr><td colspan="12" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
+        <tbody id="res-tbody"><tr><td colspan="11" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -276,9 +283,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js"></script>
-<script src="assets/filters.js"></script>
-<script src="assets/actions.js"></script>
+<script src="assets/tools-data.js?v=202609010142"></script>
+<script src="assets/taxonomy-data.js?v=202609010142"></script>
+<script src="assets/filters.js?v=202609010142"></script>
+<script src="assets/actions.js?v=202609010142"></script>
 <script>
 (function(){
   var vocab=CTD_FILTERS.build(window.TOOLS||[]);
@@ -340,12 +348,10 @@
     if(ph){
       if(activeFilters.q)ph.textContent='Search Results: '+activeFilters.q;
       else if(activeFilters.cat&&activeFilters.cat.length===1&&Object.keys(activeFilters).length===1)ph.textContent=(CM[activeFilters.cat[0]]||activeFilters.cat[0])+' Vendors';
-      else ph.textContent='DEDICATED SEARCH RESULTS PAGE';
+      else ph.textContent='DEDICATED RESULTS PAGE';
     }
     if(updateUrl){
       var sp=CTD_FILTERS.toParams(activeFilters);
-      var refParam=new URLSearchParams(window.location.search).get('ref');
-      if(refParam)sp.set('ref',refParam);
       history.replaceState(null,'','dedicated-results.html'+(sp.toString()?'?'+sp.toString():''));
     }
     render();
@@ -362,6 +368,25 @@
     if(hq&&activeFilters.q)hq.value=activeFilters.q;
     applyFiltersAndRender(false);
   }
+
+  // ACTIONS cell: globe (visit site) + bookmark (save) side by side on top,
+  // View Profile as a full-width bar beneath. The globe is omitted entirely
+  // for vendors with no domain — 825 of 1,463 have no website yet, and a
+  // link to "https://" is worse than no link.
+  function actionsCell(t){
+    var saved=CTD_ACTIONS.isVendorSaved(t.s);
+    var globe=t.d
+      ? '<a class="act-ic" href="https://'+esc(t.d)+'" target="_blank" rel="noopener" title="Visit website" aria-label="Visit '+esc(t.n)+' website"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></a>'
+      : '';
+    var bm='<button class="act-ic'+(saved?' on':'')+'" title="Save vendor" aria-label="Save '+esc(t.n)+'" aria-pressed="'+(saved?'true':'false')+'" onclick="CTD_toggleRowSave(this,\''+esc(t.s)+'\',\''+esc(t.n).replace(/'/g,"\\'")+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>';
+    return '<div class="act-row">'+globe+bm+'</div>'
+      +'<a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'">View Profile</a>';
+  }
+  window.CTD_toggleRowSave=function(el,slug,name){
+    var nowSaved=CTD_ACTIONS.toggleSaveVendor(slug,name);
+    el.classList.toggle('on',nowSaved);
+    el.setAttribute('aria-pressed',nowSaved?'true':'false');
+  };
 
   // "+N more…" cells: stores the full item list + its own formatter so
   // expanding preserves real links (e.g. category hrefs), and collapsing
@@ -384,6 +409,17 @@
   // needs a window-exposed wrapper to be reachable from the "show less" link
   window.CTD_collapseMore=function(){render();};
 
+  // Vendor cell: cached favicon (assets/icons/<domain>.ico, populated by
+  // build/fetch-icons.ps1) with a styled letter circle as fallback — used
+  // both when a vendor has no domain at all and when the icon 404s.
+  function vendorCell(t){
+    var letter=esc((t.n||'?').charAt(0).toUpperCase());
+    var fb='<span class="vico vico-fb"'+(t.d?' style="display:none"':'')+'>'+letter+'</span>';
+    var img=t.d?'<img class="vico" src="assets/icons/'+esc(t.d)+'.ico" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'">':'';
+    var dom=t.d?'<a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a>':'';
+    return '<div class="vcell">'+img+fb+'<div class="vmeta"><span class="vn">'+esc(t.n)+'</span>'+dom+'</div></div>';
+  }
+
   function render(){
     var s=(page-1)*rpp,e=s+rpp,rows=DATA.slice(s,e),total=DATA.length;
     document.getElementById('vendor-count').textContent=total.toLocaleString()+' Vendors Found';
@@ -400,21 +436,20 @@
       var desc=(t.x||'').slice(0,85)+(t.x&&t.x.length>85?'…':'');
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
-      h+='<td class="ck"><input type="checkbox" class="rck"></td>';
       h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
-      h+='<td><span class="vn">'+esc(t.n)+'</span><a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a></td>';
+      h+='<td>'+vendorCell(t)+'</td>';
       h+='<td class="desc-cell" style="font-size:9px;line-height:1.2;color:#4a5568">'+esc(desc)+'</td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
       h+='<td data-fmt="link">'+moreCell(catPairs,1,function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
-      h+='<td data-fmt="text">'+moreCell(divs,1,function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';})+'</td>';
       h+='<td data-fmt="text">'+moreCell(tr,1,function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';})+'</td>';
+      h+='<td data-fmt="text">'+moreCell(divs,1,function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';})+'</td>';
       h+='<td data-fmt="text">'+moreCell(mts,1,function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';})+'</td>';
       h+='<td>'+av.slice(0,2).map(function(a){return'<div class="avl"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+(av.length>2?'<div class="avl" style="font-style:italic">+'+(av.length-2)+' more</div>':'')+'</td>';
-      h+='<td style="min-width:88px"><a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'">View Profile</a><a class="btn-vw" href="https://'+esc(t.d)+'" target="_blank" rel="noopener"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Visit Website</a></td>';
+      h+='<td style="min-width:88px">'+actionsCell(t)+'</td>';
       h+='</tr>';
     });
-    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="12" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
+    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="11" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
     var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent='Showing '+ps+' to '+pe+' of '+total.toLocaleString()+' vendors';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';
@@ -467,7 +502,7 @@
       {label:'Product/Subcategory',get:function(t){return t.sub;}},
       {label:'Categories',get:function(t){return catNamesOf(t).join('; ');}},
       {label:'Divisions',get:function(t){return divsOf(t).join('; ');}},
-      {label:'Trades Served',get:function(t){return (t.tr||[]).join('; ');}},
+      {label:'Trades',get:function(t){return (t.tr||[]).join('; ');}},
       {label:'Master Trades',get:function(t){return mtsOf(t).join('; ');}},
       {label:'Available On',get:function(t){return avail(t.sz).join('; ');}}
     ], 'ctd-vendor-results.csv');

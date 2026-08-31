@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010142">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -62,6 +62,10 @@
     .sel-card-hd{background:var(--navy);color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;flex:none}
     .sel-card-hd h3{margin:0;font-size:11.5px;font-weight:800;letter-spacing:.08em}
     .sel-card-hd .info-ic{opacity:.7;cursor:help}
+    .hd-l{display:flex;align-items:center;gap:7px;min-width:0}
+    .sel-sort{border:0;background:none;padding:0;color:#fff;opacity:.55;cursor:pointer;font-size:10px;line-height:1;letter-spacing:-1px}
+    .sel-sort:hover{opacity:1}
+    .sel-sort:focus-visible{outline:2px solid #fff;outline-offset:2px;opacity:1}
     .sel-search{padding:7px 10px;border-bottom:1px solid var(--line);flex:none}
     .sel-search-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:6px;padding:5px 9px;background:#f8fafc}
     .sel-search-wrap input{border:none;background:none;font-size:12px;outline:none;flex:1;color:var(--ink);min-width:0}
@@ -71,6 +75,8 @@
     .sel-list::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
     .sel-item{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #f0f4f8;font-size:12px}
     .sel-item:last-child{border-bottom:none}
+    .sel-item.is-pending{opacity:.45}
+    .sel-item.is-pending label{cursor:default}
     .sel-item input{accent-color:var(--blue);width:13px;height:13px;flex:none}
     .sel-item label{cursor:pointer;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .sel-clear{display:block;text-align:center;font-size:11.5px;font-weight:700;color:var(--blue);padding:7px;border-top:1px solid var(--line);cursor:pointer;background:#fafbfc;flex:none}
@@ -155,9 +161,9 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     Back to Advanced Search Results
   </a>
-  <h1 class="phead">DEDICATED SELECTION PAGE</h1>
+  <h1 class="phead">DEDICATED SEARCH PAGE</h1>
   <div class="pcount">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
     <span id="live-count">Loading…</span>
   </div>
 
@@ -202,7 +208,7 @@
 
     <div class="sel-card" data-filter="sub">
       <div class="sel-card-hd">
-        <h3>PRODUCT</h3>
+        <div class="hd-l"><h3>PRODUCT</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort PRODUCT list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search products..."></div></div>
@@ -212,7 +218,7 @@
 
     <div class="sel-card" data-filter="sub">
       <div class="sel-card-hd">
-        <h3>SUBCATEGORY</h3>
+        <div class="hd-l"><h3>SUBCATEGORY</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort SUBCATEGORY list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search subcategories..."></div></div>
@@ -222,7 +228,7 @@
 
     <div class="sel-card" data-filter="cat">
       <div class="sel-card-hd">
-        <h3>CATEGORY</h3>
+        <div class="hd-l"><h3>CATEGORY</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort CATEGORY list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search categories..."></div></div>
@@ -232,7 +238,7 @@
 
     <div class="sel-card" data-filter="tr">
       <div class="sel-card-hd">
-        <h3>TRADE</h3>
+        <div class="hd-l"><h3>TRADE</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort TRADE list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search trades..."></div></div>
@@ -242,7 +248,7 @@
 
     <div class="sel-card" data-filter="div">
       <div class="sel-card-hd">
-        <h3>DIVISION</h3>
+        <div class="hd-l"><h3>DIVISION</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort DIVISION list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search divisions..."></div></div>
@@ -252,7 +258,7 @@
 
     <div class="sel-card" data-filter="mt">
       <div class="sel-card-hd">
-        <h3>MASTER TRADE</h3>
+        <div class="hd-l"><h3>MASTER TRADE</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort MASTER TRADE list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
       <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search master trades..."></div></div>
@@ -336,8 +342,9 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js"></script>
-<script src="assets/filters.js"></script>
+<script src="assets/tools-data.js?v=202609010142"></script>
+<script src="assets/taxonomy-data.js?v=202609010142"></script>
+<script src="assets/filters.js?v=202609010142"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -347,10 +354,16 @@
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
   // Renders one checkbox list into a .sel-list / af-grp container.
+  // Options with a 0 count render disabled. Master Trade currently lists all
+  // 11 groups from the client taxonomy but has no per-vendor assignment yet,
+  // so every entry is 0 — showing them selectable would just filter to an
+  // empty table. They become live when the classification file is imported.
   function renderList(container, items, filterKey){
     container.innerHTML=items.map(function(it){
       var id='f-'+(idSeq++);
-      return '<div class="sel-item"><input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'">'
+      var pend=!it.count;
+      return '<div class="sel-item'+(pend?' is-pending':'')+'"'+(pend?' title="Awaiting vendor classification"':'')+'>'
+        +'<input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'"'+(pend?' disabled':'')+'>'
         +'<label for="'+id+'">'+esc(it.label)+' <span style="color:var(--muted);font-size:11px">('+it.count+')</span></label></div>';
     }).join('');
   }
@@ -424,6 +437,22 @@
   window.CTD_clearCard=function(el){
     el.closest('.sel-card').querySelectorAll('input[type=checkbox]').forEach(function(c){c.checked=false;});
     refresh();
+  };
+
+  // Per-panel A-Z / Z-A sort. Reorders the existing .sel-item nodes rather
+  // than re-rendering, so any checked boxes keep their state.
+  window.CTD_sortCard=function(el){
+    var list=el.closest('.sel-card').querySelector('.sel-list');
+    if(!list) return;
+    var asc = el.getAttribute('data-asc') !== '1';
+    el.setAttribute('data-asc', asc ? '1' : '0');
+    var items=Array.prototype.slice.call(list.querySelectorAll('.sel-item'));
+    items.sort(function(a,b){
+      var ta=(a.textContent||'').trim().toLowerCase();
+      var tb=(b.textContent||'').trim().toLowerCase();
+      return asc ? ta.localeCompare(tb) : tb.localeCompare(ta);
+    });
+    items.forEach(function(i){ list.appendChild(i); });
   };
   window.CTD_clearAll=function(){
     document.querySelectorAll('[data-filter]:checked').forEach(function(c){c.checked=false;});

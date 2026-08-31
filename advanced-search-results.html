@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010142">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -25,17 +25,19 @@
     /* LAYOUT */
     .page-body{height:100%;min-height:0;overflow:hidden;display:grid;grid-template-columns:minmax(230px,17%) minmax(0,1fr);gap:0;max-width:1680px;margin:0 auto;width:100%}
     /* SIDEBAR */
-    .sidebar{border-right:1px solid var(--line);padding:12px 0;height:100%;min-height:0;overflow-y:auto;background:#fff}
+    .sidebar{border-right:1px solid var(--line);padding:12px 0;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff}
     .sb-card{border-bottom:1px solid var(--line);padding:0}
     .sb-hd{display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;user-select:none}
     .sb-hd .sb-ico{width:16px;height:16px;flex:none}
     .sb-hd h3{flex:1;margin:0;font-size:11px;font-weight:800;letter-spacing:.06em}
     .sb-hd .chev{color:var(--muted);font-size:11px;transition:transform .2s}
     .sb-body{padding:3px 14px 10px}
-    .sb-item{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:11px}
+    .sb-item{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:11px;min-width:0}
     .sb-item input[type=checkbox]{accent-color:var(--blue);width:14px;height:14px;flex:none}
-    .sb-item .sb-lbl{flex:1;color:var(--ink)}
+    .sb-item .sb-lbl{flex:1;min-width:0;overflow-wrap:anywhere;color:var(--ink)}
     .sb-item .sb-ct{color:var(--muted);font-size:11px}
+    .sb-item.is-pending{opacity:.45}
+    .sb-item.is-pending .sb-lbl{cursor:default}
     .sb-more{color:var(--blue);font-size:11.5px;font-weight:600;margin-top:4px;display:block}
     .sb-more:hover{text-decoration:underline}
     /* cat = green, mt/div/trade = orange */
@@ -86,12 +88,15 @@
     table.res td div, table.res td > a.bl, table.res td.desc-cell{
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
     }
-    .ck{text-align:center;vertical-align:middle!important;padding:0!important}
-    .vn{font-weight:700;font-size:clamp(9px,1.1vh,11px);color:var(--ink);display:block;margin-bottom:1px}
+    .vcell{display:flex;align-items:center;gap:6px;min-width:0}
+    .vmeta{min-width:0;overflow:hidden}
+    .vico{width:16px;height:16px;flex:none;border-radius:3px;object-fit:contain;background:#fff}
+    .vico-fb{display:grid;place-items:center;background:var(--navy);color:#fff;font-size:9px;font-weight:700;line-height:1}
+    .vn{font-weight:500;font-size:clamp(9px,1.1vh,11px);color:var(--ink);display:block;margin-bottom:1px}
     .vd{color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px)}
     .bl{color:var(--vlink)}.bl:hover{text-decoration:underline}
     .more{display:block;color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px);font-style:italic;margin-top:2px}
-    .btn-vp{display:inline-flex;align-items:center;gap:4px;padding:clamp(3px,.5vh,5px) 9px;background:var(--navy);color:#fff;border-radius:4px;font-size:clamp(8.5px,1vh,10px);font-weight:700;text-decoration:none;white-space:nowrap}
+    .btn-vp{display:flex;width:100%;align-items:center;justify-content:center;gap:4px;padding:clamp(3px,.5vh,5px) 5px;background:var(--navy);color:#fff;border-radius:4px;font-size:clamp(8.5px,1vh,10px);font-weight:700;text-decoration:none;white-space:nowrap}
     .btn-vp:hover{background:var(--navy-deep)}
     /* PAGINATION */
     .pgbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0 0;flex-wrap:wrap;font-size:12px;color:var(--muted)}
@@ -252,7 +257,7 @@
 
   <!-- MAIN -->
   <div class="main-col">
-    <a class="back-link" href="dedicated-results.html">
+    <a class="back-link" href="results.html">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       Back to Search Results
     </a>
@@ -260,7 +265,7 @@
       <div class="ptop-l">
         <h1 class="phead">ADVANCED SEARCH RESULTS</h1>
         <div class="pcount">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
           <span id="vendor-count">Loading…</span>
         </div>
       </div>
@@ -268,7 +273,7 @@
         <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Search</button>
         <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
         <button class="btn-act" onclick="CTD_shareResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Results</button>
-        <a class="btn-act btn-sel" href="dedicated-search.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dedicated Selection</a>
+        <a class="btn-act btn-sel" href="dedicated-search.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dedicated Search</a>
       </div>
     </div>
 
@@ -304,18 +309,17 @@
         <table class="res">
           <thead>
             <tr>
-              <th style="width:3%" class="ck"><input type="checkbox" onchange="document.querySelectorAll('.rck').forEach(function(c){c.checked=this.checked;}.bind(this))"></th>
               <th style="width:4%">#</th>
-              <th style="width:18%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
+              <th style="width:19%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
               <th style="width:14%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:13%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:14%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
               <th style="width:14%">DIVISIONS <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
               <th style="width:12%">MASTER TRADES <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
-              <th style="width:8%">ACTIONS</th>
+              <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
-          <tbody id="res-tbody"><tr><td colspan="9" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
+          <tbody id="res-tbody"><tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -393,9 +397,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js"></script>
-<script src="assets/filters.js"></script>
-<script src="assets/actions.js"></script>
+<script src="assets/tools-data.js?v=202609010142"></script>
+<script src="assets/taxonomy-data.js?v=202609010142"></script>
+<script src="assets/filters.js?v=202609010142"></script>
+<script src="assets/actions.js?v=202609010142"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -414,11 +419,13 @@
     var shown=limit?items.slice(0,limit):items;
     container.innerHTML=shown.map(function(it){
       var id='sb-'+(idSeq++);
-      return '<div class="sb-item"><input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'">'
+      var pend=!it.count;
+      return '<div class="sb-item'+(pend?' is-pending':'')+'"'+(pend?' title="Awaiting vendor classification"':'')+'>'
+        +'<input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'"'+(pend?' disabled':'')+'>'
         +'<label for="'+id+'" class="sb-lbl">'+esc(it.label)+'</label><span class="sb-ct">'+it.count+'</span></div>';
     }).join('');
   }
-  // Categories (12), Master Trades (3), Divisions (8) and Trades (11)
+  // Categories (12), Master Trades (11), Divisions and Trades
   // are all short enough to show in full — truncating them risked a
   // filter arriving via URL for an item outside the visible slice,
   // which filters correctly but can't show as checked in the sidebar.
@@ -545,6 +552,17 @@
   };
   window.CTD_collapseMore=function(){render();};
 
+  // Vendor cell: cached favicon (assets/icons/<domain>.ico, populated by
+  // build/fetch-icons.ps1) with a styled letter circle as fallback — used
+  // both when a vendor has no domain at all and when the icon 404s.
+  function vendorCell(t){
+    var letter=esc((t.n||'?').charAt(0).toUpperCase());
+    var fb='<span class="vico vico-fb"'+(t.d?' style="display:none"':'')+'>'+letter+'</span>';
+    var img=t.d?'<img class="vico" src="assets/icons/'+esc(t.d)+'.ico" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'">':'';
+    var dom=t.d?'<a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a>':'';
+    return '<div class="vcell">'+img+fb+'<div class="vmeta"><span class="vn">'+esc(t.n)+'</span>'+dom+'</div></div>';
+  }
+
   function render(){
     var s=(page-1)*rpp,e=s+rpp,rows=DATA.slice(s,e),total=DATA.length;
     document.getElementById('vendor-count').textContent=total.toLocaleString()+' Vendor Matches';
@@ -556,9 +574,8 @@
       var divs=divsOf(t),mts=mtsOf(t);
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
-      h+='<td class="ck"><input type="checkbox" class="rck"></td>';
       h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
-      h+='<td><span class="vn">'+esc(t.n)+'</span><a class="vd bl" href="https://'+esc(t.d)+'" target="_blank" rel="noopener">'+esc(t.d)+'</a></td>';
+      h+='<td>'+vendorCell(t)+'</td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
       h+='<td>'+moreCell(catPairs,1,function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
@@ -567,7 +584,7 @@
       h+='<td><a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>View Profile</a></td>';
       h+='</tr>';
     });
-    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="9" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
+    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
     var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent=total.toLocaleString()+' vendors found';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';

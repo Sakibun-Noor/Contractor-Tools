@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010142">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -50,7 +50,7 @@
     .btn-visit:hover{background:var(--navy)}
     .btn-demo{display:flex;align-items:center;justify-content:center;gap:8px;padding:clamp(6px,1vh,10px) 20px;border:1.5px solid var(--line);color:var(--ink);border-radius:7px;font-size:13px;font-weight:600;margin-bottom:8px;width:100%;cursor:pointer;background:#fff;text-decoration:none}
     .btn-demo:hover{border-color:var(--navy)}
-    .btn-save{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer;width:100%;padding:4px}
+    .btn-save{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:600;color:var(--orange);background:none;border:none;cursor:pointer;width:100%;padding:4px}
     .btn-save:hover{text-decoration:underline}
     /* RIGHT OVERVIEW */
     .vendor-name{font-size:clamp(19px,2.7vh,25px);font-weight:900;color:var(--ink);margin:0 0 4px}
@@ -180,7 +180,7 @@
   <div class="breadrow">
     <div class="bread">
       <a href="index.html">Home</a><span class="sep">›</span>
-      <a href="dedicated-results.html">Search Results</a><span class="sep">›</span>
+      <a href="results.html">Search Results</a><span class="sep">›</span>
       <span id="bread-name">Vendor</span>
     </div>
     <div class="top-actions">
@@ -242,7 +242,7 @@
   <!-- 6 info cards -->
   <div class="vendor-list-grid" id="info-cards">
     <div class="lcard"><div class="lcard-hd">Divisions Served</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Trades Served</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Trades</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Master Categories Served</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Key Products</div><div class="lcard-body"><ul id="lc-products"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Subcategories</div><div class="lcard-body"><ul id="lc-subcats"></ul></div></div>
@@ -358,9 +358,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js"></script>
-<script src="assets/filters.js"></script>
-<script src="assets/actions.js"></script>
+<script src="assets/tools-data.js?v=202609010142"></script>
+<script src="assets/taxonomy-data.js?v=202609010142"></script>
+<script src="assets/filters.js?v=202609010142"></script>
+<script src="assets/actions.js?v=202609010142"></script>
 <script>
 (function(){
   var CM=CTD_FILTERS.CM, DIV_MAP=CTD_FILTERS.DIV_MAP, MT_MAP=CTD_FILTERS.MT_MAP;
@@ -498,7 +499,7 @@
       {label:'Product/Subcategory',get:function(){return t.sub;}},
       {label:'Categories',get:function(){return cats.join('; ');}},
       {label:'Divisions',get:function(){return divs.join('; ');}},
-      {label:'Trades Served',get:function(){return (t.tr||[]).join('; ');}},
+      {label:'Trades',get:function(){return (t.tr||[]).join('; ');}},
       {label:'Master Trades',get:function(){return mts.join('; ');}},
       {label:'Company Size',get:function(){return t.sz;}}
     ], t.s+'-profile.csv');

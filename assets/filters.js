@@ -100,17 +100,36 @@ window.CTD_FILTERS = (function () {
       return { value: div, label: div, count: count };
     }).sort(function (a, b) { return b.count - a.count; });
 
+    // MASTER TRADE — sourced from the client's taxonomy (11 groups) when
+    // assets/taxonomy-data.js is loaded. The old MT_MAP invented three labels
+    // ("Mechanical Trades", "All Master Trades") that don't exist in the real
+    // hierarchy, which is what correction DS-02 flagged as "Items Missing".
+    //
+    // Counts stay at 0 until the client's per-vendor classification lands:
+    // deriving Master Trade from software category was explicitly ruled out
+    // (an estimating tool may serve electrical OR concrete). Entries with a
+    // 0 count render disabled rather than filtering to an empty result.
     var mtCats = {};
     Object.keys(MT_MAP).forEach(function (cat) {
       var mt = MT_MAP[cat];
       mtCats[mt] = mtCats[mt] || [];
       if (mtCats[mt].indexOf(cat) === -1) mtCats[mt].push(cat);
     });
-    var masterTrades = Object.keys(mtCats).map(function (mt) {
-      var cats = mtCats[mt];
-      var count = tools.filter(function (t) { return (t.c || []).some(function (c) { return cats.indexOf(c) > -1; }); }).length;
-      return { value: mt, label: mt, count: count };
-    }).sort(function (a, b) { return b.count - a.count; });
+
+    var masterTrades;
+    var TAX = (typeof window !== 'undefined' && window.CTD_TAXONOMY) || null;
+    if (TAX && TAX.masterTrades && TAX.masterTrades.length) {
+      masterTrades = TAX.masterTrades.map(function (m) {
+        var count = tools.filter(function (t) { return t.mt === m.name; }).length;
+        return { value: m.name, label: m.name, count: count, pending: count === 0 };
+      });
+    } else {
+      masterTrades = Object.keys(mtCats).map(function (mt) {
+        var cats = mtCats[mt];
+        var count = tools.filter(function (t) { return (t.c || []).some(function (c) { return cats.indexOf(c) > -1; }); }).length;
+        return { value: mt, label: mt, count: count };
+      }).sort(function (a, b) { return b.count - a.count; });
+    }
 
     var availCounts = {};
     tools.forEach(function (t) { avail(t.sz).forEach(function (a) { availCounts[a] = (availCounts[a] || 0) + 1; }); });
