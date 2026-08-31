@@ -42,7 +42,11 @@
     .vendor-top{display:grid;grid-template-columns:clamp(220px,17vw,300px) minmax(0,1fr);gap:24px;align-items:start;min-height:0}
     .vcard{border:1px solid var(--line);border-radius:10px;padding:clamp(10px,1.6vh,20px);text-align:center;background:#fff}
     .vcard-wordmark{display:flex;flex-direction:column;align-items:center;gap:6px;padding:clamp(4px,.8vh,10px) 0 clamp(4px,.6vh,8px)}
-    .vcard-wordmark-icon{width:clamp(28px,3.2vh,36px);height:clamp(28px,3.2vh,36px);border-radius:9px;object-fit:contain;background:#f3f6fb;padding:6px}
+    /* Enlarged per the 09/01 feedback. Capped at ~76px on purpose: roughly half
+   the cached icons are 32-48px source files, and pushing them to full
+   card width (~280px, as in the mockup) would visibly pixelate them. A true
+   wordmark at that size needs real logo assets — see spec item 4.18. */
+.vcard-wordmark-icon{width:clamp(56px,7.4vh,76px);height:clamp(56px,7.4vh,76px);border-radius:12px;object-fit:contain;background:#f3f6fb;padding:9px}
     .vcard-wordmark-text{font-size:clamp(19px,2.6vh,26px);font-weight:900;color:var(--ink);letter-spacing:-.02em;line-height:1.05;word-break:break-word}
     .vcard-domain{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--vlink);margin-bottom:clamp(6px,1.2vh,14px)}
     .vcard-domain:hover{text-decoration:underline}

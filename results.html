@@ -16,11 +16,22 @@
     body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
     a{text-decoration:none;color:inherit}input,select,button{font-family:inherit}
 
-    /* This page flows and scrolls normally — unlike the 100dvh shell used on
-       the dedicated pages. The two-question panel plus a full results table
-       does not fit one viewport, and the mobile spec requires the page body
-       never to scroll sideways (only the table container does). */
-    main{max-width:1620px;margin:0 auto;width:100%;padding:16px clamp(14px,2.2vw,26px) 40px;display:flex;flex-direction:column;gap:14px}
+    /* ── SHELL: header + main locked to exactly 100dvh, matching every other
+       page. Only the footer is reached by scrolling. The results table takes
+       whatever height is left over and scrolls inside its own container. ── */
+    .page-above-fold{
+      width:100%;height:100dvh;min-height:0;
+      display:grid;grid-template-rows:auto minmax(0,1fr);
+      overflow:hidden;
+    }
+    .page-above-fold>*{min-width:0;min-height:0;overflow:hidden}
+    main{
+      max-width:1620px;margin:0 auto;width:100%;
+      padding:10px clamp(14px,2.2vw,26px) 8px;
+      height:100%;min-height:0;overflow:hidden;
+      display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
+      gap:8px;
+    }
 
     /* ── TITLE ROW ── */
     .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -36,7 +47,10 @@
 
     /* ── ACTIVE SELECTION CHIPS ── */
     .chips-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-    .chips-row.is-empty{display:none}
+    /* Must keep its grid slot when empty. display:none would remove the row
+       entirely, shifting the table into the auto track and collapsing the
+       pagination row to zero height. */
+    .chips-row.is-empty{visibility:hidden;height:0;min-height:0;gap:0;overflow:hidden}
     .chips-label{font-size:11.5px;font-weight:700;color:var(--ink);white-space:nowrap}
     .chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border:1.5px solid #c8d6ee;border-radius:5px;background:#fff;font-size:11.5px;white-space:nowrap}
     .chip b{color:var(--navy);font-weight:700}
@@ -72,8 +86,13 @@
     .qempty{font-size:11.5px;color:var(--muted);font-style:italic;padding:2px 0}
 
     /* ── RESULTS TABLE ── */
-    .tablewrap{border:1px solid var(--line);border-radius:8px;overflow:hidden}
-    .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    /* Fills the leftover row of the 100dvh grid. The table scrolls inside
+       this box — horizontally below its min-width, and vertically if the
+       page is too short for a full page of results — so the page itself
+       never scrolls above the fold. */
+    .tablewrap{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
+    .tscroll{overflow:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
+    table.res thead th{position:sticky;top:0;z-index:1}
     table.res{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:1120px}
     table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:9px 8px;white-space:nowrap;letter-spacing:.02em;font-size:10.5px;border-right:1px solid rgba(255,255,255,.1)}
     table.res th:last-child{border-right:none}
@@ -89,7 +108,7 @@
     .vd{color:var(--vlink);font-size:10px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .vcell{display:flex;align-items:flex-start;gap:7px;min-width:0}
     .vmeta{min-width:0;overflow:hidden}
-    .vico{width:18px;height:18px;flex:none;border-radius:3px;object-fit:contain;background:#fff;margin-top:1px}
+    .vico{width:22px;height:22px;flex:none;border-radius:3px;object-fit:contain;background:#fff;margin-top:1px}
     .vico-fb{display:grid;place-items:center;background:var(--navy);color:#fff;font-size:10px;font-weight:700;line-height:1}
     .bl{color:var(--vlink)}
     .bl:hover{text-decoration:underline}
@@ -115,8 +134,17 @@
     .pgrpp{display:flex;align-items:center;gap:8px}
     .pgrpp select{border:1.5px solid var(--line);border-radius:5px;padding:7px 10px;font-size:12.5px;background:#fff;cursor:pointer;outline:none;color:var(--ink);min-height:36px}
 
-    /* ── MOBILE (spec: search-page-mobile.md) ── */
-    @media(max-width:1100px){
+    /* ── MOBILE (spec: search-page-mobile.md) ──
+       Below desktop the locked 100dvh shell isn't appropriate — the panel and
+       a dense table need room to breathe — so the page grows and scrolls
+       naturally, exactly as the other pages do at their own breakpoints. */
+    @media(max-width:1199px){
+      .page-above-fold{height:auto;display:block;overflow:visible}
+      .page-above-fold>*{overflow:visible}
+      main{height:auto;overflow:visible;display:flex;flex-direction:column;padding:14px clamp(14px,2.2vw,26px) 32px;gap:14px}
+      .tablewrap{height:auto}
+      .tscroll{overflow-y:visible}
+      table.res thead th{position:static}
       .qgrid{grid-template-columns:1fr}
     }
     @media(max-width:760px){
@@ -141,6 +169,8 @@
   </style>
 </head>
 <body>
+
+<div class="page-above-fold">
 
 <!-- ═══════════ HEADER (shared CTD chrome) ═══════════ -->
 <header class="site-header">
@@ -316,6 +346,9 @@
   </div>
 
 </main>
+
+</div>
+<!-- ═══════════ END OF THE 100dvh FOLD ═══════════ -->
 
 <!-- ═══════════ FOOTER (shared CTD chrome) ═══════════ -->
 <footer class="site-footer">

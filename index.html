@@ -307,7 +307,10 @@
     <div class="min-w-0 border-l border-white/10 pl-[clamp(10px,1.2vw,24px)] max-lg:border-l-0 max-lg:pl-0">
       <h3 class="relative mb-3 pb-2 text-[clamp(10px,0.9vw,14px)] font-extrabold uppercase tracking-wider
                  after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-7 after:bg-ctd-orange">Follow Us</h3>
-      <div class="grid w-max grid-cols-2 gap-2">
+      <!-- 4 across, 2 down. Eight icons stacked 2-across made the Follow Us
+           column twice as tall as its neighbours and stretched the whole
+           footer; 4x2 keeps it level with the link columns. -->
+      <div class="grid w-max grid-cols-4 gap-2">
         <a href="#" aria-label="LinkedIn" class="grid h-[clamp(30px,2.4vw,40px)] w-[clamp(30px,2.4vw,40px)] place-items-center rounded-lg bg-[#0077B5] transition hover:scale-105">
           <i class="fa-brands fa-linkedin-in text-[clamp(14px,1.1vw,19px)] text-white"></i>
         </a>
