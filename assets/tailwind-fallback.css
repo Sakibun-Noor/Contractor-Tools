@@ -58,3 +58,11 @@
 @media not all and (min-width: 1024px){.max-lg\:order-3{order:3}.max-lg\:col-span-3{grid-column:span 3 / span 3}.max-lg\:ml-auto{margin-left:auto}.max-lg\:block{display:block}.max-lg\:h-10{height:2.5rem}.max-lg\:h-11{height:2.75rem}.max-lg\:h-auto{height:auto}.max-lg\:max-h-none{max-height:none}.max-lg\:min-h-\[92px\]{min-height:92px}.max-lg\:w-auto{width:auto}.max-lg\:w-full{width:100%}.max-lg\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.max-lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.max-lg\:grid-rows-none{grid-template-rows:none}.max-lg\:flex-wrap{flex-wrap:wrap}.max-lg\:gap-3{gap:0.75rem}.max-lg\:gap-5{gap:1.25rem}.max-lg\:gap-y-8{row-gap:2rem}.max-lg\:overflow-visible{overflow:visible}.max-lg\:border-b{border-bottom-width:1px}.max-lg\:border-l-0{border-left-width:0px}.max-lg\:border-r-0{border-right-width:0px}.max-lg\:py-3{padding-top:0.75rem;padding-bottom:0.75rem}.max-lg\:pb-4{padding-bottom:1rem}.max-lg\:pl-0{padding-left:0px}.max-lg\:text-\[13px\]{font-size:13px}}
 @media not all and (min-width: 640px){.max-sm\:col-span-2{grid-column:span 2 / span 2}.max-sm\:grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.max-sm\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.max-sm\:border-b{border-bottom-width:1px}}
 .\[\&\>a\:nth-child\(6n\)\]\:border-r-0>a:nth-child(6n){border-right-width:0px}.\[\&\>a\:nth-child\(n\+7\)\]\:border-b-0>a:nth-child(n+7){border-bottom-width:0px}
+
+/* Added 2026-09-01 with the category-tile label fix: the icon now flexes
+   inside its tile instead of holding a fixed height, so the label can never
+   be pushed across the divider on a short viewport. */
+.max-h-\[clamp\(46px\2c 11\.4vh\2c 114px\)\]{max-height:clamp(46px,11.4vh,114px)}
+.flex-1{flex:1 1 0%}
+.gap-\[clamp\(5px\2c 1vh\2c 11px\)\]{gap:clamp(5px,1vh,11px)}
+.py-\[clamp\(5px\2c 0\.9vh\2c 12px\)\]{padding-top:clamp(5px,0.9vh,12px);padding-bottom:clamp(5px,0.9vh,12px)}
