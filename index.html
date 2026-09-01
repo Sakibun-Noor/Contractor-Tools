@@ -18,12 +18,12 @@
        filter, ad-blocker, CDN outage — no styles are produced and the category
        tiles overlap each other. Fall back to the captured stylesheet so the
        page still renders correctly. The CDN stays primary, so this snapshot
-       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609020053. */
+       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609020216. */
     (function () {
       if (typeof tailwind !== 'undefined') return;
       var l = document.createElement('link');
       l.rel = 'stylesheet';
-      l.href = 'assets/tailwind-fallback.css?v=202609020053';
+      l.href = 'assets/tailwind-fallback.css?v=202609020216';
       document.head.appendChild(l);
     })();
   </script>
@@ -49,23 +49,36 @@
     };
   </script>
   <style>
-    /* The hero art has its text and the ANALYTICS / AUTOMATION / CLOUD /
-       SAFETY / BIM nodes baked in, so it must never be cropped.
-       2026-09-02: max-height used to cap this section (46vh, then 50vh)
-       alongside aspect-ratio. That's a trap: whenever the cap actually
-       bound, the box's rendered ratio stopped matching the image's own
-       ratio, and object-contain then had real empty space to letterbox
-       WITHIN the full-width box - invisible to a check that only reads
-       the <img> element's own box (always w-full) instead of the visible
-       photo's rendered extent, which is how the previous fix looked
-       verified and still showed navy bars on a wider desktop window.
-       aspect-ratio is now the ONLY thing sizing this box. Box ratio ==
-       image ratio always, by construction, so object-contain never has
-       anything left to trim - zero gap on every viewport shape, no vh
-       arithmetic to get right. max-height is now just a sanity ceiling
-       for pathological short+wide windows; at this image's 3.59:1 it
-       won't bind on anything realistic. */
-    .hero-band { aspect-ratio: 3904 / 1088; max-height: 70vh; }
+    /* HERO SIZING — object-cover, not object-contain. Read this before
+       touching max-height; the two previous attempts both regressed.
+
+       The bind at a wide, short window (e.g. 1896x876): header 103 +
+       an uncropped full-width hero 524 + the category grid it needs
+       ~214 + the FIND bar 100 = 941px of demand against 876px of fold.
+       Something must give, and with object-contain the only two
+       outcomes were both bugs:
+         - cap the height  -> box ratio stops matching image ratio, the
+           image letterboxes inside a still-full-width box, navy bars
+           appear left and right (reported 2026-09-02);
+         - drop the cap    -> hero grows to 524px and takes the missing
+           height straight out of the category grid, whose icons are
+           flex-1/min-h-0 and collapse to ~9px (also reported).
+
+       object-cover breaks the tie: the image always fills the box's
+       width, so a side gap is impossible at any size, and the height
+       cap is free to protect the category grid. The cost is vertical
+       cropping, but only when the cap actually binds - on a normal
+       1920x1080 or 1536x864 window it does not, and nothing is cropped
+       at all.
+
+       object-position keeps the crop off the artwork that matters. The
+       baked-in labels sit at roughly 22% (ANALYTICS/AUTOMATION) and 88%
+       (SAFETY) of the image height, so the bottom is the tighter
+       margin; biasing to 60% takes more off the expendable sky than
+       off the workers and the SAFETY node. At the worst realistic
+       window (~1920x800, a 25% crop) both label rows still survive. */
+    .hero-band { aspect-ratio: 3904 / 1088; max-height: 50vh; }
+    .hero-band img { object-position: center 60%; }
 
     /* ── Cross-browser safety net ──────────────────────────────────────
        Two modern features this page's layout depends on, each with a
@@ -164,7 +177,7 @@
     <h2 class="sr-only">Construction. Technology. Contractors. Connected.</h2>
     <img src="assets/ctd/hero_image.jpg?v=202609020205" fetchpriority="high"
          alt="The Construction Technology Directory — construction professionals reviewing plans on site, with AI, analytics, automation, cloud, safety and BIM technology nodes over a city skyline."
-         class="h-full w-full select-none object-contain" draggable="false">
+         class="h-full w-full select-none object-cover" draggable="false">
   </section>
 
   <!-- ─────────── WORKFLOW SOLUTIONS GRID ─────────── -->
