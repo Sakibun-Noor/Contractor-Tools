@@ -18,12 +18,12 @@
        filter, ad-blocker, CDN outage — no styles are produced and the category
        tiles overlap each other. Fall back to the captured stylesheet so the
        page still renders correctly. The CDN stays primary, so this snapshot
-       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609010425. */
+       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609011154. */
     (function () {
       if (typeof tailwind !== 'undefined') return;
       var l = document.createElement('link');
       l.rel = 'stylesheet';
-      l.href = 'assets/tailwind-fallback.css?v=202609010425';
+      l.href = 'assets/tailwind-fallback.css?v=202609011154';
       document.head.appendChild(l);
     })();
   </script>
@@ -160,7 +160,7 @@
   <!-- ─────────── WORKFLOW SOLUTIONS GRID ─────────── -->
   <section aria-label="Workflow categories"
            class="grid min-h-0 min-w-0 grid-rows-[auto_minmax(0,1fr)] overflow-hidden
-                  bg-gradient-to-b from-[#A8CEEE] to-[#C4DEF4] max-lg:block">
+                  bg-gradient-to-b from-[#DCEEFB] to-[#E9F5FD] max-lg:block">
 
     <h2 class="m-0 flex items-center justify-center gap-[clamp(8px,1.9vw,30px)]
                px-4 py-[clamp(4px,0.9vh,13px)] text-center text-[clamp(11px,1.24vw,21px)]
@@ -333,7 +333,7 @@
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Insights</a>
       <p class="mb-1.5 text-[clamp(10px,0.78vw,12.5px)] text-white/70">
         <a href="#" class="transition hover:text-white">FAQ</a>
-        <span class="px-1 text-white/40" aria-hidden="true">·</span>
+        <span class="px-1 text-white/40" aria-hidden="true">/</span>
         <a href="#" class="transition hover:text-white">Glossary</a>
       </p>
     </div>

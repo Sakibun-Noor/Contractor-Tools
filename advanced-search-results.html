@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010425">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -103,7 +103,13 @@
     .vd{color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px)}
     .bl{color:var(--vlink)}.bl:hover{text-decoration:underline}
     .more{display:block;color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px);font-style:italic;margin-top:2px}
-    .btn-vp{display:flex;width:100%;align-items:center;justify-content:center;gap:4px;padding:clamp(3px,.5vh,5px) 5px;background:var(--navy);color:#fff;border-radius:4px;font-size:clamp(8.5px,1vh,10px);font-weight:700;text-decoration:none;white-space:nowrap}
+    .act-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:3px}
+    .act-ic{display:grid;place-items:center;width:18px;height:18px;padding:0;border:0;background:none;color:var(--blue);cursor:pointer;border-radius:3px;text-decoration:none}
+    .act-ic:hover{color:var(--navy);background:var(--cream)}
+    .act-ic:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+    .act-ic.on{color:var(--orange)}
+    .act-ic.on svg{fill:currentColor}
+    .btn-vp{display:block;width:100%;padding:clamp(2px,.4vh,4px) 5px;background:var(--navy);color:#fff;border-radius:4px;font-size:clamp(8.5px,1vh,10px);font-weight:700;text-align:center;text-decoration:none;white-space:nowrap}
     .btn-vp:hover{background:var(--navy-deep)}
     /* PAGINATION */
     .pgbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 0 0;flex-wrap:wrap;font-size:12px;color:var(--muted)}
@@ -348,8 +354,7 @@
         <table class="res">
           <thead>
             <tr>
-              <th style="width:4%">#</th>
-              <th style="width:19%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
+              <th style="width:23%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
               <th style="width:14%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:13%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:14%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
@@ -358,7 +363,7 @@
               <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
-          <tbody id="res-tbody"><tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
+          <tbody id="res-tbody"><tr><td colspan="7" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -407,7 +412,7 @@
       <a href="#">Learn</a>
       <a href="#">Research</a>
       <a href="#">Insights</a>
-      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">·</span><a href="#">Glossary</a></p>
+      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">/</span><a href="#">Glossary</a></p>
     </div>
 
     <div class="footer-column">
@@ -451,10 +456,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609010425"></script>
-<script src="assets/taxonomy-data.js?v=202609010425"></script>
-<script src="assets/filters.js?v=202609010425"></script>
-<script src="assets/actions.js?v=202609010425"></script>
+<script src="assets/tools-data.js?v=202609011154"></script>
+<script src="assets/taxonomy-data.js?v=202609011154"></script>
+<script src="assets/filters.js?v=202609011154"></script>
+<script src="assets/actions.js?v=202609011154"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -664,6 +669,24 @@
   // Vendor cell: cached favicon (assets/icons/<domain>.ico, populated by
   // build/fetch-icons.ps1) with a styled letter circle as fallback — used
   // both when a vendor has no domain at all and when the icon 404s.
+  // AS-10 — globe + bookmark on top, View Profile beneath, matching
+  // results.html and dedicated-results.html. The globe is omitted where a
+  // vendor has no domain rather than linking to a bare "https://".
+  function actionsCell(t){
+    var saved=CTD_ACTIONS.isVendorSaved(t.s);
+    var globe=t.d
+      ? '<a class="act-ic" href="https://'+esc(t.d)+'" target="_blank" rel="noopener" title="Visit website" aria-label="Visit '+esc(t.n)+' website"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></a>'
+      : '';
+    var bm='<button class="act-ic'+(saved?' on':'')+'" title="Save vendor" aria-label="Save '+esc(t.n)+'" aria-pressed="'+(saved?'true':'false')+'" onclick="CTD_toggleRowSave(this,\''+esc(t.s)+'\',\''+esc(t.n).replace(/'/g,"\\'")+'\')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>';
+    return '<div class="act-row">'+globe+bm+'</div>'
+      +'<a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'">View Profile</a>';
+  }
+  window.CTD_toggleRowSave=function(el,slug,name){
+    var on=CTD_ACTIONS.toggleSaveVendor(slug,name);
+    el.classList.toggle('on',on);
+    el.setAttribute('aria-pressed',on?'true':'false');
+  };
+
   function vendorCell(t){
     var letter=esc((t.n||'?').charAt(0).toUpperCase());
     var fb='<span class="vico vico-fb"'+(t.d?' style="display:none"':'')+'>'+letter+'</span>';
@@ -683,17 +706,18 @@
       var divs=divsOf(t),mts=mtsOf(t);
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
-      h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
       h+='<td>'+vendorCell(t)+'</td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
       h+='<td>'+moreCell(catPairs,1,function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
-      h+='<td>'+moreCell(divs,1,function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';})+'</td>';
+      // AS-11 — show up to 2 divisions before collapsing to "more…". Two fits
+      // the row height; a third pushes the row taller.
+      h+='<td>'+moreCell(divs,2,function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';})+'</td>';
       h+='<td>'+moreCell(mts,1,function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';})+'</td>';
-      h+='<td><a class="btn-vp" href="vendor-profile.html?s='+esc(t.s)+'"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>View Profile</a></td>';
+      h+='<td>'+actionsCell(t)+'</td>';
       h+='</tr>';
     });
-    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
+    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="7" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
     var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent=total.toLocaleString()+' vendors found';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';

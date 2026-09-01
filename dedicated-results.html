@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010425">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -51,8 +51,9 @@
     .chip .cx:hover{opacity:1;color:#c00}
     /* TABLE */
     .tablewrap{border:1px solid var(--line);border-radius:7px;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
-    .tscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
-    table.res{width:100%;height:100%;border-collapse:collapse;font-size:clamp(9px,1.05vh,10.5px);table-layout:fixed;min-width:1200px}
+    .tscroll{overflow:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
+    table.res thead th{position:sticky;top:0;z-index:1}
+    table.res{width:100%;border-collapse:collapse;font-size:clamp(9px,1.05vh,10.5px);table-layout:fixed;min-width:1200px}
     table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:clamp(5px,.8vh,10px) 8px;white-space:nowrap;letter-spacing:.02em;font-size:clamp(9px,1.05vh,10.5px);border-right:1px solid rgba(255,255,255,.1)}
     table.res th:last-child{border-right:none}
     .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px}
@@ -197,8 +198,7 @@
       <table class="res" id="res-table">
         <thead>
           <tr>
-            <th style="width:3%">#</th>
-            <th style="width:11%">VENDOR <span class="sic" onclick="sortBy('n')">↑↓</span></th>
+            <th style="width:14%">VENDOR <span class="sic" onclick="sortBy('n')">↑↓</span></th>
             <th style="width:11%">DESCRIPTION</th>
             <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
@@ -210,7 +210,7 @@
             <th>ACTIONS</th>
           </tr>
         </thead>
-        <tbody id="res-tbody"><tr><td colspan="11" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
+        <tbody id="res-tbody"><tr><td colspan="10" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -258,7 +258,7 @@
       <a href="#">Learn</a>
       <a href="#">Research</a>
       <a href="#">Insights</a>
-      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">·</span><a href="#">Glossary</a></p>
+      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">/</span><a href="#">Glossary</a></p>
     </div>
 
     <div class="footer-column">
@@ -302,10 +302,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609010425"></script>
-<script src="assets/taxonomy-data.js?v=202609010425"></script>
-<script src="assets/filters.js?v=202609010425"></script>
-<script src="assets/actions.js?v=202609010425"></script>
+<script src="assets/tools-data.js?v=202609011154"></script>
+<script src="assets/taxonomy-data.js?v=202609011154"></script>
+<script src="assets/filters.js?v=202609011154"></script>
+<script src="assets/actions.js?v=202609011154"></script>
 <script>
 (function(){
   var vocab=CTD_FILTERS.build(window.TOOLS||[]);
@@ -455,7 +455,6 @@
       var desc=(t.x||'').slice(0,85)+(t.x&&t.x.length>85?'…':'');
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
-      h+='<td style="text-align:center;font-weight:600;font-size:11px">'+idx+'</td>';
       h+='<td>'+vendorCell(t)+'</td>';
       h+='<td class="desc-cell" style="font-size:9px;line-height:1.2;color:#4a5568">'+esc(desc)+'</td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
@@ -468,7 +467,7 @@
       h+='<td style="min-width:88px">'+actionsCell(t)+'</td>';
       h+='</tr>';
     });
-    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="11" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
+    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="10" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
     var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent='Showing '+ps+' to '+pe+' of '+total.toLocaleString()+' vendors';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';

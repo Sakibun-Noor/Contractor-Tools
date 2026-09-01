@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010425">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -54,11 +54,21 @@
     .af-hd{display:flex;align-items:center;gap:10px;padding:6px 16px;background:var(--navy);color:#fff;cursor:pointer;user-select:none}
     .af-hd h3{margin:0;font-size:12px;font-weight:700;letter-spacing:.04em;flex:1}
     .af-chev{font-size:12px;transition:transform .2s}
-    .af-body{padding:8px 18px;display:grid;grid-template-columns:repeat(5,1fr);gap:6px 28px;max-height:14vh;overflow-y:auto}
-    .af-grp{}
-    .af-grp h4{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--ink)}
-    .af-grp:not(:last-child){border-right:1px solid var(--line);padding-right:28px}
-    .af-item{display:flex;align-items:center;gap:7px;font-size:11.5px;padding:2px 0}
+    /* DS-06 — five groups across one row. No max-height and no overflow:
+       the panel is sized by its content, so nothing is ever clipped or
+       hidden behind an internal scrollbar. Markets Served gets a wider
+       track and splits its ten options into two sub-columns so the row
+       stays as short as the shortest group. */
+    .af-body{padding:8px 18px;display:grid;grid-template-columns:.95fr .95fr 2fr 1fr .95fr;gap:6px 20px;max-height:none;overflow:visible}
+    .af-col{min-width:0;display:flex;flex-direction:column;gap:9px}
+    .af-col:not(:last-child){border-right:1px solid var(--line);padding-right:24px}
+    .af-grp{min-width:0}
+    .af-grp h4{margin:0 0 5px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink)}
+    .af-split{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+    .af-item{display:flex;align-items:center;gap:7px;font-size:11px;padding:2px 0;min-width:0}
+    .af-item label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .af-item.is-pending{opacity:.45}
+    .af-item.is-pending label{cursor:default}
     .af-item input{accent-color:var(--blue);width:13px;height:13px;flex:none}
     /* SELECTOR GRID */
     .selector-grid{min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
@@ -102,7 +112,7 @@
     }
     @media(max-width:760px){
       .af-body{grid-template-columns:1fr 1fr;gap:14px}
-      .af-grp:not(:last-child){border-right:none;padding-right:0;border-bottom:1px solid var(--line);padding-bottom:14px}
+      .af-col:not(:last-child){border-right:none;padding-right:0;border-bottom:1px solid var(--line);padding-bottom:14px}
       .selector-grid{grid-template-columns:repeat(2,1fr)}
     }
   </style>
@@ -185,19 +195,47 @@
       <h3>ADVANCED FILTERS</h3>
       <span class="af-chev">▲</span>
     </div>
-    <div class="af-body" id="af-body" style="grid-template-columns:repeat(2,1fr)">
-      <!-- Only dimensions with real backing data in tools-data.js are
-           offered here (company size, deployment) — the previous
-           Evaluation Options / Company Type / Markets Served / Purchase
-           Options groups had no underlying data for any vendor, so
-           checking them could never have narrowed real results. -->
-      <div class="af-grp">
-        <h4>COMPANY SIZE <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-        <div id="af-size"></div>
+    <div class="af-body" id="af-body" style="grid-template-columns:.95fr .95fr 2fr 1fr .95fr">
+      <!-- DS-06 — the five groups from the client reference for this page.
+           Evaluation Options, Company Type, Markets Served and Purchase
+           Options have no backing column in tools-data.js, so they render
+           at (0) and disabled rather than pretending to filter. Company
+           Size and Available On are real and stay live; Company Size sits
+           under Company Type so a working filter is not lost to the
+           five-column layout. -->
+      <div class="af-col">
+        <div class="af-grp">
+          <h4>EVALUATION OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-eval"></div>
+        </div>
       </div>
-      <div class="af-grp">
-        <h4>AVAILABLE ON <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-        <div id="af-avail"></div>
+      <div class="af-col">
+        <div class="af-grp">
+          <h4>COMPANY TYPE <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-ctype"></div>
+        </div>
+        <div class="af-grp">
+          <h4>COMPANY SIZE <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-size"></div>
+        </div>
+      </div>
+      <div class="af-col">
+        <div class="af-grp">
+          <h4>MARKETS SERVED <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-markets" class="af-split"></div>
+        </div>
+      </div>
+      <div class="af-col">
+        <div class="af-grp">
+          <h4>PURCHASE OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-purchase"></div>
+        </div>
+      </div>
+      <div class="af-col">
+        <div class="af-grp">
+          <h4>AVAILABLE ON <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-avail"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -317,7 +355,7 @@
       <a href="#">Learn</a>
       <a href="#">Research</a>
       <a href="#">Insights</a>
-      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">·</span><a href="#">Glossary</a></p>
+      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">/</span><a href="#">Glossary</a></p>
     </div>
 
     <div class="footer-column">
@@ -361,9 +399,9 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609010425"></script>
-<script src="assets/taxonomy-data.js?v=202609010425"></script>
-<script src="assets/filters.js?v=202609010425"></script>
+<script src="assets/tools-data.js?v=202609011154"></script>
+<script src="assets/taxonomy-data.js?v=202609011154"></script>
+<script src="assets/filters.js?v=202609011154"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -383,7 +421,7 @@
       var pend=!it.count;
       return '<div class="sel-item'+(pend?' is-pending':'')+'"'+(pend?' title="Awaiting vendor classification"':'')+'>'
         +'<input type="checkbox" id="'+id+'" data-filter="'+filterKey+'" value="'+esc(it.value)+'"'+(pend?' disabled':'')+'>'
-        +'<label for="'+id+'">'+esc(it.label)+' <span style="color:var(--muted);font-size:11px">('+it.count+')</span></label></div>';
+        +'<label for="'+id+'" title="'+esc(it.label)+'">'+esc(it.label)+' <span style="color:var(--muted);font-size:11px">('+it.count+')</span></label></div>';
     }).join('');
   }
 
@@ -395,9 +433,27 @@
   renderList(document.getElementById('sel-list-mt'), vocab.masterTrades, 'mt');
   renderList(document.getElementById('af-size'), vocab.sizes, 'sz');
   renderList(document.getElementById('af-avail'), vocab.availableOn, 'avail');
+  // DS-06 — groups the dataset has no column for. They render at (0) and
+  // disabled, exactly as on advanced-search-results.html, so the panel
+  // matches the reference without offering filters that cannot work.
+  function stub(labels){return labels.map(function(l){return {value:l,label:l,count:0};});}
+  renderList(document.getElementById('af-eval'), stub([
+    'Peer Web Research','Demos Available','Peer Reviews'
+  ]), 'eval');
+  renderList(document.getElementById('af-ctype'), stub([
+    'Public Company','Private Company'
+  ]), 'ctype');
+  renderList(document.getElementById('af-purchase'), stub([
+    'Subscription','One-Time Purchase','Contract Or Quote'
+  ]), 'purchase');
+  renderList(document.getElementById('af-markets'), stub([
+    'Col/Varsity Sports','Commercial','Education','Energy / Utilities',
+    'Government / Public Sector','Healthcare','Nonprofit','Manufacturing',
+    'Residential','Retail / Hospitality'
+  ]), 'market');
   // Advanced-filter checkboxes render smaller than selector-card ones
-  document.querySelectorAll('#af-size .sel-item, #af-avail .sel-item').forEach(function(el){
-    el.className='af-item'; el.style.padding='4px 0';
+  document.querySelectorAll('#af-body .sel-item').forEach(function(el){
+    el.className='af-item'+(el.classList.contains('is-pending')?' is-pending':'');
   });
 
   function collectFilters(){

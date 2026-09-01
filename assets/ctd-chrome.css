@@ -130,7 +130,7 @@
 }
 .footer-column a:hover { color: #fff; }
 
-/* FAQ · Glossary share one line, matching the homepage footer. */
+/* FAQ / Glossary share one line, matching the homepage footer. */
 .footer-column p.foot-inline {
   margin: 0 0 3px; display: flex; align-items: center; gap: 6px;
 }

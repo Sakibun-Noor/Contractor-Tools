@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010425">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -41,6 +41,11 @@
     .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
     .ptop-l .phead{font-size:clamp(20px,2.3vw,26px);font-weight:900;letter-spacing:-.02em;color:var(--navy);margin:0 0 4px}
     .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink)}
+    /* SR-12 — the Back to Home link shares the count line rather than taking a
+       row of its own, so the results table keeps every pixel it had. */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--vlink);font-weight:600;text-decoration:none}
+    .back-link:hover{text-decoration:underline}
+    .pcount-sep{width:1px;height:13px;background:var(--line);flex:none}
     .ptop-r{display:flex;gap:9px;flex-wrap:wrap}
     .btn-act{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap;min-height:32px}
     .btn-act:hover{border-color:var(--navy)}
@@ -234,6 +239,11 @@
     <div class="ptop-l">
       <h1 class="phead">SEARCH RESULTS</h1>
       <div class="pcount">
+        <a class="back-link" href="index.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Home
+        </a>
+        <span class="pcount-sep" aria-hidden="true"></span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
         <span id="hero-count">Loading…</span>
       </div>
@@ -318,8 +328,7 @@
       <table class="res">
         <thead>
           <tr>
-            <th style="width:3.5%">#</th>
-            <th style="width:17%">VENDORS <span class="sic" onclick="sortBy('n')">&#8593;&#8595;</span></th>
+            <th style="width:20.5%">VENDORS <span class="sic" onclick="sortBy('n')">&#8593;&#8595;</span></th>
             <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">&#8593;&#8595;</span></th>
             <th style="width:12%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
             <th style="width:13%">PRODUCTS <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
@@ -330,7 +339,7 @@
           </tr>
         </thead>
         <tbody id="res-tbody">
-          <tr><td colspan="9" class="tmsg">Loading vendors…</td></tr>
+          <tr><td colspan="8" class="tmsg">Loading vendors…</td></tr>
         </tbody>
       </table>
     </div>
@@ -389,7 +398,7 @@
       <a href="#">Learn</a>
       <a href="#">Research</a>
       <a href="#">Insights</a>
-      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">·</span><a href="#">Glossary</a></p>
+      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">/</span><a href="#">Glossary</a></p>
     </div>
 
     <div class="footer-column">
@@ -433,10 +442,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609010425"></script>
-<script src="assets/taxonomy-data.js?v=202609010425"></script>
-<script src="assets/filters.js?v=202609010425"></script>
-<script src="assets/actions.js?v=202609010425"></script>
+<script src="assets/tools-data.js?v=202609011154"></script>
+<script src="assets/taxonomy-data.js?v=202609011154"></script>
+<script src="assets/filters.js?v=202609011154"></script>
+<script src="assets/actions.js?v=202609011154"></script>
 <script>
 (function(){
   'use strict';
@@ -599,7 +608,6 @@
       var cats = (t.c||[]).map(function(c){ return { slug:c, name:CM[c]||c }; });
       var divs = divsOf(t);
       h += '<tr>';
-      h += '<td style="text-align:center">' + (start+i+1) + '</td>';
       h += '<td>' + vendorCell(t) + '</td>';
       h += '<td>' + moreCell(cats, 1, function(c){ return '<a class="bl cval" href="results.html?cat=' + encodeURIComponent(c.slug) + '">' + esc(c.name) + '</a>'; }) + '</td>';
       h += '<td>' + (t.sub ? '<a class="bl cval" href="results.html?sub=' + encodeURIComponent(t.sub) + '">' + esc(t.sub) + '</a>' : '<span class="tpend">—</span>') + '</td>';
@@ -612,7 +620,7 @@
     });
 
     document.getElementById('res-tbody').innerHTML =
-      h || '<tr><td colspan="9" class="tmsg">No vendors match your search criteria.</td></tr>';
+      h || '<tr><td colspan="8" class="tmsg">No vendors match your search criteria.</td></tr>';
 
     document.getElementById('hero-count').textContent =
       total.toLocaleString() + ' companies match your search criteria.';

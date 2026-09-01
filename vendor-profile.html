@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609010425">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -36,6 +36,8 @@
     }
     /* BREADCRUMB ROW */
     .breadrow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--vlink);font-weight:600;text-decoration:none}
+    .back-link:hover{text-decoration:underline}
     .bread{font-size:12.5px;color:var(--muted)}
     .bread a{color:var(--vlink)}.bread a:hover{text-decoration:underline}
     .bread .sep{margin:0 6px;opacity:.5}
@@ -58,8 +60,8 @@
     .btn-visit:hover{background:var(--navy)}
     .btn-demo{display:flex;align-items:center;justify-content:center;gap:8px;padding:clamp(6px,1vh,10px) 20px;border:1.5px solid var(--line);color:var(--ink);border-radius:7px;font-size:13px;font-weight:600;margin-bottom:8px;width:100%;cursor:pointer;background:#fff;text-decoration:none}
     .btn-demo:hover{border-color:var(--navy)}
-    .btn-save{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:600;color:var(--orange);background:none;border:none;cursor:pointer;width:100%;padding:4px}
-    .btn-save:hover{text-decoration:underline}
+    .btn-save{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:700;color:#fff;background:#D2540A;border:none;border-radius:7px;cursor:pointer;width:100%;padding:clamp(6px,1vh,10px) 14px}
+    .btn-save:hover{background:#B8480A}
     /* RIGHT OVERVIEW */
     .vendor-name{font-size:clamp(19px,2.7vh,25px);font-weight:900;color:var(--ink);margin:0 0 4px}
     .vendor-tagline{font-size:13px;font-weight:600;color:var(--vlink);margin:0 0 8px}
@@ -186,13 +188,12 @@
 <main>
   <!-- Breadcrumb + actions -->
   <div class="breadrow">
-    <div class="bread">
-      <a href="index.html">Home</a><span class="sep">›</span>
-      <a href="results.html">Search Results</a><span class="sep">›</span>
-      <span id="bread-name">Vendor</span>
-    </div>
+    <a class="back-link" href="dedicated-results.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Dedicated Results
+    </a>
     <div class="top-actions">
-      <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Page</button>
+      <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Vendor</button>
       <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Profile</button>
       <button class="btn-act" onclick="CTD_shareResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
     </div>
@@ -265,7 +266,7 @@
         <h3>Available On</h3>
         <div id="avail-list"></div>
       </div>
-      <div class="bcard-sec">
+      <div class="bcard-sec" id="social-sec">
         <h3>Social Media</h3>
         <div class="social-grid">
           <a class="sicon" href="#" title="LinkedIn"><div class="s-box s-li"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div><span class="s-lbl">LinkedIn</span></a>
@@ -337,7 +338,7 @@
       <a href="#">Learn</a>
       <a href="#">Research</a>
       <a href="#">Insights</a>
-      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">·</span><a href="#">Glossary</a></p>
+      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">/</span><a href="#">Glossary</a></p>
     </div>
 
     <div class="footer-column">
@@ -381,10 +382,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609010425"></script>
-<script src="assets/taxonomy-data.js?v=202609010425"></script>
-<script src="assets/filters.js?v=202609010425"></script>
-<script src="assets/actions.js?v=202609010425"></script>
+<script src="assets/tools-data.js?v=202609011154"></script>
+<script src="assets/taxonomy-data.js?v=202609011154"></script>
+<script src="assets/filters.js?v=202609011154"></script>
+<script src="assets/actions.js?v=202609011154"></script>
 <script>
 (function(){
   var CM=CTD_FILTERS.CM, DIV_MAP=CTD_FILTERS.DIV_MAP, MT_MAP=CTD_FILTERS.MT_MAP;
@@ -432,6 +433,24 @@
 
     // Overview
     setEl('v-name',t.n);
+
+    // V-05 — show a social icon only where the vendor actually has that
+    // profile. The vendor data carries no social column yet, so today the
+    // whole block removes itself rather than showing eight dead links. It
+    // lights up per-network the moment real URLs land on t.social.
+    (function(){
+      var sec=document.getElementById('social-sec');
+      if(!sec) return;
+      var links=t.social||{};
+      var shown=0;
+      sec.querySelectorAll('.sicon').forEach(function(a){
+        var net=(a.getAttribute('title')||'').toLowerCase().split(' ')[0];
+        var url=links[net];
+        if(url){ a.href=url; a.target='_blank'; a.rel='noopener'; shown++; }
+        else a.remove();
+      });
+      if(!shown) sec.remove();
+    })();
     var cats=(t.c||[]),catNames=cats.map(function(c){return CM[c]||c;});
     document.getElementById('v-tagline').textContent=catNames[0]||'Construction Software';
     document.getElementById('v-desc').textContent=t.x||'';
