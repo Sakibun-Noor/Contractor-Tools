@@ -50,19 +50,22 @@
   </script>
   <style>
     /* The hero art has its text and the ANALYTICS / AUTOMATION / CLOUD /
-       SAFETY / BIM nodes baked in, so it must never be cropped. Driving
-       the section's height from the image's own aspect ratio means
-       object-contain has nothing left to letterbox in the normal case,
-       while max-height keeps a short-and-wide window from starving the
-       category grid below it.
-       2026-09-02: image is 3904x1088 (3.59:1) - its content runs flush to
-       every edge (crane tops and icon tops at y=0, workers and the Safety
-       icon at the bottom), so it can't be cropped narrower without cutting
-       something. 50vh is the smallest cap that still shows it at full
-       width with zero letterboxing on every standard 16:9/16:10 desktop
-       monitor; true ultra-wide (21:9+) screens will still show a sliver of
-       navy on the sides - unavoidable without cropping this art. */
-    .hero-band { aspect-ratio: 3904 / 1088; max-height: 50vh; }
+       SAFETY / BIM nodes baked in, so it must never be cropped.
+       2026-09-02: max-height used to cap this section (46vh, then 50vh)
+       alongside aspect-ratio. That's a trap: whenever the cap actually
+       bound, the box's rendered ratio stopped matching the image's own
+       ratio, and object-contain then had real empty space to letterbox
+       WITHIN the full-width box - invisible to a check that only reads
+       the <img> element's own box (always w-full) instead of the visible
+       photo's rendered extent, which is how the previous fix looked
+       verified and still showed navy bars on a wider desktop window.
+       aspect-ratio is now the ONLY thing sizing this box. Box ratio ==
+       image ratio always, by construction, so object-contain never has
+       anything left to trim - zero gap on every viewport shape, no vh
+       arithmetic to get right. max-height is now just a sanity ceiling
+       for pathological short+wide windows; at this image's 3.59:1 it
+       won't bind on anything realistic. */
+    .hero-band { aspect-ratio: 3904 / 1088; max-height: 70vh; }
 
     /* ── Cross-browser safety net ──────────────────────────────────────
        Two modern features this page's layout depends on, each with a
@@ -159,7 +162,7 @@
   <section class="hero-band relative w-full min-w-0 overflow-hidden bg-ctd-navy max-lg:max-h-none">
     <h1 class="sr-only">The Construction Technology Directory</h1>
     <h2 class="sr-only">Construction. Technology. Contractors. Connected.</h2>
-    <img src="assets/ctd/hero_image.jpg?v=202609020140" fetchpriority="high"
+    <img src="assets/ctd/hero_image.jpg?v=202609020205" fetchpriority="high"
          alt="The Construction Technology Directory — construction professionals reviewing plans on site, with AI, analytics, automation, cloud, safety and BIM technology nodes over a city skyline."
          class="h-full w-full select-none object-contain" draggable="false">
   </section>
