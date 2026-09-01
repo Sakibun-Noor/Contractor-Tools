@@ -77,6 +77,15 @@
     .lcard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-height:0}
     .lcard-hd{padding:7px 12px;border-bottom:1px solid var(--line);font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--ink);text-transform:uppercase;flex:none}
     .lcard-body{padding:6px 12px;flex:1;min-height:0;overflow-y:auto}
+    /* VM-01 — a card whose list doesn't need to scroll (Division, Master Trade:
+       one real value) gets its content centered rather than pinned to the top
+       of a mostly-empty box. Applied only via .is-short, set after render by
+       measuring actual overflow — never on a card that scrolls. justify-content
+       on a container that DOES overflow lets Chrome start scrollTop negative,
+       hiding the first items until the user scrolls up past zero: blank space,
+       a couple of lines pinned to the bottom, a scrollbar - the exact bug this
+       is fixing. See specs/vendor-middle-section-fix.md. */
+    .lcard-body.is-short{display:flex;flex-direction:column;justify-content:center}
     .lcard-body::-webkit-scrollbar{width:5px}
     .lcard-body::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
     .lcard-body ul{list-style:none;margin:0;padding:0}
@@ -482,6 +491,17 @@
     var allSubs=['Digital Takeoff','Estimating','Project Management','Field Management','Financial Management','Quality & Safety','Document Management','BIM & Design Coordination','Bid Management','Contract Management','Change Management','RFI Management'];
     document.getElementById('lc-subcats').innerHTML=allSubs.map(li).join('');
     document.getElementById('lc-cats').innerHTML=catNames.concat(['Project Management','Field Management','Financial Management','Collaboration','BIM & Design','Safety Management','Document Management','Contract Management','Analytics & Reporting','Preconstruction','Workforce Management','Asset Management']).filter(function(v,i,a){return a.indexOf(v)===i;}).slice(0,12).map(li).join('');
+
+    // VM-01/VM-02 — run after all six lists are in the DOM. A card is only
+    // ever centered if its list genuinely fits with no overflow; a card that
+    // scrolls is left exactly as it was. scrollTop is reset defensively on
+    // every card regardless.
+    document.querySelectorAll('#info-cards .lcard-body').forEach(function(body){
+      body.scrollTop = 0;
+      var ul = body.querySelector('ul');
+      var fits = ul && ul.scrollHeight <= body.clientHeight;
+      body.classList.toggle('is-short', !!fits);
+    });
 
     // Available On
     var avItems=['Cloud-Based','Mobile App (iOS/Android)','API Available','100+ Integrations'];
