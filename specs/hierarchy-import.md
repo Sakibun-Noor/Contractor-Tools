@@ -244,3 +244,87 @@ product names built by concatenation). Same class of problem as the Divisions ca
 outside this import: fixing them is a design decision about what those cards should show
 when a vendor has one real value, and that is Deryck's call, not a silent rewrite. Raised
 in §6.
+
+---
+
+## 8. HX-09 · Correction — `CTD_Construction_Hierarchy_VALIDATED_4_LEVEL.xlsx`
+
+**Source:** received 2026-09-02, in reply to §6 of this spec.
+
+This file corrects two things §2 and §3 got from the client's own prior workbook.
+
+### 8.1 The Master Trade grouping was wrong — 11 names replaced with 12, validated
+
+The old `master_trade` column (used throughout §1–§7) is superseded. This workbook's
+`DEVELOPER_NOTES` sheet, Rule 6: *"The former 1,000 synthetic Trade rows must not be
+imported into production."* — confirming the old taxonomy workbook's Trade/Subtrade
+sheets (1,000 rows, 20 per division) were invented, not sourced. The 12 Master Trades are
+now the validated list:
+
+| Old (11) | New (12) |
+|---|---|
+| General Construction & Project Delivery | **General Construction** |
+| Structural | Structural |
+| Building Envelope | Building Envelope |
+| Interior Finishes | **Interiors** |
+| Specialty Building Systems | **Specialties & Equipment** |
+| Fire & Safety | **Fire Protection** |
+| Mechanical | **split →** Plumbing (div 22) / HVAC & Mechanical (div 23–24) |
+| Electrical & Technology | **split →** Electrical (div 25–26) / Communications & Security (div 27–29) |
+| Civil & Sitework | Civil & Sitework |
+| Transportation & Infrastructure | **merged →** Infrastructure & Industrial |
+| Industrial & Process / Energy & Power | **merged →** Infrastructure & Industrial |
+
+**Fix:** `mt` is no longer read from the vendor workbook's `master_trade` column at all.
+It's recomputed from the vendor's own division number (already known and unaffected by
+this correction) against this workbook's `DIVISIONS` sheet, which maps every one of the
+50 divisions to exactly one of the 12 Master Trades. This sidesteps the two-way splits
+entirely — division 22 is unambiguously Plumbing, division 26 unambiguously Electrical —
+without touching or re-trusting the vendor file's own (now-superseded) column.
+
+### 8.2 "Trade / Division" was never really Trade
+
+This workbook's `DEVELOPER_NOTES` Rule 1: *"Do not treat Division and Trade as the same
+field."* Real Trade is a narrower published MasterFormat Section below the division root
+(example: `31 23 00 – Excavation and Fill`, beneath Division `31 00 00 – Earthwork`) and
+needs a licensed CSI dataset this workbook explicitly does not include in bulk — commercial
+reproduction of MasterFormat numbers/titles requires a CSI license. Only 20 verified
+example Trade/Subtrade pairs are provided, covering roughly a third of the divisions — not
+a usable per-vendor facet.
+
+What §3 built as "Trade / Division" was, honestly, Division the whole time: the vendor
+file's `primary_trade` values matched the old taxonomy's synthetic 50-row list 1:1 with
+division number, so at vendor granularity there never was a level below Division.
+
+**Fix:** the facet is relabelled **DIVISION** everywhere (sidebar, selector card, table
+column, chips, vendor-page card, `FILTER_LABELS`/`LABELS` dictionaries). Filter key `div`
+and behaviour are unchanged. `dv`'s label now comes from this workbook's official CSI
+division name (e.g. `01 – General Requirements`) rather than the old taxonomy's
+CTD-styled per-division synonym (`01 – General Conditions & Project Services`) — one
+source of truth instead of two.
+
+### 8.3 What's still needed
+
+Confirmed by this workbook, not resolved by it: real Trade and Subtrade (levels 3–4)
+require either a licensed MasterFormat 2026 dataset from CSI, or a decision to launch with
+Division-level granularity only. Put to the client in §6.
+
+### Build log
+
+`build/import-vendors.ps1` gains `$HierarchyXlsx` (default alongside `$VendorXlsx` on
+Desktop/CTD). `$TaxonomyXlsx`'s old MASTER_TRADES/DIVISIONS/SUBTRADES sheets are no longer
+read; only its `TRADES` sheet survives, and only to look up which division number a
+vendor's `primary_trade` string belongs to — arithmetic, not vocabulary, and never exposed
+to the site. `data/construction-taxonomy.json` / `assets/taxonomy-data.js` drop `trades`
+and `subtrades` entirely; `masterTrades` (12) and `divisions` (50) now come from the
+validated workbook.
+
+Verified in-browser at 1536×864: `mt=Electrical` → 9, `HVAC & Mechanical` → 4,
+`Plumbing` → 1, `Communications & Security` → 1, `Infrastructure & Industrial` → 2 (sum of
+the two merged old groups). `Fire Protection` → 0, correctly disabled. All 12 Master
+Trades and division labels render correctly on `advanced-search-results.html`,
+`results.html`, `dedicated-search.html`, `dedicated-results.html`, `vendor-profile.html`.
+No "Verify" string, no console errors, no horizontal scroll. One JS-generated "view more
+trades" link (unrelated to the static-HTML relabelling, driven by `SB_FACETS` in
+`advanced-search-results.html`) was caught in testing and fixed to "view more contractor
+types".

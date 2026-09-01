@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011330">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609020053">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -290,12 +290,12 @@
 
     <div class="sel-card" data-filter="div">
       <div class="sel-card-hd">
-        <div class="hd-l"><h3>TRADE / DIVISION</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort TRADE / DIVISION list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
+        <div class="hd-l"><h3>DIVISION</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort DIVISION list" onclick="CTD_sortCard(this)">&#8593;&#8595;</button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       </div>
-      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search trades / divisions..."></div></div>
+      <div class="sel-search"><div class="sel-search-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" placeholder="Search divisions..."></div></div>
       <div class="sel-list" id="sel-list-div"></div>
-      <span class="sel-clear" onclick="CTD_clearCard(this)">Clear Trades / Divisions</span>
+      <span class="sel-clear" onclick="CTD_clearCard(this)">Clear Divisions</span>
     </div>
 
     <div class="sel-card" data-filter="mt">
@@ -399,9 +399,9 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609011330"></script>
-<script src="assets/taxonomy-data.js?v=202609011330"></script>
-<script src="assets/filters.js?v=202609011330"></script>
+<script src="assets/tools-data.js?v=202609020053"></script>
+<script src="assets/taxonomy-data.js?v=202609020053"></script>
+<script src="assets/filters.js?v=202609020053"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -469,7 +469,7 @@
     return CTD_FILTERS.apply(TOOLS, f, vocab).length;
   }
 
-  var LABELS={cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Trade / Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  var LABELS={cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
 
   function refresh(){
     var f=collectFilters();

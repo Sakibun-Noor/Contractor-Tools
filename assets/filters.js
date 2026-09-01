@@ -60,21 +60,25 @@ window.CTD_FILTERS = (function () {
       return { value: tr, label: tr, count: trCounts[tr] };
     }).sort(function (a, b) { return b.count - a.count; });
 
-    // TRADE / DIVISION — one facet, not two. The client's taxonomy maps trade
-    // to CSI division 1:1 across all 50, so shipping both would put two
-    // controls in the sidebar that always return the same rows. t.dv already
-    // carries both vocabularies ("01 – General Conditions & Project Services").
+    // DIVISION — the vendor's own classification (t.dv, "01 – General
+    // Requirements"). HX-09: this used to be labelled "Trade / Division" on
+    // the theory that trade and division were the same axis. The client's
+    // validated hierarchy workbook says otherwise (DEVELOPER_NOTES Rule 1:
+    // "Do not treat Division and Trade as the same field") — real Trade is a
+    // narrower published MasterFormat Section below the division root that
+    // needs a licensed dataset we don't have yet. What we have is Division,
+    // so that's what it's called.
     var dvCounts = {};
     tools.forEach(function (t) { if (t.dv) dvCounts[t.dv] = (dvCounts[t.dv] || 0) + 1; });
     var TAX = (typeof window !== 'undefined' && window.CTD_TAXONOMY) || null;
     var divisions;
-    if (TAX && TAX.trades && TAX.trades.length) {
-      // Ordered by division number and complete, so an unused trade still shows
-      // (disabled at 0) rather than vanishing from the vocabulary.
-      divisions = TAX.trades.filter(function (t) {
-        return t.name.indexOf('Future Scope') === -1;
-      }).map(function (t) {
-        var label = t.divisionNumber + ' – ' + t.name;
+    if (TAX && TAX.divisions && TAX.divisions.length) {
+      // Ordered by division number and complete, so an unused division still
+      // shows (disabled at 0) rather than vanishing from the vocabulary.
+      divisions = TAX.divisions.filter(function (d) {
+        return !d.reserved;
+      }).map(function (d) {
+        var label = d.number + ' – ' + d.name;
         return { value: label, label: label, count: dvCounts[label] || 0 };
       });
     } else {
@@ -83,8 +87,8 @@ window.CTD_FILTERS = (function () {
       }).sort(function (a, b) { return b.count - a.count; });
     }
 
-    // MASTER TRADE — the client's 11 groups, counted from each vendor's own
-    // classification. Groups with no vendors (Fire & Safety, today) render
+    // MASTER TRADE — the client's validated 12 groups (HX-09), counted from
+    // each vendor's own classification. Groups with no vendors render
     // disabled rather than filtering to an empty table.
     var mtCounts = {};
     tools.forEach(function (t) { if (t.mt) mtCounts[t.mt] = (mtCounts[t.mt] || 0) + 1; });

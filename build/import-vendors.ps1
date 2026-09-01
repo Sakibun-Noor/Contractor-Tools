@@ -11,15 +11,18 @@
 # Run: powershell -ExecutionPolicy Bypass -File build\import-vendors.ps1
 # ─────────────────────────────────────────────────────────────────────────────
 param(
-  [string]$VendorXlsx   = "$env:USERPROFILE\OneDrive\Desktop\CTD\CTD_Combined_Vendor_Master_1463_HIERARCHY_CLASSIFIED.xlsx",
-  [string]$TaxonomyXlsx = "$env:USERPROFILE\Downloads\CTD_Master_Trades_Divisions_Trades_Subtrades (1).xlsx",
+  [string]$VendorXlsx    = "$env:USERPROFILE\OneDrive\Desktop\CTD\CTD_Combined_Vendor_Master_1463_HIERARCHY_CLASSIFIED.xlsx",
+  [string]$TaxonomyXlsx  = "$env:USERPROFILE\Downloads\CTD_Master_Trades_Divisions_Trades_Subtrades (1).xlsx",
+  # HX-09 - the client's correction, 2026-09-02. Supersedes $TaxonomyXlsx for
+  # everything except the division-number lookup - see the HX-09 block below.
+  [string]$HierarchyXlsx = "$env:USERPROFILE\OneDrive\Desktop\CTD\CTD_Construction_Hierarchy_VALIDATED_4_LEVEL.xlsx",
   [string]$Root         = (Resolve-Path "$PSScriptRoot\..").Path
 )
 
 $ErrorActionPreference = 'Stop'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 
-foreach ($p in @($VendorXlsx, $TaxonomyXlsx)) {
+foreach ($p in @($VendorXlsx, $TaxonomyXlsx, $HierarchyXlsx)) {
   if (-not (Test-Path $p)) { throw "Missing workbook: $p" }
 }
 
@@ -127,76 +130,64 @@ Write-Host 'Reading taxonomy workbook...' -ForegroundColor Cyan
 $taxDir = Open-Xlsx $TaxonomyXlsx
 
 # These sheets carry a title row above the real header.
-$masterTrades = Read-Sheet $taxDir 'MASTER_TRADES' 2
-$divisions    = Read-Sheet $taxDir 'DIVISIONS'     2
 $trades       = Read-Sheet $taxDir 'TRADES'        2
-$subtrades    = Read-Sheet $taxDir 'SUBTRADES'     2
+
+# HX-09 - correction, 2026-09-02. CTD_Construction_Hierarchy_VALIDATED_4_LEVEL
+# supersedes the workbook above for everything except one lookup (below): its
+# own DEVELOPER_NOTES Rule 6 states "the former 1,000 synthetic Trade rows
+# must not be imported into production", and its 12 Master Trades replace the
+# 11 above - several renamed, two split apart (old "Mechanical" -> Plumbing /
+# HVAC & Mechanical; old "Electrical & Technology" -> Electrical /
+# Communications & Security). See specs/hierarchy-import.md HX-09.
+Write-Host 'Reading validated hierarchy workbook...' -ForegroundColor Cyan
+$hierDir        = Open-Xlsx $HierarchyXlsx
+$masterTrades12 = Read-Sheet $hierDir 'MASTER_TRADES' 2
+$divisions50    = Read-Sheet $hierDir 'DIVISIONS'     2
 
 $taxonomy = [ordered]@{
-  generatedFrom = [System.IO.Path]::GetFileName($TaxonomyXlsx)
+  generatedFrom = [System.IO.Path]::GetFileName($HierarchyXlsx)
   generatedAt   = (Get-Date -Format 'yyyy-MM-dd')
-  note          = 'Master Trade > Division > Trade > Subtrade. division_number is a STRING - 00-09 collapse if parsed as integers.'
-  masterTrades  = @($masterTrades | ForEach-Object {
+  note          = 'Master Trade > Division, validated. Trade/Subtrade await a licensed MasterFormat 2026 dataset - see HX-09.'
+  masterTrades  = @($masterTrades12 | ForEach-Object {
       [ordered]@{
-        id          = [int](Val $_ 'master_trade_id')
-        name        = (Val $_ 'master_trade_name')
-        description = (Val $_ 'description')
+        id          = [int](Val $_ 'Master Trade #')
+        name        = (Val $_ 'Master Trade')
+        description = (Val $_ 'Description')
       } })
-  divisions     = @($divisions | ForEach-Object {
+  divisions     = @($divisions50 | ForEach-Object {
       [ordered]@{
-        id            = [int](Val $_ 'division_id')
-        number        = (Val $_ 'division_number')
-        name          = (Val $_ 'division_name')
-        masterTradeId = [int](Val $_ 'master_trade_id')
-        masterTrade   = (Val $_ 'master_trade_name')
-        reserved      = ((Val $_ 'division_name') -like '*Reserved for Future*')
-      } })
-  trades        = @($trades | ForEach-Object {
-      [ordered]@{
-        id             = [int](Val $_ 'trade_id')
-        name           = (Val $_ 'trade_name')
-        divisionId     = [int](Val $_ 'division_id')
-        divisionNumber = (Val $_ 'division_number')
-        divisionName   = (Val $_ 'division_name')
-        masterTradeId  = [int](Val $_ 'master_trade_id')
-        masterTrade    = (Val $_ 'master_trade_name')
-      } })
-  subtrades     = @($subtrades | ForEach-Object {
-      [ordered]@{
-        id             = [int](Val $_ 'subtrade_id')
-        name           = (Val $_ 'subtrade_name')
-        tradeId        = [int](Val $_ 'trade_id')
-        tradeName      = (Val $_ 'trade_name')
-        divisionNumber = (Val $_ 'division_number')
-        masterTradeId  = [int](Val $_ 'master_trade_id')
+        number        = (Val $_ 'Division #')
+        name          = (Val $_ 'Division')
+        masterTradeId = [int](Val $_ 'Master Trade #')
+        masterTrade   = (Val $_ 'Master Trade')
+        reserved      = ((Val $_ 'Status') -like '*Reserved*')
       } })
 }
 
 $taxPath = Join-Path $Root 'data\construction-taxonomy.json'
 [System.IO.File]::WriteAllText($taxPath, ($taxonomy | ConvertTo-Json -Depth 6), $utf8)
 
-# Browser-side copy for the facet lists. Deliberately excludes the 1,000
-# subtrades - the pages only need the three short vocabularies, and shipping
-# the full hierarchy would add ~400KB to every page load for no benefit.
+# Browser-side copy for the facet lists.
 $taxJs = [ordered]@{
   masterTrades = @($taxonomy.masterTrades | ForEach-Object { [ordered]@{ id = $_.id; name = $_.name } })
   divisions    = @($taxonomy.divisions    | ForEach-Object { [ordered]@{ number = $_.number; name = $_.name; masterTrade = $_.masterTrade; reserved = $_.reserved } })
-  trades       = @($taxonomy.trades       | ForEach-Object { [ordered]@{ name = $_.name; divisionNumber = $_.divisionNumber; masterTrade = $_.masterTrade } })
 }
 $taxJsPath = Join-Path $Root 'assets\taxonomy-data.js'
 [System.IO.File]::WriteAllText($taxJsPath, ("window.CTD_TAXONOMY = " + ($taxJs | ConvertTo-Json -Depth 5 -Compress) + ";`n"), $utf8)
-Write-Host ("  master trades {0} | divisions {1} | trades {2} | subtrades {3}" -f `
-    $taxonomy.masterTrades.Count, $taxonomy.divisions.Count, $taxonomy.trades.Count, $taxonomy.subtrades.Count)
+Write-Host ("  master trades {0} | divisions {1}" -f $taxonomy.masterTrades.Count, $taxonomy.divisions.Count)
 
-# Trade -> "NN – Trade Name". Resolved through the taxonomy workbook, never
-# through the vendor workbook's own Hierarchy_Reference sheet: that copy is
-# redundant and its twelve "Future Scope" rows arrived with broken characters.
-# Trade and division are 1:1 across all 50, so one label carries both
-# vocabularies and the sidebar needs one control instead of two (spec 3).
-$TRADE_LABEL = @{}
-foreach ($t in $taxonomy.trades) {
-  $TRADE_LABEL[$t.name] = ("{0} – {1}" -f $t.divisionNumber, $t.name)
-}
+# The one thing still read from the retired workbook: which division number a
+# vendor's primary_trade value belongs to. That's arithmetic, not vocabulary -
+# each of the old 50 "trade" rows names exactly one division - and is
+# independent of the synthetic Trade list Rule 6 retires; it is never exposed
+# to the site. Division number -> official name/master trade both come from
+# the validated workbook, never from this one.
+$TRADE_DIV = @{}
+foreach ($t in $trades) { $TRADE_DIV[(Val $t 'trade_name')] = (Val $t 'division_number') }
+
+$DIV_NAME = @{}
+$DIV_MT   = @{}
+foreach ($d in $taxonomy.divisions) { $DIV_NAME[$d.number] = $d.name; $DIV_MT[$d.number] = $d.masterTrade }
 
 # ── 2. Vendors ───────────────────────────────────────────────────────────────
 Write-Host 'Reading vendor workbook...' -ForegroundColor Cyan
@@ -268,16 +259,23 @@ foreach ($v in $vendors) {
   $rank = 999
   if ($rankRaw -and [int]::TryParse($rankRaw, [ref]$null)) { $rank = [int]$rankRaw }
 
-  # HX-02 - the client's per-vendor hierarchy. master_trade is taken verbatim;
-  # the trade is rendered through the taxonomy so the CSI number and the trade
-  # name can never drift apart. A trade the taxonomy doesn't know is a hard
+  # HX-02/HX-09 - the client's per-vendor hierarchy, at division granularity.
+  # dv is resolved through the division-number lookup then rendered with the
+  # validated workbook's official name, so the CSI number and the name can
+  # never drift apart. mt is recomputed from that same division number
+  # against the validated 12 Master Trades - the vendor workbook's own
+  # master_trade column is not used; it still carries the old 11-name
+  # taxonomy HX-09 retires. A primary_trade the lookup doesn't know is a hard
   # error - silently dropping it is how a facet quietly empties.
-  $mt = Val $v 'master_trade'
   $pt = Val $v 'primary_trade'
   $dv = ''
+  $mt = ''
   if ($pt) {
-    if (-not $TRADE_LABEL.ContainsKey($pt)) { throw "Unknown primary_trade '$pt' on $name (row $(Val $v 'vendor_row_id')) - not in the taxonomy workbook." }
-    $dv = $TRADE_LABEL[$pt]
+    if (-not $TRADE_DIV.ContainsKey($pt)) { throw "Unknown primary_trade '$pt' on $name (row $(Val $v 'vendor_row_id')) - not in the taxonomy workbook." }
+    $divNum = $TRADE_DIV[$pt]
+    if (-not $DIV_NAME.ContainsKey($divNum)) { throw "Division '$divNum' (from primary_trade '$pt' on $name) not in the validated hierarchy workbook." }
+    $dv = ("{0} – {1}" -f $divNum, $DIV_NAME[$divNum])
+    $mt = $DIV_MT[$divNum]
   } else { $missingTrade++ }
   if (-not $mt) { $missingMt++ }
 
@@ -358,4 +356,4 @@ Write-Host ("  cache stamp     : {0}  ({1} pages updated)" -f $stamp, $stamped)
 Write-Host ("  -> {0}" -f $outPath)
 Write-Host ("  -> {0}" -f $taxPath)
 
-Remove-Item $taxDir, $venDir -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item $taxDir, $hierDir, $venDir -Recurse -Force -ErrorAction SilentlyContinue

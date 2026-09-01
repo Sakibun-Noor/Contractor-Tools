@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011330">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609020053">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -248,10 +248,10 @@
     <div class="sb-card sb-div" data-filter="div">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 17h6m-3-3v6"/></svg>
-        <h3>TRADE / DIVISION</h3><span class="chev">▲</span>
+        <h3>DIVISION</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-div">
-        <a class="sb-more" href="dedicated-search.html">view more trades / divisions</a>
+        <a class="sb-more" href="dedicated-search.html">view more divisions</a>
       </div>
     </div>
 
@@ -358,7 +358,7 @@
               <th style="width:14%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:13%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:14%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-              <th style="width:14%">TRADE / DIVISION <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
+              <th style="width:14%">DIVISION <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
               <th style="width:12%">MASTER TRADE <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
               <th style="width:10%">ACTIONS</th>
             </tr>
@@ -456,10 +456,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609011330"></script>
-<script src="assets/taxonomy-data.js?v=202609011330"></script>
-<script src="assets/filters.js?v=202609011330"></script>
-<script src="assets/actions.js?v=202609011330"></script>
+<script src="assets/tools-data.js?v=202609020053"></script>
+<script src="assets/taxonomy-data.js?v=202609020053"></script>
+<script src="assets/filters.js?v=202609020053"></script>
+<script src="assets/actions.js?v=202609020053"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -501,7 +501,7 @@
     ['sb-body-prod', 'products',       'sub', function(){return vocab.subcategories;}],
     ['sb-body-mt',   'master trades',  'mt',  function(){return vocab.masterTrades;}],
     ['sb-body-div',  'divisions',      'div', function(){return vocab.divisions;}],
-    ['sb-body-tr',   'trades',         'tr',  function(){return vocab.trades;}],
+    ['sb-body-tr',   'contractor types', 'tr', function(){return vocab.trades;}],
     ['sb-body-sz',   'company sizes',  'sz',  function(){return vocab.sizes;}]
   ];
   var sbExpanded = {};
@@ -570,7 +570,7 @@
     'Government / Public Works','Healthcare','Retail / Hospitality'
   ]), 'market');
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Trade / Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
   function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
 
   function renderChips(){

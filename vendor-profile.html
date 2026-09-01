@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011330">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609020053">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -250,7 +250,7 @@
 
   <!-- 6 info cards -->
   <div class="vendor-list-grid" id="info-cards">
-    <div class="lcard"><div class="lcard-hd">Trade / Division</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Division</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Contractor Types</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Master Trade</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Key Products</div><div class="lcard-body"><ul id="lc-products"></ul></div></div>
@@ -382,10 +382,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609011330"></script>
-<script src="assets/taxonomy-data.js?v=202609011330"></script>
-<script src="assets/filters.js?v=202609011330"></script>
-<script src="assets/actions.js?v=202609011330"></script>
+<script src="assets/tools-data.js?v=202609020053"></script>
+<script src="assets/taxonomy-data.js?v=202609020053"></script>
+<script src="assets/filters.js?v=202609020053"></script>
+<script src="assets/actions.js?v=202609020053"></script>
 <script>
 (function(){
   var CM=CTD_FILTERS.CM;
@@ -547,7 +547,7 @@
       {label:'Description',get:function(){return t.x;}},
       {label:'Product/Subcategory',get:function(){return t.sub;}},
       {label:'Categories',get:function(){return cats.join('; ');}},
-      {label:'Trade / Division',get:function(){return divs.join('; ');}},
+      {label:'Division',get:function(){return divs.join('; ');}},
       {label:'Contractor Types',get:function(){return (t.tr||[]).join('; ');}},
       {label:'Master Trade',get:function(){return mts.join('; ');}},
       {label:'Company Size',get:function(){return t.sz;}}

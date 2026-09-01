@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011330">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609020053">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -204,7 +204,7 @@
             <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
             <th style="width:11%">CONTRACTOR TYPES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
-            <th style="width:8.5%">TRADE / DIVISION</th>
+            <th style="width:8.5%">DIVISION</th>
             <th style="width:8%">MASTER TRADE</th>
             <th style="width:10.5%">QUICK FACTS <span class="sic" onclick="sortBy('sz')">↑↓</span></th>
             <th>ACTIONS</th>
@@ -302,10 +302,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609011330"></script>
-<script src="assets/taxonomy-data.js?v=202609011330"></script>
-<script src="assets/filters.js?v=202609011330"></script>
-<script src="assets/actions.js?v=202609011330"></script>
+<script src="assets/tools-data.js?v=202609020053"></script>
+<script src="assets/taxonomy-data.js?v=202609020053"></script>
+<script src="assets/filters.js?v=202609020053"></script>
+<script src="assets/actions.js?v=202609020053"></script>
 <script>
 (function(){
   var vocab=CTD_FILTERS.build(window.TOOLS||[]);
@@ -320,7 +320,7 @@
   function divsOf(t){return t.dv?[t.dv]:[];}
   function mtsOf(t){return t.mt?[t.mt]:[];}
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Trade / Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
 
   function labelFor(key,value){
     if(key==='cat')return CM[value]||value;
