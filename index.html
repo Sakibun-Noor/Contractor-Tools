@@ -54,8 +54,15 @@
        the section's height from the image's own aspect ratio means
        object-contain has nothing left to letterbox in the normal case,
        while max-height keeps a short-and-wide window from starving the
-       category grid below it. */
-    .hero-band { aspect-ratio: 2172 / 724; max-height: 46vh; }
+       category grid below it.
+       2026-09-02: image is 3904x1088 (3.59:1) - its content runs flush to
+       every edge (crane tops and icon tops at y=0, workers and the Safety
+       icon at the bottom), so it can't be cropped narrower without cutting
+       something. 50vh is the smallest cap that still shows it at full
+       width with zero letterboxing on every standard 16:9/16:10 desktop
+       monitor; true ultra-wide (21:9+) screens will still show a sliver of
+       navy on the sides - unavoidable without cropping this art. */
+    .hero-band { aspect-ratio: 3904 / 1088; max-height: 50vh; }
 
     /* ── Cross-browser safety net ──────────────────────────────────────
        Two modern features this page's layout depends on, each with a
@@ -152,7 +159,7 @@
   <section class="hero-band relative w-full min-w-0 overflow-hidden bg-ctd-navy max-lg:max-h-none">
     <h1 class="sr-only">The Construction Technology Directory</h1>
     <h2 class="sr-only">Construction. Technology. Contractors. Connected.</h2>
-    <img src="assets/ctd/hero_image.jpg?v=202609020100" fetchpriority="high"
+    <img src="assets/ctd/hero_image.jpg?v=202609020140" fetchpriority="high"
          alt="The Construction Technology Directory — construction professionals reviewing plans on site, with AI, analytics, automation, cloud, safety and BIM technology nodes over a city skyline."
          class="h-full w-full select-none object-contain" draggable="false">
   </section>
