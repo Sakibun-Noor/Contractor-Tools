@@ -22,35 +22,12 @@ window.CTD_FILTERS = (function () {
     'procurement-purchasing': 'Back Office Operations'
   };
 
-  var DIV_MAP = {
-    'accounting-payroll': ['00 – General', '01 – General Req.'],
-    'crm-sales': ['00 – General'],
-    'construction-leads': ['01 – General Req.'],
-    'estimating-takeoff': ['03 – Concrete', '04 – Masonry', '05 – Metals', '06 – Wood & Plastics', '09 – Finishes'],
-    'project-management': ['01 – General Req.', '03 – Concrete', '04 – Masonry', '05 – Metals'],
-    'field-service-dispatch': ['01 – General Req.', '03 – Concrete', '04 – Masonry'],
-    'safety-compliance': ['01 – General Req.'],
-    'fleet-equipment': ['01 – General Req.', '34 – Transportation'],
-    'marketing-reputation': ['00 – General'],
-    'ai-automation': ['01 – General Req.'],
-    'document-management': ['01 – General Req.'],
-    'procurement-purchasing': ['00 – General', '01 – General Req.']
-  };
-
-  var MT_MAP = {
-    'accounting-payroll': 'General Construction & Project Delivery',
-    'crm-sales': 'General Construction & Project Delivery',
-    'construction-leads': 'General Construction & Project Delivery',
-    'estimating-takeoff': 'General Construction & Project Delivery',
-    'project-management': 'General Construction & Project Delivery',
-    'field-service-dispatch': 'General Construction & Project Delivery',
-    'safety-compliance': 'General Construction & Project Delivery',
-    'fleet-equipment': 'Mechanical Trades',
-    'marketing-reputation': 'General Construction & Project Delivery',
-    'ai-automation': 'All Master Trades',
-    'document-management': 'General Construction & Project Delivery',
-    'procurement-purchasing': 'General Construction & Project Delivery'
-  };
+  // DIV_MAP / MT_MAP are gone. They guessed a vendor's divisions and master
+  // trade from its software category, which is exactly the axis collapse the
+  // two-taxonomy rule forbids, and MT_MAP invented two master trades that do
+  // not exist in the client's hierarchy. Every vendor now carries its own
+  // t.mt and t.dv from the client's classification file — see
+  // specs/hierarchy-import.md.
 
   function avail(sz) {
     var r = ['Cloud-Based'];
@@ -83,51 +60,43 @@ window.CTD_FILTERS = (function () {
       return { value: tr, label: tr, count: trCounts[tr] };
     }).sort(function (a, b) { return b.count - a.count; });
 
-    // Divisions/master trades aren't stored per-tool — they're derived
-    // from each tool's categories via DIV_MAP/MT_MAP. Reverse-index so
-    // a division/master-trade value maps back to the category slugs
-    // that produce it, letting us filter tools by category membership.
-    var divCats = {};
-    Object.keys(DIV_MAP).forEach(function (cat) {
-      DIV_MAP[cat].forEach(function (div) {
-        divCats[div] = divCats[div] || [];
-        if (divCats[div].indexOf(cat) === -1) divCats[div].push(cat);
-      });
-    });
-    var divisions = Object.keys(divCats).map(function (div) {
-      var cats = divCats[div];
-      var count = tools.filter(function (t) { return (t.c || []).some(function (c) { return cats.indexOf(c) > -1; }); }).length;
-      return { value: div, label: div, count: count };
-    }).sort(function (a, b) { return b.count - a.count; });
-
-    // MASTER TRADE — sourced from the client's taxonomy (11 groups) when
-    // assets/taxonomy-data.js is loaded. The old MT_MAP invented three labels
-    // ("Mechanical Trades", "All Master Trades") that don't exist in the real
-    // hierarchy, which is what correction DS-02 flagged as "Items Missing".
-    //
-    // Counts stay at 0 until the client's per-vendor classification lands:
-    // deriving Master Trade from software category was explicitly ruled out
-    // (an estimating tool may serve electrical OR concrete). Entries with a
-    // 0 count render disabled rather than filtering to an empty result.
-    var mtCats = {};
-    Object.keys(MT_MAP).forEach(function (cat) {
-      var mt = MT_MAP[cat];
-      mtCats[mt] = mtCats[mt] || [];
-      if (mtCats[mt].indexOf(cat) === -1) mtCats[mt].push(cat);
-    });
-
-    var masterTrades;
+    // TRADE / DIVISION — one facet, not two. The client's taxonomy maps trade
+    // to CSI division 1:1 across all 50, so shipping both would put two
+    // controls in the sidebar that always return the same rows. t.dv already
+    // carries both vocabularies ("01 – General Conditions & Project Services").
+    var dvCounts = {};
+    tools.forEach(function (t) { if (t.dv) dvCounts[t.dv] = (dvCounts[t.dv] || 0) + 1; });
     var TAX = (typeof window !== 'undefined' && window.CTD_TAXONOMY) || null;
+    var divisions;
+    if (TAX && TAX.trades && TAX.trades.length) {
+      // Ordered by division number and complete, so an unused trade still shows
+      // (disabled at 0) rather than vanishing from the vocabulary.
+      divisions = TAX.trades.filter(function (t) {
+        return t.name.indexOf('Future Scope') === -1;
+      }).map(function (t) {
+        var label = t.divisionNumber + ' – ' + t.name;
+        return { value: label, label: label, count: dvCounts[label] || 0 };
+      });
+    } else {
+      divisions = Object.keys(dvCounts).map(function (d) {
+        return { value: d, label: d, count: dvCounts[d] };
+      }).sort(function (a, b) { return b.count - a.count; });
+    }
+
+    // MASTER TRADE — the client's 11 groups, counted from each vendor's own
+    // classification. Groups with no vendors (Fire & Safety, today) render
+    // disabled rather than filtering to an empty table.
+    var mtCounts = {};
+    tools.forEach(function (t) { if (t.mt) mtCounts[t.mt] = (mtCounts[t.mt] || 0) + 1; });
+    var masterTrades;
     if (TAX && TAX.masterTrades && TAX.masterTrades.length) {
       masterTrades = TAX.masterTrades.map(function (m) {
-        var count = tools.filter(function (t) { return t.mt === m.name; }).length;
+        var count = mtCounts[m.name] || 0;
         return { value: m.name, label: m.name, count: count, pending: count === 0 };
       });
     } else {
-      masterTrades = Object.keys(mtCats).map(function (mt) {
-        var cats = mtCats[mt];
-        var count = tools.filter(function (t) { return (t.c || []).some(function (c) { return cats.indexOf(c) > -1; }); }).length;
-        return { value: mt, label: mt, count: count };
+      masterTrades = Object.keys(mtCounts).map(function (m) {
+        return { value: m, label: m, count: mtCounts[m] };
       }).sort(function (a, b) { return b.count - a.count; });
     }
 
@@ -146,7 +115,7 @@ window.CTD_FILTERS = (function () {
     return {
       categories: categories, subcategories: subcategories, trades: trades,
       divisions: divisions, masterTrades: masterTrades, availableOn: availableOn, sizes: sizes,
-      divCats: divCats, mtCats: mtCats, CM: CM, DIV_MAP: DIV_MAP, MT_MAP: MT_MAP
+      CM: CM
     };
   }
 
@@ -162,20 +131,10 @@ window.CTD_FILTERS = (function () {
       if (filters.cat && filters.cat.length && !(t.c || []).some(function (c) { return filters.cat.indexOf(c) > -1; })) return false;
       if (filters.sub && filters.sub.length && filters.sub.indexOf(t.sub) === -1) return false;
       if (filters.tr && filters.tr.length && !(t.tr || []).some(function (tr) { return filters.tr.indexOf(tr) > -1; })) return false;
-      if (filters.div && filters.div.length) {
-        var okDiv = filters.div.some(function (d) {
-          var cats = vocab.divCats[d] || [];
-          return (t.c || []).some(function (c) { return cats.indexOf(c) > -1; });
-        });
-        if (!okDiv) return false;
-      }
-      if (filters.mt && filters.mt.length) {
-        var okMt = filters.mt.some(function (m) {
-          var cats = vocab.mtCats[m] || [];
-          return (t.c || []).some(function (c) { return cats.indexOf(c) > -1; });
-        });
-        if (!okMt) return false;
-      }
+      // Both read the vendor's own classification now, not a guess made from
+      // its software category.
+      if (filters.div && filters.div.length && filters.div.indexOf(t.dv) === -1) return false;
+      if (filters.mt && filters.mt.length && filters.mt.indexOf(t.mt) === -1) return false;
       if (filters.avail && filters.avail.length) {
         var av = avail(t.sz);
         if (!filters.avail.some(function (a) { return av.indexOf(a) > -1; })) return false;
@@ -209,5 +168,5 @@ window.CTD_FILTERS = (function () {
     return sp;
   }
 
-  return { CM: CM, DIV_MAP: DIV_MAP, MT_MAP: MT_MAP, avail: avail, build: build, apply: apply, readParams: readParams, toParams: toParams };
+  return { CM: CM, avail: avail, build: build, apply: apply, readParams: readParams, toParams: toParams };
 })();

@@ -1,4 +1,4 @@
-# ─────────────────────────────────────────────────────────────────────────────
+﻿# ─────────────────────────────────────────────────────────────────────────────
 # CTD — import the client's vendor master + construction taxonomy.
 #
 # Reads:  the two workbooks the client supplies (paths below)
@@ -11,7 +11,7 @@
 # Run: powershell -ExecutionPolicy Bypass -File build\import-vendors.ps1
 # ─────────────────────────────────────────────────────────────────────────────
 param(
-  [string]$VendorXlsx   = "$env:USERPROFILE\Downloads\CTD_Combined_Vendor_Master_1463_COMPLETED.xlsx",
+  [string]$VendorXlsx   = "$env:USERPROFILE\OneDrive\Desktop\CTD\CTD_Combined_Vendor_Master_1463_HIERARCHY_CLASSIFIED.xlsx",
   [string]$TaxonomyXlsx = "$env:USERPROFILE\Downloads\CTD_Master_Trades_Divisions_Trades_Subtrades (1).xlsx",
   [string]$Root         = (Resolve-Path "$PSScriptRoot\..").Path
 )
@@ -188,6 +188,16 @@ $taxJsPath = Join-Path $Root 'assets\taxonomy-data.js'
 Write-Host ("  master trades {0} | divisions {1} | trades {2} | subtrades {3}" -f `
     $taxonomy.masterTrades.Count, $taxonomy.divisions.Count, $taxonomy.trades.Count, $taxonomy.subtrades.Count)
 
+# Trade -> "NN – Trade Name". Resolved through the taxonomy workbook, never
+# through the vendor workbook's own Hierarchy_Reference sheet: that copy is
+# redundant and its twelve "Future Scope" rows arrived with broken characters.
+# Trade and division are 1:1 across all 50, so one label carries both
+# vocabularies and the sidebar needs one control instead of two (spec 3).
+$TRADE_LABEL = @{}
+foreach ($t in $taxonomy.trades) {
+  $TRADE_LABEL[$t.name] = ("{0} – {1}" -f $t.divisionNumber, $t.name)
+}
+
 # ── 2. Vendors ───────────────────────────────────────────────────────────────
 Write-Host 'Reading vendor workbook...' -ForegroundColor Cyan
 $venDir  = Open-Xlsx $VendorXlsx
@@ -226,6 +236,8 @@ function Get-Slug($seoSlug, $name) {
 }
 
 $tools = New-Object System.Collections.Generic.List[object]
+$missingTrade = 0
+$missingMt = 0
 $unknownCats = @{}
 $slugSeen = @{}
 
@@ -256,6 +268,36 @@ foreach ($v in $vendors) {
   $rank = 999
   if ($rankRaw -and [int]::TryParse($rankRaw, [ref]$null)) { $rank = [int]$rankRaw }
 
+  # HX-02 - the client's per-vendor hierarchy. master_trade is taken verbatim;
+  # the trade is rendered through the taxonomy so the CSI number and the trade
+  # name can never drift apart. A trade the taxonomy doesn't know is a hard
+  # error - silently dropping it is how a facet quietly empties.
+  $mt = Val $v 'master_trade'
+  $pt = Val $v 'primary_trade'
+  $dv = ''
+  if ($pt) {
+    if (-not $TRADE_LABEL.ContainsKey($pt)) { throw "Unknown primary_trade '$pt' on $name (row $(Val $v 'vendor_row_id')) - not in the taxonomy workbook." }
+    $dv = $TRADE_LABEL[$pt]
+  } else { $missingTrade++ }
+  if (-not $mt) { $missingMt++ }
+
+  # HX-03 - "All Sizes / Verify" is the client's internal workflow note, not a
+  # size. Strip it so the facet reads cleanly and the Verify rows merge with
+  # the plain ones already present.
+  $sz = (Val $v 'company_size_served') -replace '\s*/\s*Verify\s*$', ''
+
+  # HX-07 - only real answers cross into the site. free_trial_available is
+  # "Unknown / Verify" on 1,402 of 1,463 rows; the vendor page used to print
+  # "Free Trial: Yes" for every one of them. Emit it only where the workbook
+  # actually knows, and let the page drop the row when it's absent.
+  $ftRaw = Val $v 'free_trial_available'
+  $ft = ''
+  if     ($ftRaw -match '^Yes')          { $ft = 'Yes' }
+  elseif ($ftRaw -match '^No')           { $ft = 'No'  }
+  # pricing_model is populated for all 1,463 and needs no verification flag,
+  # so the page can stop deriving it from company size.
+  $pm = Val $v 'pricing_model'
+
   $rec = [ordered]@{
     n   = $name
     s   = $slug
@@ -264,7 +306,11 @@ foreach ($v in $vendors) {
     c   = @(if ($catSlug) { $catSlug })
     sub = Val $v 'subcategory'
     tr  = $trades
-    sz  = Val $v 'company_size_served'
+    sz  = $sz
+    mt  = $mt
+    dv  = $dv
+    pm  = $pm
+    ft  = $ft
     rk  = $rank
   }
   $tools.Add([pscustomobject]$rec)
@@ -297,11 +343,16 @@ foreach ($page in (Get-ChildItem -Path $Root -Filter '*.html' -File)) {
 
 $withDomain = @($tools | Where-Object { $_.d }).Count
 $withCat    = @($tools | Where-Object { $_.c.Count -gt 0 }).Count
+$withMt     = @($tools | Where-Object { $_.mt }).Count
+$withDv     = @($tools | Where-Object { $_.dv }).Count
+if ($missingTrade -or $missingMt) { Write-Warning ("Rows without a hierarchy: primary_trade {0}, master_trade {1}" -f $missingTrade, $missingMt) }
 Write-Host ''
 Write-Host '=== Done ===' -ForegroundColor Green
 Write-Host ("  vendors written : {0}" -f $tools.Count)
 Write-Host ("  with a domain   : {0}  (no domain: {1})" -f $withDomain, ($tools.Count - $withDomain))
 Write-Host ("  with a category : {0}" -f $withCat)
+Write-Host ("  with master trd : {0}" -f $withMt)
+Write-Host ("  with trade/div  : {0}" -f $withDv)
 Write-Host ("  unique slugs    : {0}" -f (@($tools | Select-Object -ExpandProperty s -Unique).Count))
 Write-Host ("  cache stamp     : {0}  ({1} pages updated)" -f $stamp, $stamped)
 Write-Host ("  -> {0}" -f $outPath)

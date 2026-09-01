@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011330">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -250,9 +250,9 @@
 
   <!-- 6 info cards -->
   <div class="vendor-list-grid" id="info-cards">
-    <div class="lcard"><div class="lcard-hd">Divisions Served</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Trades</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Master Categories Served</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Trade / Division</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Contractor Types</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Master Trade</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Key Products</div><div class="lcard-body"><ul id="lc-products"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Subcategories</div><div class="lcard-body"><ul id="lc-subcats"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Categories</div><div class="lcard-body"><ul id="lc-cats"></ul></div></div>
@@ -382,13 +382,13 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609011154"></script>
-<script src="assets/taxonomy-data.js?v=202609011154"></script>
-<script src="assets/filters.js?v=202609011154"></script>
-<script src="assets/actions.js?v=202609011154"></script>
+<script src="assets/tools-data.js?v=202609011330"></script>
+<script src="assets/taxonomy-data.js?v=202609011330"></script>
+<script src="assets/filters.js?v=202609011330"></script>
+<script src="assets/actions.js?v=202609011330"></script>
 <script>
 (function(){
-  var CM=CTD_FILTERS.CM, DIV_MAP=CTD_FILTERS.DIV_MAP, MT_MAP=CTD_FILTERS.MT_MAP;
+  var CM=CTD_FILTERS.CM;
   var FACTS={procore:{founded:'2002',hq:'Carpinteria, CA, USA',emp:'2,500+',addr:'1000 Brooks St., Carpinteria, CA 93013, USA',phone:'(805) 654-9443',email:'info@procore.com',pricing:'Subscription / SaaS',trial:'Yes',customers:'Small to Enterprise Construction Firms',industries:'Commercial, Industrial, Infrastructure, Residential',lang:'English, Spanish, French, German, Portuguese'},autodesk:{founded:'1982',hq:'San Francisco, CA, USA',emp:'10,000+',addr:'111 McInnis Pkwy, San Rafael, CA 94903',phone:'(415) 507-5000',email:'info@autodesk.com',pricing:'Subscription',trial:'Yes',customers:'Mid to Enterprise Construction Firms',industries:'Commercial, Infrastructure, Industrial',lang:'English, French, German, Spanish, Japanese'}};
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function li(text){return'<li>'+esc(text)+'</li>';}
@@ -463,17 +463,18 @@
     setEl('f-deploy','Cloud-Based');
 
     // 6 cards
-    var divs=[];cats.forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
-    divs=divs.filter(function(v,i,a){return a.indexOf(v)===i;});
-    var allDivs=['03 – Concrete','04 – Masonry','05 – Metals','06 – Wood & Plastics','07 – Thermal & Moisture Protection','08 – Openings','09 – Finishes','10 – Specialties','11 – Equipment','12 – Furnishings','13 – Special Construction','14 – Conveying Equipment'];
-    var finalDivs=divs.concat(allDivs.filter(function(d){return divs.indexOf(d)===-1;})).slice(0,12);
-    document.getElementById('lc-divs').innerHTML=finalDivs.map(li).join('');
+    // HX-04 — the vendor's own classification. This card used to pad itself out
+    // to twelve entries from a hardcoded list, which claimed every vendor served
+    // Concrete through Conveying Equipment. One real value beats twelve invented
+    // ones; the array shape holds for when a vendor carries more than one.
+    var divs=t.dv?[t.dv]:[];
+    document.getElementById('lc-divs').innerHTML=divs.length?divs.map(li).join(''):'<li class="lc-none">Not yet classified</li>';
 
     var trades=(t.tr||['General Contractors','Owners','Construction Managers','Specialty Contractors','Subcontractors','Design-Build Firms','Architects','Engineers','Project Managers','Estimators','Superintendents','Facility Managers']);
     document.getElementById('lc-trades').innerHTML=trades.map(li).join('');
 
-    var mts=['General Construction & Project Delivery','Preconstruction','Project Management','Field Management','Financial Management','Quality & Safety','Resource Management','Document Management','Collaboration','Analytics & Reporting','Risk Management'];
-    document.getElementById('lc-mcat').innerHTML=mts.map(li).join('');
+    var mts=t.mt?[t.mt]:[];
+    document.getElementById('lc-mcat').innerHTML=mts.length?mts.map(li).join(''):'<li class="lc-none">Not yet classified</li>';
 
     var products=[t.n+' '+t.sub,(t.sub||'')+ ' Management',t.n+' Mobile',(catNames[0]||'')+ ' Suite',t.n+' Analytics',t.n+' Field','Project Reporting','Quality & Safety Module'];
     document.getElementById('lc-products').innerHTML=products.filter(function(p){return p.trim()&&p.trim()!=='undefined';}).map(li).join('');
@@ -500,8 +501,15 @@
     setEl('ci-email',f.email||('info@'+t.d));
 
     // Quick facts
-    setEl('qf-pricing',f.pricing||((/Enterprise/i.test(t.sz||''))?'Enterprise / Custom':'Subscription'));
-    setEl('qf-trial',f.trial||'Yes');
+    setEl('qf-pricing',t.pm||f.pricing||'—');
+    // HX-07 — free_trial_available is unknown on 1,402 of 1,463 vendors. The row
+    // hides rather than asserting "Yes" at a reader; it returns per-vendor the
+    // moment the workbook carries a real answer.
+    var trialRow=document.getElementById('qf-trial');
+    if(trialRow&&trialRow.parentElement){
+      if(t.ft){trialRow.textContent=t.ft;trialRow.parentElement.style.display='';}
+      else{trialRow.parentElement.style.display='none';}
+    }
     setEl('qf-customers',f.customers||(/Enterprise/i.test(t.sz||'')?'Medium to Enterprise Construction Firms':'Small to Medium Construction Firms'));
     setEl('qf-industries',f.industries||'Commercial, Industrial, Infrastructure');
     setEl('qf-lang',f.lang||'English');
@@ -531,18 +539,17 @@
     if(!CURRENT_TOOL)return;
     var t=CURRENT_TOOL;
     var cats=(t.c||[]).map(function(c){return CM[c]||c;});
-    var divs=[];(t.c||[]).forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
-    divs=divs.filter(function(v,i,a){return a.indexOf(v)===i;});
-    var mts=(t.c||[]).map(function(c){return MT_MAP[c]||'General Construction & Project Delivery';}).filter(function(v,i,a){return a.indexOf(v)===i;});
+    var divs=t.dv?[t.dv]:[];
+    var mts=t.mt?[t.mt]:[];
     CTD_ACTIONS.exportCsv([t], [
       {label:'Vendor',get:function(){return t.n;}},
       {label:'Website',get:function(){return t.d;}},
       {label:'Description',get:function(){return t.x;}},
       {label:'Product/Subcategory',get:function(){return t.sub;}},
       {label:'Categories',get:function(){return cats.join('; ');}},
-      {label:'Divisions',get:function(){return divs.join('; ');}},
-      {label:'Trades',get:function(){return (t.tr||[]).join('; ');}},
-      {label:'Master Trades',get:function(){return mts.join('; ');}},
+      {label:'Trade / Division',get:function(){return divs.join('; ');}},
+      {label:'Contractor Types',get:function(){return (t.tr||[]).join('; ');}},
+      {label:'Master Trade',get:function(){return mts.join('; ');}},
       {label:'Company Size',get:function(){return t.sz;}}
     ], t.s+'-profile.csv');
   };

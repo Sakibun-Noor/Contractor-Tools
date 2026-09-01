@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011330">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -203,9 +203,9 @@
             <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-            <th style="width:11%">TRADES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
-            <th style="width:8.5%">DIVISIONS</th>
-            <th style="width:8%">MASTER TRADES</th>
+            <th style="width:11%">CONTRACTOR TYPES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
+            <th style="width:8.5%">TRADE / DIVISION</th>
+            <th style="width:8%">MASTER TRADE</th>
             <th style="width:10.5%">QUICK FACTS <span class="sic" onclick="sortBy('sz')">↑↓</span></th>
             <th>ACTIONS</th>
           </tr>
@@ -302,28 +302,25 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609011154"></script>
-<script src="assets/taxonomy-data.js?v=202609011154"></script>
-<script src="assets/filters.js?v=202609011154"></script>
-<script src="assets/actions.js?v=202609011154"></script>
+<script src="assets/tools-data.js?v=202609011330"></script>
+<script src="assets/taxonomy-data.js?v=202609011330"></script>
+<script src="assets/filters.js?v=202609011330"></script>
+<script src="assets/actions.js?v=202609011330"></script>
 <script>
 (function(){
   var vocab=CTD_FILTERS.build(window.TOOLS||[]);
-  var CM=vocab.CM, DIV_MAP=vocab.DIV_MAP, MT_MAP=vocab.MT_MAP, avail=CTD_FILTERS.avail;
+  var CM=vocab.CM, avail=CTD_FILTERS.avail;
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true,activeFilters={};
 
   function catNamesOf(t){return (t.c||[]).map(function(c){return CM[c]||c;});}
-  function divsOf(t){
-    var divs=[];(t.c||[]).forEach(function(c){if(DIV_MAP[c])divs=divs.concat(DIV_MAP[c]);});
-    return divs.filter(function(v,i,a){return a.indexOf(v)===i;});
-  }
-  function mtsOf(t){
-    return (t.c||[]).map(function(c){return MT_MAP[c]||'General Construction & Project Delivery';})
-      .filter(function(v,i,a){return a.indexOf(v)===i;});
-  }
+  // HX-04 — read the vendor's own classification. Each vendor carries exactly
+  // one primary trade, so these return a single-element array today; the array
+  // shape is kept so the cells keep working when a vendor gains more.
+  function divsOf(t){return t.dv?[t.dv]:[];}
+  function mtsOf(t){return t.mt?[t.mt]:[];}
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Trade',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Trade / Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
 
   function labelFor(key,value){
     if(key==='cat')return CM[value]||value;

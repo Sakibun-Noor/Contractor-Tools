@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011154">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609011330">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -237,7 +237,7 @@
     <div class="sb-card sb-mt" data-filter="mt">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <h3>MASTER TRADES</h3><span class="chev">▲</span>
+        <h3>MASTER TRADE</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-mt">
         <a class="sb-more" href="dedicated-search.html">view more master trades</a>
@@ -248,10 +248,10 @@
     <div class="sb-card sb-div" data-filter="div">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 17h6m-3-3v6"/></svg>
-        <h3>DIVISIONS</h3><span class="chev">▲</span>
+        <h3>TRADE / DIVISION</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-div">
-        <a class="sb-more" href="dedicated-search.html">view more divisions</a>
+        <a class="sb-more" href="dedicated-search.html">view more trades / divisions</a>
       </div>
     </div>
 
@@ -259,10 +259,10 @@
     <div class="sb-card sb-tr" data-filter="tr">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-        <h3>TRADES</h3><span class="chev">▲</span>
+        <h3>CONTRACTOR TYPE</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-tr">
-        <a class="sb-more" href="dedicated-search.html">view more trades</a>
+        <a class="sb-more" href="dedicated-search.html">view more contractor types</a>
       </div>
     </div>
 
@@ -358,8 +358,8 @@
               <th style="width:14%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:13%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:14%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-              <th style="width:14%">DIVISIONS <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
-              <th style="width:12%">MASTER TRADES <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
+              <th style="width:14%">TRADE / DIVISION <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
+              <th style="width:12%">MASTER TRADE <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
               <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
@@ -456,10 +456,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609011154"></script>
-<script src="assets/taxonomy-data.js?v=202609011154"></script>
-<script src="assets/filters.js?v=202609011154"></script>
-<script src="assets/actions.js?v=202609011154"></script>
+<script src="assets/tools-data.js?v=202609011330"></script>
+<script src="assets/taxonomy-data.js?v=202609011330"></script>
+<script src="assets/filters.js?v=202609011330"></script>
+<script src="assets/actions.js?v=202609011330"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -470,8 +470,11 @@
 
   function catNamesOf(t){return (t.c||[]).map(function(c){return CM[c]||c;});}
   function catPairsOf(t){return (t.c||[]).map(function(c){return {slug:c,name:CM[c]||c};});}
-  function divsOf(t){var divs=[];(t.c||[]).forEach(function(c){if(vocab.DIV_MAP[c])divs=divs.concat(vocab.DIV_MAP[c]);});return divs.filter(function(v,i,a){return a.indexOf(v)===i;});}
-  function mtsOf(t){return (t.c||[]).map(function(c){return vocab.MT_MAP[c]||'General Construction & Project Delivery';}).filter(function(v,i,a){return a.indexOf(v)===i;});}
+  // HX-04 — read the vendor's own classification. Each vendor carries exactly
+  // one primary trade, so these return a single-element array today; the array
+  // shape is kept so the cells keep working when a vendor gains more.
+  function divsOf(t){return t.dv?[t.dv]:[];}
+  function mtsOf(t){return t.mt?[t.mt]:[];}
 
   // ── Sidebar + Advanced Filters: populated from real data ──
   function renderList(container,items,filterKey,limit){
@@ -567,7 +570,7 @@
     'Government / Public Works','Healthcare','Retail / Hospitality'
   ]), 'market');
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Trade',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Trade / Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
   function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
 
   function renderChips(){
