@@ -66,3 +66,7 @@
 .flex-1{flex:1 1 0%}
 .gap-\[clamp\(5px\2c 1vh\2c 11px\)\]{gap:clamp(5px,1vh,11px)}
 .py-\[clamp\(5px\2c 0\.9vh\2c 12px\)\]{padding-top:clamp(5px,0.9vh,12px);padding-bottom:clamp(5px,0.9vh,12px)}
+
+/* Added 2026-09-02: the fold became a minimum rather than a fixed height,
+   so its middle row is floored at min-content instead of 0. */
+.grid-rows-\[auto_auto_minmax\(0\2c 1fr\)\]{grid-template-rows:auto auto minmax(0,1fr)}

@@ -18,12 +18,12 @@
        filter, ad-blocker, CDN outage — no styles are produced and the category
        tiles overlap each other. Fall back to the captured stylesheet so the
        page still renders correctly. The CDN stays primary, so this snapshot
-       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609020216. */
+       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609020310. */
     (function () {
       if (typeof tailwind !== 'undefined') return;
       var l = document.createElement('link');
       l.rel = 'stylesheet';
-      l.href = 'assets/tailwind-fallback.css?v=202609020216';
+      l.href = 'assets/tailwind-fallback.css?v=202609020310';
       document.head.appendChild(l);
     })();
   </script>
@@ -49,36 +49,36 @@
     };
   </script>
   <style>
-    /* HERO SIZING — object-cover, not object-contain. Read this before
-       touching max-height; the two previous attempts both regressed.
+    /* HERO SIZING — aspect-ratio only, and no height cap. Read the
+       history before adding one back; three attempts regressed here.
 
        The bind at a wide, short window (e.g. 1896x876): header 103 +
-       an uncropped full-width hero 524 + the category grid it needs
-       ~214 + the FIND bar 100 = 941px of demand against 876px of fold.
-       Something must give, and with object-contain the only two
-       outcomes were both bugs:
-         - cap the height  -> box ratio stops matching image ratio, the
-           image letterboxes inside a still-full-width box, navy bars
-           appear left and right (reported 2026-09-02);
-         - drop the cap    -> hero grows to 524px and takes the missing
-           height straight out of the category grid, whose icons are
-           flex-1/min-h-0 and collapse to ~9px (also reported).
+       a full-width hero ~542 + the ~322 the category grid needs at
+       full icon size + the FIND bar 100 = ~1067px of demand against
+       876px of viewport. Every arrangement that forced that into a
+       hard 100dvh broke something:
+         - cap the hero, object-contain -> box ratio stops matching the
+           image, it letterboxes inside a still-full-width box and navy
+           bars appear left and right;
+         - drop the cap, object-contain -> hero grows and takes the
+           missing height out of the category grid, whose icons are
+           flex-1/min-h-0 and collapse to ~9px;
+         - cap the hero, object-cover   -> no gap, but the crop eats the
+           ANALYTICS/AUTOMATION hexagons, whose outlines start ~8% down.
+       No hero image fixes this either: the art would need to be about
+       4.3:1 to fit uncropped, and the source tops out near 2.4:1.
 
-       object-cover breaks the tie: the image always fills the box's
-       width, so a side gap is impossible at any size, and the height
-       cap is free to protect the category grid. The cost is vertical
-       cropping, but only when the cap actually binds - on a normal
-       1920x1080 or 1536x864 window it does not, and nothing is cropped
-       at all.
+       So the fold is a MINIMUM now, not a ceiling (see .fold-100
+       below). The hero is sized purely by its own aspect-ratio, which
+       means box ratio == image ratio always: nothing is ever cropped
+       and a side gap is impossible. On a short window the page simply
+       scrolls a little instead of something being destroyed.
 
-       object-position keeps the crop off the artwork that matters. The
-       baked-in labels sit at roughly 22% (ANALYTICS/AUTOMATION) and 88%
-       (SAFETY) of the image height, so the bottom is the tighter
-       margin; biasing to 60% takes more off the expendable sky than
-       off the workers and the SAFETY node. At the worst realistic
-       window (~1920x800, a 25% crop) both label rows still survive. */
-    .hero-band { aspect-ratio: 3904 / 1088; max-height: 50vh; }
-    .hero-band img { object-position: center 60%; }
+       object-cover + a centred object-position are kept only as a
+       safety net for the case where the image file's real ratio ever
+       drifts from the value below - with them matching it is a no-op. */
+    .hero-band { aspect-ratio: 1942 / 560; }
+    .hero-band img { object-position: center center; }
 
     /* ── Cross-browser safety net ──────────────────────────────────────
        Two modern features this page's layout depends on, each with a
@@ -92,6 +92,11 @@
        2. aspect-ratio — unsupported before Chrome 88 / Safari 15. Without
           it .hero-band has no intrinsic height and the hero image (h-full)
           renders at zero. min-height keeps it visible.               */
+    /* Definite height on purpose. Only a definite height lets the grid
+       squeeze the category row down to whatever the hero leaves; with
+       min-height the grid just grows to its content and the second row
+       of tiles falls off the screen. The tile floor below is what makes
+       that squeeze safe. */
     .fold-100 { height: 100vh; height: 100dvh; }
     /* Release the locked height below Tailwind's lg breakpoint. Declared here
        rather than relying on max-lg:h-auto so it still holds if Tailwind's
@@ -102,17 +107,39 @@
     }
     /* If Tailwind's runtime CDN is blocked or slow, its utilities never
        arrive. These few rules keep the fold from stacking into a pile
-       before/without it. */
-    .fold-100 > * { min-width: 0; min-height: 0; }
+       before/without it. min-height is deliberately NOT reset to 0 here:
+       that is what previously let the category row shrink under its own
+       content and collapse the icons. */
+    .fold-100 > * { min-width: 0; }
+    /* Hard floor on the category tiles and their icons. The original bug
+       was that the icon is flex-1/min-h-0, so any height pressure from
+       above squeezed it to ~9px while the label kept its size - the icons
+       simply disappeared. A min-height on both means that can no longer
+       happen at any viewport: the row overflows (and the page scrolls)
+       long before an icon becomes unreadable. */
+    @media (min-width: 1024px) {
+      section[aria-label="Workflow categories"] a { min-height: 88px; }
+      section[aria-label="Workflow categories"] a img { min-height: 46px; }
+    }
   </style>
 </head>
 <body class="bg-white font-sans text-ctd-navy antialiased">
 
 <!-- ══════════════════════════════════════════════════════════════
-     ABOVE THE FOLD — header + hero + category grid + info bar are
-     locked into exactly one viewport. Nothing here scrolls.
+     ABOVE THE FOLD — header + hero + category grid + info bar fill
+     one viewport and nothing scrolls whenever they fit, which is the
+     normal case on a 1920x1080 or 1536x864 desktop. On a window too
+     short to hold them at full size the block grows past the viewport
+     and the page scrolls, rather than cropping the hero art or
+     collapsing the category icons. See the .fold-100 note above.
      ══════════════════════════════════════════════════════════════ -->
-<div class="fold-100 grid grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden
+<!-- Three rows now: the FIND/LEARN/RESEARCH/INSIGHTS bar moved out below,
+     which is what buys the category grid enough height for all twelve tiles
+     to sit above the fold at full icon size. The row stays minmax(0,1fr) so
+     the grid sizes the tiles to whatever the hero leaves - no vh arithmetic
+     to keep in sync - while the tiles' own min-height (see the style block)
+     stops that squeeze from ever collapsing an icon. -->
+<div class="fold-100 grid grid-rows-[auto_auto_minmax(0,1fr)] overflow-hidden
             max-lg:block max-lg:h-auto max-lg:overflow-visible">
 
   <!-- ─────────── HEADER ─────────── -->
@@ -175,7 +202,7 @@
   <section class="hero-band relative w-full min-w-0 overflow-hidden bg-ctd-navy max-lg:max-h-none">
     <h1 class="sr-only">The Construction Technology Directory</h1>
     <h2 class="sr-only">Construction. Technology. Contractors. Connected.</h2>
-    <img src="assets/ctd/hero_image.jpg?v=202609020240" fetchpriority="high"
+    <img src="assets/ctd/hero_image.jpg?v=202609020310" fetchpriority="high"
          alt="The Construction Technology Directory — construction professionals reviewing plans on site, with AI, analytics, automation, cloud, safety and BIM technology nodes over a city skyline."
          class="h-full w-full select-none object-cover" draggable="false">
   </section>
@@ -268,7 +295,12 @@
     </div>
   </section>
 
-  <!-- ─────────── BOTTOM INFO BAR ─────────── -->
+
+</div>
+<!-- ══════════════ END OF THE 100dvh FOLD ══════════════ -->
+
+<!-- ─────────── BOTTOM INFO BAR — sits just below the locked fold, so the
+     hero and all twelve category tiles get the whole viewport. -->
   <section aria-label="Discovery pathways" class="min-w-0 bg-ctd-navy text-white">
     <div class="mx-auto grid h-full max-w-[1620px] grid-cols-4 px-[clamp(8px,3.2vw,64px)]
                 max-lg:grid-cols-2 max-sm:grid-cols-1">
@@ -307,9 +339,6 @@
 
     </div>
   </section>
-
-</div>
-<!-- ══════════════ END OF THE 100dvh FOLD ══════════════ -->
 
 
 <!-- ─────────── FOOTER (revealed on scroll) ─────────── -->
