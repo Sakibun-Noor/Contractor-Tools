@@ -496,12 +496,32 @@
     // ever centered if its list genuinely fits with no overflow; a card that
     // scrolls is left exactly as it was. scrollTop is reset defensively on
     // every card regardless.
-    document.querySelectorAll('#info-cards .lcard-body').forEach(function(body){
-      body.scrollTop = 0;
-      var ul = body.querySelector('ul');
-      var fits = ul && ul.scrollHeight <= body.clientHeight;
-      body.classList.toggle('is-short', !!fits);
-    });
+    //
+    // 2026-09-02 — reported broken on a hard refresh in production, working
+    // fine on repeat views. Root cause: the Google Fonts link is loaded with
+    // display=swap, so on a cold cache the six lists first render in a
+    // fallback font while the real one (Inter) is still downloading. This
+    // measurement was running once, on DOMContentLoaded, which does not wait
+    // for that font file — so on a slow/cold load it measured fallback-font
+    // metrics, got the wrong scrollHeight, and never re-measured after the
+    // real font swapped in and changed the text's actual height. A warm
+    // cache (repeat visits, or a fast connection that wins the race) never
+    // showed the bug, which is why it looked fixed everywhere it was tested.
+    // document.fonts.ready resolves once every font on the page - including
+    // the swap - has settled, so re-running the same measurement there
+    // covers the slow-load case without touching the fast one.
+    function sizeInfoCards(){
+      document.querySelectorAll('#info-cards .lcard-body').forEach(function(body){
+        body.scrollTop = 0;
+        var ul = body.querySelector('ul');
+        var fits = ul && ul.scrollHeight <= body.clientHeight;
+        body.classList.toggle('is-short', !!fits);
+      });
+    }
+    sizeInfoCards();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(sizeInfoCards);
+    }
 
     // Available On
     var avItems=['Cloud-Based','Mobile App (iOS/Android)','API Available','100+ Integrations'];
