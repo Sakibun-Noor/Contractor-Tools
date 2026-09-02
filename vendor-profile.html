@@ -23,15 +23,38 @@
          shell loses its height and the rows collapse into each other. */
       height:100vh;height:100dvh;min-height:0;
       display:grid;grid-template-rows:auto minmax(0,1fr);
-      overflow:hidden;
     }
-    .page-above-fold>*{min-width:0;min-height:0;overflow:hidden}
+    /* overflow left at its default (visible) here, not hidden: main needs
+       to be able to grow past this row's box on a cramped viewport (see
+       main's own comment below) - a hidden ancestor would silently clip
+       exactly the overflow that's meant to become page scroll instead. */
+    .page-above-fold>*{min-width:0;min-height:0}
     /* MAIN */
     main{
       max-width:1680px;margin:0 auto;width:100%;
       padding:8px clamp(18px,2vw,26px) 8px;
-      height:100%;min-height:0;overflow:hidden;
-      display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;
+      height:100%;min-height:0;overflow:visible;
+      /* 2026-09-02 - the info-card row (below) used to be minmax(0,1fr):
+         on a short viewport the fixed rows around it (breadcrumb, the
+         vendor header card, the bottom Available On / Contact panel) took
+         whatever height they needed first, and this row was left with
+         whatever remained - sometimes only a sliver, cutting every card's
+         text off after one line. A first attempt used
+         minmax(min-content,1fr), which sounds right but isn't reliable
+         here: this row's items are flex containers with an overflow:auto
+         child, and Chrome computed the row's min-content from that
+         child's full unscrolled content (up to 264px for a 12-item list)
+         rather than the explicit min-height set below - inflating every
+         card to ~293px and forcing page scroll even on viewports that
+         used to fit in one screen with room to spare. minmax(96px,1fr) is
+         a plain length instead, so it can't be reinterpreted that way: it
+         matches .lcard's own min-height exactly, keeps the original
+         "take whatever's left, down to that floor" behaviour when there's
+         enough room, and can't go lower. overflow:visible (was hidden) is
+         what lets main grow past one screen on the rare viewport where
+         even 96px doesn't fit - the page scrolls a little instead of a
+         card ever being crushed unreadable again. */
+      display:grid;grid-template-rows:auto auto minmax(96px,1fr) auto;
       gap:6px;
     }
     /* BREADCRUMB ROW */
@@ -73,8 +96,10 @@
     .fact .fl{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
     .fact .fv{font-size:13px;font-weight:700;color:var(--ink)}
     /* 6 INFO CARDS */
-    .vendor-list-grid{min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
-    .lcard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-height:0}
+    .vendor-list-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+    /* Floor so a card is never crushed to a sliver on a short viewport -
+       header (~30px) + padding (~12px) + two lines of body text. */
+    .lcard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-height:96px}
     .lcard-hd{padding:7px 12px;border-bottom:1px solid var(--line);font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--ink);text-transform:uppercase;flex:none}
     .lcard-body{padding:6px 12px;flex:1;min-height:0;overflow-y:auto}
     /* VM-01 — a card whose list doesn't need to scroll (Division, Master Trade:
