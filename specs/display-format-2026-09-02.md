@@ -246,4 +246,49 @@ above the viewport bottom:
 
 No console errors, no horizontal scroll at any size.
 
-### DF-02 — pending
+### DF-02 — 2026-09-03
+
+Re-audited all five inner pages at 1280×590 (the client's viewport). Only one had a
+genuine broken state:
+
+| Page | Short-landscape behaviour | Action |
+|---|---|---|
+| **vendor-profile.html** | The `100dvh` grid shell compressed `main`'s rows — the `.vendor-top` row was handed 182 px when its rail needs 238 px for the Visit / Demo / Save buttons, so the info-card grid painted **on top of** the "Save Vendor" button (`elementFromPoint` returned `.lcard-hd`, not the button — genuinely unclickable). | **fixed** |
+| results.html | Table ~2 rows but `.tscroll` scrolls internally; pagination fully visible; nothing unreachable. | left as-is |
+| advanced-search-results.html | Advanced Filters panel is tall, table ~2.5 rows, but `.tscroll` scrolls; pagination visible; panel is user-collapsible. | left as-is |
+| dedicated-search.html | Selector cards short but `.sel-list` scrolls; "Search Vendors" button fully visible; no overlap. | left as-is |
+| dedicated-results.html | `.tscroll` gets ~400 px (~7 rows); fine. | left as-is |
+
+**vendor-profile.html fix** — one new media query, mirroring the page's existing
+`@media (max-width: 999px)` mobile unlock but for short landscape:
+
+```
+@media (min-width: 1000px) and (max-height: 720px) {
+  .page-above-fold { height: auto; display: block; overflow: visible; }
+  .page-above-fold > * { overflow: visible; }
+  main { height: auto; display: block; overflow: visible; }
+  .vendor-top { margin-bottom: 14px; }
+  .vendor-list-grid { margin-bottom: 14px; }
+  .vendor-bottom { margin-bottom: 8px; }
+  .lcard-body { max-height: 150px; }
+  .bcard { max-height: 220px; overflow-y: auto; }
+}
+```
+
+Drops the vertical `100dvh` lock and lets the page flow and scroll normally — no grid,
+so no row compression, so no overlap. Column counts unchanged (still a wide screen);
+card bodies kept scrollable so they don't run long. Nothing structural touched, and
+`> 720 px` tall is byte-for-byte the current layout.
+
+Verified in-browser:
+
+| Viewport | vendor-profile |
+|---|---|
+| 1280×590, 1280×720, 1440×620, 1600×680 | shell unlocked; Visit / Demo / **Save** + the 3 top-action buttons all clickable; no `.vcard` ↔ info-grid overlap; footer not overlapped; no horizontal scroll; page scrolls ~350 px |
+| 1280×725, 1280×760 | grid lock still active, no overlap (transition across 720 is clean) |
+| 1366×768, 1536×864, 1920×1080 | `display: grid`, fits one screen — **identical to the current build** |
+| 900×700 (mobile-ish) | `@media (max-width: 999px)` block owns it, unchanged |
+
+No console errors. The other four pages were left untouched — deliberately, to avoid
+regressing the SR-11 density / advanced-filter-panel / footer rounds when nothing on
+them is actually unreachable.

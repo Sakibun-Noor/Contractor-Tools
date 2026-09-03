@@ -157,6 +157,24 @@
       .vendor-bottom{margin-bottom:8px}
       .bcard{overflow-y:visible}
     }
+    /* DF-02 (spec: display-format-2026-09-02.md) — SHORT LANDSCAPE.
+       On a wide but short viewport (e.g. a 1920×1080 laptop at 150% Windows
+       scaling ≈ 1280×590 CSS px) the 100dvh grid shell had to compress main's
+       rows: the .vendor-top row lost the ~56px its rail needs for the Visit /
+       Demo / Save buttons, and the info-card grid below then painted over the
+       Save button. Same cure as the ≤999px block — drop the vertical lock and
+       let the page flow and scroll — but keep every column count (it's still a
+       wide screen) and keep the card bodies scrollable so they don't run long. */
+    @media (min-width:1000px) and (max-height:720px){
+      .page-above-fold{height:auto;display:block;overflow:visible}
+      .page-above-fold>*{overflow:visible}
+      main{height:auto;display:block;overflow:visible}
+      .vendor-top{margin-bottom:14px}
+      .vendor-list-grid{margin-bottom:14px}
+      .vendor-bottom{margin-bottom:8px}
+      .lcard-body{max-height:150px}
+      .bcard{max-height:220px;overflow-y:auto}
+    }
     @media(max-width:760px){
       .vendor-top{grid-template-columns:1fr;gap:18px}
       .vendor-list-grid{grid-template-columns:repeat(2,1fr)}
