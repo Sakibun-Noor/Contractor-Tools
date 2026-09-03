@@ -18,12 +18,12 @@
        filter, ad-blocker, CDN outage — no styles are produced and the category
        tiles overlap each other. Fall back to the captured stylesheet so the
        page still renders correctly. The CDN stays primary, so this snapshot
-       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609021320. */
+       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609031600. */
     (function () {
       if (typeof tailwind !== 'undefined') return;
       var l = document.createElement('link');
       l.rel = 'stylesheet';
-      l.href = 'assets/tailwind-fallback.css?v=202609021320';
+      l.href = 'assets/tailwind-fallback.css?v=202609031600';
       document.head.appendChild(l);
     })();
   </script>
@@ -93,12 +93,17 @@
        2. aspect-ratio — unsupported before Chrome 88 / Safari 15. Without
           it .hero-band has no intrinsic height and the hero image (h-full)
           renders at zero. min-height keeps it visible.               */
-    /* Definite height on purpose. Only a definite height lets the grid
-       squeeze the category row down to whatever the hero leaves; with
-       min-height the grid just grows to its content and the second row
-       of tiles falls off the screen. The tile floor below is what makes
-       that squeeze safe. */
-    .fold-100 { height: 100vh; height: 100dvh; }
+    /* min-height, not a fixed height. A fixed 100vh height let the category
+       row be squeezed to whatever the hero left over — and on a short laptop
+       viewport (≈1280×590, a 15" 1080p screen at 150% scaling) that leftover
+       dropped below two rows of 88px tiles. A fixed-height CSS grid shorter
+       than its rows' minimums doesn't grow — its rows OVERLAP, so row-2 icons
+       printed through row-1 labels (client report, 2026-09-02). With
+       min-height the fold still fills a tall screen exactly as before, but a
+       short screen lets the page grow and scroll instead of colliding. The
+       220px floor on the category row (grid template below) is what bounds
+       how far that row can ever be squeezed. */
+    .fold-100 { min-height: 100vh; min-height: 100dvh; }
     /* Release the locked height below Tailwind's lg breakpoint. Declared here
        rather than relying on max-lg:h-auto so it still holds if Tailwind's
        runtime never arrives. */
@@ -127,17 +132,20 @@
 <body class="bg-white font-sans text-ctd-navy antialiased">
 
 <!-- ══════════════════════════════════════════════════════════════
-     ABOVE THE FOLD — header + hero + category grid + info bar are
-     locked into exactly one viewport. Nothing here scrolls.
+     ABOVE THE FOLD — header + hero + category grid + info bar.
+     On a screen tall enough (≈1536×760 and up) this fills exactly one
+     viewport and nothing scrolls, as before. On a shorter laptop the
+     fold is min-height (not a fixed height), so the page grows and
+     scrolls a little rather than crushing the rows into each other.
      ══════════════════════════════════════════════════════════════ -->
-<!-- Back to four rows including the FIND/LEARN/RESEARCH/INSIGHTS bar: the
-     5.15:1 hero is short enough that everything fits in one screen again,
-     so the bar no longer has to be pushed below the fold to make room. The
-     category row stays minmax(0,1fr) so the grid sizes the tiles to
-     whatever the hero leaves - no vh arithmetic to keep in sync - while the
-     tiles' own min-height (see the style block) stops that squeeze from
-     ever collapsing an icon. -->
-<div class="fold-100 grid grid-rows-[auto_auto_minmax(0,1fr)_auto] overflow-hidden
+<!-- Four rows including the FIND/LEARN/RESEARCH/INSIGHTS bar: the 5.15:1
+     hero is short enough that everything fits one screen at desktop sizes.
+     The category row is minmax(220px,1fr): 1fr while there's slack (tiles
+     grow to fill a tall screen), floored at 220px so two rows of 88px
+     tiles are never squeezed below their own height and forced to overlap
+     (client report, 2026-09-02 — see .fold-100 in the style block and
+     specs/display-format-2026-09-02.md). -->
+<div class="fold-100 grid grid-rows-[auto_auto_minmax(220px,1fr)_auto] overflow-hidden
             max-lg:block max-lg:h-auto max-lg:overflow-visible">
 
   <!-- ─────────── HEADER ─────────── -->
@@ -224,7 +232,7 @@
       </svg>
     </h2>
 
-    <div class="mx-auto grid h-full min-h-0 w-full max-w-[1620px] grid-cols-6 grid-rows-2
+    <div class="mx-auto grid h-full min-h-[176px] w-full max-w-[1620px] grid-cols-6 grid-rows-2
                 px-[clamp(8px,3.2vw,64px)] pb-[clamp(2px,0.6vh,10px)]
                 [&>a:nth-child(6n)]:border-r-0 [&>a:nth-child(n+7)]:border-b-0
                 max-lg:h-auto max-lg:grid-cols-3 max-lg:grid-rows-none max-lg:pb-4
