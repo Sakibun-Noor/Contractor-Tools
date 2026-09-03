@@ -127,6 +127,23 @@
       section[aria-label="Workflow categories"] a { min-height: 88px; }
       section[aria-label="Workflow categories"] a img { min-height: 46px; }
     }
+
+    /* ── Path B — short landscape viewports (spec: display-format-2026-09-02.md)
+       A 1920×1080 laptop at 150% Windows scaling is ~1280×590 CSS px once the
+       browser chrome and taskbar are subtracted. After DF-01 the fold no longer
+       overlaps there, but the FIND/LEARN/RESEARCH/INSIGHTS bar was pushed a few
+       dozen px below the fold. These rules only ever *tighten* the four bands
+       (header, hero, category heading, info bar) so the whole above-the-fold
+       block fits one screen again on short laptops, and do nothing on desktop
+       monitors or normal-height laptops (≥ 720 CSS px tall). The tile floor in
+       the block above still holds, so the icons can't collapse. */
+    @media (min-width: 1024px) and (max-height: 720px) {
+      .fold-100 > header > div { height: clamp(58px, 9vh, 76px); }
+      .hero-band { max-height: 37vh; }
+      .hero-band img { object-position: center 28%; }   /* bias the crop downward so the top hexagons/hard-hats survive */
+      section[aria-label="Workflow categories"] > h2 { padding-top: 3px; padding-bottom: 3px; }
+      section[aria-label="Discovery pathways"] a { padding-top: 9px; padding-bottom: 9px; }
+    }
   </style>
 </head>
 <body class="bg-white font-sans text-ctd-navy antialiased">

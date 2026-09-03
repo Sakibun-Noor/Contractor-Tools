@@ -206,4 +206,44 @@ touched (`git diff` shows no rule changed inside a mobile media query).
 Shipped straight to `main` (auto-deploys) at the user's instruction so Deryck can check
 it on his laptop.
 
+### DF-01b — 2026-09-03 (follow-up: "content section is below the fold")
+
+Deryck's reply after DF-01 deployed: the overlap was gone, but on his laptop the
+FIND/LEARN/RESEARCH/INSIGHTS bar now sat ~27 px below the fold and he wanted it back
+on one screen. He suggested a shorter hero image; the two crops he sent
+(`1798×875` with white letterbox ≈ 4.5:1 content, then `houhj.jpg` 1798×335 = 5.37:1)
+were both ~the same ratio as the live 5.15:1 art, so they'd save ~10 px — not enough.
+
+Chosen fix ("Path B"): tighten the four above-the-fold bands **only on short landscape
+viewports**, no new art. One media query added to `index.html`'s `<style>`:
+
+```
+@media (min-width: 1024px) and (max-height: 720px) {
+  .fold-100 > header > div        { height: clamp(58px, 9vh, 76px); }   /* 76 → 58 */
+  .hero-band                       { max-height: 37vh; }                 /* caps the hero on short screens */
+  .hero-band img                   { object-position: center 28%; }      /* crop downward, protect the top hexagons */
+  section[... "Workflow categories"] > h2      { padding-block: 3px; }
+  section[... "Discovery pathways"] a          { padding-block: 9px; }
+}
+```
+
+All semantic selectors — applies with or without the Tailwind CDN, no
+`tailwind-fallback.css` change needed. Only ever tightens; the 88 px tile floor from
+the DF-01 block still holds, so icons can't collapse. `> 720 px` tall is untouched.
+
+Verified in-browser (local build) — "above-fold fits" = the FIND bar's bottom is at or
+above the viewport bottom:
+
+| Viewport | above-fold fits | overlap | worst label→icon | notes |
+|---|---|---|---|---|
+| 1280×590 (client's likely screen) | ✅ fold 590 | none | +25 px | header 58, hero 218, tiles 111 |
+| 1280×560 | ✅ fold 560 | none | +20 px | hero 207, hexagons still intact |
+| 1280×600 / 1280×720 | ✅ | none | +27 / +35 | |
+| 1440×620, 1600×680 | ✅ | none | +25 / +29 | |
+| 1366×768 (media query off) | ✅ one screen | none | — | **identical to DF-01** |
+| 1536×864, 1920×1080 (media query off) | ✅ one screen | none | — | **identical to DF-01**, hero `max-height: none`, `object-position: 50% 50%` |
+| no-Tailwind fallback @1280×600 | ✅ | none | +27 | identical to the CDN path |
+
+No console errors, no horizontal scroll at any size.
+
 ### DF-02 — pending
