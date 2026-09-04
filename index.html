@@ -66,11 +66,14 @@
          - cap the hero, object-cover   -> no gap, but the crop eats the
            ANALYTICS/AUTOMATION hexagons, whose outlines sit ~8% down.
 
-       The client's final art (2026-09-02) fixes the root cause: it is
-       5.15:1, so the same 1896px width needs only ~365px of height and
-       everything fits with room to spare. The white letterbox bars the
-       file shipped with were trimmed - content occupied rows 151-572 of
-       724, so the file on disk is the 2172x422 content band only.
+       The client's 2026-09-02 art fixed the root cause at 5.15:1. A
+       2026-09-04 re-crop (same composition, tighter top/bottom margins)
+       is even shorter at 5.60:1 (1798x321) - requested so the DF-02
+       short-landscape crop (below) has less height to remove. Content in
+       this file runs almost edge-to-edge vertically (cranes near row 0,
+       the SAFETY label near the last row), so there is close to zero safe
+       margin for object-position to crop into - see the short-landscape
+       block below, which leans on the shorter ratio instead of a crop.
 
        Sizing is aspect-ratio alone, which makes box ratio == image ratio
        by construction: nothing is ever cropped and a side gap is
@@ -78,7 +81,7 @@
        object-position stay purely as a safety net if the file's real
        ratio ever drifts from the value below; while they match, both are
        no-ops. */
-    .hero-band { aspect-ratio: 2172 / 422; }
+    .hero-band { aspect-ratio: 1798 / 321; }
     .hero-band img { object-position: center center; }
 
     /* ── Cross-browser safety net ──────────────────────────────────────
@@ -139,8 +142,15 @@
        the block above still holds, so the icons can't collapse. */
     @media (min-width: 1024px) and (max-height: 720px) {
       .fold-100 > header > div { height: clamp(58px, 9vh, 76px); }
-      .hero-band { max-height: 37vh; }
-      .hero-band img { object-position: center 28%; }   /* bias the crop downward so the top hexagons/hard-hats survive */
+      /* No hero max-height/crop here (2026-09-04). The 2026-09-02 art left
+         enough top/bottom margin to crop into safely; the 2026-09-04 re-crop
+         (aspect-ratio above) does not - SAFETY's label and the crane tops
+         both sit within a few px of the edge, so ANY object-position crop
+         clips one or the other. The shorter ratio itself already does the
+         space-saving job the crop used to do (see the aspect-ratio comment).
+         If a future hero art regresses back to a taller ratio, the crop can
+         come back - bias it toward the content that has the most margin,
+         checked in-browser, not assumed. */
       section[aria-label="Workflow categories"] > h2 { padding-top: 3px; padding-bottom: 3px; }
       section[aria-label="Discovery pathways"] a { padding-top: 9px; padding-bottom: 9px; }
     }
@@ -225,7 +235,7 @@
   <section class="hero-band relative w-full min-w-0 overflow-hidden bg-ctd-navy max-lg:max-h-none">
     <h1 class="sr-only">The Construction Technology Directory</h1>
     <h2 class="sr-only">Construction. Technology. Contractors. Connected.</h2>
-    <img src="assets/ctd/hero_image.jpg?v=202609021320" fetchpriority="high"
+    <img src="assets/ctd/hero_image.jpg?v=202609042215" fetchpriority="high"
          alt="The Construction Technology Directory — construction professionals reviewing plans on site, with AI, analytics, automation, cloud, safety and BIM technology nodes over a city skyline."
          class="h-full w-full select-none object-cover" draggable="false">
   </section>

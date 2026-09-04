@@ -33,7 +33,12 @@
       max-width:1620px;margin:0 auto;width:100%;
       padding:8px clamp(14px,2.2vw,26px) 8px;
       height:100%;min-height:0;overflow:hidden;
-      display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
+      /* 2026-09-04: 6 rows, not 5 - back-link is now its own row ahead of
+         ptop (was sharing ptop's count line). Every child of this grid
+         must have a matching row here or the rows after it shift into the
+         wrong track - that's what happens if this list and the child count
+         in the markup below ever drift apart. */
+      display:grid;grid-template-rows:auto auto auto auto minmax(0,1fr) auto;
       gap:6px;
     }
 
@@ -41,11 +46,11 @@
     .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
     .ptop-l .phead{font-size:clamp(20px,2.3vw,26px);font-weight:900;letter-spacing:-.02em;color:var(--navy);margin:0 0 4px}
     .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink)}
-    /* SR-12 — the Back to Home link shares the count line rather than taking a
-       row of its own, so the results table keeps every pixel it had. */
-    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--vlink);font-weight:600;text-decoration:none}
+    /* 2026-09-04 correction: moved above the header (own row), was sharing
+       the count line to save a row of height (SR-12). Costs a few px of
+       results-table height; margin kept tight to limit it. */
+    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--vlink);font-weight:600;text-decoration:none;margin-bottom:4px}
     .back-link:hover{text-decoration:underline}
-    .pcount-sep{width:1px;height:13px;background:var(--line);flex:none}
     .ptop-r{display:flex;gap:9px;flex-wrap:wrap}
     .btn-act{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap;min-height:32px}
     .btn-act:hover{border-color:var(--navy)}
@@ -76,7 +81,6 @@
     .qsearch{flex:1;min-width:150px;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:7px;padding:5px 9px;background:#f8fafc}
     .qsearch svg{flex:none;color:var(--muted)}
     .qsearch input{border:0;background:none;outline:none;flex:1;min-width:0;font-size:12.5px;color:var(--ink)}
-    .qnote{margin:0 0 7px;padding:5px 9px;border-left:2px solid var(--orange);background:#fdf4ee;border-radius:0 4px 4px 0;font-size:11px;line-height:1.4;color:#6b4a34}
     .qcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 16px}
     .qcol{min-width:0}
     .qcol h3{display:flex;align-items:center;gap:6px;margin:0 0 5px;font-size:11px;font-weight:800;letter-spacing:.07em}
@@ -235,15 +239,14 @@
 <main>
 
   <!-- ═══════════ 2. TITLE ROW ═══════════ -->
+  <a class="back-link" href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Home
+  </a>
   <div class="ptop">
     <div class="ptop-l">
-      <h1 class="phead">SEARCH RESULTS</h1>
+      <h1 class="phead">SEARCH / RESULTS</h1>
       <div class="pcount">
-        <a class="back-link" href="index.html">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          Back to Home
-        </a>
-        <span class="pcount-sep" aria-hidden="true"></span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
         <span id="hero-count">Loading…</span>
       </div>
@@ -270,9 +273,6 @@
           <input type="text" placeholder="Start typing…" aria-label="Filter master trades, divisions and trades" data-qfilter="do">
         </div>
       </div>
-      <!-- Deliberately one line: at two lines this banner cost ~17px of the
-           vendor table's height budget on a 864px-tall viewport. -->
-      <p class="qnote" id="do-note">Now live — every vendor carries a master trade and a trade/division.</p>
       <div class="qcols">
         <div class="qcol qcol-blue">
           <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg>MASTER TRADE</h3>
