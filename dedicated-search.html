@@ -71,7 +71,10 @@
     .af-item.is-pending label{cursor:default}
     .af-item input{accent-color:var(--blue);width:13px;height:13px;flex:none}
     /* SELECTOR GRID */
-    .selector-grid{min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+    .selector-grid{min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px 12px}
+    /* FC-03 — orange grouping bars. Each spans the 3 cards below it in the
+       same grid, so it can't drift out of alignment. */
+    .sel-group-bar{grid-column:span 3;background:var(--orange);color:#fff;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;text-align:center;padding:6px 10px;border-radius:6px;align-self:end}
     .sel-card{border:1px solid var(--line);border-radius:7px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-height:0}
     .sel-card-hd{background:var(--navy);color:#fff;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;flex:none}
     .sel-card-hd h3{margin:0;font-size:11.5px;font-weight:800;letter-spacing:.08em}
@@ -247,6 +250,9 @@
        product names that filter nothing, Product reuses the one real
        field that's the closest match. -->
   <div class="selector-grid">
+
+    <div class="sel-group-bar">About the Vendor</div>
+    <div class="sel-group-bar">About the Customers</div>
 
     <div class="sel-card" data-filter="sub">
       <div class="sel-card-hd">

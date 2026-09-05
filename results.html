@@ -74,7 +74,10 @@
     .clear-all:hover{text-decoration:underline}
 
     /* ── TWO-QUESTION PANEL ── */
-    .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px}
+    /* FC-03 — orange grouping bars, one per panel, in the same grid so they
+       stay aligned to the panel below. */
+    .q-group-bar{background:var(--orange);color:#fff;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;text-align:center;padding:5px 10px;border-radius:6px}
     .qcard{border:1px solid var(--line);border-radius:9px;background:#fff;padding:10px 12px 8px;box-shadow:0 1px 2px rgba(15,27,45,.04),0 8px 22px -18px rgba(15,27,45,.35)}
     .qcard-hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
     .qcard-hd h2{margin:0;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--ink);white-space:nowrap}
@@ -263,6 +266,9 @@
 
   <!-- ═══════════ 3. TWO-QUESTION PANEL ═══════════ -->
   <div class="qgrid">
+
+    <div class="q-group-bar">About the Customers</div>
+    <div class="q-group-bar">About the Vendor</div>
 
     <!-- ---------- WHAT DO YOU DO? — the construction axis ---------- -->
     <section class="qcard" aria-labelledby="q-do">

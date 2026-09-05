@@ -302,4 +302,39 @@ correctly. No horizontal scroll, no new console errors. Minor: on
 button stays in place; can be tightened with a smaller header font if the
 client wants one line.
 
-### FC-03, FC-04, FC-05, FC-06, FC-07 — pending
+### FC-03 · 2026-09-05
+
+Orange grouping bars added, per the client's mockup ("ABOUT THE VENDOR" over
+Products/Subcategories/Categories, "ABOUT THE CUSTOMERS" over the construction
+facets). Implemented three ways to fit each page's existing layout:
+
+- **`dedicated-search.html`** — the exact mockup layout (6 cards in a row). Two
+  `.sel-group-bar` divs added as the first children of `.selector-grid`, each
+  `grid-column: span 3`, so they sit in the *same grid* as the cards and can't
+  drift out of alignment (the client's stated pain point). Verified: both bars'
+  left/right edges match their 3 cards to the pixel (0 px diff). Column order
+  here already matched the mockup (Product, Subcategory, Category | Construction
+  Trades, Divisions of Work, Major Groups) - not reordered.
+- **`results.html`** — the two-question panel is two side-by-side cards. Two
+  `.q-group-bar` divs added to `.qgrid` (also a 2-col grid), one per panel:
+  "About the Customers" over "WHAT DO YOU DO?" (construction axis), "About the
+  Vendor" over "WHAT ARE YOU LOOKING FOR?" (software axis). The existing
+  question headers stay below the bars.
+- **`advanced-search-results.html`** — the facets are a vertical sidebar list,
+  so the horizontal "bar over 3 columns" becomes a `.sb-group` section header:
+  "About the Vendor" before Categories, "About the Customers" before Major
+  Groups.
+
+In-browser at 1280×720 / 1536×864: bars render, aligned, no horizontal scroll,
+no new console errors, pages still fit the fold.
+
+**Open, for the client to confirm:**
+- Column *order* - the pages disagree today (dedicated-search has Product first
+  per the mockup; the advanced-search sidebar and the nomenclature list have
+  Categories first). FC-03 added the bars without reordering. If he wants one
+  consistent order, that's a quick follow-up.
+- On `advanced-search-results.html`, "About the Customers" currently also sits
+  above the Company Size card (last in the sidebar). FC-05 moves Company Size
+  into the Advanced Filters panel, which resolves this.
+
+### FC-04, FC-05, FC-06, FC-07 — pending
