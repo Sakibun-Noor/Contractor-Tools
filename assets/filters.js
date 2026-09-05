@@ -87,9 +87,10 @@ window.CTD_FILTERS = (function () {
       }).sort(function (a, b) { return b.count - a.count; });
     }
 
-    // MASTER TRADE — the client's validated 12 groups (HX-09), counted from
-    // each vendor's own classification. Groups with no vendors render
-    // disabled rather than filtering to an empty table.
+    // MAJOR GROUPS (UI label since 2026-09-05; field key still `mt`) — the
+    // client's validated 12 groups (HX-09), counted from each vendor's own
+    // classification. Groups with no vendors render disabled rather than
+    // filtering to an empty table.
     var mtCounts = {};
     tools.forEach(function (t) { if (t.mt) mtCounts[t.mt] = (mtCounts[t.mt] || 0) + 1; });
     var masterTrades;

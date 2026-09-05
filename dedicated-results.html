@@ -209,9 +209,9 @@
             <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-            <th style="width:11%">CONTRACTOR TYPES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
-            <th style="width:8.5%">DIVISION</th>
-            <th style="width:8%">MASTER TRADE</th>
+            <th style="width:11%">CONSTRUCTION TRADES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
+            <th style="width:8.5%">DIVISIONS OF WORK</th>
+            <th style="width:8%">MAJOR GROUPS</th>
             <th style="width:10.5%">QUICK FACTS <span class="sic" onclick="sortBy('sz')">↑↓</span></th>
             <th>ACTIONS</th>
           </tr>
@@ -332,7 +332,7 @@
   function divsOf(t){return t.dv?[t.dv]:[];}
   function mtsOf(t){return t.mt?[t.mt]:[];}
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Construction Trades',div:'Divisions of Work',mt:'Major Groups',avail:'Available On',sz:'Company Size'};
 
   function labelFor(key,value){
     if(key==='cat')return CM[value]||value;
@@ -531,9 +531,9 @@
       {label:'Description',get:function(t){return t.x;}},
       {label:'Product/Subcategory',get:function(t){return t.sub;}},
       {label:'Categories',get:function(t){return catNamesOf(t).join('; ');}},
-      {label:'Divisions',get:function(t){return divsOf(t).join('; ');}},
-      {label:'Trades',get:function(t){return (t.tr||[]).join('; ');}},
-      {label:'Master Trades',get:function(t){return mtsOf(t).join('; ');}},
+      {label:'Divisions of Work',get:function(t){return divsOf(t).join('; ');}},
+      {label:'Construction Trades',get:function(t){return (t.tr||[]).join('; ');}},
+      {label:'Major Groups',get:function(t){return mtsOf(t).join('; ');}},
       {label:'Available On',get:function(t){return avail(t.sz).join('; ');}}
     ], 'ctd-vendor-results.csv');
   };

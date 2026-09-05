@@ -102,8 +102,8 @@
     .lcard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-height:96px}
     .lcard-hd{padding:7px 12px;border-bottom:1px solid var(--line);font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--ink);text-transform:uppercase;flex:none}
     .lcard-body{padding:6px 12px;flex:1;min-height:0;overflow-y:auto}
-    /* VM-01 — a card whose list doesn't need to scroll (Division, Master Trade:
-       one real value) gets its content centered rather than pinned to the top
+    /* VM-01 — a card whose list doesn't need to scroll (Divisions of Work,
+       Major Groups: one real value) gets its content centered rather than pinned to the top
        of a mostly-empty box. Applied only via .is-short, set after render by
        measuring actual overflow — never on a card that scrolls. justify-content
        on a container that DOES overflow lets Chrome start scrollTop negative,
@@ -302,9 +302,9 @@
 
   <!-- 6 info cards -->
   <div class="vendor-list-grid" id="info-cards">
-    <div class="lcard"><div class="lcard-hd">Division</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Contractor Types</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Master Trade</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Divisions of Work</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Construction Trades</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
+    <div class="lcard"><div class="lcard-hd">Major Groups</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Key Products</div><div class="lcard-body"><ul id="lc-products"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Subcategories</div><div class="lcard-body"><ul id="lc-subcats"></ul></div></div>
     <div class="lcard"><div class="lcard-hd">Categories</div><div class="lcard-body"><ul id="lc-cats"></ul></div></div>
@@ -636,9 +636,9 @@
       {label:'Description',get:function(){return t.x;}},
       {label:'Product/Subcategory',get:function(){return t.sub;}},
       {label:'Categories',get:function(){return cats.join('; ');}},
-      {label:'Division',get:function(){return divs.join('; ');}},
-      {label:'Contractor Types',get:function(){return (t.tr||[]).join('; ');}},
-      {label:'Master Trade',get:function(){return mts.join('; ');}},
+      {label:'Divisions of Work',get:function(){return divs.join('; ');}},
+      {label:'Construction Trades',get:function(){return (t.tr||[]).join('; ');}},
+      {label:'Major Groups',get:function(){return mts.join('; ');}},
       {label:'Company Size',get:function(){return t.sz;}}
     ], t.s+'-profile.csv');
   };

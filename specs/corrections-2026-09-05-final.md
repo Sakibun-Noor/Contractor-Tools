@@ -274,4 +274,32 @@ Footer restructured on all 6 pages (5 with `class="site-footer"` + shared
 - In-browser: 7 columns on every page, correct links, no horizontal scroll, fallback
   path renders identically.
 
-### FC-01, FC-03, FC-04, FC-05, FC-06, FC-07 — pending
+### FC-01 · 2026-09-05
+
+`Master Trade(s)` → **Major Groups**, `Division` → **Divisions of Work**,
+`Contractor Type(s)` → **Construction Trades** — label text only. Filter keys
+(`mt` / `div` / `tr`) and `?mt=` / `?div=` / `?tr=` URLs unchanged and verified
+still working (chips render the new label from an old-key URL).
+
+Every occurrence changed, by page:
+
+| Page | What changed |
+|---|---|
+| `results.html` | two-question panel `<h3>` ×3, "View all …" links ×3, the `aria-label` on the panel search box, table `<th>` ×3, the `CHIP_LABEL` JS object, two stale comments corrected |
+| `advanced-search-results.html` | sidebar `<h3>` ×3 + their HTML comments + static "view more …" placeholder links, `SB_FACETS` nouns (drive the dynamic "view more …" links), table `<th>` ×2, `FILTER_LABELS`, CSV export column labels ×2 |
+| `dedicated-search.html` | 3 `sel-card` `<h3>` + `aria-label` + search `placeholder` + "Clear …" button ×3 each, `LABELS` JS object, one stale comment corrected |
+| `dedicated-results.html` | table `<th>` ×3, `FILTER_LABELS`, CSV export column labels ×3 |
+| `vendor-profile.html` | info-card `<div class="lcard-hd">` ×3, CSV export column labels ×3, one comment |
+| `assets/filters.js` | one section-header comment (no functional change) |
+
+In-browser, all 5 pages at 1536×864: every heading, chip, table column, "view
+all/more" link and Clear button shows the new label; `?mt=General Construction`
+→ chip "Major Groups: General Construction", `?tr=GC` → "Construction Trades:
+GC", `?div=03 – Concrete` → "Divisions of Work: 03 – Concrete", each filtering
+correctly. No horizontal scroll, no new console errors. Minor: on
+`dedicated-search.html`'s narrow selector cards, "CONSTRUCTION TRADES" and
+"DIVISIONS OF WORK" wrap to two lines in the card header — readable, the sort
+button stays in place; can be tightened with a smaller header font if the
+client wants one line.
+
+### FC-03, FC-04, FC-05, FC-06, FC-07 — pending

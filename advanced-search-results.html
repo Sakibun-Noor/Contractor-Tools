@@ -233,36 +233,36 @@
       </div>
     </div>
 
-    <!-- Master Trades -->
+    <!-- Major Groups -->
     <div class="sb-card sb-mt" data-filter="mt">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <h3>MASTER TRADE</h3><span class="chev">▲</span>
+        <h3>MAJOR GROUPS</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-mt">
-        <a class="sb-more" href="dedicated-search.html">view more master trades</a>
+        <a class="sb-more" href="dedicated-search.html">view more major groups</a>
       </div>
     </div>
 
-    <!-- Divisions -->
+    <!-- Divisions of Work -->
     <div class="sb-card sb-div" data-filter="div">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 17h6m-3-3v6"/></svg>
-        <h3>DIVISION</h3><span class="chev">▲</span>
+        <h3>DIVISIONS OF WORK</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-div">
-        <a class="sb-more" href="dedicated-search.html">view more divisions</a>
+        <a class="sb-more" href="dedicated-search.html">view more divisions of work</a>
       </div>
     </div>
 
-    <!-- Trades -->
+    <!-- Construction Trades -->
     <div class="sb-card sb-tr" data-filter="tr">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-        <h3>CONTRACTOR TYPE</h3><span class="chev">▲</span>
+        <h3>CONSTRUCTION TRADES</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-tr">
-        <a class="sb-more" href="dedicated-search.html">view more contractor types</a>
+        <a class="sb-more" href="dedicated-search.html">view more construction trades</a>
       </div>
     </div>
 
@@ -358,8 +358,8 @@
               <th style="width:14%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:13%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:14%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-              <th style="width:14%">DIVISION <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
-              <th style="width:12%">MASTER TRADE <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
+              <th style="width:14%">DIVISIONS OF WORK <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
+              <th style="width:12%">MAJOR GROUPS <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
               <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
@@ -505,9 +505,9 @@
     ['sb-body-cat',  'categories',     'cat', function(){return vocab.categories;}],
     ['sb-body-sub',  'subcategories',  'sub', function(){return vocab.subcategories;}],
     ['sb-body-prod', 'products',       'sub', function(){return vocab.subcategories;}],
-    ['sb-body-mt',   'master trades',  'mt',  function(){return vocab.masterTrades;}],
-    ['sb-body-div',  'divisions',      'div', function(){return vocab.divisions;}],
-    ['sb-body-tr',   'contractor types', 'tr', function(){return vocab.trades;}],
+    ['sb-body-mt',   'major groups',   'mt',  function(){return vocab.masterTrades;}],
+    ['sb-body-div',  'divisions of work','div', function(){return vocab.divisions;}],
+    ['sb-body-tr',   'construction trades', 'tr', function(){return vocab.trades;}],
     ['sb-body-sz',   'company sizes',  'sz',  function(){return vocab.sizes;}]
   ];
   var sbExpanded = {};
@@ -576,7 +576,7 @@
     'Government / Public Works','Healthcare','Retail / Hospitality'
   ]), 'market');
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Contractor Type',div:'Division',mt:'Master Trade',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Construction Trades',div:'Divisions of Work',mt:'Major Groups',avail:'Available On',sz:'Company Size'};
   function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
 
   function renderChips(){
@@ -776,8 +776,8 @@
       {label:'Description',get:function(t){return t.x;}},
       {label:'Product/Subcategory',get:function(t){return t.sub;}},
       {label:'Categories',get:function(t){return catNamesOf(t).join('; ');}},
-      {label:'Divisions',get:function(t){return divsOf(t).join('; ');}},
-      {label:'Master Trades',get:function(t){return mtsOf(t).join('; ');}}
+      {label:'Divisions of Work',get:function(t){return divsOf(t).join('; ');}},
+      {label:'Major Groups',get:function(t){return mtsOf(t).join('; ');}}
     ], 'ctd-advanced-search-results.csv');
   };
   window.CTD_shareResults=function(){ CTD_ACTIONS.shareUrl(window.location.href); };
