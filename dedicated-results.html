@@ -72,6 +72,16 @@
     table.res td div, table.res td > a.bl, table.res td.desc-cell{
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
     }
+    /* FC-06 - Dedicated Results is the last list before the Vendor Page, so its
+       multi-value cells show every value in a small scroll box rather than
+       truncating with "more..." (client). The inner rows keep the one-line
+       ellipsis from the rule above. */
+    table.res td div.cell-scroll{
+      white-space:normal; overflow-x:hidden; overflow-y:auto; text-overflow:clip;
+      max-height:46px; overscroll-behavior:contain; padding-right:2px;
+    }
+    .cell-scroll::-webkit-scrollbar{width:4px}
+    .cell-scroll::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
     table.res tr:nth-child(even) td{background:var(--cream)}
     table.res tr:hover td{background:#eff3ff}
     .vcell{display:flex;align-items:center;gap:6px;min-width:0}
@@ -81,8 +91,6 @@
     .vn{font-weight:700;font-size:clamp(9.5px,1.1vh,11px);color:var(--ink);display:block;margin-bottom:1px}
     .vd{color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px)}
     .bl{color:var(--vlink)}.bl:hover{text-decoration:underline}
-    .more{display:block;color:#4C9BE0;font-weight:600;font-size:clamp(8.5px,.95vh,9.5px);margin-top:3px;cursor:pointer}
-    .more:hover{text-decoration:underline}
     .avl{display:flex;align-items:center;gap:4px;font-size:clamp(8.5px,.95vh,9.5px);color:var(--muted);margin-bottom:1px}
     .act-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px}
     .act-ic{display:grid;place-items:center;width:22px;height:22px;padding:0;border:0;background:none;color:var(--blue);cursor:pointer;border-radius:3px;text-decoration:none}
@@ -419,27 +427,6 @@
     el.setAttribute('aria-pressed',nowSaved?'true':'false');
   };
 
-  // "+N more…" cells: stores the full item list + its own formatter so
-  // expanding preserves real links (e.g. category hrefs), and collapsing
-  // just re-renders the current page (simplest correct reset).
-  var MORE_STORE=[];
-  function moreCell(items,shown,formatItem){
-    if(items.length<=shown)return items.map(formatItem).join('');
-    var idx=MORE_STORE.length;
-    MORE_STORE.push({items:items,formatItem:formatItem});
-    return items.slice(0,shown).map(formatItem).join('')
-      +'<a class="more" href="javascript:void(0)" onclick="CTD_toggleMore(this,'+idx+')">+'+(items.length-shown)+' more…</a>';
-  }
-  window.CTD_toggleMore=function(el,idx){
-    var entry=MORE_STORE[idx];
-    var td=el.closest('td');
-    td.innerHTML=entry.items.map(entry.formatItem).join('')
-      +'<a class="more" href="javascript:void(0)" onclick="CTD_collapseMore()">show less</a>';
-  };
-  // inline onclick="" runs in global scope, so render (closure-local)
-  // needs a window-exposed wrapper to be reachable from the "show less" link
-  window.CTD_collapseMore=function(){render();};
-
   // Vendor cell: cached favicon (assets/icons/<domain>.ico, populated by
   // build/fetch-icons.ps1) with a styled letter circle as fallback — used
   // both when a vendor has no domain at all and when the icon 404s.
@@ -454,7 +441,6 @@
   function render(){
     var s=(page-1)*rpp,e=s+rpp,rows=DATA.slice(s,e),total=DATA.length;
     document.getElementById('vendor-count').textContent=total.toLocaleString()+' Vendors Found';
-    MORE_STORE=[];
     var h='';
     rows.forEach(function(t,i){
       var idx=s+i+1;
@@ -471,11 +457,11 @@
       h+='<td class="desc-cell" style="font-size:9px;line-height:1.2;color:#4a5568">'+esc(desc)+'</td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
-      h+='<td data-fmt="link">'+moreCell(catPairs,1,function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
-      h+='<td data-fmt="text">'+moreCell(tr,1,function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';})+'</td>';
-      h+='<td data-fmt="text">'+moreCell(divs,1,function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';})+'</td>';
-      h+='<td data-fmt="text">'+moreCell(mts,1,function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';})+'</td>';
-      h+='<td>'+av.slice(0,2).map(function(a){return'<div class="avl"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+(av.length>2?'<div class="avl" style="font-style:italic">+'+(av.length-2)+' more</div>':'')+'</td>';
+      h+='<td data-fmt="link"><div class="cell-scroll">'+catPairs.map(function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';}).join('')+'</div></td>';
+      h+='<td data-fmt="text"><div class="cell-scroll">'+tr.map(function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';}).join('')+'</div></td>';
+      h+='<td data-fmt="text"><div class="cell-scroll">'+divs.map(function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';}).join('')+'</div></td>';
+      h+='<td data-fmt="text"><div class="cell-scroll">'+mts.map(function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';}).join('')+'</div></td>';
+      h+='<td><div class="cell-scroll">'+av.map(function(a){return'<div class="avl"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+'</div></td>';
       h+='<td style="min-width:88px">'+actionsCell(t)+'</td>';
       h+='</tr>';
     });

@@ -409,4 +409,32 @@ is not possible from the current data - there is one subcategory value per
 vendor and no product list. He offered to help on the spreadsheet; a real
 `products` column (a few per vendor) would make Products a true "more…" cell.
 
-### FC-06, FC-07 — pending
+### FC-06 · 2026-09-05
+
+`dedicated-results.html` only - the last list before the Vendor Page.
+
+- **Scrolling cells instead of "more…".** The five multi-value cells
+  (Key Products, Categories, Construction Trades, Divisions of Work, Major
+  Groups) and the Quick Facts / Available-On cell now render **every** value
+  inside a `div.cell-scroll` (`max-height: 46px; overflow-y: auto`, thin
+  scrollbar) rather than showing one value + "+N more…". A vendor with ≤ ~4
+  values sees them all with no scrollbar; a longer list scrolls in place.
+  Verified: STACK's Construction Trades cell shows all of GC / Commercial /
+  Residential / Specialty Trades; no "more…" link anywhere on the page.
+- Removed the now-dead `moreCell` / `MORE_STORE` / `CTD_toggleMore` /
+  `CTD_collapseMore` helpers and the `.more` CSS from this page (they stay on
+  `results.html` and `advanced-search-results.html`, which still use "more…").
+- **"Drop the data headers e.g. cloud based"** - audited: the current
+  `dedicated-results.html` has **no per-cell data headers**. Available On
+  renders bare items ("Cloud-Based", "Web Access", …) with no label prefix,
+  and there was never a "Cloud Based" heading. The only place a bold section
+  header sits above such a list is `vendor-profile.html`'s "AVAILABLE ON" card
+  - which is the deferred Vendor Page. So this part is either already
+  satisfied here or was about the vendor page; **flagged for the client** to
+  point at a screenshot if something still reads as a stray header.
+
+Verified at 1536×864 and 1280×620: cells list all values, page + table have
+no horizontal scroll, the table body still scrolls vertically within its box,
+pagination visible, FC-08 header/subtitle intact, no console errors.
+
+### FC-07 — pending
