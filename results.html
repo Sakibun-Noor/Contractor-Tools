@@ -129,7 +129,8 @@
     .bl{color:var(--vlink)}
     .bl:hover{text-decoration:underline}
     .cval{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .more{display:block;color:var(--vlink);font-size:10px;font-style:italic;margin-top:2px;cursor:pointer}
+    .more{display:block;color:#4C9BE0;font-weight:600;font-size:10px;margin-top:2px;cursor:pointer}
+    .more:hover{text-decoration:underline}
     .tpend{color:var(--muted)}
 
     /* ACTIONS — globe + bookmark on top, View Profile beneath (SR-03) */
@@ -578,12 +579,14 @@
     var idx = MORE.length;
     MORE.push({ items:items, fmt:fmt });
     return items.slice(0, shown).map(fmt).join('') +
-      '<a class="more" href="javascript:void(0)" onclick="CTD_more(this,' + idx + ')">more…</a>';
+      '<a class="more" href="javascript:void(0)" onclick="CTD_more(this,' + idx + ')">+' + (items.length - shown) + ' more…</a>';
   }
   window.CTD_more = function(el, idx){
     var e = MORE[idx];
-    el.closest('td').innerHTML = e.items.map(e.fmt).join('');
+    el.closest('td').innerHTML = e.items.map(e.fmt).join('') +
+      '<a class="more" href="javascript:void(0)" onclick="CTD_lessResults()">show less</a>';
   };
+  window.CTD_lessResults = function(){ render(); };
 
   function vendorCell(t){
     var letter = esc((t.n||'?').charAt(0).toUpperCase());

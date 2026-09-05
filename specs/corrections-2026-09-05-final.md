@@ -374,4 +374,39 @@ In-browser at 1536×864 and 1280×620: Company Size filters from the panel,
 Description column renders, no horizontal scroll (page or table), no console
 errors.
 
-### FC-04, FC-06, FC-07 — pending
+### FC-04 · 2026-09-05
+
+The "show N, then a light-blue 'more…'" pattern the client asked for was
+**already built** on all three results pages via a shared `moreCell()` helper -
+applied to every cell that can hold multiple values:
+
+| Field | Data shape | "more…" applies? |
+|---|---|---|
+| Categories (`t.c`) | array | yes - shows 1, then "+N more…" |
+| Construction Trades (`t.tr`) | array (STACK has 4: GC / Commercial / Residential / Specialty Trades) | yes |
+| Divisions of Work (`t.dv`) | single value per vendor (HX-04) | no - nothing to expand |
+| Major Groups (`t.mt`) | single value | no |
+| Products / Subcategories (`t.sub`) | **single value** - the dataset has no product field; "Product" is `t.sub + ' Software'` | no |
+
+So the honest state: "more…" fires for Categories and Construction Trades and
+correctly does not for the rest, because each vendor carries exactly one of
+them in the data.
+
+**Polish applied this round:**
+- `.more` restyled to a genuine **light blue** (`#4C9BE0`, was `--vlink`
+  #1C57B8 italic) and given a hover underline - on all three pages, per the
+  client's "more… in light blue".
+- `results.html`'s `moreCell` brought in line with the other two: shows the
+  count ("+3 more…" not just "more…") and gains a "show less" toggle.
+
+Verified in-browser: at `results.html?cat=estimating-takeoff`, STACK's
+Construction Trades cell shows "GC  +3 more…" in light blue; clicking expands
+to all four with "show less", clicking that collapses. Same on
+`dedicated-results.html`. No console errors, no horizontal scroll.
+
+**To raise with the client:** "more than one software product for each vendor"
+is not possible from the current data - there is one subcategory value per
+vendor and no product list. He offered to help on the spreadsheet; a real
+`products` column (a few per vendor) would make Products a true "more…" cell.
+
+### FC-06, FC-07 — pending
