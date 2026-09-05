@@ -18,12 +18,12 @@
        filter, ad-blocker, CDN outage — no styles are produced and the category
        tiles overlap each other. Fall back to the captured stylesheet so the
        page still renders correctly. The CDN stays primary, so this snapshot
-       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609031600. */
+       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609052300. */
     (function () {
       if (typeof tailwind !== 'undefined') return;
       var l = document.createElement('link');
       l.rel = 'stylesheet';
-      l.href = 'assets/tailwind-fallback.css?v=202609031600';
+      l.href = 'assets/tailwind-fallback.css?v=202609052300';
       document.head.appendChild(l);
     })();
   </script>
@@ -375,7 +375,7 @@
 
 <!-- ─────────── FOOTER (revealed on scroll) ─────────── -->
 <footer class="border-t-2 border-ctd-orange bg-ctd-navy text-white">
-  <div class="mx-auto grid max-w-[1760px] grid-cols-6 gap-x-[clamp(12px,1.7vw,38px)]
+  <div class="mx-auto grid max-w-[1760px] grid-cols-7 gap-x-[clamp(12px,1.7vw,38px)]
               px-[clamp(16px,3vw,60px)] py-[clamp(22px,3.6vh,44px)]
               max-lg:grid-cols-3 max-lg:gap-y-8 max-sm:grid-cols-2">
 
@@ -395,7 +395,7 @@
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">About Us</a>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Contact Us</a>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Add / Modify Info</a>
-      <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Marketing Opportunities</a>
+      <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Marketing</a>
     </div>
 
     <div class="min-w-0 border-l border-white/10 pl-[clamp(10px,1.2vw,24px)] max-lg:border-l-0 max-lg:pl-0">
@@ -403,7 +403,7 @@
                  after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-7 after:bg-ctd-orange">Directory</h3>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Categories</a>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Products</a>
-      <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Master Trades</a>
+      <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Major Groups</a>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Trades</a>
     </div>
 
@@ -411,15 +411,18 @@
       <h3 class="relative mb-3 pb-2 text-[clamp(10px,0.9vw,14px)] font-extrabold uppercase tracking-wider
                  after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-7 after:bg-ctd-orange">Resources</h3>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Technology Guides</a>
-      <a href="results.html" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Find</a>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Learn</a>
+      <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">FAQ</a>
+      <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Glossary</a>
+    </div>
+
+    <div class="min-w-0 border-l border-white/10 pl-[clamp(10px,1.2vw,24px)] max-lg:border-l-0 max-lg:pl-0">
+      <h3 class="relative mb-3 pb-2 text-[clamp(10px,0.9vw,14px)] font-extrabold uppercase tracking-wider
+                 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-7 after:bg-ctd-orange">Explore</h3>
+      <a href="results.html" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Find</a>
+      <a href="dedicated-search.html" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Search</a>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Research</a>
       <a href="#" class="mb-1.5 block text-[clamp(10px,0.78vw,12.5px)] text-white/70 transition hover:text-white">Insights</a>
-      <p class="mb-1.5 text-[clamp(10px,0.78vw,12.5px)] text-white/70">
-        <a href="#" class="transition hover:text-white">FAQ</a>
-        <span class="px-1 text-white/40" aria-hidden="true">/</span>
-        <a href="#" class="transition hover:text-white">Glossary</a>
-      </p>
     </div>
 
     <div class="min-w-0 border-l border-white/10 pl-[clamp(10px,1.2vw,24px)] max-lg:border-l-0 max-lg:pl-0">

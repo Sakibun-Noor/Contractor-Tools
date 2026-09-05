@@ -38,7 +38,12 @@
     .back-link:hover{text-decoration:underline}
     /* TOP ROW */
     .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
-    .ptop-l .phead{font-size:clamp(18px,2.4vh,26px);font-weight:900;letter-spacing:-.01em;color:var(--navy);margin:0 0 5px}
+    .ptop-l .phead{font-size:clamp(18px,2.4vh,26px);font-weight:900;letter-spacing:-.01em;color:var(--navy);margin:0 0 3px}
+    /* FC-08: the page always keeps its own name in .phead; the contextual
+       label (a category name, or "Search Results: <query>") goes here so the
+       reader can still see where they are. Empty = hidden. */
+    .ptop-l .psub{font-size:13px;font-weight:700;color:var(--vlink);margin:0 0 4px}
+    .ptop-l .psub:empty{display:none}
     .ptop-l .pcount{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500}
     .ptop-r{display:flex;gap:10px;flex-wrap:wrap}
     .btn-act{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:12px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
@@ -176,6 +181,7 @@
   <div class="ptop">
     <div class="ptop-l">
       <h1 class="phead">DEDICATED RESULTS PAGE</h1>
+      <div class="psub" id="page-sub"></div>
       <div class="pcount">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
         <span id="vendor-count">Loading…</span>
@@ -240,25 +246,31 @@
       <a href="#">About Us</a>
       <a href="#">Contact Us</a>
       <a href="#">Add / Modify Info</a>
-      <a href="#">Marketing Opportunities</a>
+      <a href="#">Marketing</a>
     </div>
 
     <div class="footer-column">
       <h2>Directory</h2>
       <a href="#">Categories</a>
       <a href="#">Products</a>
-      <a href="#">Master Trades</a>
+      <a href="#">Major Groups</a>
       <a href="#">Trades</a>
     </div>
 
     <div class="footer-column">
       <h2>Resources</h2>
       <a href="#">Technology Guides</a>
-      <a href="results.html">Find</a>
       <a href="#">Learn</a>
+      <a href="#">FAQ</a>
+      <a href="#">Glossary</a>
+    </div>
+
+    <div class="footer-column">
+      <h2>Explore</h2>
+      <a href="results.html">Find</a>
+      <a href="dedicated-search.html">Search</a>
       <a href="#">Research</a>
       <a href="#">Insights</a>
-      <p class="foot-inline"><a href="#">FAQ</a><span aria-hidden="true">/</span><a href="#">Glossary</a></p>
     </div>
 
     <div class="footer-column">
@@ -360,11 +372,13 @@
     if(sortCol!=='rk')doSort();
     page=1;
     renderChips();
-    var ph=document.querySelector('.phead');
-    if(ph){
-      if(activeFilters.q)ph.textContent='Search Results: '+activeFilters.q;
-      else if(activeFilters.cat&&activeFilters.cat.length===1&&Object.keys(activeFilters).length===1)ph.textContent=(CM[activeFilters.cat[0]]||activeFilters.cat[0])+' Vendors';
-      else ph.textContent='DEDICATED RESULTS PAGE';
+    /* FC-08: .phead stays "DEDICATED RESULTS PAGE" - the page must always say
+       what it is. The contextual label goes in #page-sub instead. */
+    var sub=document.getElementById('page-sub');
+    if(sub){
+      if(activeFilters.q)sub.textContent='Search results for "'+activeFilters.q+'"';
+      else if(activeFilters.cat&&activeFilters.cat.length===1&&Object.keys(activeFilters).length===1)sub.textContent=(CM[activeFilters.cat[0]]||activeFilters.cat[0])+' vendors';
+      else sub.textContent='';
     }
     if(updateUrl){
       var sp=CTD_FILTERS.toParams(activeFilters);
@@ -506,8 +520,9 @@
 
   // ── Save Search / Export / Share ──
   window.CTD_saveSearch=function(){
-    var label=document.querySelector('.phead').textContent+' ('+DATA.length+' vendors)';
-    CTD_ACTIONS.saveSearch(label, window.location.href);
+    var sub=document.getElementById('page-sub');
+    var name=(sub&&sub.textContent)?sub.textContent:'Dedicated Results';
+    CTD_ACTIONS.saveSearch(name+' ('+DATA.length+' vendors)', window.location.href);
   };
   window.CTD_exportResults=function(){
     CTD_ACTIONS.exportCsv(DATA, [

@@ -103,7 +103,9 @@
 .site-footer__inner {
   width: 100%;
   display: grid;
-  grid-template-columns: 1.35fr 1.1fr 1.15fr 1.2fr .95fr .95fr;
+  /* FC-02: 7 tracks - brand + the client's 5 sections (Company, Directory,
+     Resources, Explore, Site Info) + Follow Us. */
+  grid-template-columns: 1.3fr 1fr 1.05fr 1.1fr 1fr .9fr .95fr;
   align-content: center;
   padding: 22px clamp(55px, 5.5vw, 92px) 20px;
 }
@@ -189,7 +191,7 @@ a.soc-btn:hover { transform: scale(1.08); opacity: .9; }
 
   .site-footer { min-height: clamp(120px, 17vh, 155px); }
   .site-footer__inner {
-    grid-template-columns: 2.05fr 1.55fr 1.5fr 1.7fr 1.35fr 1.2fr;
+    grid-template-columns: 2fr 1.5fr 1.45fr 1.6fr 1.5fr 1.3fr 1.2fr;
     align-content: center;
     padding: clamp(6px, 2.04vw, 20px) clamp(6px, 2.45vw, 24px) clamp(5px, 1.43vw, 14px);
   }
@@ -227,5 +229,5 @@ a.soc-btn:hover { transform: scale(1.08); opacity: .9; }
   /* nav can't shrink ("Update Info" fills its cell); the spare
      width comes out of the search field, whose placeholder truncates */
   .site-header__inner { grid-template-columns: 275fr 255fr 450fr; }
-  .site-footer__inner { grid-template-columns: 2.15fr 1.5fr 1.45fr 1.6fr 1.25fr 1.5fr; }
+  .site-footer__inner { grid-template-columns: 2fr 1.4fr 1.4fr 1.5fr 1.4fr 1.2fr 1.5fr; }
 }
