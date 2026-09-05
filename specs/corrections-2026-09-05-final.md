@@ -437,4 +437,27 @@ Verified at 1536×864 and 1280×620: cells list all values, page + table have
 no horizontal scroll, the table body still scrolls vertically within its box,
 pagination visible, FC-08 header/subtitle intact, no console errors.
 
-### FC-07 — pending
+### FC-07 · 2026-09-05
+
+`index.html`. The AI brain graphic is baked into the hero JPG, so this is a
+transparent `<a class="hero-ai-hotspot">` over it, `href="results.html?cat=
+ai-automation"`. Positioned in **percent of `.hero-band`** (79–89% x, 21–76% y)
+- and `.hero-band` is sized by `aspect-ratio == the image's own ratio`, so the
+percentages map 1:1 to the artwork at every viewport width (verified the box
+stays over the "AI" glyph at 1280 and 1536, and clear of the AUTOMATION /
+CLOUD / SAFETY hexagons). CSS lives in the inline `<style>` block, and
+`.hero-band` gets `position: relative` from a class the fallback stylesheet
+also carries, so it works with the Tailwind CDN blocked too (verified). Faint
+white hover tint + a `title` so it reads as clickable; `position: absolute`
+so it adds nothing to layout - homepage still fits the fold at 1280×590.
+
+Verified end-to-end: clicking it lands on Search / Results with
+"Category: AI & Automation" applied (158 companies). No console errors, no
+horizontal scroll.
+
+---
+
+## Round complete - FC-01 through FC-08 all shipped (2026-09-05).
+DF/QC/FC follow-ups still open with the client: column order across pages,
+the "more…" → Dedicated Search link idea, "drop the data headers" screenshot,
+real multi-product data on the spreadsheet, and the alignment phrasing.
