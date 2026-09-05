@@ -83,9 +83,9 @@
        no-ops. */
     .hero-band { aspect-ratio: 1798 / 321; }
     .hero-band img { object-position: center center; }
-    /* FC-07 — clickable hotspot over the baked-in AI brain graphic. */
-    .hero-ai-hotspot { position: absolute; left: 79%; top: 21%; width: 10%; height: 55%; z-index: 2; border-radius: 12px; transition: background .15s; }
-    .hero-ai-hotspot:hover { background: rgba(255,255,255,.12); }
+    /* FC-07 — invisible clickable hotspot over the baked-in AI brain graphic.
+       No fill or hover tint (client) — it only links, nothing visible. */
+    .hero-ai-hotspot { position: absolute; left: 79%; top: 21%; width: 10%; height: 55%; z-index: 2; }
 
     /* ── Cross-browser safety net ──────────────────────────────────────
        Two modern features this page's layout depends on, each with a
@@ -241,12 +241,13 @@
     <img src="assets/ctd/hero_image.jpg?v=202609042215" fetchpriority="high"
          alt="The Construction Technology Directory — construction professionals reviewing plans on site, with AI, analytics, automation, cloud, safety and BIM technology nodes over a city skyline."
          class="h-full w-full select-none object-cover" draggable="false">
-    <!-- FC-07 — the AI brain graphic is baked into the hero JPG, so this is a
-         transparent hotspot over it that opens the AI & Automation category.
+    <!-- FC-07 — the AI brain graphic is baked into the hero JPG, so this is an
+         invisible hotspot over it that opens the AI & Automation category.
          Positioned in % of .hero-band, which is sized by aspect-ratio == the
          image's own ratio (see the style block), so the % map 1:1 to the art
-         at every width. A faint hover tint hints that it's clickable. -->
-    <a href="results.html?cat=ai-automation" title="Explore AI &amp; Automation software"
+         at every width. No fill, no hover tint, no tooltip (client) — it just
+         links; the aria-label is for screen readers only. -->
+    <a href="results.html?cat=ai-automation"
        aria-label="Explore AI &amp; Automation software" class="hero-ai-hotspot"></a>
   </section>
 
