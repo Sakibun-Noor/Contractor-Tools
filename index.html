@@ -18,12 +18,12 @@
        filter, ad-blocker, CDN outage — no styles are produced and the category
        tiles overlap each other. Fall back to the captured stylesheet so the
        page still renders correctly. The CDN stays primary, so this snapshot
-       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609052300. */
+       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609060030. */
     (function () {
       if (typeof tailwind !== 'undefined') return;
       var l = document.createElement('link');
       l.rel = 'stylesheet';
-      l.href = 'assets/tailwind-fallback.css?v=202609052300';
+      l.href = 'assets/tailwind-fallback.css?v=202609060030';
       document.head.appendChild(l);
     })();
   </script>
@@ -180,13 +180,13 @@
 
   <!-- ─────────── HEADER ─────────── -->
   <header class="min-w-0 bg-ctd-navy text-white">
-    <div class="mx-auto flex h-[clamp(76px,11.8vh,118px)] max-w-[1760px] items-center
+    <div class="mx-auto flex h-[clamp(62px,9.4vh,98px)] max-w-[1760px] items-center
                 justify-between gap-[clamp(10px,1.6vw,28px)] px-[clamp(14px,2.4vw,46px)]
                 max-lg:h-auto max-lg:flex-wrap max-lg:gap-3 max-lg:py-3">
 
       <a href="/" class="flex h-full flex-none items-center" aria-label="The Construction Technology Directory — home">
         <img src="assets/ctd/logo.png" alt="The Construction Technology Directory"
-             class="h-[82%] max-w-[clamp(150px,16.7vw,322px)] w-auto object-contain max-lg:h-11 max-lg:w-auto">
+             class="h-[72%] max-w-[clamp(140px,15vw,290px)] w-auto object-contain max-lg:h-11 max-lg:w-auto">
       </a>
 
       <form class="relative min-w-0 flex-none w-[clamp(300px,42.5vw,816px)]
