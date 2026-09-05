@@ -337,4 +337,41 @@ no new console errors, pages still fit the fold.
   above the Company Size card (last in the sidebar). FC-05 moves Company Size
   into the Advanced Filters panel, which resolves this.
 
-### FC-04, FC-05, FC-06, FC-07 — pending
+### FC-05 · 2026-09-05
+
+All on `advanced-search-results.html`.
+
+- **Company Size → Advanced Filters panel.** Removed the `sb-card sb-sz` from
+  the sidebar and its `SB_FACETS` entry; added a `COMPANY SIZE` `af-grp` in the
+  panel's 3rd column under Markets Served, populated by
+  `renderAfList(#af-size, vocab.sizes, 'sz')` (same path Available On uses -
+  real, live data). Filter key `sz` unchanged: verified clicking a box filters
+  (1,463 → 60 for Enterprise), the chip reads "Company Size: Enterprise", and
+  `?sz=Enterprise` in the URL pre-checks the box on load. The sidebar's
+  "About the Customers" group now cleanly brackets exactly its 3 facets (this
+  was the FC-03 open item).
+- **Description column added** to the results table, 2nd column after Vendors,
+  16% width, `class="desc-cell"` (one line, ellipsis, full text in `title=`).
+  Column widths rebalanced (still sum to 100), `colspan` on the empty-state
+  rows bumped 7 → 8, `table.res min-width` 900 → 960 (both the base rule and
+  the ≤999px one) so 8 columns don't wrap; verified no internal table scroll
+  at 1280 wide and none page-level at 1536.
+- **"more…" on results** - already present. `advanced-search-results.html`'s
+  render loop already wraps the Categories / Divisions / Major-Groups cells in
+  the shared `moreCell()` helper (shows N, then "+X more…"). It rarely triggers
+  for Divisions / Major Groups because each vendor carries exactly one value
+  (data, not a code gap); it does trigger for Categories. No change needed.
+  Deryck's note "…which will lead to Dedicated Search Page" - if he wants the
+  "more…" to *link out to* Dedicated Search rather than expand in place, that's
+  a small follow-up; flagging.
+- **Left / centre alignment** - `.sidebar` padding changed `12px 0` →
+  `8px 0 6px` to match `.main-col`'s vertical padding, so the two columns'
+  top and bottom edges line up ("horizontal endpoints the same"). The phrase
+  is genuinely ambiguous without his annotated screenshot - if he meant the
+  left/right insets instead, quick follow-up.
+
+In-browser at 1536×864 and 1280×620: Company Size filters from the panel,
+Description column renders, no horizontal scroll (page or table), no console
+errors.
+
+### FC-04, FC-06, FC-07 — pending

@@ -29,7 +29,10 @@
     /* LAYOUT */
     .page-body{height:100%;min-height:0;overflow:hidden;display:grid;grid-template-columns:minmax(230px,17%) minmax(0,1fr);gap:0;max-width:1680px;margin:0 auto;width:100%}
     /* SIDEBAR */
-    .sidebar{border-right:1px solid var(--line);padding:12px 0;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff}
+    /* FC-05: match .main-col's 8px/6px vertical padding so the sidebar's top
+       and bottom line up with the centre content ("horizontal endpoints the
+       same for the left and center content"). */
+    .sidebar{border-right:1px solid var(--line);padding:8px 0 6px;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff}
     /* FC-03 — orange grouping labels (the sidebar is a vertical list, so the
        "bar over 3 columns" from the mockup becomes a section header here). */
     .sb-group{background:var(--orange);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:5px 14px}
@@ -86,7 +89,7 @@
     .tablewrap{border:1px solid var(--line);border-radius:7px;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
     .tscroll{overflow:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
     table.res thead th{position:sticky;top:0;z-index:1}
-    table.res{width:100%;border-collapse:collapse;font-size:clamp(8.5px,1vh,10.5px);table-layout:fixed;min-width:900px}
+    table.res{width:100%;border-collapse:collapse;font-size:clamp(8.5px,1vh,10.5px);table-layout:fixed;min-width:960px}
     table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:clamp(5px,.8vh,10px) 8px;white-space:nowrap;letter-spacing:.02em;font-size:clamp(8.5px,1vh,10.5px);border-right:1px solid rgba(255,255,255,.1)}
     table.res th:last-child{border-right:none}
     .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px}
@@ -273,16 +276,9 @@
       </div>
     </div>
 
-    <!-- Company Size was in the Advanced Filters panel; the reference design
-         drops it from there. It has real data for all 1,463 vendors, so rather
-         than lose a working filter it moves here. -->
-    <div class="sb-card sb-sz" data-filter="sz">
-      <div class="sb-hd" onclick="toggleSB(this)">
-        <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10l4-3v14"/><path d="M13 21V6l6-3v18"/></svg>
-        <h3>COMPANY SIZE</h3><span class="chev">▲</span>
-      </div>
-      <div class="sb-body" id="sb-body-sz"></div>
-    </div>
+    <!-- FC-05: Company Size moved into the Advanced Filters panel (client:
+         "Company Size belongs in Filters"). It stays a real, live filter -
+         data for all 1,463 vendors - see #af-size in that panel below. -->
 
   </aside>
 
@@ -318,13 +314,13 @@
         <h3>ADVANCED FILTERS</h3>
         <span class="chev">▲</span>
       </div>
-      <!-- AS-06 — five groups in three columns, per the reference design.
-           Evaluation Options / Purchase Options / Company Type / Markets Served
-           have no backing column in the vendor data (spec item 4.1), so their
-           checkboxes render disabled with a 0 count rather than pretending to
-           filter. Available On and Company Size do have data and stay live —
-           Company Size moves to the sidebar, since the reference drops it from
-           this panel. -->
+      <!-- AS-06 / FC-05 — six groups in three columns. Evaluation Options /
+           Purchase Options / Company Type / Markets Served have no backing
+           column in the vendor data (spec item 4.1), so their checkboxes
+           render disabled with a 0 count rather than pretending to filter.
+           Available On and Company Size have real data and stay live -
+           Company Size was moved to the sidebar in an earlier round and is
+           back here now per the client ("Company Size belongs in Filters"). -->
       <div class="af-body" id="af-body" style="grid-template-columns:repeat(3,1fr)">
         <div class="af-col">
           <div class="af-grp">
@@ -351,6 +347,10 @@
             <h4>MARKETS SERVED <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
             <div id="af-markets"></div>
           </div>
+          <div class="af-grp">
+            <h4>COMPANY SIZE</h4>
+            <div id="af-size"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -361,16 +361,17 @@
         <table class="res">
           <thead>
             <tr>
-              <th style="width:23%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
-              <th style="width:14%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
-              <th style="width:13%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
-              <th style="width:14%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-              <th style="width:14%">DIVISIONS OF WORK <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
-              <th style="width:12%">MAJOR GROUPS <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
+              <th style="width:17%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
+              <th style="width:16%">DESCRIPTION</th>
+              <th style="width:12%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+              <th style="width:11%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+              <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
+              <th style="width:12%">DIVISIONS OF WORK <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
+              <th style="width:10%">MAJOR GROUPS <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
               <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
-          <tbody id="res-tbody"><tr><td colspan="7" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
+          <tbody id="res-tbody"><tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -514,8 +515,7 @@
     ['sb-body-prod', 'products',       'sub', function(){return vocab.subcategories;}],
     ['sb-body-mt',   'major groups',   'mt',  function(){return vocab.masterTrades;}],
     ['sb-body-div',  'divisions of work','div', function(){return vocab.divisions;}],
-    ['sb-body-tr',   'construction trades', 'tr', function(){return vocab.trades;}],
-    ['sb-body-sz',   'company sizes',  'sz',  function(){return vocab.sizes;}]
+    ['sb-body-tr',   'construction trades', 'tr', function(){return vocab.trades;}]
   ];
   var sbExpanded = {};
 
@@ -582,6 +582,8 @@
     'Civil / Heavy Highway','Commercial','Education','Energy / Utilities',
     'Government / Public Works','Healthcare','Retail / Hospitality'
   ]), 'market');
+  // FC-05 — Company Size is real data and stays live, same as Available On.
+  renderAfList(document.getElementById('af-size'), vocab.sizes, 'sz');
 
   var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Construction Trades',div:'Divisions of Work',mt:'Major Groups',avail:'Available On',sz:'Company Size'};
   function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
@@ -723,6 +725,7 @@
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
       h+='<td>'+vendorCell(t)+'</td>';
+      h+='<td class="desc-cell" style="color:#4a5568" title="'+esc(t.x||'')+'">'+esc(t.x||'')+'</td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
       h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
       h+='<td>'+moreCell(catPairs,1,function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
@@ -733,7 +736,7 @@
       h+='<td>'+actionsCell(t)+'</td>';
       h+='</tr>';
     });
-    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="7" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
+    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
     var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent=total.toLocaleString()+' vendors found';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';
