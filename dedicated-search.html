@@ -118,6 +118,21 @@
       .af-col:not(:last-child){border-right:none;padding-right:0;border-bottom:1px solid var(--line);padding-bottom:14px}
       .selector-grid{grid-template-columns:repeat(2,1fr)}
     }
+    /* ── Short landscape laptops (client report, 2026-09-12) ──
+       .af-body is deliberately sized by its content with no cap (DS-06 —
+       "nothing is ever clipped or hidden behind an internal scrollbar").
+       That is correct on a normal screen, but on a short one (a 1920x1080
+       laptop at 150% scaling is ~1265x553 CSS px) it was tall enough to eat
+       the entire 100dvh shell, leaving the fr-row below it (the 6 selector
+       cards) nothing - every card's record list rendered ~12px tall with
+       nothing visible in it. Below 720px tall: cap the filters with their
+       own scrollbar (matching the "OK to use scroll boxes" instruction
+       elsewhere in this round) and give the selector-card row a real
+       minimum so the record lists are never squeezed away entirely. */
+    @media (min-width: 1024px) and (max-height: 720px) {
+      .af-body{ max-height: 150px; overflow-y: auto; }
+      main{ grid-template-rows: auto auto auto auto auto minmax(200px, 1fr) auto; }
+    }
   </style>
 </head>
 <body>

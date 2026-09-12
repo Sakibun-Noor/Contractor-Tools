@@ -148,6 +148,19 @@
       table.res{height:auto;min-width:900px}
       .pgbar{padding:14px 0}
     }
+    /* ── Short landscape laptops (client report, 2026-09-12) ──
+       Same bug as Dedicated Search: .af-body is sized by its content with
+       no cap (AS-06/FC-05), which is correct on a normal screen but on a
+       short one (~1265x553 CSS px - a 1920x1080 laptop at 150% scaling)
+       it ate the whole 100dvh shell and left the table's fr-row nothing -
+       0 result rows were visible. Below 720px tall: cap the filters with
+       their own scrollbar and give the table row a real minimum so
+       several result rows are always visible. Column/group layout inside
+       .af-body is untouched here - that's a separate, pending change. */
+    @media (min-width: 1024px) and (max-height: 720px) {
+      .af-body{ max-height: 130px; overflow-y: auto; }
+      .main-col{ grid-template-rows: auto auto auto auto minmax(230px, 1fr) auto; }
+    }
   </style>
 </head>
 <body>

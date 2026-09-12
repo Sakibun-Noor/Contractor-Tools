@@ -157,6 +157,24 @@
       section[aria-label="Workflow categories"] > h2 { padding-top: 3px; padding-bottom: 3px; }
       section[aria-label="Discovery pathways"] a { padding-top: 9px; padding-bottom: 9px; }
     }
+
+    /* ── Path B2 — even shorter laptops (client report, 2026-09-12).
+       A 1920×1080 laptop at 150% scaling with browser chrome subtracted can
+       be as short as ~1265×553 - about 37px shorter than the 1280×590 this
+       file was tuned for above, just enough to clip the INSIGHTS 2nd line
+       again. The 220px category-row floor (grid-rows-[...] on .fold-100,
+       set in the block comment above) has slack down to ~205px before the
+       two-row 88px tile floor (min-height:88px, further up this file) would
+       be violated - so 204px is still a hard, tested floor, not a guess.
+       Combined with a tighter Discovery-pathways padding this closes the
+       ~30-40px gap without ever touching the desktop-verified 590px case
+       above. .fold-100.grid is a two-class selector (specificity 0,2,0) so
+       it reliably wins over Tailwind's single-class .grid-rows-[...]
+       utility regardless of which stylesheet loads last. */
+    @media (min-width: 1024px) and (max-height: 570px) {
+      .fold-100.grid { grid-template-rows: auto auto minmax(204px, 1fr) auto; }
+      section[aria-label="Discovery pathways"] a { padding-top: 6px; padding-bottom: 6px; }
+    }
   </style>
 </head>
 <body class="bg-white font-sans text-ctd-navy antialiased">
