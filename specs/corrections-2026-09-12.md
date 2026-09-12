@@ -101,3 +101,39 @@ Sent as a WhatsApp question 2026-09-12; waiting on reply.
 
 All four pages re-verified at 1265×553, 1280×590, 1536×864 and 1920×1080:
 no horizontal scroll, no console errors.
+
+### 2026-09-13 — Deryck's answers implemented (091326 Corrections.docx)
+
+Client answered the 3 pending questions by returning the same doc with red
+replies:
+
+- Left orange bar name → "About the Construction Pro". Right bar (already
+  proposed) → "About the Product". Applied on `results.html`,
+  `dedicated-search.html`, `advanced-search-results.html`.
+- Company Type → "Hide it. We will be populating it on next update."
+  Hidden with `style="display:none"` on the `.af-grp` block rather than
+  deleted, on `dedicated-search.html` and `advanced-search-results.html`,
+  so turning it back on later is a one-line change.
+- Column order (Vendors, Categories, Subcategories, Products, Major
+  Groups, Divisions, Trades, Actions) confirmed "Yes" for Search/Results,
+  Advanced Search Results, and Dedicated Results. Applied to
+  `results.html` and `dedicated-results.html` (header + row-render both
+  reordered, checked cell-for-cell against the new headers).
+
+**Held back:** `advanced-search-results.html` does not currently have a
+Construction Trades column at all — applying the order literally means
+*adding* a column, not just reordering one. Left this page's table order
+untouched until the client/Sakib confirms whether to add that column.
+
+Also pushed back (in a WhatsApp reply, not yet sent) on the client's
+"what about other screen sizes" concern from the same doc: the short-
+viewport fix already is a CSS media-query range, not anything tied to his
+specific resolution — the site already uses `clamp()`, CSS Grid/Flexbox
+and relative units everywhere, which is exactly the fix he described.
+
+Verified all four pages at 1265×553 and 1536×864: bar names, hidden
+Company Type, and new column order all correct; row data still lines up
+cell-for-cell with its header after the reorder; 5 rows still visible on
+Advanced Search Results and list boxes still populated on Dedicated
+Search (no regression from the 09-12 short-viewport fix); no horizontal
+scroll; no console errors.

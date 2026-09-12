@@ -215,12 +215,12 @@
           <tr>
             <th style="width:14%">VENDOR <span class="sic" onclick="sortBy('n')">↑↓</span></th>
             <th style="width:11%">DESCRIPTION</th>
-            <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
-            <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:9%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-            <th style="width:11%">CONSTRUCTION TRADES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
-            <th style="width:8.5%">DIVISIONS OF WORK</th>
+            <th style="width:9%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+            <th style="width:10.5%">KEY PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
             <th style="width:8%">MAJOR GROUPS</th>
+            <th style="width:8.5%">DIVISIONS OF WORK</th>
+            <th style="width:11%">CONSTRUCTION TRADES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
             <th style="width:10.5%">QUICK FACTS <span class="sic" onclick="sortBy('sz')">↑↓</span></th>
             <th>ACTIONS</th>
           </tr>
@@ -455,12 +455,12 @@
       h+='<tr>';
       h+='<td>'+vendorCell(t)+'</td>';
       h+='<td class="desc-cell" style="font-size:9px;line-height:1.2;color:#4a5568">'+esc(desc)+'</td>';
-      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
-      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
       h+='<td data-fmt="link"><div class="cell-scroll">'+catPairs.map(function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';}).join('')+'</div></td>';
-      h+='<td data-fmt="text"><div class="cell-scroll">'+tr.map(function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';}).join('')+'</div></td>';
-      h+='<td data-fmt="text"><div class="cell-scroll">'+divs.map(function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';}).join('')+'</div></td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
       h+='<td data-fmt="text"><div class="cell-scroll">'+mts.map(function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';}).join('')+'</div></td>';
+      h+='<td data-fmt="text"><div class="cell-scroll">'+divs.map(function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';}).join('')+'</div></td>';
+      h+='<td data-fmt="text"><div class="cell-scroll">'+tr.map(function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';}).join('')+'</div></td>';
       h+='<td><div class="cell-scroll">'+av.map(function(a){return'<div class="avl"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+'</div></td>';
       h+='<td style="min-width:88px">'+actionsCell(t)+'</td>';
       h+='</tr>';

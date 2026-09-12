@@ -268,8 +268,8 @@
   <!-- ═══════════ 3. TWO-QUESTION PANEL ═══════════ -->
   <div class="qgrid">
 
-    <div class="q-group-bar">About the Customers</div>
-    <div class="q-group-bar">About the Vendor</div>
+    <div class="q-group-bar">About the Construction Pro</div>
+    <div class="q-group-bar">About the Product</div>
 
     <!-- ---------- WHAT DO YOU DO? — the construction axis ---------- -->
     <section class="qcard" aria-labelledby="q-do">
@@ -339,9 +339,9 @@
             <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">&#8593;&#8595;</span></th>
             <th style="width:12%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
             <th style="width:13%">PRODUCTS <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
-            <th style="width:12%">CONSTRUCTION TRADES <span class="sic" onclick="sortBy('trNames')">&#8593;&#8595;</span></th>
-            <th style="width:11%">DIVISIONS OF WORK</th>
             <th style="width:11%">MAJOR GROUPS</th>
+            <th style="width:11%">DIVISIONS OF WORK</th>
+            <th style="width:12%">CONSTRUCTION TRADES <span class="sic" onclick="sortBy('trNames')">&#8593;&#8595;</span></th>
             <th style="width:7%">ACTIONS</th>
           </tr>
         </thead>
@@ -623,9 +623,9 @@
       h += '<td>' + moreCell(cats, 1, function(c){ return '<a class="bl cval" href="results.html?cat=' + encodeURIComponent(c.slug) + '">' + esc(c.name) + '</a>'; }) + '</td>';
       h += '<td>' + (t.sub ? '<a class="bl cval" href="results.html?sub=' + encodeURIComponent(t.sub) + '">' + esc(t.sub) + '</a>' : '<span class="tpend">—</span>') + '</td>';
       h += '<td><span class="cval">' + esc(productOf(t)) + '</span></td>';
-      h += '<td>' + moreCell(t.tr||[], 1, function(r){ return '<span class="cval">' + esc(r) + '</span>'; }) + '</td>';
-      h += '<td>' + moreCell(divs, 2, function(d){ return '<span class="cval">' + esc(d) + '</span>'; }) + '</td>';
       h += '<td>' + (t.mt ? '<span class="cval">' + esc(t.mt) + '</span>' : '<span class="tpend">—</span>') + '</td>';
+      h += '<td>' + moreCell(divs, 2, function(d){ return '<span class="cval">' + esc(d) + '</span>'; }) + '</td>';
+      h += '<td>' + moreCell(t.tr||[], 1, function(r){ return '<span class="cval">' + esc(r) + '</span>'; }) + '</td>';
       h += '<td>' + actionsCell(t) + '</td>';
       h += '</tr>';
     });

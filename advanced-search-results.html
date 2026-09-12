@@ -219,7 +219,7 @@
   <!-- SIDEBAR -->
   <aside class="sidebar">
 
-    <div class="sb-group">About the Vendor</div>
+    <div class="sb-group">About the Product</div>
 
     <!-- Categories -->
     <div class="sb-card sb-cat" data-filter="cat">
@@ -255,7 +255,7 @@
       </div>
     </div>
 
-    <div class="sb-group">About the Customers</div>
+    <div class="sb-group">About the Construction Pro</div>
 
     <!-- Major Groups -->
     <div class="sb-card sb-mt" data-filter="mt">
@@ -347,7 +347,10 @@
           </div>
         </div>
         <div class="af-col">
-          <div class="af-grp">
+          <!-- Hidden per client 2026-09-13: "Hide it. We will be populating
+               it on next update." Left in the DOM (display:none) rather
+               than deleted, so re-enabling later is a one-line change. -->
+          <div class="af-grp" style="display:none">
             <h4>COMPANY TYPE <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
             <div id="af-ctype"></div>
           </div>
