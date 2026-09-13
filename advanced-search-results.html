@@ -257,11 +257,11 @@
 
     <div class="sb-group">About the Construction Pro</div>
 
-    <!-- Major Groups -->
+    <!-- Master Groups -->
     <div class="sb-card sb-mt" data-filter="mt">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <h3>MAJOR GROUPS</h3><span class="chev">▲</span>
+        <h3>MASTER GROUPS</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-mt">
         <a class="sb-more" href="dedicated-search.html">view more major groups</a>
@@ -384,7 +384,7 @@
               <th style="width:11%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
               <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
               <th style="width:12%">DIVISIONS OF WORK <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
-              <th style="width:10%">MAJOR GROUPS <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
+              <th style="width:10%">MASTER GROUPS <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
               <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
@@ -426,7 +426,7 @@
       <h2>Directory</h2>
       <a href="#">Categories</a>
       <a href="#">Products</a>
-      <a href="#">Major Groups</a>
+      <a href="#">Master Groups</a>
       <a href="#">Trades</a>
     </div>
 
@@ -602,7 +602,7 @@
   // FC-05 — Company Size is real data and stays live, same as Available On.
   renderAfList(document.getElementById('af-size'), vocab.sizes, 'sz');
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Construction Trades',div:'Divisions of Work',mt:'Major Groups',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Construction Trades',div:'Divisions of Work',mt:'Master Groups',avail:'Available On',sz:'Company Size'};
   function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
 
   function renderChips(){
@@ -804,7 +804,7 @@
       {label:'Product/Subcategory',get:function(t){return t.sub;}},
       {label:'Categories',get:function(t){return catNamesOf(t).join('; ');}},
       {label:'Divisions of Work',get:function(t){return divsOf(t).join('; ');}},
-      {label:'Major Groups',get:function(t){return mtsOf(t).join('; ');}}
+      {label:'Master Groups',get:function(t){return mtsOf(t).join('; ');}}
     ], 'ctd-advanced-search-results.csv');
   };
   window.CTD_shareResults=function(){ CTD_ACTIONS.shareUrl(window.location.href); };

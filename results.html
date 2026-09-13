@@ -282,7 +282,7 @@
       </div>
       <div class="qcols">
         <div class="qcol qcol-blue">
-          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg>MAJOR GROUPS</h3>
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg>MASTER GROUPS</h3>
           <ul id="q-mt"></ul>
           <a class="qall" href="dedicated-search.html" data-all="mt" aria-label="View all major groups">view more…</a>
         </div>
@@ -339,7 +339,7 @@
             <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">&#8593;&#8595;</span></th>
             <th style="width:12%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
             <th style="width:13%">PRODUCTS <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
-            <th style="width:11%">MAJOR GROUPS</th>
+            <th style="width:11%">MASTER GROUPS</th>
             <th style="width:11%">DIVISIONS OF WORK</th>
             <th style="width:12%">CONSTRUCTION TRADES <span class="sic" onclick="sortBy('trNames')">&#8593;&#8595;</span></th>
             <th style="width:7%">ACTIONS</th>
@@ -394,7 +394,7 @@
       <h2>Directory</h2>
       <a href="#">Categories</a>
       <a href="#">Products</a>
-      <a href="#">Major Groups</a>
+      <a href="#">Master Groups</a>
       <a href="#">Trades</a>
     </div>
 
@@ -486,7 +486,7 @@
   // ── two-question panel ────────────────────────────────────────────────
   // Both cards are live for all 1,463 vendors: the right card is
   // category / subcategory / product; the left card is the construction
-  // hierarchy (Major Groups / Divisions of Work / Construction Trades -
+  // hierarchy (Master Groups / Divisions of Work / Construction Trades -
   // renamed 2026-09-05, keys still mt / div / tr).
   var SHOW = 4;
   var expanded = {};
@@ -511,7 +511,7 @@
   }
 
   function renderPanel(){
-    // HX-04 — left card is live. Every vendor carries its own Major Group and
+    // HX-04 — left card is live. Every vendor carries its own Master Group and
     // Division of Work from the client's classification file, so these filter
     // for real instead of listing a vocabulary nothing was tagged with.
     renderCol('q-mt',  vocab.masterTrades.map(function(m){ return { label:m.label, value:m.value, count:m.count, param:'mt' }; }), 'mt', true);
@@ -542,7 +542,7 @@
   });
 
   // ── chips (SR-01) ─────────────────────────────────────────────────────
-  var CHIP_LABEL = { cat:'Category', sub:'Subcategory', tr:'Construction Trades', div:'Divisions of Work', mt:'Major Groups', avail:'Available On', sz:'Company Size' };
+  var CHIP_LABEL = { cat:'Category', sub:'Subcategory', tr:'Construction Trades', div:'Divisions of Work', mt:'Master Groups', avail:'Available On', sz:'Company Size' };
 
   function renderChips(){
     var row = document.getElementById('chips-row');

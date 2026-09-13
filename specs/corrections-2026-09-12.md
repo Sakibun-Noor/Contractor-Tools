@@ -137,3 +137,36 @@ cell-for-cell with its header after the reorder; 5 rows still visible on
 Advanced Search Results and list boxes still populated on Dedicated
 Search (no regression from the 09-12 short-viewport fix); no horizontal
 scroll; no console errors.
+
+### 2026-09-13 (2) — "Major Groups" renamed to "Master Groups" (WhatsApp)
+
+Client, via WhatsApp: "I changed the Name Master Trades to Master Groups.
+Please change Master Trades everywhere to Master Groups. It'll allow you
+to use Trades so there's no redundancy with the name 'Master Trades' and
+'Trades'," then confirmed both axis triads directly: "Category -
+Subcategory - Product" and "Master Groups - Divisions - Trades."
+
+The site's live label was "Major Groups" (not "Major Trades" — the client
+is renaming from his own older mockup terminology), so this was a
+sitewide text rename, display copy only:
+
+- `results.html`, `advanced-search-results.html` (sidebar + table),
+  `dedicated-search.html` (selector card), `dedicated-results.html`
+  (table), `vendor-profile.html` (info card) — every heading, table
+  header, chip/export label dictionary, footer link, and comment
+  containing "Major Groups" / "MAJOR GROUPS" changed to "Master Groups" /
+  "MASTER GROUPS".
+- `assets/filters.js` comment updated to match (was already stale re:
+  the 2026-09-05 rename to begin with).
+- Nothing else touched: the `mt` field key, `mtNames`/`mtsOf`/`.sb-mt`
+  identifiers, and the `?mt=` URL param are internal, not display text,
+  and stayed exactly as they were — this is a label change only.
+
+This also confirms, in passing, that "Divisions" and "Trades" (not
+"Divisions of Work" / "Construction Trades") are the client's own
+preferred short forms — one half of the still-open sort-arrows/header-
+shortening question from the first corrections round.
+
+Verified all 5 pages at 1536×864 and 1265×553 (client's screen): label
+reads correctly everywhere, no header wrap/overflow, no horizontal
+scroll, no console errors.
