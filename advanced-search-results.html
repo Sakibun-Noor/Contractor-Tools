@@ -27,7 +27,15 @@
     }
     .page-above-fold>*{min-width:0;min-height:0;overflow:hidden}
     /* LAYOUT */
-    .page-body{height:100%;min-height:0;overflow:hidden;display:grid;grid-template-columns:minmax(230px,17%) minmax(0,1fr);gap:0;max-width:1680px;margin:0 auto;width:100%}
+    /* 2026-09-14 layout rebuild — back to the client's original landscape
+       design: left nav (facets) | center (results) | right (filters).
+       The filters used to sit in a bar above the table; that arrangement was
+       meant for the 9:16 portrait layout and had landed here by mistake.
+       See specs/layout-rebuild-2026-09-14.md. */
+    /* Side columns kept deliberately lean: the results table is the point of
+       the page, and at 9 columns it needs ~960px before it starts scrolling
+       inside its own box. 15%/16% keeps it clear of that at 1440px and up. */
+    .page-body{height:100%;min-height:0;overflow:hidden;display:grid;grid-template-columns:minmax(205px,15%) minmax(0,1fr) minmax(210px,16%);gap:0;max-width:1680px;margin:0 auto;width:100%}
     /* SIDEBAR */
     /* FC-05: match .main-col's 8px/6px vertical padding so the sidebar's top
        and bottom line up with the centre content ("horizontal endpoints the
@@ -56,8 +64,17 @@
     .main-col{
       padding:8px clamp(18px,2vw,26px) 6px;min-width:0;
       height:100%;min-height:0;overflow:hidden;
-      display:grid;grid-template-rows:auto auto auto auto minmax(0,1fr) auto;
+      /* 5 rows since 2026-09-14: back-link, ptop, chips, table (fr), pager.
+         The af-panel row moved out to .filters-col on the right. Every child
+         needs a matching row here or the tracks shift. */
+      display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
       gap:5px;
+    }
+    /* RIGHT FILTERS COLUMN — mirrors .sidebar: full height, its own
+       scrollbar, so a long filter list never pushes the table around. */
+    .filters-col{
+      border-left:1px solid var(--line);padding:8px 0 6px;
+      height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff;
     }
     /* TOP */
     .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -77,9 +94,14 @@
     .af-hd{display:flex;align-items:center;gap:10px;padding:6px 14px;background:var(--navy);color:#fff;cursor:pointer;user-select:none}
     .af-hd h3{margin:0;font-size:12px;font-weight:700;letter-spacing:.04em;flex:1}
     .af-hd .chev{font-size:12px;transition:transform .2s}
-    .af-body{padding:8px 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 24px;max-height:none;overflow:visible}
-    .af-col{min-width:0;display:flex;flex-direction:column;gap:8px}
-    .af-col:not(:last-child){border-right:1px solid var(--line);padding-right:24px}
+    /* 2026-09-14: the panel is a narrow right-hand column now, so the groups
+       stack vertically instead of sitting 3-across. Class-based collapse
+       (not inline display) so the base display value survives a toggle. */
+    .af-body{padding:8px 14px;display:flex;flex-direction:column;gap:10px;max-height:none;overflow:visible}
+    .af-body.is-collapsed{display:none}
+    .af-col{min-width:0;display:flex;flex-direction:column;gap:10px}
+    /* a hairline between every group, whichever .af-col they came from */
+    .af-grp+.af-grp,.af-col+.af-col{border-top:1px solid var(--line);padding-top:9px}
     .af-item.is-pending{opacity:.45}
     .af-item.is-pending label{cursor:default}
     .af-grp h4{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink)}
@@ -158,8 +180,10 @@
        several result rows are always visible. Column/group layout inside
        .af-body is untouched here - that's a separate, pending change. */
     @media (min-width: 1024px) and (max-height: 720px) {
-      .af-body{ max-height: 130px; overflow-y: auto; }
-      .main-col{ grid-template-rows: auto auto auto auto minmax(230px, 1fr) auto; }
+      /* The .af-body max-height cap that used to live here is gone as of the
+         2026-09-14 rebuild: the filters are a full-height right column with
+         their own scrollbar now, so they can't steal the table's height. */
+      .main-col{ grid-template-rows: auto auto auto minmax(230px, 1fr) auto; }
     }
   </style>
 </head>
@@ -322,56 +346,6 @@
     <div class="chips" id="chips-row"></div>
 
     <!-- Advanced Filters Panel -->
-    <div class="af-panel">
-      <div class="af-hd" onclick="toggleAF(this)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        <h3>ADVANCED FILTERS</h3>
-        <span class="chev">▲</span>
-      </div>
-      <!-- AS-06 / FC-05 — six groups in three columns. Evaluation Options /
-           Purchase Options / Company Type / Markets Served have no backing
-           column in the vendor data (spec item 4.1), so their checkboxes
-           render disabled with a 0 count rather than pretending to filter.
-           Available On and Company Size have real data and stay live -
-           Company Size was moved to the sidebar in an earlier round and is
-           back here now per the client ("Company Size belongs in Filters"). -->
-      <div class="af-body" id="af-body" style="grid-template-columns:repeat(3,1fr)">
-        <div class="af-col">
-          <div class="af-grp">
-            <h4>EVALUATION OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-            <div id="af-eval"></div>
-          </div>
-          <div class="af-grp">
-            <h4>PURCHASE OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-            <div id="af-purchase"></div>
-          </div>
-        </div>
-        <div class="af-col">
-          <!-- Hidden per client 2026-09-13: "Hide it. We will be populating
-               it on next update." Left in the DOM (display:none) rather
-               than deleted, so re-enabling later is a one-line change. -->
-          <div class="af-grp" style="display:none">
-            <h4>COMPANY TYPE <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-            <div id="af-ctype"></div>
-          </div>
-          <div class="af-grp">
-            <h4>AVAILABLE ON <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-            <div id="af-avail"></div>
-          </div>
-        </div>
-        <div class="af-col">
-          <div class="af-grp">
-            <h4>MARKETS SERVED <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
-            <div id="af-markets"></div>
-          </div>
-          <div class="af-grp">
-            <h4>COMPANY SIZE</h4>
-            <div id="af-size"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Table -->
     <div class="tablewrap">
       <div class="tscroll">
@@ -389,7 +363,7 @@
               <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
-          <tbody id="res-tbody"><tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
+          <tbody id="res-tbody"><tr><td colspan="9" style="padding:32px;text-align:center;color:var(--muted)">Loading vendors…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -401,6 +375,59 @@
       <div class="pgrpp">Results per page:&nbsp;<select id="pg-rpp" onchange="setRpp(+this.value)"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select></div>
     </div>
   </div>
+
+  <!-- ═══════════ RIGHT: ADVANCED FILTERS (2026-09-14 rebuild) ═══════════ -->
+  <aside class="filters-col">
+  <div class="af-panel">
+    <div class="af-hd" onclick="toggleAF(this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+      <h3>ADVANCED FILTERS</h3>
+      <span class="chev">▲</span>
+    </div>
+    <!-- AS-06 / FC-05 — six groups in three columns. Evaluation Options /
+         Purchase Options / Company Type / Markets Served have no backing
+         column in the vendor data (spec item 4.1), so their checkboxes
+         render disabled with a 0 count rather than pretending to filter.
+         Available On and Company Size have real data and stay live -
+         Company Size was moved to the sidebar in an earlier round and is
+         back here now per the client ("Company Size belongs in Filters"). -->
+    <div class="af-body" id="af-body" style="grid-template-columns:repeat(3,1fr)">
+      <div class="af-col">
+        <div class="af-grp">
+          <h4>EVALUATION OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-eval"></div>
+        </div>
+        <div class="af-grp">
+          <h4>PURCHASE OPTIONS <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-purchase"></div>
+        </div>
+      </div>
+      <div class="af-col">
+        <!-- Hidden per client 2026-09-13: "Hide it. We will be populating
+             it on next update." Left in the DOM (display:none) rather
+             than deleted, so re-enabling later is a one-line change. -->
+        <div class="af-grp" style="display:none">
+          <h4>COMPANY TYPE <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-ctype"></div>
+        </div>
+        <div class="af-grp">
+          <h4>AVAILABLE ON <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-avail"></div>
+        </div>
+      </div>
+      <div class="af-col">
+        <div class="af-grp">
+          <h4>MARKETS SERVED <svg width="12" height="12" style="vertical-align:middle;opacity:.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <div id="af-markets"></div>
+        </div>
+        <div class="af-grp">
+          <h4>COMPANY SIZE</h4>
+          <div id="af-size"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </aside>
 </div>
 </div>
 
@@ -791,7 +818,9 @@
   }
   window.sortBy=function(col){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}doSort();page=1;render();};
   window.toggleSB=function(hd){var body=hd.nextElementSibling;var chev=hd.querySelector('.chev');if(body.style.display==='none'){body.style.display='';chev.textContent='▲';}else{body.style.display='none';chev.textContent='▼';}};
-  window.toggleAF=function(hd){var body=document.getElementById('af-body');var chev=hd.querySelector('.chev');if(body.style.display==='none'){body.style.display='grid';chev.textContent='▲';}else{body.style.display='none';chev.textContent='▼';}};
+  // Class-based, not inline display: .af-body is a flex column since the
+  // 2026-09-14 rebuild, and the old version hard-coded display:grid on expand.
+  window.toggleAF=function(hd){var body=document.getElementById('af-body');var chev=hd.querySelector('.chev');var open=body.classList.toggle('is-collapsed');chev.textContent=open?'▼':'▲';};
 
   // ── Save Search / Export / Share ──
   window.CTD_saveSearch=function(){
