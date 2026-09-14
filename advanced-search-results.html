@@ -268,22 +268,22 @@
       </div>
     </div>
 
-    <!-- Divisions of Work -->
+    <!-- Divisions -->
     <div class="sb-card sb-div" data-filter="div">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 17h6m-3-3v6"/></svg>
-        <h3>DIVISIONS OF WORK</h3><span class="chev">▲</span>
+        <h3>DIVISIONS</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-div">
         <a class="sb-more" href="dedicated-search.html">view more divisions of work</a>
       </div>
     </div>
 
-    <!-- Construction Trades -->
+    <!-- Trades -->
     <div class="sb-card sb-tr" data-filter="tr">
       <div class="sb-hd" onclick="toggleSB(this)">
         <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-        <h3>CONSTRUCTION TRADES</h3><span class="chev">▲</span>
+        <h3>TRADES</h3><span class="chev">▲</span>
       </div>
       <div class="sb-body" id="sb-body-tr">
         <a class="sb-more" href="dedicated-search.html">view more construction trades</a>
@@ -379,12 +379,13 @@
           <thead>
             <tr>
               <th style="width:17%">VENDORS <span class="sic" onclick="sortBy('n')">↑↓</span></th>
-              <th style="width:16%">DESCRIPTION</th>
-              <th style="width:12%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
-              <th style="width:11%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
-              <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
-              <th style="width:12%">DIVISIONS OF WORK <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
-              <th style="width:10%">MASTER GROUPS <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
+              <th style="width:14%">DESCRIPTION</th>
+              <th style="width:11%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">↑↓</span></th>
+              <th style="width:10%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+              <th style="width:11%">PRODUCTS <span class="sic" onclick="sortBy('sub')">↑↓</span></th>
+              <th style="width:9%">MASTER GROUPS <span class="sic" onclick="sortBy('mtNames')">↑↓</span></th>
+              <th style="width:9%">DIVISIONS <span class="sic" onclick="sortBy('divNames')">↑↓</span></th>
+              <th style="width:9%">TRADES <span class="sic" onclick="sortBy('trNames')">↑↓</span></th>
               <th style="width:10%">ACTIONS</th>
             </tr>
           </thead>
@@ -602,7 +603,7 @@
   // FC-05 — Company Size is real data and stays live, same as Available On.
   renderAfList(document.getElementById('af-size'), vocab.sizes, 'sz');
 
-  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Construction Trades',div:'Divisions of Work',mt:'Master Groups',avail:'Available On',sz:'Company Size'};
+  var FILTER_LABELS={q:'Search',cat:'Category',sub:'Product/Subcategory',tr:'Trades',div:'Divisions',mt:'Master Groups',avail:'Available On',sz:'Company Size'};
   function labelFor(key,value){return key==='cat'?(CM[value]||value):value;}
 
   function renderChips(){
@@ -738,22 +739,23 @@
     rows.forEach(function(t,i){
       var idx=s+i+1;
       var catPairs=catPairsOf(t),catNames=catNamesOf(t);
-      var divs=divsOf(t),mts=mtsOf(t);
+      var divs=divsOf(t),mts=mtsOf(t),tr=(t.tr||['General Contractors']);
       var prod=(t.sub||catNames[0]||'')+' Software';
       h+='<tr>';
       h+='<td>'+vendorCell(t)+'</td>';
       h+='<td class="desc-cell" style="color:#4a5568" title="'+esc(t.x||'')+'">'+esc(t.x||'')+'</td>';
-      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
-      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
       h+='<td>'+moreCell(catPairs,1,function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="dedicated-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';})+'</td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(t.sub||catNames[0]||'')+'</a></td>';
+      h+='<td><a class="bl" href="dedicated-results.html?sub='+encodeURIComponent(t.sub||'')+'">'+esc(prod)+'</a></td>';
+      h+='<td>'+moreCell(mts,1,function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';})+'</td>';
       // AS-11 — show up to 2 divisions before collapsing to "more…". Two fits
       // the row height; a third pushes the row taller.
       h+='<td>'+moreCell(divs,2,function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';})+'</td>';
-      h+='<td>'+moreCell(mts,1,function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';})+'</td>';
+      h+='<td>'+moreCell(tr,1,function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';})+'</td>';
       h+='<td>'+actionsCell(t)+'</td>';
       h+='</tr>';
     });
-    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="8" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
+    document.getElementById('res-tbody').innerHTML=h||'<tr><td colspan="9" style="padding:32px;text-align:center;color:var(--muted)">No vendors found.</td></tr>';
     var tp=Math.ceil(total/rpp),ps=total?s+1:0,pe=Math.min(e,total);
     document.getElementById('pg-count').textContent=total.toLocaleString()+' vendors found';
     var pn='<button class="pgbtn" onclick="goPage('+Math.max(1,page-1)+')">&lsaquo;</button>';
@@ -803,7 +805,7 @@
       {label:'Description',get:function(t){return t.x;}},
       {label:'Product/Subcategory',get:function(t){return t.sub;}},
       {label:'Categories',get:function(t){return catNamesOf(t).join('; ');}},
-      {label:'Divisions of Work',get:function(t){return divsOf(t).join('; ');}},
+      {label:'Divisions',get:function(t){return divsOf(t).join('; ');}},
       {label:'Master Groups',get:function(t){return mtsOf(t).join('; ');}}
     ], 'ctd-advanced-search-results.csv');
   };

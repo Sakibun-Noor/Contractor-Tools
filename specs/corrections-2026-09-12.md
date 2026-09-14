@@ -170,3 +170,38 @@ shortening question from the first corrections round.
 Verified all 5 pages at 1536×864 and 1265×553 (client's screen): label
 reads correctly everywhere, no header wrap/overflow, no horizontal
 scroll, no console errors.
+
+### 2026-09-14 — Divisions/Trades rename, sort arrows, Trades column (A+B)
+
+Client confirmed in WhatsApp, "everywhere": "Divisions of Work" is now
+"Divisions", "Construction Trades" is now "Trades". Sitewide rename
+(display text only, same method as the Master Groups rename) across
+`results.html`, `advanced-search-results.html`, `dedicated-search.html`,
+`dedicated-results.html`, `vendor-profile.html`. Deliberately excluded
+`trades/index.html` — that's a separate SEO landing page ("All
+Construction Trades"), not a filter facet label, unrelated to this round.
+
+Also shipped, both confirmed "Yes":
+- Sort arrows added on Master Groups and Divisions columns on
+  `results.html` and `dedicated-results.html` (Categories, Subcategories,
+  Products and Trades already had them). `results.html`'s Master Groups
+  column holds one value per vendor, so it sorts on the raw `mt` field
+  directly; everywhere else Master Groups/Divisions render multiple
+  values per vendor, so a `mtNames`/`divNames` virtual sort key
+  (`mtsOf(t).join(', ')` / `divsOf(t).join(', ')`) was added to each
+  page's `sortValue()`, matching the pattern `advanced-search-results.html`
+  already used for its own divNames/mtNames.
+- Advanced Search Results: added a Trades column (9th column, "Trades"),
+  reordered the other 6 into Vendors, Description, Categories,
+  Subcategories, Products, Master Groups, Divisions, Trades, Actions to
+  match the rest of the site. Column widths rebalanced to fit 9 columns
+  at 100%. `colspan` on the empty-state row bumped from 8 to 9.
+
+Verified all 4 pages at 1536×864 and 1265×553 (client's screen): labels
+correct everywhere, new column's data lines up with its header, sort
+clicks on all 4 new arrows actually reorder the table (not just render),
+still 5 rows visible on Advanced Search Results with the extra column, no
+horizontal scroll, no console errors.
+
+Held for the layout rebuild spec (see below): the 3-column page
+restructure for Search/Results and Advanced Search Results.
