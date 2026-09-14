@@ -186,3 +186,46 @@ visible, pager bottom 547 < 553 so nothing is pushed below the fold,
 filters column scrolls internally, table scrolls inside its own box.
 Filters still filter (Small/Mid-Market: 1,463 → 388, chip appears,
 uncheck restores).
+
+### C shipped — Search/Results (2026-09-14)
+
+Same 3-column shell as D. `<main>` became `.page-body` holding
+`aside.sidebar` + `.main-col` + `aside.filters-col`; `.main-col` runs
+5 rows (back-link, ptop, chips, table, pager).
+
+**Left column** is the old two-question panel restacked, not rebuilt:
+`.qgrid`/`.qcard`/`.qcols` flipped from a 2×3 grid to plain blocks so the
+6 facet lists stack vertically, each `.qcol` getting a divider. Both
+orange bars were sitting adjacent at the top after the first pass (they
+had been positioned by the old 2-column grid) — each is now moved
+directly above the group it labels. The two "Start typing…" boxes are
+gone per the client's "Eliminate"; `renderCol()` read those inputs
+directly, so the lookup is now guarded and returns '' when they're
+absent. All existing behaviour is untouched: same live counts, same
+`results.html?x=y` links, same "view more…" expansion.
+
+**Right column** is the same Advanced Filters panel as D, with ids
+prefixed `sr-af-` so nothing collides. `renderAfList`/`afStub` ported
+over. results.html had no live checkbox filtering before (it read filters
+from the URL once at load), so a document-level `change` handler now
+rebuilds `filters` from whatever is ticked and routes it through the
+page's existing `applyAndRender(true)`. Added `syncAfChecks()` into that
+same path so dropping a chip or hitting "Clear all" unticks the boxes.
+
+`table.res` min-width trimmed 1120px → 980px: it was sized for a
+full-page-width table and overflowed the narrower centre column by 116px.
+
+Stale below-desktop rules that pointed at removed elements (`main{}`,
+`.qcard-hd`, `.qcols` grid) cleaned up so the phone/tablet stack path
+still works; no portrait/mobile design work beyond keeping it unbroken,
+per [[ctd-landscape-only-scope]].
+
+Verified 1536×864, 1280×590, 1920×1080 and 1265×553 (client's screen):
+fold is exactly viewport height with no internal overflow, footer starts
+exactly at the fold line, no page h-scroll, no console errors, table
+overflow 0 at 1536+ . Filtering works end to end from the new column
+(1,463 → 388, chip appears, URL updates to ?sz=..., dropping the chip
+restores the count and unticks the box). Sidebar links keep their real
+counts and `?mt=`/`?cat=` hrefs; all six "view more…" labels intact.
+Advanced Search Results re-checked after C: unchanged, 10 rows at
+1920×1080, 7 at 1265×553, pager inside the fold.

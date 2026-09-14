@@ -29,16 +29,26 @@
       overflow:hidden;
     }
     .page-above-fold>*{min-width:0;min-height:0;overflow:hidden}
-    main{
-      max-width:1620px;margin:0 auto;width:100%;
-      padding:8px clamp(14px,2.2vw,26px) 8px;
+    /* 2026-09-14 layout rebuild — the client's original landscape design:
+       left nav (facets) | center (results) | right (filters). The two-question
+       panel that used to sit on top of the table was a 9:16 portrait layout
+       that had landed here by mistake. Matches advanced-search-results.html.
+       See specs/layout-rebuild-2026-09-14.md. */
+    .page-body{
       height:100%;min-height:0;overflow:hidden;
-      /* 2026-09-04: 6 rows, not 5 - back-link is now its own row ahead of
-         ptop (was sharing ptop's count line). Every child of this grid
-         must have a matching row here or the rows after it shift into the
-         wrong track - that's what happens if this list and the child count
-         in the markup below ever drift apart. */
-      display:grid;grid-template-rows:auto auto auto auto minmax(0,1fr) auto;
+      display:grid;grid-template-columns:minmax(205px,15%) minmax(0,1fr) minmax(210px,16%);
+      gap:0;max-width:1680px;margin:0 auto;width:100%;
+    }
+    .sidebar{border-right:1px solid var(--line);padding:8px 0 6px;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff}
+    .filters-col{border-left:1px solid var(--line);padding:8px 0 6px;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff}
+    .main-col{
+      min-width:0;padding:8px clamp(12px,1.6vw,22px) 6px;
+      height:100%;min-height:0;overflow:hidden;
+      /* 5 rows: back-link, ptop, chips, table (fr), pager. Every child of this
+         grid must have a matching row here or the rows after it shift into the
+         wrong track — that's what happens if this list and the child count in
+         the markup below ever drift apart. */
+      display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
       gap:6px;
     }
 
@@ -73,19 +83,16 @@
     .clear-all{font-size:12px;font-weight:700;color:var(--blue);cursor:pointer;background:none;border:0;padding:0;margin-left:2px}
     .clear-all:hover{text-decoration:underline}
 
-    /* ── TWO-QUESTION PANEL ── */
-    .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px}
-    /* FC-03 — orange grouping bars, one per panel, in the same grid so they
-       stay aligned to the panel below. */
-    .q-group-bar{background:var(--orange);color:#fff;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;text-align:center;padding:5px 10px;border-radius:6px}
-    .qcard{border:1px solid var(--line);border-radius:9px;background:#fff;padding:10px 12px 8px;box-shadow:0 1px 2px rgba(15,27,45,.04),0 8px 22px -18px rgba(15,27,45,.35)}
-    .qcard-hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-    .qcard-hd h2{margin:0;font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--ink);white-space:nowrap}
-    .qsearch{flex:1;min-width:150px;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:7px;padding:5px 9px;background:#f8fafc}
-    .qsearch svg{flex:none;color:var(--muted)}
-    .qsearch input{border:0;background:none;outline:none;flex:1;min-width:0;font-size:12.5px;color:var(--ink)}
-    .qcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 16px}
-    .qcol{min-width:0}
+    /* ── FACET NAV (left column) ──
+       Same lists as the old two-question panel, restacked into one narrow
+       column. The orange bars stay as section dividers (matching the
+       .sb-group bars on advanced-search-results.html); the two search boxes
+       are gone per the client ("Eliminate"). */
+    .qgrid{display:block}
+    .q-group-bar{background:var(--orange);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:5px 14px}
+    .qcard{border:0;border-radius:0;background:#fff;padding:0;box-shadow:none}
+    .qcols{display:block}
+    .qcol{min-width:0;border-bottom:1px solid var(--line);padding:8px 14px 9px}
     .qcol h3{display:flex;align-items:center;gap:6px;margin:0 0 5px;font-size:11px;font-weight:800;letter-spacing:.07em}
     .qcol h3 svg{width:14px;height:14px;flex:none}
     .qcol-blue h3{color:var(--blue)}
@@ -101,6 +108,24 @@
     .qall:hover{text-decoration:underline}
     .qempty{font-size:11.5px;color:var(--muted);font-style:italic;padding:2px 0}
 
+    /* ── ADVANCED FILTERS (right column) ──
+       Same panel as advanced-search-results.html, stacked vertically. Ids are
+       prefixed sr- so they never collide with that page's copies. */
+    .af-panel{border:1px solid var(--line);border-radius:7px;overflow:hidden;margin:0 10px}
+    .af-hd{display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--navy);color:#fff;cursor:pointer;user-select:none}
+    .af-hd h3{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.04em;flex:1}
+    .af-hd .chev{font-size:12px;transition:transform .2s}
+    .af-body{padding:8px 12px;display:flex;flex-direction:column;gap:10px}
+    .af-body.is-collapsed{display:none}
+    .af-grp{min-width:0}
+    .af-grp+.af-grp{border-top:1px solid var(--line);padding-top:9px}
+    .af-grp h4{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink)}
+    .af-item{display:flex;align-items:center;gap:7px;font-size:11px;padding:2px 0;min-width:0}
+    .af-item label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .af-item input{accent-color:var(--blue);width:13px;height:13px;flex:none}
+    .af-item.is-pending{opacity:.45}
+    .af-item.is-pending label{cursor:default}
+
     /* ── RESULTS TABLE ── */
     /* Fills the leftover row of the 100dvh grid. The table scrolls inside
        this box — horizontally below its min-width, and vertically if the
@@ -109,7 +134,11 @@
     .tablewrap{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
     .tscroll{overflow:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
     table.res thead th{position:sticky;top:0;z-index:1}
-    table.res{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:1120px}
+    /* min-width was 1120px when the table spanned the whole page. Since the
+       2026-09-14 rebuild it lives in the centre column between two side
+       panels, so it's trimmed to the narrowest width its 8 columns still
+       read at — below this it scrolls inside .tscroll rather than squashing. */
+    table.res{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:980px}
     table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:9px 8px;white-space:nowrap;letter-spacing:.02em;font-size:10.5px;border-right:1px solid rgba(255,255,255,.1)}
     table.res th:last-child{border-right:none}
     .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px;letter-spacing:-1px}
@@ -155,22 +184,24 @@
        Below desktop the locked 100dvh shell isn't appropriate — the panel and
        a dense table need room to breathe — so the page grows and scrolls
        naturally, exactly as the other pages do at their own breakpoints. */
+    /* Below desktop the 3-column / 100dvh shell isn't appropriate — the page
+       stacks and scrolls normally. Landscape desktop/laptop (the supported
+       range) never reaches this. */
     @media(max-width:1199px){
       .page-above-fold{height:auto;display:block;overflow:visible}
       .page-above-fold>*{overflow:visible}
-      main{height:auto;overflow:visible;display:flex;flex-direction:column;padding:14px clamp(14px,2.2vw,26px) 32px;gap:14px}
+      .page-body{display:block;height:auto;overflow:visible}
+      .sidebar,.filters-col{height:auto;overflow:visible;border:0}
+      .main-col{height:auto;overflow:visible;display:flex;flex-direction:column;padding:14px clamp(14px,2.2vw,26px) 32px;gap:14px}
       .tablewrap{height:auto}
       .tscroll{overflow-y:visible}
       table.res thead th{position:static}
-      .qgrid{grid-template-columns:1fr}
     }
     @media(max-width:760px){
-      main{padding:12px 12px 32px;gap:12px}
+      .main-col{padding:12px 12px 32px;gap:12px}
       .ptop{flex-direction:column;align-items:stretch;gap:10px}
       .ptop-r{width:100%}
       .ptop-r .btn-act{flex:1 1 30%;justify-content:center}
-      .qcard-hd{flex-direction:column;align-items:stretch;gap:8px}
-      .qcard-hd h2{white-space:normal}
       .pgbar{flex-direction:column;align-items:flex-start;gap:10px}
       .pgrpp{width:100%;justify-content:space-between}
       /* mobile spec: touch targets ≥ 40px tall. The desktop sizes were reduced
@@ -180,9 +211,6 @@
       .pgrpp select{min-height:40px}
       .qcol li a{display:flex;align-items:center;min-height:40px;padding:0}
       .qall{display:flex;align-items:center;min-height:40px;padding:0}
-    }
-    @media(max-width:520px){
-      .qcols{grid-template-columns:1fr;gap:14px}
     }
     @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
   </style>
@@ -240,133 +268,162 @@
   </div>
 </header>
 
-<main>
+<div class="page-body">
 
-  <!-- ═══════════ 2. TITLE ROW ═══════════ -->
-  <a class="back-link" href="index.html">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Home
-  </a>
-  <div class="ptop">
-    <div class="ptop-l">
-      <h1 class="phead">SEARCH / RESULTS PAGE</h1>
-      <div class="pcount">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
-        <span id="hero-count">Loading…</span>
+  <!-- ═══════════ LEFT: FACET NAV (was the two-question panel) ═══════════ -->
+  <aside class="sidebar">
+    <div class="qgrid">
+
+
+      <!-- ---------- WHAT DO YOU DO? — the construction axis ---------- -->
+      <div class="q-group-bar">About the Construction Pro</div>
+      <section class="qcard" aria-label="What do you do">
+        <div class="qcols">
+          <div class="qcol qcol-blue">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg>MASTER GROUPS</h3>
+            <ul id="q-mt"></ul>
+            <a class="qall" href="dedicated-search.html" data-all="mt" aria-label="View all major groups">view more…</a>
+          </div>
+          <div class="qcol qcol-green">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>DIVISIONS</h3>
+            <ul id="q-div"></ul>
+            <a class="qall" href="dedicated-search.html" data-all="div" aria-label="View all divisions of work">view more…</a>
+          </div>
+          <div class="qcol qcol-orange">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TRADES</h3>
+            <ul id="q-tr"></ul>
+            <a class="qall" href="dedicated-search.html" data-all="tr" aria-label="View all construction trades">view more…</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- WHAT ARE YOU LOOKING FOR? — the software axis ---------- -->
+      <div class="q-group-bar">About the Product</div>
+      <section class="qcard" aria-label="What are you looking for">
+        <div class="qcols">
+          <div class="qcol qcol-blue">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>CATEGORY</h3>
+            <ul id="q-cat"></ul>
+            <a class="qall" href="#" data-all="cat" aria-label="View all categories">view more…</a>
+          </div>
+          <div class="qcol qcol-green">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M7 12h13"/><path d="M10 18h10"/></svg>SUBCATEGORY</h3>
+            <ul id="q-sub"></ul>
+            <a class="qall" href="#" data-all="sub" aria-label="View all subcategories">view more…</a>
+          </div>
+          <div class="qcol qcol-orange">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/></svg>PRODUCT</h3>
+            <ul id="q-prod"></ul>
+            <a class="qall" href="#" data-all="prod" aria-label="View all products">view more…</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </aside>
+
+  <div class="main-col">
+    <!-- ═══════════ 2. TITLE ROW ═══════════ -->
+    <a class="back-link" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Home
+    </a>
+    <div class="ptop">
+      <div class="ptop-l">
+        <h1 class="phead">SEARCH / RESULTS PAGE</h1>
+        <div class="pcount">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M6.5 20v-1.5a5.5 5.5 0 0111 0V20"/><circle cx="4.2" cy="10.5" r="2.3"/><path d="M1 19v-1a4 4 0 013.2-3.9"/><circle cx="19.8" cy="10.5" r="2.3"/><path d="M23 19v-1a4 4 0 00-3.2-3.9"/></svg>
+          <span id="hero-count">Loading…</span>
+        </div>
+      </div>
+      <div class="ptop-r">
+        <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Save Search</button>
+        <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
+        <a class="btn-act btn-adv" href="advanced-search-results.html" id="btn-advanced"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-6.5 8v6l-3 2v-8z"/></svg>Advanced Filters</a>
       </div>
     </div>
-    <div class="ptop-r">
-      <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Save Search</button>
-      <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Results</button>
-      <a class="btn-act btn-adv" href="advanced-search-results.html" id="btn-advanced"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-6.5 8v6l-3 2v-8z"/></svg>Advanced Filters</a>
+
+    <!-- Active selection, kept visible above the results (SR-01) -->
+    <div class="chips-row is-empty" id="chips-row"></div>
+
+    <!-- ═══════════ 4. RESULTS TABLE ═══════════ -->
+    <div class="tablewrap">
+      <div class="tscroll">
+        <table class="res">
+          <thead>
+            <tr>
+              <th style="width:22%">VENDORS <span class="sic" onclick="sortBy('n')">&#8593;&#8595;</span></th>
+              <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">&#8593;&#8595;</span></th>
+              <th style="width:12%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
+              <th style="width:13%">PRODUCTS <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
+              <th style="width:11%">MASTER GROUPS <span class="sic" onclick="sortBy('mt')">&#8593;&#8595;</span></th>
+              <th style="width:11%">DIVISIONS <span class="sic" onclick="sortBy('divNames')">&#8593;&#8595;</span></th>
+              <th style="width:12%">TRADES <span class="sic" onclick="sortBy('trNames')">&#8593;&#8595;</span></th>
+              <th style="width:7%">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="res-tbody">
+            <tr><td colspan="8" class="tmsg">Loading vendors…</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
-  <!-- Active selection, kept visible above the results (SR-01) -->
-  <div class="chips-row is-empty" id="chips-row"></div>
-
-  <!-- ═══════════ 3. TWO-QUESTION PANEL ═══════════ -->
-  <div class="qgrid">
-
-    <div class="q-group-bar">About the Construction Pro</div>
-    <div class="q-group-bar">About the Product</div>
-
-    <!-- ---------- WHAT DO YOU DO? — the construction axis ---------- -->
-    <section class="qcard" aria-labelledby="q-do">
-      <div class="qcard-hd">
-        <h2 id="q-do">WHAT DO YOU DO?</h2>
-        <div class="qsearch">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" placeholder="Start typing…" aria-label="Filter major groups, divisions of work and construction trades" data-qfilter="do">
-        </div>
+    <!-- ═══════════ 5. PAGINATION ═══════════ -->
+    <div class="pgbar">
+      <span id="pg-count">&nbsp;</span>
+      <div class="pgnums" id="pg-nums"></div>
+      <div class="pgrpp">
+        <label for="rpp">Results per page:</label>
+        <select id="rpp" onchange="setRpp(this.value)">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
       </div>
-      <div class="qcols">
-        <div class="qcol qcol-blue">
-          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg>MASTER GROUPS</h3>
-          <ul id="q-mt"></ul>
-          <a class="qall" href="dedicated-search.html" data-all="mt" aria-label="View all major groups">view more…</a>
-        </div>
-        <div class="qcol qcol-green">
-          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>DIVISIONS</h3>
-          <ul id="q-div"></ul>
-          <a class="qall" href="dedicated-search.html" data-all="div" aria-label="View all divisions of work">view more…</a>
-        </div>
-        <div class="qcol qcol-orange">
-          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>TRADES</h3>
-          <ul id="q-tr"></ul>
-          <a class="qall" href="dedicated-search.html" data-all="tr" aria-label="View all construction trades">view more…</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ---------- WHAT ARE YOU LOOKING FOR? — the software axis ---------- -->
-    <section class="qcard" aria-labelledby="q-want">
-      <div class="qcard-hd">
-        <h2 id="q-want">WHAT ARE YOU LOOKING FOR?</h2>
-        <div class="qsearch">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" placeholder="Start typing…" aria-label="Filter categories, subcategories and products" data-qfilter="want">
-        </div>
-      </div>
-      <div class="qcols">
-        <div class="qcol qcol-blue">
-          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>CATEGORY</h3>
-          <ul id="q-cat"></ul>
-          <a class="qall" href="#" data-all="cat" aria-label="View all categories">view more…</a>
-        </div>
-        <div class="qcol qcol-green">
-          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M7 12h13"/><path d="M10 18h10"/></svg>SUBCATEGORY</h3>
-          <ul id="q-sub"></ul>
-          <a class="qall" href="#" data-all="sub" aria-label="View all subcategories">view more…</a>
-        </div>
-        <div class="qcol qcol-orange">
-          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/></svg>PRODUCT</h3>
-          <ul id="q-prod"></ul>
-          <a class="qall" href="#" data-all="prod" aria-label="View all products">view more…</a>
-        </div>
-      </div>
-    </section>
-
-  </div>
-
-  <!-- ═══════════ 4. RESULTS TABLE ═══════════ -->
-  <div class="tablewrap">
-    <div class="tscroll">
-      <table class="res">
-        <thead>
-          <tr>
-            <th style="width:22%">VENDORS <span class="sic" onclick="sortBy('n')">&#8593;&#8595;</span></th>
-            <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">&#8593;&#8595;</span></th>
-            <th style="width:12%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
-            <th style="width:13%">PRODUCTS <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
-            <th style="width:11%">MASTER GROUPS <span class="sic" onclick="sortBy('mt')">&#8593;&#8595;</span></th>
-            <th style="width:11%">DIVISIONS <span class="sic" onclick="sortBy('divNames')">&#8593;&#8595;</span></th>
-            <th style="width:12%">TRADES <span class="sic" onclick="sortBy('trNames')">&#8593;&#8595;</span></th>
-            <th style="width:7%">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody id="res-tbody">
-          <tr><td colspan="8" class="tmsg">Loading vendors…</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ═══════════ 5. PAGINATION ═══════════ -->
-  <div class="pgbar">
-    <span id="pg-count">&nbsp;</span>
-    <div class="pgnums" id="pg-nums"></div>
-    <div class="pgrpp">
-      <label for="rpp">Results per page:</label>
-      <select id="rpp" onchange="setRpp(this.value)">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-      </select>
     </div>
   </div>
 
-</main>
+  <!-- ═══════════ RIGHT: ADVANCED FILTERS (2026-09-14 rebuild) ═══════════ -->
+  <aside class="filters-col">
+    <div class="af-panel">
+      <div class="af-hd" onclick="toggleAF(this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <h3>ADVANCED FILTERS</h3>
+        <span class="chev">&#9650;</span>
+      </div>
+      <div class="af-body" id="af-body">
+        <div class="af-grp">
+          <h4>EVALUATION OPTIONS</h4>
+          <div id="sr-af-eval"></div>
+        </div>
+        <div class="af-grp">
+          <h4>PURCHASE OPTIONS</h4>
+          <div id="sr-af-purchase"></div>
+        </div>
+        <!-- Hidden per client 2026-09-13: "Hide it. We will be populating it
+             on next update." Left in the DOM so re-enabling is one line. -->
+        <div class="af-grp" style="display:none">
+          <h4>COMPANY TYPE</h4>
+          <div id="sr-af-ctype"></div>
+        </div>
+        <div class="af-grp">
+          <h4>AVAILABLE ON</h4>
+          <div id="sr-af-avail"></div>
+        </div>
+        <div class="af-grp">
+          <h4>MARKETS SERVED</h4>
+          <div id="sr-af-markets"></div>
+        </div>
+        <div class="af-grp">
+          <h4>COMPANY SIZE</h4>
+          <div id="sr-af-size"></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>
 
 </div>
 <!-- ═══════════ END OF THE 100dvh FOLD ═══════════ -->
@@ -494,9 +551,13 @@
   function renderCol(elId, items, kind, live){
     var el = document.getElementById(elId);
     if (!el) return;
-    var q = (kind === 'mt' || kind === 'div' || kind === 'tr')
-      ? (document.querySelector('[data-qfilter="do"]').value || '')
-      : (document.querySelector('[data-qfilter="want"]').value || '');
+    // The two "Start typing…" boxes were removed in the 2026-09-14 rebuild
+    // (client: "Eliminate"). Guard the lookup so this keeps working whether
+    // or not a filter box exists on the page.
+    var box = document.querySelector(
+      (kind === 'mt' || kind === 'div' || kind === 'tr')
+        ? '[data-qfilter="do"]' : '[data-qfilter="want"]');
+    var q = box ? (box.value || '') : '';
     q = q.trim().toLowerCase();
     var list = q ? items.filter(function(i){ return i.label.toLowerCase().indexOf(q) > -1; }) : items;
     var shown = expanded[kind] ? list : list.slice(0, SHOW);
@@ -540,6 +601,75 @@
       if (!expanded[kind]) a.textContent = 'view more…';
     });
   });
+
+  // ── Advanced Filters column (2026-09-14 rebuild) ──────────────────────
+  // Ported from advanced-search-results.html so both pages behave the same.
+  // Options with no backing column in the vendor data render at (0) and
+  // disabled rather than pretending to filter — same rule as that page.
+  var afIdSeq = 0;
+  function renderAfList(container, items, filterKey){
+    if (!container) return;
+    container.innerHTML = items.map(function(it){
+      var id = 'sr-af-' + (afIdSeq++);
+      var pend = !it.count;
+      return '<div class="af-item' + (pend ? ' is-pending' : '') + '"' +
+             (pend ? ' title="No vendor data for this option yet"' : '') + '>' +
+             '<input type="checkbox" id="' + id + '" data-filter="' + filterKey +
+             '" value="' + esc(it.value) + '"' + (pend ? ' disabled' : '') + '>' +
+             '<label for="' + id + '">' + esc(it.label) +
+             ' <span style="color:var(--muted)">(' + it.count + ')</span></label></div>';
+    }).join('');
+  }
+  function afStub(labels){ return labels.map(function(l){ return { value:l, label:l, count:0 }; }); }
+
+  renderAfList(document.getElementById('sr-af-eval'), afStub([
+    'Free Trial / Freemium','Demo on Available','Peer Reviewed'
+  ]), 'eval');
+  renderAfList(document.getElementById('sr-af-purchase'), afStub([
+    'Subscription','One-Time Purchase','Contract Per Quarter'
+  ]), 'purchase');
+  renderAfList(document.getElementById('sr-af-ctype'), afStub([
+    'Public Company','Private Company'
+  ]), 'ctype');
+  renderAfList(document.getElementById('sr-af-avail'), vocab.availableOn, 'avail');
+  renderAfList(document.getElementById('sr-af-markets'), afStub([
+    'Civil / Heavy Highway','Commercial','Education','Energy / Utilities',
+    'Government / Public Works','Healthcare','Retail / Hospitality'
+  ]), 'market');
+  renderAfList(document.getElementById('sr-af-size'), vocab.sizes, 'sz');
+
+  // Class-based collapse so the panel's flex layout survives a toggle.
+  window.toggleAF = function(hd){
+    var body = document.getElementById('af-body');
+    var chev = hd.querySelector('.chev');
+    var collapsed = body.classList.toggle('is-collapsed');
+    chev.textContent = collapsed ? '▼' : '▲';
+  };
+
+  // A filter checkbox changing rewrites `filters` from whatever is ticked,
+  // then goes through the page's existing apply/render path so chips, the
+  // URL and the table all stay in step.
+  document.addEventListener('change', function(e){
+    if (!e.target.matches('[data-filter]')) return;
+    var f = { cat:[], sub:[], tr:[], div:[], mt:[], avail:[], sz:[] };
+    document.querySelectorAll('[data-filter]:checked').forEach(function(cb){
+      var k = cb.getAttribute('data-filter');
+      if (f[k] && f[k].indexOf(cb.value) === -1) f[k].push(cb.value);
+    });
+    Object.keys(f).forEach(function(k){ if (!f[k].length) delete f[k]; });
+    if (filters.q) f.q = filters.q;
+    filters = f;
+    applyAndRender(true);
+  });
+
+  // Re-tick boxes to match `filters` — needed after a chip is dropped or
+  // "Clear all" is pressed, since those change `filters` directly.
+  function syncAfChecks(){
+    document.querySelectorAll('[data-filter]').forEach(function(cb){
+      var vals = filters[cb.getAttribute('data-filter')] || [];
+      cb.checked = vals.indexOf(cb.value) > -1;
+    });
+  }
 
   // ── chips (SR-01) ─────────────────────────────────────────────────────
   var CHIP_LABEL = { cat:'Category', sub:'Subcategory', tr:'Trades', div:'Divisions', mt:'Master Groups', avail:'Available On', sz:'Company Size' };
@@ -675,6 +805,7 @@
     page = 1;
     renderChips();
     renderPanel();
+    syncAfChecks();
     render();
     if (updateUrl){
       var sp = CTD_FILTERS.toParams(filters);
