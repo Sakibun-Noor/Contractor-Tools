@@ -42,7 +42,9 @@
     .sidebar{border-right:1px solid var(--line);padding:8px 0 6px;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff}
     .filters-col{border-left:1px solid var(--line);padding:8px 0 6px;height:100%;min-height:0;overflow-y:auto;overflow-x:hidden;background:#fff}
     .main-col{
-      min-width:0;padding:8px clamp(12px,1.6vw,22px) 6px;
+      /* VC-04/05 (09.17) - no side padding: the table runs right up to both
+         navs. The text rows above and below keep their own inset. */
+      min-width:0;padding:8px 0 6px;
       height:100%;min-height:0;overflow:hidden;
       /* 5 rows: back-link, ptop, chips, table (fr), pager. Every child of this
          grid must have a matching row here or the rows after it shift into the
@@ -51,6 +53,8 @@
       display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;
       gap:6px;
     }
+
+    .main-col>.back-link,.main-col>.ptop,.main-col>.chips-row,.main-col>.pgbar{padding-left:clamp(12px,1.3vw,20px);padding-right:clamp(12px,1.3vw,20px)}
 
     /* ── TITLE ROW ── */
     .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -102,8 +106,10 @@
     .sb-hd .chev{color:var(--muted);font-size:10px}
     .sb-cat h3{color:var(--green)}.sb-mt h3,.sb-div h3,.sb-tr h3{color:var(--orange)}
     .sb-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 10px 0 12px}
-    .sb-body::-webkit-scrollbar{width:5px}
-    .sb-body::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
+    .sb-body{scrollbar-color:#8A97AD #EEF2F7}
+    .sb-body::-webkit-scrollbar{width:9px}
+    .sb-body::-webkit-scrollbar-track{background:#EEF2F7;border-radius:6px}
+    .sb-body::-webkit-scrollbar-thumb{background:#8A97AD;border-radius:6px;border:2px solid #EEF2F7}
     .sb-item{display:flex;align-items:center;gap:7px;padding:2px 0;font-size:11px;min-width:0}
     .sb-item input[type=checkbox]{accent-color:var(--blue);width:13px;height:13px;flex:none;margin:0}
     .sb-item .sb-lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);cursor:pointer}
@@ -111,6 +117,11 @@
     .sb-item.is-pending{opacity:.45}
     .sb-item.is-pending .sb-lbl{cursor:default}
     .sb-foot{flex:none;padding:3px 12px 6px}
+    .sb-search{flex:none;display:flex;align-items:center;gap:7px;margin:0 10px 8px;padding:5px 9px;border:1.5px solid var(--line);border-radius:7px;background:#f8fafc;cursor:text}
+    .sb-search:focus-within{border-color:var(--blue);background:#fff}
+    .sb-search svg{width:13px;height:13px;flex:none;color:var(--muted)}
+    .sb-search input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:11.5px;color:var(--ink)}
+    .sb-none{font-size:11px;color:var(--muted);font-style:italic;padding:3px 0}
     .sb-more{color:var(--blue);font-size:11px;font-weight:600}
     .sb-more:hover{text-decoration:underline}
 
@@ -118,8 +129,8 @@
        Ids are
        prefixed sr- so they never collide with that page's copies. */
     .af-panel{border:1px solid var(--line);border-radius:7px;overflow:hidden;margin:0 10px}
-    .af-hd{display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--navy);color:#fff;cursor:pointer;user-select:none}
-    .af-hd h3{margin:0;font-size:11.5px;font-weight:700;letter-spacing:.04em;flex:1}
+    .af-hd{display:flex;align-items:center;gap:7px;padding:6px 10px;background:var(--navy);color:#fff;cursor:pointer;user-select:none}
+    .af-hd h3{margin:0;font-size:clamp(10.5px,.8vw,11.5px);font-weight:700;letter-spacing:.02em;flex:1;min-width:0;white-space:nowrap}
     .af-hd .chev{font-size:12px;transition:transform .2s}
     .af-body{padding:8px 12px;display:flex;flex-direction:column;gap:10px}
     .af-body.is-collapsed{display:none}
@@ -127,7 +138,8 @@
     .af-grp+.af-grp{border-top:1px solid var(--line);padding-top:9px}
     .af-grp h4{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink)}
     .af-item{display:flex;align-items:center;gap:7px;font-size:11px;padding:2px 0;min-width:0}
-    .af-item label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .af-item label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .af-item .af-ct{flex:none;margin-left:auto;padding-left:6px;color:var(--muted);font-size:10.5px}
     .af-item input{accent-color:var(--blue);width:13px;height:13px;flex:none}
     .af-item.is-pending{opacity:.45}
     .af-item.is-pending label{cursor:default}
@@ -137,19 +149,28 @@
        this box — horizontally below its min-width, and vertically if the
        page is too short for a full page of results — so the page itself
        never scrolls above the fold. */
-    .tablewrap{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
+    .tablewrap{border:1px solid var(--line);border-width:1px 0;border-radius:0;overflow:hidden;min-height:0;height:100%;display:flex;flex-direction:column}
     .tscroll{overflow:auto;-webkit-overflow-scrolling:touch;min-height:0;flex:1}
     table.res thead th{position:sticky;top:0;z-index:1}
     /* min-width was 1120px when the table spanned the whole page. Since the
        2026-09-14 rebuild it lives in the centre column between two side
        panels, so it's trimmed to the narrowest width its 8 columns still
        read at — below this it scrolls inside .tscroll rather than squashing. */
-    table.res{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:980px}
-    table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:9px 8px;white-space:nowrap;letter-spacing:.02em;font-size:10.5px;border-right:1px solid rgba(255,255,255,.1)}
+    /* 820px = what fits the centre column when both side navs are at their
+       minimum width (the narrowest supported landscape screens). Wider
+       screens just give every column more room. */
+    table.res{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed;min-width:820px}
+    table.res th{background:var(--navy);color:#fff;font-weight:700;text-align:center;padding:8px 4px;white-space:nowrap;letter-spacing:.01em;font-size:10px;border-right:1px solid rgba(255,255,255,.1)}
     table.res th:last-child{border-right:none}
-    .sic{display:inline-flex;margin-left:3px;opacity:.5;cursor:pointer;vertical-align:middle;font-size:9px;letter-spacing:-1px}
+    .sic{display:inline-grid;place-items:center;margin-left:4px;opacity:.8;cursor:pointer;vertical-align:middle;line-height:0}
     .sic:hover{opacity:1}
-    table.res td{padding:5px 8px;vertical-align:top;border-bottom:1px solid #EEF1F6;border-right:1px solid #EEF1F6;line-height:1.3;font-size:11px}
+    /* VC-01 — thin arrows; one control flips A-Z / Z-A, and the arrow for the
+       current direction goes solid on the sorted column */
+    .sort-ic{width:12px;height:12px;display:block}
+    .sort-ic path{opacity:.75}
+    .sic.is-asc .up,.sic.is-desc .dn{opacity:1;stroke-width:2.2}
+    .sic.is-asc .dn,.sic.is-desc .up{opacity:.3}
+    table.res td{padding:5px 6px;vertical-align:top;border-bottom:1px solid #EEF1F6;border-right:1px solid #EEF1F6;line-height:1.3;font-size:11px}
     table.res td:last-child{border-right:none}
     table.res tr:nth-child(even) td{background:var(--cream)}
     table.res tr:hover td{background:#eff3ff}
@@ -165,7 +186,7 @@
        position:fixed element on <body>, so the table's own scroll box can't
        clip it at the edges. */
     .vname-row{display:flex;align-items:center;gap:5px;min-width:0;margin-bottom:1px}
-    .vname-row .vn{margin-bottom:0}
+    .vname-row .vn{margin-bottom:0;flex:0 1 auto;min-width:0}
     .vinfo{flex:none;display:inline-grid;place-items:center;width:13px;height:13px;padding:0;border-radius:50%;border:1.3px solid var(--blue);background:#fff;color:var(--blue);font:italic 700 9px/1 Georgia,'Times New Roman',serif;cursor:help}
     .vinfo:hover,.vinfo:focus-visible,.vinfo[aria-expanded="true"]{background:var(--blue);color:#fff;outline:none}
     #desc-tip{position:fixed;z-index:1000;max-width:300px;padding:8px 11px;background:var(--navy);color:#fff;font-size:11.5px;line-height:1.45;border-radius:6px;box-shadow:0 8px 24px rgba(0,22,75,.28);pointer-events:none;opacity:0;visibility:hidden;transition:opacity .12s}
@@ -186,7 +207,7 @@
     .act-ic:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
     .act-ic.on{color:var(--orange)}
     .act-ic.on svg{fill:currentColor}
-    .btn-vp{display:block;width:100%;padding:3px 6px;background:var(--navy);color:#fff;border-radius:4px;font-size:9.5px;font-weight:700;text-align:center;text-decoration:none;white-space:nowrap}
+    .btn-vp{display:block;width:100%;padding:3px 3px;background:var(--navy);color:#fff;border-radius:4px;font-size:9.5px;font-weight:700;text-align:center;text-decoration:none;white-space:nowrap}
     .btn-vp:hover{background:var(--navy-deep)}
 
     /* ── PAGINATION ── */
@@ -288,6 +309,12 @@
   <!-- ═══════════ LEFT: FACET NAV (was the two-question panel) ═══════════ -->
   <aside class="sidebar">
 
+    <!-- VC-08 (09.17) - one search box that filters all six lists as you type -->
+    <label class="sb-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="search" id="sb-q" placeholder="Search the lists below…" autocomplete="off" aria-label="Search categories, subcategories, products, master groups, divisions and trades">
+    </label>
+
     <div class="q-group-bar">About the Product</div>
 
     <!-- Categories -->
@@ -297,7 +324,7 @@
         <h3>CATEGORIES</h3><span class="chev">&#9650;</span>
       </div>
       <div class="sb-body" id="sb-body-cat"></div>
-      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all categories on Advanced Search">view more…</a></div>
+      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all categories on Advanced Search">view more categories…</a></div>
     </div>
 
     <!-- Subcategories -->
@@ -307,7 +334,7 @@
         <h3>SUBCATEGORIES</h3><span class="chev">&#9650;</span>
       </div>
       <div class="sb-body" id="sb-body-sub"></div>
-      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all subcategories on Advanced Search">view more…</a></div>
+      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all subcategories on Advanced Search">view more subcategories…</a></div>
     </div>
 
     <!-- Products (dataset has no separate product field yet — same real
@@ -319,10 +346,10 @@
         <h3>PRODUCTS</h3><span class="chev">&#9650;</span>
       </div>
       <div class="sb-body" id="sb-body-prod"></div>
-      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all products on Advanced Search">view more…</a></div>
+      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all products on Advanced Search">view more products…</a></div>
     </div>
 
-    <div class="q-group-bar">About the Construction Pro</div>
+    <div class="q-group-bar">About the Buyer</div>
 
     <!-- Master Groups -->
     <div class="sb-card sb-mt" data-filter="mt">
@@ -331,17 +358,17 @@
         <h3>MASTER GROUPS</h3><span class="chev">&#9650;</span>
       </div>
       <div class="sb-body" id="sb-body-mt"></div>
-      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all master groups on Advanced Search">view more…</a></div>
+      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all master groups on Advanced Search">view more master groups…</a></div>
     </div>
 
     <!-- Divisions -->
     <div class="sb-card sb-div" data-filter="div">
       <div class="sb-hd" onclick="toggleSB(this)">
-        <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 17h6m-3-3v6"/></svg>
+        <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         <h3>DIVISIONS</h3><span class="chev">&#9650;</span>
       </div>
       <div class="sb-body" id="sb-body-div"></div>
-      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all divisions on Advanced Search">view more…</a></div>
+      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all divisions on Advanced Search">view more divisions…</a></div>
     </div>
 
     <!-- Trades -->
@@ -351,7 +378,7 @@
         <h3>TRADES</h3><span class="chev">&#9650;</span>
       </div>
       <div class="sb-body" id="sb-body-tr"></div>
-      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all trades on Advanced Search">view more…</a></div>
+      <div class="sb-foot"><a class="sb-more" href="advanced-search.html" aria-label="View all trades on Advanced Search">view more trades…</a></div>
     </div>
 
   </aside>
@@ -385,13 +412,13 @@
         <table class="res">
           <thead>
             <tr>
-              <th style="width:21%">VENDORS <span class="sic" onclick="sortBy('n')">&#8593;&#8595;</span></th>
-              <th style="width:12%">CATEGORIES <span class="sic" onclick="sortBy('catNames')">&#8593;&#8595;</span></th>
-              <th style="width:11.5%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
-              <th style="width:12%">PRODUCTS <span class="sic" onclick="sortBy('sub')">&#8593;&#8595;</span></th>
-              <th style="width:11%">MASTER GROUPS <span class="sic" onclick="sortBy('mt')">&#8593;&#8595;</span></th>
-              <th style="width:11%">DIVISIONS <span class="sic" onclick="sortBy('divNames')">&#8593;&#8595;</span></th>
-              <th style="width:12%">TRADES <span class="sic" onclick="sortBy('trNames')">&#8593;&#8595;</span></th>
+              <th style="width:18.5%">VENDORS <span class="sic" onclick="sortBy('n')"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></span></th>
+              <th style="width:11.5%">CATEGORIES <span class="sic" onclick="sortBy('catNames')"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></span></th>
+              <th style="width:14%">SUBCATEGORIES <span class="sic" onclick="sortBy('sub')"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></span></th>
+              <th style="width:12%">PRODUCTS <span class="sic" onclick="sortBy('sub')"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></span></th>
+              <th style="width:14%">MASTER GROUPS <span class="sic" onclick="sortBy('mt')"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></span></th>
+              <th style="width:11%">DIVISIONS <span class="sic" onclick="sortBy('divNames')"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></span></th>
+              <th style="width:9.5%">TRADES <span class="sic" onclick="sortBy('trNames')"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></span></th>
               <th style="width:9.5%">ACTIONS</th>
             </tr>
           </thead>
@@ -596,13 +623,17 @@
     var el = document.getElementById(id);
     if (!el) return;
     var active = filters[key] || [];
-    var shown = items.slice(0, SB_LIMIT);
+    var box = document.getElementById('sb-q');
+    var q = box ? box.value.trim().toLowerCase() : '';
+    var pool = q ? items.filter(function(it){ return (it.label + (suffix || '')).toLowerCase().indexOf(q) > -1; }) : items;
+    var shown = pool.slice(0, SB_LIMIT);
     // An active filter past the first 12 (e.g. arrived by URL) is kept in the
     // box. Otherwise it wouldn't be rendered, so the next checkbox change would
     // rebuild `filters` without it and silently drop it.
-    items.slice(SB_LIMIT).forEach(function(it){
-      if (active.indexOf(it.value) > -1) shown.push(it);
+    items.forEach(function(it){
+      if (active.indexOf(it.value) > -1 && shown.indexOf(it) === -1) shown.push(it);
     });
+    if (!shown.length){ el.innerHTML = '<div class="sb-none">No matches</div>'; return; }
     el.innerHTML = shown.map(function(it){
       var cid = 'sb-' + (sbSeq++);
       var pend = !it.count;
@@ -618,6 +649,8 @@
   function renderSidebar(){
     SB_FACETS.forEach(function(f){ renderFacet(f[0], f[1], f[2](), f[3]); });
   }
+  var sbQ = document.getElementById('sb-q');
+  if (sbQ) sbQ.addEventListener('input', renderSidebar);
 
   // Collapse a section; the others grow into the freed height.
   window.toggleSB = function(hd){
@@ -640,8 +673,8 @@
              (pend ? ' title="No vendor data for this option yet"' : '') + '>' +
              '<input type="checkbox" id="' + id + '" data-filter="' + filterKey +
              '" value="' + esc(it.value) + '"' + (pend ? ' disabled' : '') + '>' +
-             '<label for="' + id + '">' + esc(it.label) +
-             ' <span style="color:var(--muted)">(' + it.count + ')</span></label></div>';
+             '<label for="' + id + '" title="' + esc(it.label) + '">' + esc(it.label) + '</label>' +
+             '<span class="af-ct">' + it.count + '</span></div>';
     }).join('');
   }
   function afStub(labels){ return labels.map(function(l){ return { value:l, label:l, count:0 }; }); }
@@ -675,6 +708,14 @@
   // URL and the table all stay in step.
   document.addEventListener('change', function(e){
     if (!e.target.matches('[data-filter]')) return;
+    // VC-10 - Subcategories and Products share one field, so the same value
+    // has a box in each list. Keep the twins in step, otherwise unticking one
+    // leaves the other ticked and the filter can never be removed.
+    if (e.target.getAttribute('data-filter') === 'sub'){
+      document.querySelectorAll('[data-filter="sub"]').forEach(function(cb){
+        if (cb.value === e.target.value) cb.checked = e.target.checked;
+      });
+    }
     var f = { cat:[], sub:[], tr:[], div:[], mt:[], avail:[], sz:[] };
     document.querySelectorAll('[data-filter]:checked').forEach(function(cb){
       var k = cb.getAttribute('data-filter');
@@ -861,9 +902,18 @@
       return sortAsc ? va-vb : vb-va;
     });
   }
+  // VC-01 — show which way the sorted column is ordered
+  function markSort(){
+    document.querySelectorAll('.sic').forEach(function(sp){
+      var m=(sp.getAttribute('onclick')||'').match(/sortBy\('(\w+)'\)/);
+      var on=!!m&&m[1]===sortCol;
+      sp.classList.toggle('is-asc',on&&sortAsc);
+      sp.classList.toggle('is-desc',on&&!sortAsc);
+    });
+  }
   window.sortBy = function(col){
     if (sortCol === col) sortAsc = !sortAsc; else { sortCol = col; sortAsc = true; }
-    doSort(); page = 1; render();
+    doSort(); page = 1; render(); markSort();
   };
   window.goPage = function(p){ page = p; render(); window.scrollTo({top:document.querySelector('.tablewrap').offsetTop-20, behavior:'smooth'}); };
   window.setRpp = function(v){ rpp = parseInt(v,10)||10; page = 1; render(); };
