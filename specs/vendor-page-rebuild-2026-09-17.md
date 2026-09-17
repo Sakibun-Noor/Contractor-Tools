@@ -77,7 +77,8 @@ The header, banner and body fill exactly one screen (`100dvh` shell, like
 the other pages). The six list cards and the biography scroll inside their
 own box when content is longer than the space. "more…" appears only when a
 card's list is actually cut off; clicking it lets that card scroll. Checked
-at 1265×553 (Deryck's laptop), 1280×590, 1536×864 and 1920×1080. If a screen
+at 1265×553 (Deryck's laptop), 1536×864, 1672×941 (the mockup's own size)
+and 1920×1080. If a screen
 is too short even for the floor sizes, the page scrolls a little rather than
 crushing a card.
 
