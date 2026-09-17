@@ -10,177 +10,135 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609061200">
   <style>
-    :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
+    :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;
+      --t-orange:#F26A1B;--t-blue:#1B5FD0;--t-green:#16A34A;--t-purple:#7C3AED;--t-red:#E11D48;--t-teal:#0D9488;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
     body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
     a{text-decoration:none;color:inherit}input,select,button{font-family:inherit}
-    /* ── SHELL: header + main locked to exactly 100dvh; footer lives
-       outside in normal flow, revealed only by scrolling. ── */
-    .page-above-fold{
-      width:100%;
-      /* vh first: dvh is unsupported before Chrome/Edge 108, Safari 15.4,
-         Firefox 101. Without a fallback the declaration is discarded, the
-         shell loses its height and the rows collapse into each other. */
-      height:100vh;height:100dvh;min-height:0;
-      display:grid;grid-template-rows:auto minmax(0,1fr);
-    }
-    /* overflow left at its default (visible) here, not hidden: main needs
-       to be able to grow past this row's box on a cramped viewport (see
-       main's own comment below) - a hidden ancestor would silently clip
-       exactly the overflow that's meant to become page scroll instead. */
+
+    /* ── 2026-09-17 rebuild to the client's mockup ─────────────────────────
+       See specs/vendor-page-rebuild-2026-09-17.md. Header + everything above
+       the footer fill exactly one screen, like every other page. Cards scroll
+       inside themselves rather than pushing content below the fold.
+       Content text is black (client: "blue ... will be black as like the
+       other pages"); icons, header tints and the three rail buttons keep the
+       mockup's colors. */
+    .page-above-fold{width:100%;height:100vh;height:100dvh;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
     .page-above-fold>*{min-width:0;min-height:0}
-    /* MAIN */
-    main{
-      max-width:1680px;margin:0 auto;width:100%;
-      padding:8px clamp(18px,2vw,26px) 8px;
-      height:100%;min-height:0;overflow:visible;
-      /* 2026-09-02 - the info-card row (below) used to be minmax(0,1fr):
-         on a short viewport the fixed rows around it (breadcrumb, the
-         vendor header card, the bottom Available On / Contact panel) took
-         whatever height they needed first, and this row was left with
-         whatever remained - sometimes only a sliver, cutting every card's
-         text off after one line. A first attempt used
-         minmax(min-content,1fr), which sounds right but isn't reliable
-         here: this row's items are flex containers with an overflow:auto
-         child, and Chrome computed the row's min-content from that
-         child's full unscrolled content (up to 264px for a 12-item list)
-         rather than the explicit min-height set below - inflating every
-         card to ~293px and forcing page scroll even on viewports that
-         used to fit in one screen with room to spare. minmax(96px,1fr) is
-         a plain length instead, so it can't be reinterpreted that way: it
-         matches .lcard's own min-height exactly, keeps the original
-         "take whatever's left, down to that floor" behaviour when there's
-         enough room, and can't go lower. overflow:visible (was hidden) is
-         what lets main grow past one screen on the rare viewport where
-         even 96px doesn't fit - the page scrolls a little instead of a
-         card ever being crushed unreadable again. */
-      display:grid;grid-template-rows:auto auto minmax(96px,1fr) auto;
-      gap:6px;
-    }
+    main{max-width:1680px;margin:0 auto;width:100%;height:100%;min-height:0;overflow:hidden;
+      padding:clamp(5px,.9vh,10px) clamp(14px,1.9vw,30px) clamp(6px,1vh,12px);
+      display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:clamp(6px,1.1vh,12px)}
+
     /* BREADCRUMB ROW */
-    .breadrow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-    .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--vlink);font-weight:600;text-decoration:none}
-    .back-link:hover{text-decoration:underline}
-    .bread{font-size:12.5px;color:var(--muted)}
-    .bread a{color:var(--vlink)}.bread a:hover{text-decoration:underline}
-    .bread .sep{margin:0 6px;opacity:.5}
-    .top-actions{display:flex;gap:8px;flex-wrap:wrap}
-    .btn-act{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1.5px solid #c8d6ee;border-radius:7px;font-size:11.5px;font-weight:600;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
-    .btn-act:hover{border-color:var(--navy)}.btn-act svg{color:var(--blue)}
-    /* TOP PROFILE */
-    .vendor-top{display:grid;grid-template-columns:clamp(220px,17vw,300px) minmax(0,1fr);gap:24px;align-items:start;min-height:0}
-    .vcard{border:1px solid var(--line);border-radius:10px;padding:clamp(10px,1.6vh,20px);text-align:center;background:#fff}
-    .vcard-wordmark{display:flex;flex-direction:column;align-items:center;gap:6px;padding:clamp(4px,.8vh,10px) 0 clamp(4px,.6vh,8px)}
-    /* Enlarged per the 09/01 feedback. Capped at ~76px on purpose: roughly half
-   the cached icons are 32-48px source files, and pushing them to full
-   card width (~280px, as in the mockup) would visibly pixelate them. A true
-   wordmark at that size needs real logo assets — see spec item 4.18. */
-.vcard-wordmark-icon{width:clamp(56px,7.4vh,76px);height:clamp(56px,7.4vh,76px);border-radius:12px;object-fit:contain;background:#f3f6fb;padding:9px}
-    .vcard-wordmark-text{font-size:clamp(19px,2.6vh,26px);font-weight:900;color:var(--ink);letter-spacing:-.02em;line-height:1.05;word-break:break-word}
-    .vcard-domain{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--vlink);margin-bottom:clamp(6px,1.2vh,14px)}
-    .vcard-domain:hover{text-decoration:underline}
-    .btn-visit{display:flex;align-items:center;justify-content:center;gap:8px;padding:clamp(7px,1.1vh,11px) 20px;background:var(--blue);color:#fff;border-radius:7px;font-size:13px;font-weight:700;margin-bottom:8px;width:100%;cursor:pointer;text-decoration:none}
-    .btn-visit:hover{background:var(--navy)}
-    .btn-demo{display:flex;align-items:center;justify-content:center;gap:8px;padding:clamp(6px,1vh,10px) 20px;border:1.5px solid var(--line);color:var(--ink);border-radius:7px;font-size:13px;font-weight:600;margin-bottom:8px;width:100%;cursor:pointer;background:#fff;text-decoration:none}
-    .btn-demo:hover{border-color:var(--navy)}
-    .btn-save{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:700;color:#fff;background:#D2540A;border:none;border-radius:7px;cursor:pointer;width:100%;padding:clamp(6px,1vh,10px) 14px}
-    .btn-save:hover{background:#B8480A}
-    /* RIGHT OVERVIEW */
-    .vendor-name{font-size:clamp(19px,2.7vh,25px);font-weight:900;color:var(--ink);margin:0 0 4px}
-    .vendor-tagline{font-size:13px;font-weight:600;color:var(--vlink);margin:0 0 8px}
-    .vendor-desc{font-size:12.5px;line-height:1.5;color:#3a4a6b;margin:0 0 10px;max-width:700px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-    .facts-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-    .fact{padding:clamp(6px,1.1vh,12px) 16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
-    .fact:last-child{border-right:none}
-    .fact .fic{color:var(--blue);margin-bottom:2px;width:18px;height:18px}
-    .fact .fl{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
-    .fact .fv{font-size:13px;font-weight:700;color:var(--ink)}
-    /* 6 INFO CARDS */
-    .vendor-list-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
-    /* Floor so a card is never crushed to a sliver on a short viewport -
-       header (~30px) + padding (~12px) + two lines of body text. */
-    .lcard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-height:96px}
-    .lcard-hd{padding:7px 12px;border-bottom:1px solid var(--line);font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--ink);text-transform:uppercase;flex:none}
-    .lcard-body{padding:6px 12px;flex:1;min-height:0;overflow-y:auto}
-    /* VM-01 — a card whose list doesn't need to scroll (Divisions,
-       Master Groups: one real value) gets its content centered rather than pinned to the top
-       of a mostly-empty box. Applied only via .is-short, set after render by
-       measuring actual overflow — never on a card that scrolls. justify-content
-       on a container that DOES overflow lets Chrome start scrollTop negative,
-       hiding the first items until the user scrolls up past zero: blank space,
-       a couple of lines pinned to the bottom, a scrollbar - the exact bug this
-       is fixing. See specs/vendor-middle-section-fix.md. */
-    .lcard-body.is-short{display:flex;flex-direction:column;justify-content:center}
-    .lcard-body::-webkit-scrollbar{width:5px}
-    .lcard-body::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
-    .lcard-body ul{list-style:none;margin:0;padding:0}
-    .lcard-body li{font-size:11px;color:var(--ink);padding:3px 0;border-bottom:1px solid #f0f2f6;line-height:1.3}
-    .lcard-body li:last-child{border-bottom:none}
-    /* BOTTOM */
-    .vendor-bottom{display:grid;grid-template-columns:1fr 1.1fr;gap:16px;min-height:0}
-    .bcard{border:1px solid var(--line);border-radius:10px;padding:clamp(8px,1.4vh,18px);background:#fff;min-height:0;overflow-y:auto}
-    .bcard-sec{margin-bottom:clamp(6px,1.2vh,14px)}
-    .bcard-sec:last-child{margin-bottom:0}
-    .bcard-sec h3{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--ink);text-transform:uppercase;margin:0 0 8px;padding-bottom:5px;border-bottom:1px solid var(--line)}
-    .avail-item{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink);padding:3px 0}
-    .avail-item svg{color:var(--blue);flex:none;width:14px;height:14px}
-    .social-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
-    .sicon{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none}
-    .sicon .s-box{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
-    .sicon .s-box svg{width:15px;height:15px}
-    .sicon .s-lbl{font-size:9px;color:var(--muted);font-weight:600}
-    .s-li{background:#0077B5}.s-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}.s-fb{background:#1877F2}.s-yt{background:#FF0000}.s-tt{background:#000}.s-hz{background:#f15a24}.s-pt{background:#E60023}.s-x{background:#000}
-    .ci-item{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--ink);padding:4px 0;border-bottom:1px solid #f0f2f6}
-    .ci-item:last-child{border-bottom:none}
-    .ci-item svg{color:var(--blue);flex:none;margin-top:1px;width:13px;height:13px}
-    .qf-row{display:grid;grid-template-columns:1fr 1fr;gap:0}
-    .qf-item{padding:5px 0;border-bottom:1px solid #f0f2f6}
-    .qf-item:nth-last-child(-n+2){border-bottom:none}
-    .qf-label{font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:1px}
-    .qf-value{font-size:12px;color:var(--ink)}
-    @media(max-width:1100px){
-      .vendor-list-grid{grid-template-columns:repeat(3,1fr)}
-      .facts-row{grid-template-columns:repeat(2,1fr)}
-      .fact:nth-child(2){border-right:none}.fact:nth-child(3){border-top:1px solid var(--line)}.fact:nth-child(4){border-top:1px solid var(--line);border-right:none}
+    .breadrow{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .crumbs{display:flex;align-items:center;gap:8px;font-size:clamp(12px,1vw,16px);font-weight:500;color:var(--vlink);white-space:nowrap}
+    .crumbs a{display:inline-flex;align-items:center;gap:6px;color:var(--vlink)}
+    .crumbs a:hover{text-decoration:underline}
+    .crumbs svg{width:14px;height:14px;flex:none}
+    .crumbs .sep{display:inline-flex}
+    .top-actions{display:flex;gap:clamp(6px,.6vw,10px)}
+    .btn-act{display:inline-flex;align-items:center;gap:7px;padding:clamp(4px,.8vh,8px) clamp(10px,1.1vw,18px);border:1.5px solid #c8d6ee;border-radius:7px;font-size:clamp(11.5px,1vw,16px);font-weight:500;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+    .btn-act:hover{border-color:var(--navy)}
+    .btn-act svg{color:var(--blue);width:clamp(14px,1.1vw,18px);height:clamp(14px,1.1vw,18px);flex:none}
+    .btn-act.is-saved svg{fill:currentColor}
+
+    /* IDENTITY BANNER — logo | website | category | description */
+    .banner{display:grid;grid-template-columns:auto auto auto minmax(0,1fr);align-items:center;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 1px 3px rgba(0,22,75,.05);padding:clamp(6px,1.3vh,16px) 0}
+    .banner>*{padding:0 clamp(14px,1.8vw,34px);min-width:0}
+    .banner>*+*{border-left:1px solid #cfd8e6}
+    .b-brand{display:flex;align-items:center;gap:clamp(8px,.9vw,14px)}
+    .b-logo{width:clamp(36px,6.2vh,68px);height:clamp(36px,6.2vh,68px);object-fit:contain;flex:none}
+    .b-logo-fb{display:grid;place-items:center;border-radius:10px;background:var(--navy);color:#fff;font-weight:800;font-size:clamp(16px,2.4vh,28px)}
+    .b-name{font-size:clamp(24px,4.4vh,46px);font-weight:700;letter-spacing:-.02em;color:var(--ink);line-height:1;white-space:nowrap;max-width:clamp(160px,18vw,360px);overflow:hidden;text-overflow:ellipsis}
+    .b-site{display:flex;align-items:center;gap:10px;font-size:clamp(14px,1.35vw,20px);color:var(--ink);white-space:nowrap}
+    .b-site svg{width:clamp(20px,1.7vw,28px);height:clamp(20px,1.7vw,28px);color:var(--blue);flex:none}
+    .b-site:hover span{text-decoration:underline}
+    .b-cat{font-size:clamp(15px,1.45vw,22px);font-weight:600;color:var(--ink);white-space:nowrap}
+    .b-desc{font-size:clamp(12px,1.05vw,15.5px);line-height:1.4;color:var(--ink);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+    /* BODY: left rail + right area */
+    .vbody{display:grid;grid-template-columns:minmax(210px,17.8%) minmax(0,1fr);gap:clamp(12px,1.4vw,24px);min-height:0}
+    .rail{display:flex;flex-direction:column;gap:clamp(6px,1.1vh,12px);min-height:0}
+    .rbtn{display:flex;align-items:center;justify-content:center;gap:10px;flex:none;width:100%;padding:clamp(5px,1.15vh,11px) 12px;border-radius:7px;font-size:clamp(13px,1.15vw,17px);font-weight:500;cursor:pointer;border:1.5px solid transparent;white-space:nowrap}
+    .rbtn svg{width:clamp(16px,1.35vw,22px);height:clamp(16px,1.35vw,22px);flex:none}
+    .rbtn-visit{background:var(--blue);color:#fff}.rbtn-visit:hover{background:#174fb0}
+    .rbtn-demo{background:#fff;color:var(--ink);border-color:#c8d6ee}.rbtn-demo:hover{border-color:var(--navy)}
+    .rbtn-demo svg{color:var(--navy)}
+    .rbtn-save{background:#E8600F;color:#fff}.rbtn-save:hover{background:#cc520a}
+    .rbtn-save.is-saved svg{fill:currentColor}
+
+    .panel{border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 1px 3px rgba(0,22,75,.04);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+    .panel-hd{display:flex;align-items:center;gap:clamp(8px,.8vw,12px);padding:clamp(4px,.95vh,10px) clamp(10px,1vw,16px);flex:none}
+    .panel-hd svg{width:clamp(18px,1.6vw,26px);height:clamp(18px,1.6vw,26px);flex:none}
+    .panel-hd h2{margin:0;font-size:clamp(11px,.95vw,14px);font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .panel-bd{padding:clamp(3px,.6vh,8px) clamp(10px,1.1vw,18px) clamp(4px,.8vh,10px);font-size:clamp(11.5px,1vw,15px);line-height:1.4;color:var(--ink);min-height:0}
+    .panel-hd.soft{background:#F3F6FB}
+    .panel-hd.soft svg{color:var(--blue)}
+    .p-customers{flex:none}
+    .p-bio{flex:1 1 auto}
+    .p-bio .panel-bd{overflow-y:auto;flex:1 1 auto}
+    .p-bio p{margin:0}
+    .muted{color:var(--muted)}
+
+    .right{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(6px,1.1vh,14px);min-height:0}
+
+    /* FACTS STRIP */
+    .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 1px 3px rgba(0,22,75,.04)}
+    .fact{display:flex;align-items:center;gap:clamp(10px,1.2vw,22px);padding:clamp(4px,1.05vh,12px) clamp(10px,1.3vw,22px);min-width:0}
+    .fact+.fact{border-left:1px solid var(--line)}
+    .fact svg{width:clamp(22px,2.3vw,38px);height:clamp(22px,2.3vw,38px);color:var(--blue);flex:none}
+    .fact>div{min-width:0}
+    .fact-l{font-size:clamp(10px,.82vw,13px);font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+    .fact-v{font-size:clamp(13px,1.2vw,18px);font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* SIX LIST CARDS */
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(6px,1.1vh,14px) clamp(10px,1vw,18px);min-height:0}
+    .lcard .panel-hd{border-bottom:1px solid var(--line)}
+    .lcard ul{list-style:none;margin:0;padding:0}
+    .lcard li{padding:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .lcard .panel-bd{flex:1 1 auto;overflow:hidden}
+    .lcard.is-open .panel-bd{overflow-y:auto}
+    .lcard .none{color:var(--muted)}
+    .more{flex:none;align-self:flex-end;padding:0 clamp(10px,1.1vw,18px) clamp(3px,.7vh,8px);font-size:clamp(11.5px,1vw,15px);color:var(--vlink);cursor:pointer;background:none;border:0}
+    .more:hover{text-decoration:underline}
+    .more[hidden]{display:none}
+    .tint-orange .panel-hd{background:linear-gradient(90deg,#FDEBDD,#FEF6EF)}.tint-orange .panel-hd svg{color:var(--t-orange)}
+    .tint-blue   .panel-hd{background:linear-gradient(90deg,#DCE8FA,#EEF4FD)}.tint-blue   .panel-hd svg{color:var(--t-blue)}
+    .tint-green  .panel-hd{background:linear-gradient(90deg,#DCF5E3,#EFFAF2)}.tint-green  .panel-hd svg{color:var(--t-green)}
+    .tint-purple .panel-hd{background:linear-gradient(90deg,#EBE3FC,#F5F1FE)}.tint-purple .panel-hd svg{color:var(--t-purple)}
+    .tint-red    .panel-hd{background:linear-gradient(90deg,#FCE1E6,#FEF0F3)}.tint-red    .panel-hd svg{color:var(--t-red)}
+    .tint-teal   .panel-hd{background:linear-gradient(90deg,#D7F2F0,#ECF9F8)}.tint-teal   .panel-hd svg{color:var(--t-teal)}
+
+    /* BOTTOM ROW — Available On | Contact | Quick Facts */
+    .bottom{display:grid;grid-template-columns:.92fr 1.04fr 1.95fr;gap:clamp(10px,1vw,18px);min-height:0}
+    .bottom .panel-hd{border-bottom:1px solid var(--line)}
+    .bottom .panel-hd svg{color:var(--blue)}
+    .bottom .panel-bd{overflow-y:auto;flex:1 1 auto}
+    .row-i{display:flex;align-items:center;gap:clamp(8px,.9vw,14px);padding:1px 0;white-space:nowrap;min-width:0}
+    .row-i span,.row-i a{overflow:hidden;text-overflow:ellipsis}
+    .row-i svg{width:clamp(15px,1.25vw,20px);height:clamp(15px,1.25vw,20px);color:var(--blue);flex:none}
+    .row-i a:hover{text-decoration:underline}
+    .qf{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+    .qf>div{min-width:0;padding-right:clamp(8px,1vw,16px)}
+    .qf>div+div{border-left:1px solid var(--line);padding-left:clamp(10px,1.2vw,20px)}
+    .qf-l{font-weight:600;color:var(--ink);line-height:1.25}
+    .qf-v{color:var(--ink);line-height:1.3;margin-bottom:2px}
+
+    /* Short landscape (Deryck's laptop ~1265×553): same layout, header
+       matches the other pages' short-screen trim. */
+    @media (min-width:1024px) and (max-height:720px){
+      .site-header__inner{height:clamp(58px,9vh,76px)}
     }
-    /* Below desktop, the 100dvh no-scroll shell isn't appropriate —
-       the info cards and bottom panels need room to breathe on a
-       phone/tablet, so let the page grow and scroll naturally like
-       it did before. */
-    @media(max-width:999px){
+    /* Below the supported landscape range the page just stacks and scrolls. */
+    @media (max-width:1023px){
       .page-above-fold{height:auto;display:block;overflow:visible}
-      .page-above-fold>*{overflow:visible}
-      main{height:auto;overflow:visible;display:block;padding:14px 14px 28px}
-      .vendor-top{margin-bottom:18px}
-      .vendor-list-grid{margin-bottom:24px}
-      .lcard-body{max-height:200px}
-      .vendor-bottom{margin-bottom:8px}
-      .bcard{overflow-y:visible}
-    }
-    /* DF-02 (spec: display-format-2026-09-02.md) — SHORT LANDSCAPE.
-       On a wide but short viewport (e.g. a 1920×1080 laptop at 150% Windows
-       scaling ≈ 1280×590 CSS px) the 100dvh grid shell had to compress main's
-       rows: the .vendor-top row lost the ~56px its rail needs for the Visit /
-       Demo / Save buttons, and the info-card grid below then painted over the
-       Save button. Same cure as the ≤999px block — drop the vertical lock and
-       let the page flow and scroll — but keep every column count (it's still a
-       wide screen) and keep the card bodies scrollable so they don't run long. */
-    @media (min-width:1000px) and (max-height:720px){
-      .page-above-fold{height:auto;display:block;overflow:visible}
-      .page-above-fold>*{overflow:visible}
       main{height:auto;display:block;overflow:visible}
-      .vendor-top{margin-bottom:14px}
-      .vendor-list-grid{margin-bottom:14px}
-      .vendor-bottom{margin-bottom:8px}
-      .lcard-body{max-height:150px}
-      .bcard{max-height:220px;overflow-y:auto}
-    }
-    @media(max-width:760px){
-      .vendor-top{grid-template-columns:1fr;gap:18px}
-      .vendor-list-grid{grid-template-columns:repeat(2,1fr)}
-      .vendor-bottom{grid-template-columns:1fr}
-      .facts-row{grid-template-columns:repeat(2,1fr)}
-      .vendor-name{font-size:22px}
+      main>*{margin-bottom:12px}
+      .banner{grid-template-columns:1fr}.banner>*+*{border-left:0;margin-top:8px}
+      .vbody,.right{display:block}.rail>*,.right>*{margin-bottom:12px}
+      .facts{grid-template-columns:repeat(2,1fr)}
+      .cards{grid-template-columns:repeat(2,1fr);grid-template-rows:none}
+      .lcard{min-height:140px}.bottom{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -236,121 +194,151 @@
   </div>
 </header>
 
-<!-- MAIN -->
+<!-- MAIN — rebuilt 2026-09-17 to the client's mockup -->
 <main>
+
   <!-- Breadcrumb + actions -->
   <div class="breadrow">
-    <a class="back-link" href="advanced-results.html">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      Back to Advanced Results
-    </a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="advanced-results.html" id="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Advanced Results
+      </a>
+      <span class="sep" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+      <span>Vendor Profile</span>
+    </nav>
     <div class="top-actions">
-      <button class="btn-act" onclick="CTD_saveSearch()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Save Vendor</button>
-      <button class="btn-act" onclick="CTD_exportResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Profile</button>
-      <button class="btn-act" onclick="CTD_shareResults()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
+      <button type="button" class="btn-act js-save"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span class="js-save-label">Save Vendor</span></button>
+      <button type="button" class="btn-act" onclick="CTD_exportProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Profile</button>
+      <button type="button" class="btn-act" onclick="CTD_shareProfile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share</button>
     </div>
   </div>
 
-  <!-- Top profile area -->
-  <div class="vendor-top">
-    <!-- Left card -->
-    <div class="vcard">
-      <div id="vcard-logo-wrap"></div>
-      <a id="vcard-domain" class="vcard-domain" href="#" target="_blank" rel="noopener">
-        <span id="vcard-domain-text"></span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      </a>
-      <a id="btn-visit" class="btn-visit" href="#" target="_blank" rel="noopener">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+  <!-- Identity banner -->
+  <section class="banner" aria-label="Vendor">
+    <div class="b-brand" id="b-brand"><h1 class="b-name" id="b-name">Loading…</h1></div>
+    <a class="b-site" id="b-site" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      <span id="b-site-text">—</span>
+    </a>
+    <div class="b-cat" id="b-cat">—</div>
+    <p class="b-desc" id="b-desc"></p>
+  </section>
+
+  <div class="vbody">
+
+    <!-- Left rail -->
+    <aside class="rail">
+      <a class="rbtn rbtn-visit" id="btn-visit" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
         Visit Website
       </a>
-      <a id="btn-demo" class="btn-demo" href="#" target="_blank" rel="noopener">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <a class="rbtn rbtn-demo" id="btn-demo" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Request a Demo
       </a>
-      <button class="btn-save" id="btn-save-vendor" onclick="CTD_toggleSaveVendor()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
-        <span id="btn-save-vendor-label">Save Vendor</span>
+      <button type="button" class="rbtn rbtn-save js-save">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        <span class="js-save-label">Save Vendor</span>
       </button>
-    </div>
 
-    <!-- Right overview -->
-    <div>
-      <h1 class="vendor-name" id="v-name">Loading…</h1>
-      <div class="vendor-tagline" id="v-tagline"></div>
-      <p class="vendor-desc" id="v-desc"></p>
-      <div class="facts-row">
-        <div class="fact">
-          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <div class="fl">Founded</div><div class="fv" id="f-founded">—</div>
+      <section class="panel p-customers">
+        <div class="panel-hd soft">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="7" r="3.2"/><circle cx="17" cy="8" r="2.5"/><path d="M2 20v-1.5C2 15.46 4.91 13 9 13s7 2.46 7 5.5V20z"/><path d="M17.2 12.2c2.7.2 4.8 2 4.8 4.5V20h-4.4v-1.5c0-2.4-1-4.6-2.6-6.1.7-.2 1.4-.2 2.2-.2z"/></svg>
+          <h2>Typical Customers</h2>
         </div>
-        <div class="fact">
-          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <div class="fl">Headquarters</div><div class="fv" id="f-hq">USA</div>
-        </div>
-        <div class="fact">
-          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-          <div class="fl">Employees</div><div class="fv" id="f-emp">—</div>
-        </div>
-        <div class="fact">
-          <svg class="fic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <div class="fl">Deployment</div><div class="fv" id="f-deploy">Cloud-Based</div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="panel-bd" id="p-customers">—</div>
+      </section>
 
-  <!-- 6 info cards -->
-  <div class="vendor-list-grid" id="info-cards">
-    <div class="lcard"><div class="lcard-hd">Divisions</div><div class="lcard-body"><ul id="lc-divs"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Trades</div><div class="lcard-body"><ul id="lc-trades"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Master Groups</div><div class="lcard-body"><ul id="lc-mcat"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Key Products</div><div class="lcard-body"><ul id="lc-products"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Subcategories</div><div class="lcard-body"><ul id="lc-subcats"></ul></div></div>
-    <div class="lcard"><div class="lcard-hd">Categories</div><div class="lcard-body"><ul id="lc-cats"></ul></div></div>
-  </div>
-
-  <!-- Bottom area -->
-  <div class="vendor-bottom">
-    <!-- Left: Available On + Social -->
-    <div class="bcard">
-      <div class="bcard-sec">
-        <h3>Available On</h3>
-        <div id="avail-list"></div>
-      </div>
-      <div class="bcard-sec" id="social-sec">
-        <h3>Social Media</h3>
-        <div class="social-grid">
-          <a class="sicon" href="#" title="LinkedIn"><div class="s-box s-li"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div><span class="s-lbl">LinkedIn</span></a>
-          <a class="sicon" href="#" title="Instagram"><div class="s-box s-ig"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><span class="s-lbl">Instagram</span></a>
-          <a class="sicon" href="#" title="Facebook"><div class="s-box s-fb"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div><span class="s-lbl">Facebook</span></a>
-          <a class="sicon" href="#" title="YouTube"><div class="s-box s-yt"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#FF0000"/></svg></div><span class="s-lbl">YouTube</span></a>
-          <a class="sicon" href="#" title="TikTok"><div class="s-box s-tt"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></div><span class="s-lbl">TikTok</span></a>
-          <a class="sicon" href="#" title="Houzz"><div class="s-box s-hz"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 8v14h8v-6h4v6h8V8z"/></svg></div><span class="s-lbl">Houzz</span></a>
-          <a class="sicon" href="#" title="Pinterest"><div class="s-box s-pt"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0a12 12 0 00-4.37 23.17c-.1-.94-.2-2.39.04-3.41l1.46-6.19s-.37-.74-.37-1.84c0-1.73.99-3.02 2.23-3.02 1.05 0 1.56.79 1.56 1.74 0 1.06-.67 2.64-1.02 4.11-.29 1.23.61 2.23 1.82 2.23 2.18 0 3.86-2.3 3.86-5.62 0-2.94-2.11-4.99-5.13-4.99-3.5 0-5.55 2.62-5.55 5.33 0 1.06.41 2.19.91 2.81a.37.37 0 01.09.35l-.34 1.37c-.05.22-.18.27-.42.16-1.57-.73-2.55-3.03-2.55-4.88 0-3.96 2.88-7.6 8.3-7.6 4.36 0 7.75 3.1 7.75 7.25 0 4.33-2.73 7.81-6.51 7.81-1.27 0-2.47-.66-2.88-1.44l-.78 2.93c-.28 1.09-1.05 2.45-1.57 3.28A12 12 0 1012 0z"/></svg></div><span class="s-lbl">Pinterest</span></a>
-          <a class="sicon" href="#" title="X (Twitter)"><div class="s-box s-x"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div><span class="s-lbl">X</span></a>
+      <section class="panel p-bio">
+        <div class="panel-hd soft">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <h2>Company Biography</h2>
         </div>
-      </div>
-    </div>
+        <div class="panel-bd"><p id="p-bio"></p></div>
+      </section>
+    </aside>
 
-    <!-- Right: Contact + Quick Facts -->
-    <div class="bcard">
-      <div class="bcard-sec">
-        <h3>Contact Information</h3>
-        <div class="ci-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="ci-addr">—</span></div>
-        <div class="ci-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.12.987.35 1.96.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.85.353 1.723.589 2.81.7A2 2 0 0122 14v2.92z"/></svg><span id="ci-phone">—</span></div>
-        <div class="ci-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span id="ci-email">—</span></div>
-      </div>
-      <div class="bcard-sec">
-        <h3>Quick Facts</h3>
-        <div class="qf-row">
-          <div class="qf-item"><div class="qf-label">Pricing Model</div><div class="qf-value" id="qf-pricing">—</div></div>
-          <div class="qf-item"><div class="qf-label">Free Trial</div><div class="qf-value" id="qf-trial">—</div></div>
-          <div class="qf-item"><div class="qf-label">Typical Customers</div><div class="qf-value" id="qf-customers">—</div></div>
-          <div class="qf-item"><div class="qf-label">Industries</div><div class="qf-value" id="qf-industries">—</div></div>
-          <div class="qf-item" style="grid-column:1/-1"><div class="qf-label">Languages</div><div class="qf-value" id="qf-lang">English</div></div>
+    <!-- Right area -->
+    <div class="right">
+
+      <section class="facts" aria-label="Company facts">
+        <div class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/></svg>
+          <div><div class="fact-l">Founded</div><div class="fact-v" id="f-founded">—</div></div>
         </div>
+        <div class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div><div class="fact-l">Headquarters</div><div class="fact-v" id="f-hq">—</div></div>
+        </div>
+        <div class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          <div><div class="fact-l">Employees</div><div class="fact-v" id="f-emp">—</div></div>
+        </div>
+        <div class="fact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>
+          <div><div class="fact-l">Deployment</div><div class="fact-v" id="f-deploy">—</div></div>
+        </div>
+      </section>
+
+      <div class="cards">
+        <section class="panel lcard tint-orange">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg><h2>Divisions</h2></div>
+          <div class="panel-bd"><ul id="lc-div"></ul></div>
+          <button type="button" class="more" hidden>more…</button>
+        </section>
+        <section class="panel lcard tint-blue">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20"/><path d="M4 18v-1a8 8 0 0116 0v1"/><path d="M9.5 9.5V5.5a2.5 2.5 0 015 0v4"/><path d="M8 18v-5M16 18v-5"/></svg><h2>Trades</h2></div>
+          <div class="panel-bd"><ul id="lc-tr"></ul></div>
+          <button type="button" class="more" hidden>more…</button>
+        </section>
+        <section class="panel lcard tint-green">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="9" r="2.3"/><circle cx="19" cy="9" r="2.3"/><path d="M6.5 20v-1.3c0-3 2.4-5.2 5.5-5.2s5.5 2.2 5.5 5.2V20z"/><path d="M1 20v-.9c0-2 1.6-3.6 3.8-3.6.8 0 1.5.2 2.1.5-.9 1.1-1.4 2.5-1.4 4V20zM23 20v-.9c0-2-1.6-3.6-3.8-3.6-.8 0-1.5.2-2.1.5.9 1.1 1.4 2.5 1.4 4V20z"/></svg><h2>Master Groups</h2></div>
+          <div class="panel-bd"><ul id="lc-mt"></ul></div>
+          <button type="button" class="more" hidden>more…</button>
+        </section>
+        <section class="panel lcard tint-purple">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 8.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm8.94 2.06l-1.66-.28a7.4 7.4 0 00-.7-1.7l.98-1.37a1 1 0 00-.1-1.29l-1.38-1.38a1 1 0 00-1.29-.1l-1.37.98a7.4 7.4 0 00-1.7-.7l-.28-1.66A1 1 0 0012.45 2h-1.9a1 1 0 00-.99.84l-.28 1.66a7.4 7.4 0 00-1.7.7l-1.37-.98a1 1 0 00-1.29.1L3.54 5.7a1 1 0 00-.1 1.29l.98 1.37a7.4 7.4 0 00-.7 1.7l-1.66.28a1 1 0 00-.84.99v1.9c0 .49.35.9.84.99l1.66.28c.16.6.4 1.17.7 1.7l-.98 1.37a1 1 0 00.1 1.29l1.38 1.38a1 1 0 001.29.1l1.37-.98c.53.3 1.1.54 1.7.7l.28 1.66c.08.49.5.84.99.84h1.9c.49 0 .9-.35.99-.84l.28-1.66a7.4 7.4 0 001.7-.7l1.37.98a1 1 0 001.29-.1l1.38-1.38a1 1 0 00.1-1.29l-.98-1.37c.3-.53.54-1.1.7-1.7l1.66-.28a1 1 0 00.84-.99v-1.9a1 1 0 00-.84-.99z"/></svg><h2>Key Products</h2></div>
+          <div class="panel-bd"><ul id="lc-prod"></ul></div>
+          <button type="button" class="more" hidden>more…</button>
+        </section>
+        <section class="panel lcard tint-red">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg><h2>Subcategories</h2></div>
+          <div class="panel-bd"><ul id="lc-sub"></ul></div>
+          <button type="button" class="more" hidden>more…</button>
+        </section>
+        <section class="panel lcard tint-teal">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><h2>Categories</h2></div>
+          <div class="panel-bd"><ul id="lc-cat"></ul></div>
+          <button type="button" class="more" hidden>more…</button>
+        </section>
       </div>
+
+      <div class="bottom">
+        <section class="panel">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="15" height="11" rx="1.5"/><path d="M6 19h7M9.5 15v4"/><rect x="17" y="9" width="5.5" height="11" rx="1"/></svg><h2>Available On</h2></div>
+          <div class="panel-bd" id="p-avail"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/></svg><h2>Contact Information</h2></div>
+          <div class="panel-bd" id="p-contact"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="11"/><line x1="12" y1="7.5" x2="12.01" y2="7.5"/></svg><h2>Quick Facts</h2></div>
+          <div class="panel-bd">
+            <div class="qf">
+              <div>
+                <div class="qf-l">Pricing Model</div><div class="qf-v" id="qf-pricing">—</div>
+                <div class="qf-l">Industries</div><div class="qf-v" id="qf-industries">—</div>
+              </div>
+              <div>
+                <div class="qf-l">Typical Customers</div><div class="qf-v" id="qf-customers">—</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
     </div>
   </div>
 </main>
@@ -446,205 +434,197 @@
 <script src="assets/actions.js?v=202609020216"></script>
 <script>
 (function(){
-  var CM=CTD_FILTERS.CM;
-  var FACTS={procore:{founded:'2002',hq:'Carpinteria, CA, USA',emp:'2,500+',addr:'1000 Brooks St., Carpinteria, CA 93013, USA',phone:'(805) 654-9443',email:'info@procore.com',pricing:'Subscription / SaaS',trial:'Yes',customers:'Small to Enterprise Construction Firms',industries:'Commercial, Industrial, Infrastructure, Residential',lang:'English, Spanish, French, German, Portuguese'},autodesk:{founded:'1982',hq:'San Francisco, CA, USA',emp:'10,000+',addr:'111 McInnis Pkwy, San Rafael, CA 94903',phone:'(415) 507-5000',email:'info@autodesk.com',pricing:'Subscription',trial:'Yes',customers:'Mid to Enterprise Construction Firms',industries:'Commercial, Infrastructure, Industrial',lang:'English, French, German, Spanish, Japanese'}};
-  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  function li(text){return'<li>'+esc(text)+'</li>';}
-  function setEl(id,val){var el=document.getElementById(id);if(el)el.textContent=val||'—';}
+  var CM = CTD_FILTERS.CM;
 
-  var CURRENT_TOOL=null;
+  // Hand-checked details for a few vendors. The vendor data itself has no
+  // founded / HQ / employees / email / industries / biography columns, so every
+  // other vendor shows "—" there rather than an invented value. See
+  // specs/vendor-page-rebuild-2026-09-17.md ("Data — real values only").
+  var FACTS = {
+    procore:  { founded:'2002', hq:'Carpinteria, CA, USA', emp:'2,500+', email:'info@procore.com',  industries:'Commercial, Industrial, Infrastructure, Residential' },
+    autodesk: { founded:'1982', hq:'San Francisco, CA, USA', emp:'10,000+', email:'info@autodesk.com', industries:'Commercial, Infrastructure, Industrial' }
+  };
+
+  // Company size (real field) -> who the product is typically for.
+  var CUSTOMERS = {
+    'All Sizes':               'Construction firms of all sizes',
+    'Small Business':          'Small construction firms',
+    'Small / Mid-Market':      'Small to mid-size construction firms',
+    'Mid-Market / Enterprise': 'Mid-size to enterprise construction firms',
+    'Enterprise':              'Enterprise construction firms'
+  };
+
+  var ICON = {
+    'Cloud-Based': '<path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/>',
+    'Web Access': '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>',
+    'Mobile App (iOS/Android)': '<rect x="6" y="2" width="12" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+    'API Available': '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+    pin:   '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
+    globe: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>',
+    mail:  '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/>'
+  };
+
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function text(id, v){ var el = document.getElementById(id); if (el) el.textContent = (v == null || v === '') ? '—' : v; }
+  function svg(paths){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + paths + '</svg>'; }
+  function list(id, items){
+    var el = document.getElementById(id);
+    el.innerHTML = items.length
+      ? items.map(function(v){ return '<li title="' + esc(v) + '">' + esc(v) + '</li>'; }).join('')
+      : '<li class="none">Not yet classified</li>';
+  }
+  function row(icon, inner){ return '<div class="row-i">' + svg(icon) + inner + '</div>'; }
+
+  var T = null;
 
   function load(){
-    var params=new URLSearchParams(window.location.search);
-    var slug=params.get('s')||params.get('slug')||'procore';
-    var tools=window.TOOLS||[];
-    var t=tools.find(function(x){return x.s===slug;})||tools[0];
-    if(!t)return;
-    CURRENT_TOOL=t;
+    var slug = new URLSearchParams(location.search).get('s') || 'procore';
+    var tools = window.TOOLS || [];
+    var t = tools.find(function(x){ return x.s === slug; }) || tools[0];
+    if (!t) return;
+    T = t;
+    var f = FACTS[t.s] || {};
+    var cats = (t.c || []).map(function(c){ return CM[c] || c; });
+    var avail = CTD_FILTERS.avail(t.sz);
+    var site = t.d ? 'https://' + t.d : '';
 
-    // Title
-    document.title=t.n+' — The Construction Technology Directory';
-    setEl('bread-name',t.n);
+    document.title = t.n + ' — The Construction Technology Directory';
 
-    // Logo / name — no per-vendor logo art exists in this dataset, so
-    // render a large wordmark-style name; try the vendor's real favicon
-    // (assets/icons/{domain}.ico, present for ~30% of vendors) as a
-    // small mark beside it, falling back to text-only if it 404s.
-    var logoWrap=document.getElementById('vcard-logo-wrap');
-    var iconHtml=t.d?'<img class="vcard-wordmark-icon" src="assets/icons/'+esc(t.d)+'.ico" alt="" onerror="this.remove()">':'';
-    logoWrap.innerHTML='<div class="vcard-wordmark">'+iconHtml+'<div class="vcard-wordmark-text">'+esc(t.n)+'</div></div>';
-
-    // Domain
-    var domEl=document.getElementById('vcard-domain-text');
-    if(domEl)domEl.textContent=t.d||'';
-    var visitEl=document.getElementById('btn-visit');
-    if(visitEl&&t.d)visitEl.href='https://'+t.d;
-    var domLink=document.getElementById('vcard-domain');
-    if(domLink&&t.d)domLink.href='https://'+t.d;
-    // No vendor-specific demo-request URL exists in the dataset — the
-    // vendor's real site (the only genuine URL we have) is the honest
-    // destination rather than fabricating a /demo path that may not exist.
-    var demoEl=document.getElementById('btn-demo');
-    if(demoEl&&t.d)demoEl.href='https://'+t.d;
-
-    updateSaveVendorButton();
-
-    // Overview
-    setEl('v-name',t.n);
-
-    // V-05 — show a social icon only where the vendor actually has that
-    // profile. The vendor data carries no social column yet, so today the
-    // whole block removes itself rather than showing eight dead links. It
-    // lights up per-network the moment real URLs land on t.social.
-    (function(){
-      var sec=document.getElementById('social-sec');
-      if(!sec) return;
-      var links=t.social||{};
-      var shown=0;
-      sec.querySelectorAll('.sicon').forEach(function(a){
-        var net=(a.getAttribute('title')||'').toLowerCase().split(' ')[0];
-        var url=links[net];
-        if(url){ a.href=url; a.target='_blank'; a.rel='noopener'; shown++; }
-        else a.remove();
-      });
-      if(!shown) sec.remove();
-    })();
-    var cats=(t.c||[]),catNames=cats.map(function(c){return CM[c]||c;});
-    document.getElementById('v-tagline').textContent=catNames[0]||'Construction Software';
-    document.getElementById('v-desc').textContent=t.x||'';
-
-    // Facts
-    var f=FACTS[slug]||FACTS[t.s]||{};
-    setEl('f-founded',f.founded||'—');
-    setEl('f-hq',f.hq||'USA');
-    setEl('f-emp',/Enterprise/i.test(t.sz||'')?'500+':'100+');
-    setEl('f-deploy','Cloud-Based');
-
-    // 6 cards
-    // HX-04 — the vendor's own classification. This card used to pad itself out
-    // to twelve entries from a hardcoded list, which claimed every vendor served
-    // Concrete through Conveying Equipment. One real value beats twelve invented
-    // ones; the array shape holds for when a vendor carries more than one.
-    var divs=t.dv?[t.dv]:[];
-    document.getElementById('lc-divs').innerHTML=divs.length?divs.map(li).join(''):'<li class="lc-none">Not yet classified</li>';
-
-    var trades=(t.tr||['General Contractors','Owners','Construction Managers','Specialty Contractors','Subcontractors','Design-Build Firms','Architects','Engineers','Project Managers','Estimators','Superintendents','Facility Managers']);
-    document.getElementById('lc-trades').innerHTML=trades.map(li).join('');
-
-    var mts=t.mt?[t.mt]:[];
-    document.getElementById('lc-mcat').innerHTML=mts.length?mts.map(li).join(''):'<li class="lc-none">Not yet classified</li>';
-
-    var products=[t.n+' '+t.sub,(t.sub||'')+ ' Management',t.n+' Mobile',(catNames[0]||'')+ ' Suite',t.n+' Analytics',t.n+' Field','Project Reporting','Quality & Safety Module'];
-    document.getElementById('lc-products').innerHTML=products.filter(function(p){return p.trim()&&p.trim()!=='undefined';}).map(li).join('');
-
-    var allSubs=['Digital Takeoff','Estimating','Project Management','Field Management','Financial Management','Quality & Safety','Document Management','BIM & Design Coordination','Bid Management','Contract Management','Change Management','RFI Management'];
-    document.getElementById('lc-subcats').innerHTML=allSubs.map(li).join('');
-    document.getElementById('lc-cats').innerHTML=catNames.concat(['Project Management','Field Management','Financial Management','Collaboration','BIM & Design','Safety Management','Document Management','Contract Management','Analytics & Reporting','Preconstruction','Workforce Management','Asset Management']).filter(function(v,i,a){return a.indexOf(v)===i;}).slice(0,12).map(li).join('');
-
-    // VM-01/VM-02 — run after all six lists are in the DOM. A card is only
-    // ever centered if its list genuinely fits with no overflow; a card that
-    // scrolls is left exactly as it was. scrollTop is reset defensively on
-    // every card regardless.
-    //
-    // 2026-09-02 — reported broken on a hard refresh in production, working
-    // fine on repeat views. Root cause: the Google Fonts link is loaded with
-    // display=swap, so on a cold cache the six lists first render in a
-    // fallback font while the real one (Inter) is still downloading. This
-    // measurement was running once, on DOMContentLoaded, which does not wait
-    // for that font file — so on a slow/cold load it measured fallback-font
-    // metrics, got the wrong scrollHeight, and never re-measured after the
-    // real font swapped in and changed the text's actual height. A warm
-    // cache (repeat visits, or a fast connection that wins the race) never
-    // showed the bug, which is why it looked fixed everywhere it was tested.
-    // document.fonts.ready resolves once every font on the page - including
-    // the swap - has settled, so re-running the same measurement there
-    // covers the slow-load case without touching the fast one.
-    function sizeInfoCards(){
-      document.querySelectorAll('#info-cards .lcard-body').forEach(function(body){
-        body.scrollTop = 0;
-        var ul = body.querySelector('ul');
-        var fits = ul && ul.scrollHeight <= body.clientHeight;
-        body.classList.toggle('is-short', !!fits);
-      });
+    // Banner. Favicon where we have one cached, letter mark otherwise.
+    // Built with DOM calls: the fallback markup inside an inline onerror
+    // attribute broke on its own quotes and leaked text into the banner.
+    var brand = document.getElementById('b-brand');
+    brand.innerHTML = '';
+    function letterMark(){
+      var m = document.createElement('span');
+      m.className = 'b-logo b-logo-fb';
+      m.setAttribute('aria-hidden', 'true');
+      m.textContent = (t.n || '?').charAt(0).toUpperCase();
+      return m;
     }
-    sizeInfoCards();
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(sizeInfoCards);
+    if (t.d) {
+      var img = document.createElement('img');
+      img.className = 'b-logo';
+      img.alt = '';
+      img.onerror = function(){ img.replaceWith(letterMark()); };
+      img.src = 'assets/icons/' + t.d + '.ico';
+      brand.appendChild(img);
+    } else {
+      brand.appendChild(letterMark());
     }
+    var h1 = document.createElement('h1');
+    h1.className = 'b-name'; h1.id = 'b-name'; h1.title = t.n; h1.textContent = t.n;
+    brand.appendChild(h1);
+    var siteLink = document.getElementById('b-site');
+    text('b-site-text', t.d ? 'www.' + t.d.replace(/^www\./, '') : '');
+    if (site) siteLink.href = site; else siteLink.removeAttribute('href');
+    text('b-cat', cats[0]);
+    text('b-desc', t.x);
 
-    // Available On
-    var avItems=['Cloud-Based','Mobile App (iOS/Android)','API Available','100+ Integrations'];
-    if(!/Enterprise/i.test(t.sz||''))avItems=['Cloud-Based','Web Access'];
-    var avIcons={
-      'Cloud-Based':'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
-      'Mobile App (iOS/Android)':'<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
-      'API Available':'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
-      '100+ Integrations':'<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>',
-      'Web Access':'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>'
-    };
-    document.getElementById('avail-list').innerHTML=avItems.map(function(a){return'<div class="avail-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+( avIcons[a]||'<circle cx="12" cy="12" r="10"/>')+'</svg>'+esc(a)+'</div>';}).join('');
+    // Rail. No per-vendor demo URL exists, so Request a Demo goes to the
+    // vendor's own site rather than a guessed /demo path.
+    ['btn-visit', 'btn-demo'].forEach(function(id){ var a = document.getElementById(id); if (site) a.href = site; });
+    text('p-customers', CUSTOMERS[t.sz] || t.sz);
+    var bio = document.getElementById('p-bio');
+    if (f.bio) { bio.textContent = f.bio; bio.className = ''; }
+    else { bio.textContent = 'No company biography on file yet.'; bio.className = 'muted'; }
 
-    // Contact
-    setEl('ci-addr',f.addr||'USA');
-    setEl('ci-phone',f.phone||'Contact via website');
-    setEl('ci-email',f.email||('info@'+t.d));
+    // Facts strip
+    text('f-founded', f.founded);
+    text('f-hq', f.hq);
+    text('f-emp', f.emp);
+    text('f-deploy', avail[0]);
 
-    // Quick facts
-    setEl('qf-pricing',t.pm||f.pricing||'—');
-    // HX-07 — free_trial_available is unknown on 1,402 of 1,463 vendors. The row
-    // hides rather than asserting "Yes" at a reader; it returns per-vendor the
-    // moment the workbook carries a real answer.
-    var trialRow=document.getElementById('qf-trial');
-    if(trialRow&&trialRow.parentElement){
-      if(t.ft){trialRow.textContent=t.ft;trialRow.parentElement.style.display='';}
-      else{trialRow.parentElement.style.display='none';}
-    }
-    setEl('qf-customers',f.customers||(/Enterprise/i.test(t.sz||'')?'Medium to Enterprise Construction Firms':'Small to Medium Construction Firms'));
-    setEl('qf-industries',f.industries||'Commercial, Industrial, Infrastructure');
-    setEl('qf-lang',f.lang||'English');
+    // Six cards — the vendor's own classification only
+    list('lc-div',  t.dv ? [t.dv] : []);
+    list('lc-tr',   t.tr || []);
+    list('lc-mt',   t.mt ? [t.mt] : []);
+    list('lc-prod', t.sub ? [t.sub + ' Software'] : []);
+    list('lc-sub',  t.sub ? [t.sub] : []);
+    list('lc-cat',  cats);
+
+    // Bottom row
+    document.getElementById('p-avail').innerHTML = avail.map(function(a){ return row(ICON[a] || ICON.globe, '<span>' + esc(a) + '</span>'); }).join('');
+    document.getElementById('p-contact').innerHTML =
+      row(ICON.pin, '<span>' + esc(f.hq || '—') + '</span>') +
+      row(ICON.globe, site ? '<a href="' + esc(site) + '" target="_blank" rel="noopener">Contact via website</a>' : '<span>—</span>') +
+      row(ICON.mail, f.email ? '<a href="mailto:' + esc(f.email) + '">' + esc(f.email) + '</a>' : '<span>—</span>');
+    text('qf-pricing', t.pm);
+    text('qf-industries', f.industries);
+    text('qf-customers', CUSTOMERS[t.sz] || t.sz);
+
+    refreshSaved();
+    sizeCards();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeCards);
   }
 
-  window.doHdrSearch=function(){window.location.href='advanced-results.html?q='+(document.getElementById('hdr-q').value||'');};
-
-  function updateSaveVendorButton(){
-    var label=document.getElementById('btn-save-vendor-label');
-    var btn=document.getElementById('btn-save-vendor');
-    if(!label||!CURRENT_TOOL)return;
-    var saved=CTD_ACTIONS.isVendorSaved(CURRENT_TOOL.s);
-    label.textContent=saved?'Saved ✓':'Save Vendor';
-    if(btn)btn.style.color=saved?'var(--green)':'';
+  // "more…" only when a card's list is actually cut off. Measured again once
+  // web fonts settle (a fallback font gives the wrong height) and on resize.
+  function sizeCards(){
+    document.querySelectorAll('.lcard').forEach(function(card){
+      var bd = card.querySelector('.panel-bd'), more = card.querySelector('.more');
+      var open = card.classList.contains('is-open');
+      card.classList.remove('is-open');
+      var cut = bd.scrollHeight > bd.clientHeight + 1;
+      if (open && cut) card.classList.add('is-open');
+      more.hidden = !cut;
+      more.textContent = card.classList.contains('is-open') ? 'less' : 'more…';
+      if (!card.classList.contains('is-open')) bd.scrollTop = 0;
+    });
   }
-  window.CTD_toggleSaveVendor=function(){
-    if(!CURRENT_TOOL)return;
-    CTD_ACTIONS.toggleSaveVendor(CURRENT_TOOL.s, CURRENT_TOOL.n);
-    updateSaveVendorButton();
-  };
+  document.addEventListener('click', function(e){
+    var more = e.target.closest && e.target.closest('.lcard .more');
+    if (!more) return;
+    var card = more.closest('.lcard');
+    var open = card.classList.toggle('is-open');
+    more.textContent = open ? 'less' : 'more…';
+    if (!open) card.querySelector('.panel-bd').scrollTop = 0;
+  });
+  var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(sizeCards, 120); });
 
-  window.CTD_saveSearch=function(){
-    if(!CURRENT_TOOL)return;
-    CTD_ACTIONS.saveSearch(CURRENT_TOOL.n+' — Vendor Profile', window.location.href);
-  };
-  window.CTD_exportResults=function(){
-    if(!CURRENT_TOOL)return;
-    var t=CURRENT_TOOL;
-    var cats=(t.c||[]).map(function(c){return CM[c]||c;});
-    var divs=t.dv?[t.dv]:[];
-    var mts=t.mt?[t.mt]:[];
+  // Both Save Vendor buttons share one saved state.
+  function refreshSaved(){
+    if (!T) return;
+    var saved = CTD_ACTIONS.isVendorSaved(T.s);
+    document.querySelectorAll('.js-save').forEach(function(b){
+      b.classList.toggle('is-saved', saved);
+      b.setAttribute('aria-pressed', saved ? 'true' : 'false');
+      b.querySelector('.js-save-label').textContent = saved ? 'Saved' : 'Save Vendor';
+    });
+  }
+  document.querySelectorAll('.js-save').forEach(function(b){
+    b.addEventListener('click', function(){ if (T) { CTD_ACTIONS.toggleSaveVendor(T.s, T.n); refreshSaved(); } });
+  });
+
+  window.CTD_exportProfile = function(){
+    if (!T) return;
+    var t = T, f = FACTS[t.s] || {};
+    var cats = (t.c || []).map(function(c){ return CM[c] || c; });
     CTD_ACTIONS.exportCsv([t], [
-      {label:'Vendor',get:function(){return t.n;}},
-      {label:'Website',get:function(){return t.d;}},
-      {label:'Description',get:function(){return t.x;}},
-      {label:'Product/Subcategory',get:function(){return t.sub;}},
-      {label:'Categories',get:function(){return cats.join('; ');}},
-      {label:'Divisions',get:function(){return divs.join('; ');}},
-      {label:'Trades',get:function(){return (t.tr||[]).join('; ');}},
-      {label:'Master Groups',get:function(){return mts.join('; ');}},
-      {label:'Company Size',get:function(){return t.sz;}}
-    ], t.s+'-profile.csv');
+      { label:'Vendor',            get:function(){ return t.n; } },
+      { label:'Website',           get:function(){ return t.d; } },
+      { label:'Description',       get:function(){ return t.x; } },
+      { label:'Categories',        get:function(){ return cats.join('; '); } },
+      { label:'Subcategories',     get:function(){ return t.sub; } },
+      { label:'Master Groups',     get:function(){ return t.mt; } },
+      { label:'Divisions',         get:function(){ return t.dv; } },
+      { label:'Trades',            get:function(){ return (t.tr || []).join('; '); } },
+      { label:'Company Size',      get:function(){ return t.sz; } },
+      { label:'Pricing Model',     get:function(){ return t.pm; } },
+      { label:'Available On',      get:function(){ return CTD_FILTERS.avail(t.sz).join('; '); } },
+      { label:'Founded',           get:function(){ return f.founded || ''; } },
+      { label:'Headquarters',      get:function(){ return f.hq || ''; } }
+    ], t.s + '-profile.csv');
   };
-  window.CTD_shareResults=function(){ CTD_ACTIONS.shareUrl(window.location.href); };
+  window.CTD_shareProfile = function(){ CTD_ACTIONS.shareUrl(location.href); };
 
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else load();
+  // Header search goes to the start of the search flow, like every other page.
+  window.doHdrSearch = function(){
+    var q = (document.getElementById('hdr-q').value || '').trim();
+    location.href = 'results.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load); else load();
 })();
 </script>
 </body>
