@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="assets/ctd-scale.js?v=202609180100"></script>
   <title>Advanced Search — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +22,7 @@
       /* vh first: dvh is unsupported before Chrome/Edge 108, Safari 15.4,
          Firefox 101. Without a fallback the declaration is discarded, the
          shell loses its height and the rows collapse into each other. */
-      height:100vh;height:100dvh;min-height:0;
+      height:100vh;height:100dvh;height:calc(100dvh / var(--ctd-zoom, 1));min-height:0;
       display:grid;grid-template-rows:auto minmax(0,1fr);
       overflow:hidden;
     }

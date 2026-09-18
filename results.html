@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="assets/ctd-scale.js?v=202609180100"></script>
   <title>Search Results — The Construction Technology Directory</title>
   <meta name="description" content="Search 1,463 construction software vendors by category, subcategory and product, or by the construction trades they serve.">
   <link rel="icon" type="image/png" href="assets/logo.png">
@@ -24,7 +25,7 @@
       /* vh first: dvh is unsupported before Chrome/Edge 108, Safari 15.4,
          Firefox 101. Without a fallback the declaration is discarded, the
          shell loses its height and the rows collapse into each other. */
-      height:100vh;height:100dvh;min-height:0;
+      height:100vh;height:100dvh;height:calc(100dvh / var(--ctd-zoom, 1));min-height:0;
       display:grid;grid-template-rows:auto minmax(0,1fr);
       overflow:hidden;
     }
@@ -807,10 +808,15 @@
     tip.textContent = btn.getAttribute('data-desc');
     tip.classList.add('on');
     btn.setAttribute('aria-expanded', 'true');
+    // On large screens the page is scaled (assets/ctd-scale.js): the button's
+    // on-screen rect is in scaled pixels while the tooltip's left/top are in
+    // page pixels, so convert everything to page pixels first.
+    var z = window.CTD_zoom ? window.CTD_zoom() : 1;
     var r = btn.getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
-    var left = Math.min(Math.max(8, r.left - 10), window.innerWidth - tw - 8);
-    var top = r.bottom + 6;
-    if (top + th > window.innerHeight - 8) top = r.top - th - 6;   // flip above near the bottom
+    var vw = window.innerWidth / z, vh = window.innerHeight / z;
+    var left = Math.min(Math.max(8, r.left / z - 10), vw - tw - 8);
+    var top = r.bottom / z + 6;
+    if (top + th > vh - 8) top = r.top / z - th - 6;   // flip above near the bottom
     tip.style.left = left + 'px';
     tip.style.top = Math.max(8, top) + 'px';
   }

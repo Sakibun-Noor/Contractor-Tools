@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script src="assets/ctd-scale.js?v=202609180100"></script>
   <title>The Construction Technology Directory — Find the Right Software for Your Construction Business</title>
   <meta name="description" content="Search 600+ construction software platforms across 12 categories. Estimating, CRM, Project Management, Accounting, AI and more — free to browse.">
   <link rel="icon" type="image/png" href="assets/ctd/logo.png">
@@ -117,7 +118,14 @@
        short screen lets the page grow and scroll instead of colliding. The
        220px floor on the category row (grid template below) is what bounds
        how far that row can ever be squeezed. */
-    .fold-100 { min-height: 100vh; min-height: 100dvh; }
+    .fold-100 { min-height: 100vh; min-height: 100dvh; min-height: calc(100dvh / var(--ctd-zoom, 1)); }
+    /* Large screens (assets/ctd-scale.js). The hero is full-bleed, so on a
+       screen wider than 16:9 it grows taller than at 1920x1080 and the
+       fold ran ~20px past the screen on a 5120x2000 ultrawide. When scaled,
+       lock the fold to one screen so the category row takes what's left:
+       that is always well above its 220px floor at these sizes (374px at
+       5120x2000), so the tiles just get a little shorter, never overlap. */
+    .ctd-scaled .fold-100 { height: calc(100dvh / var(--ctd-zoom, 1)); }
     /* Release the locked height below Tailwind's lg breakpoint. Declared here
        rather than relying on max-lg:h-auto so it still holds if Tailwind's
        runtime never arrives. */

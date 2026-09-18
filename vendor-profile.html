@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="assets/ctd-scale.js?v=202609180100"></script>
   <title>Vendor Profile — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +24,7 @@
        Content text is black (client: "blue ... will be black as like the
        other pages"); icons, header tints and the three rail buttons keep the
        mockup's colors. */
-    .page-above-fold{width:100%;height:100vh;height:100dvh;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
+    .page-above-fold{width:100%;height:100vh;height:100dvh;height:calc(100dvh / var(--ctd-zoom, 1));min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
     .page-above-fold>*{min-width:0;min-height:0}
     main{max-width:1680px;margin:0 auto;width:100%;height:100%;min-height:0;overflow:hidden;
       padding:clamp(5px,.9vh,10px) clamp(14px,1.9vw,30px) clamp(6px,1vh,12px);
