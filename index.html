@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <script src="assets/ctd-scale.js?v=202609180100"></script>
+  <script src="assets/ctd-scale.js?v=202609191601"></script>
   <title>The Construction Technology Directory — Find the Right Software for Your Construction Business</title>
   <meta name="description" content="Search 600+ construction software platforms across 12 categories. Estimating, CRM, Project Management, Accounting, AI and more — free to browse.">
   <link rel="icon" type="image/png" href="assets/ctd/logo.png">
@@ -19,12 +19,12 @@
        filter, ad-blocker, CDN outage — no styles are produced and the category
        tiles overlap each other. Fall back to the captured stylesheet so the
        page still renders correctly. The CDN stays primary, so this snapshot
-       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609060030. */
+       can never mask a fresher build. See assets/tailwind-fallback.css?v=202609191601. */
     (function () {
       if (typeof tailwind !== 'undefined') return;
       var l = document.createElement('link');
       l.rel = 'stylesheet';
-      l.href = 'assets/tailwind-fallback.css?v=202609060030';
+      l.href = 'assets/tailwind-fallback.css?v=202609191601';
       document.head.appendChild(l);
     })();
   </script>
@@ -119,7 +119,7 @@
        220px floor on the category row (grid template below) is what bounds
        how far that row can ever be squeezed. */
     .fold-100 { min-height: 100vh; min-height: 100dvh; min-height: calc(100dvh / var(--ctd-zoom, 1)); }
-    /* Large screens (assets/ctd-scale.js). The hero is full-bleed, so on a
+    /* Large screens (assets/ctd-scale.js?v=202609191601). The hero is full-bleed, so on a
        screen wider than 16:9 it grows taller than at 1920x1080 and the
        fold ran ~20px past the screen on a 5120x2000 ultrawide. When scaled,
        lock the fold to one screen so the category row takes what's left:
@@ -312,7 +312,7 @@
 
       <a href="results.html?cat=accounting-payroll" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
         <img src="assets/logos/accounting-payroll.png" alt="" class="min-h-0 max-h-[clamp(46px,11.4vh,114px)] w-full flex-1 object-contain transition group-hover:-translate-y-0.5">
-        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Accounting</span>
+        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Finance</span>
       </a>
 
       <a href="results.html?cat=crm-sales" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
@@ -322,7 +322,7 @@
 
       <a href="results.html?cat=construction-leads" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
         <img src="assets/logos/construction-leads.png" alt="" class="min-h-0 max-h-[clamp(46px,11.4vh,114px)] w-full flex-1 object-contain transition group-hover:-translate-y-0.5">
-        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Leads, Bids</span>
+        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Leads &amp; Bids</span>
       </a>
 
       <a href="results.html?cat=estimating-takeoff" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
@@ -337,7 +337,7 @@
 
       <a href="results.html?cat=field-service-dispatch" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
         <img src="assets/logos/field-service-dispatch.png" alt="" class="min-h-0 max-h-[clamp(46px,11.4vh,114px)] w-full flex-1 object-contain transition group-hover:-translate-y-0.5">
-        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Dispatch</span>
+        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Field Ops</span>
       </a>
 
       <a href="results.html?cat=safety-compliance" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
@@ -362,12 +362,12 @@
 
       <a href="results.html?cat=document-management" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
         <img src="assets/logos/document-management.png" alt="" class="min-h-0 max-h-[clamp(46px,11.4vh,114px)] w-full flex-1 object-contain transition group-hover:-translate-y-0.5">
-        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Documentation</span>
+        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">BIM &amp; Docs</span>
       </a>
 
       <a href="results.html?cat=procurement-purchasing" class="group flex min-h-0 flex-col items-center justify-center overflow-hidden gap-[clamp(5px,1vh,11px)] border-b border-r border-ctd-line px-1 py-[clamp(5px,0.9vh,12px)] text-center transition max-lg:min-h-[92px]">
         <img src="assets/logos/procurement-purchasing.png" alt="" class="min-h-0 max-h-[clamp(46px,11.4vh,114px)] w-full flex-1 object-contain transition group-hover:-translate-y-0.5">
-        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Purchasing</span>
+        <span class="flex-none text-[clamp(7.5px,0.82vw,13px)] font-bold uppercase leading-tight text-ctd-navy">Procurement</span>
       </a>
 
     </div>

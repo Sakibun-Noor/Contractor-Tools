@@ -7,27 +7,34 @@
    Include after tools-data.js.
    ═══════════════════════════════════════════════════════════ */
 window.CTD_FILTERS = (function () {
+  // Category names — 2026-09-19: Deryck retired "Specialty Solutions" (the
+  // former 13th category) and redistributed its subcategories into these 12;
+  // 5 got renamed in the process. Slugs (the URL/filter keys) are unchanged
+  // by his own instruction, confirmed via his own ChatGPT check — only the
+  // on-screen label moves. See specs/product-db-site-integration-2026-09-19.md §3a.
   var CM = {
-    'accounting-payroll': 'Accounting & Payroll',
+    'accounting-payroll': 'Finance & Payroll',
     'crm-sales': 'CRM & Sales',
-    'construction-leads': 'Leads, Bids & Estimates',
+    'construction-leads': 'Leads & Bids',
     'estimating-takeoff': 'Estimating & Takeoff',
     'project-management': 'Project Management',
-    'field-service-dispatch': 'Field Service & Dispatch',
+    'field-service-dispatch': 'Field Operations',
     'safety-compliance': 'Safety & Compliance',
     'fleet-equipment': 'Fleet & Equipment',
     'marketing-reputation': 'Marketing & Reputation',
     'ai-automation': 'AI & Automation',
-    'document-management': 'Document Management',
-    'procurement-purchasing': 'Back Office Operations'
+    'document-management': 'BIM & Documents',
+    'procurement-purchasing': 'Procurement'
   };
 
-  // DIV_MAP / MT_MAP are gone. They guessed a vendor's divisions and master
-  // trade from its software category, which is exactly the axis collapse the
-  // two-taxonomy rule forbids, and MT_MAP invented two master trades that do
-  // not exist in the client's hierarchy. Every vendor now carries its own
-  // t.mt and t.dv from the client's classification file — see
-  // specs/hierarchy-import.md.
+  // Every vendor now carries its own real, multi-valued classification from
+  // the merged vendor/product database (build/import-vendors.ps1):
+  // t.c (categories), t.subs (subcategories), t.mt (Master Groups), t.dv
+  // (Divisions), t.trd (real CSI-coded Trades), t.mkt (Market Sector), and
+  // t.products (the vendor's actual product list). t.tr (the old
+  // "contractor type" values — GC / Commercial / Residential / Specialty
+  // Trades) is still imported but deliberately never shown, per the
+  // 2026-09-18 decision — t.trd replaces it as the displayed "Trades" data.
 
   function avail(sz) {
     var r = ['Cloud-Based'];
@@ -37,72 +44,99 @@ window.CTD_FILTERS = (function () {
     return r;
   }
 
+  // Counts occurrences of every value in an array-valued field across all
+  // tools, sorted by count descending. Used for every multi-valued facet
+  // (categories, subcategories, master groups, divisions, trades, products,
+  // market sectors) now that a vendor can carry more than one of each.
+  function countArrayField(tools, field) {
+    var counts = {};
+    tools.forEach(function (t) { (t[field] || []).forEach(function (v) { if (v) counts[v] = (counts[v] || 0) + 1; }); });
+    return counts;
+  }
+  function toSortedList(counts, labelFn) {
+    return Object.keys(counts).map(function (v) {
+      return { value: v, label: labelFn ? labelFn(v) : v, count: counts[v] };
+    }).sort(function (a, b) { return b.count - a.count; });
+  }
+
   // Builds the real, data-derived vocabulary for every filter
   // dimension from the live tools array. Called once per page load.
   function build(tools) {
     tools = tools || [];
+    var TAX = (typeof window !== 'undefined' && window.CTD_TAXONOMY) || null;
 
-    var catCounts = {};
-    tools.forEach(function (t) { (t.c || []).forEach(function (c) { catCounts[c] = (catCounts[c] || 0) + 1; }); });
+    var catCounts = countArrayField(tools, 'c');
     var categories = Object.keys(catCounts).map(function (slug) {
       return { value: slug, label: CM[slug] || slug, count: catCounts[slug] };
     }).sort(function (a, b) { return b.count - a.count; });
 
-    var subCounts = {};
-    tools.forEach(function (t) { if (t.sub) subCounts[t.sub] = (subCounts[t.sub] || 0) + 1; });
-    var subcategories = Object.keys(subCounts).map(function (s) {
-      return { value: s, label: s, count: subCounts[s] };
-    }).sort(function (a, b) { return b.count - a.count; });
+    // SUBCATEGORIES — t.subs is now multi-valued (a vendor's real product
+    // subcategories), not the single t.sub placeholder it used to be.
+    var subcategories = toSortedList(countArrayField(tools, 'subs'));
 
-    var trCounts = {};
-    tools.forEach(function (t) { (t.tr || []).forEach(function (tr) { trCounts[tr] = (trCounts[tr] || 0) + 1; }); });
-    var trades = Object.keys(trCounts).map(function (tr) {
-      return { value: tr, label: tr, count: trCounts[tr] };
-    }).sort(function (a, b) { return b.count - a.count; });
+    // PRODUCTS — real per-vendor product names from the merged database
+    // (build/import-vendors.ps1), replacing the old fake "<subcategory>
+    // Software" placeholder. t.products is an array of {n, u} objects (not
+    // plain strings), so it's counted directly rather than through
+    // countArrayField.
+    var prodCounts = {};
+    tools.forEach(function (t) { (t.products || []).forEach(function (p) { if (p && p.n) prodCounts[p.n] = (prodCounts[p.n] || 0) + 1; }); });
+    var products = toSortedList(prodCounts);
 
-    // DIVISION — the vendor's own classification (t.dv, "01 – General
-    // Requirements"). HX-09: this used to be labelled "Trade / Division" on
-    // the theory that trade and division were the same axis. The client's
-    // validated hierarchy workbook says otherwise (DEVELOPER_NOTES Rule 1:
-    // "Do not treat Division and Trade as the same field") — real Trade is a
-    // narrower published MasterFormat Section below the division root that
-    // needs a licensed dataset we don't have yet. What we have is Division,
-    // so that's what it's called.
-    var dvCounts = {};
-    tools.forEach(function (t) { if (t.dv) dvCounts[t.dv] = (dvCounts[t.dv] || 0) + 1; });
-    var TAX = (typeof window !== 'undefined' && window.CTD_TAXONOMY) || null;
+    // t.tr (old contractor-type data) is imported but never surfaced as a
+    // facet — see the 2026-09-18 decision. Kept out of the returned vocab
+    // entirely so nothing can accidentally render it.
+
+    // DIVISIONS — the vendor's own classification (t.dv, real CSI-coded
+    // divisions from the merged database, e.g. "26 00 00 – Electrical").
+    // Multi-valued per vendor now.
+    var dvCounts = countArrayField(tools, 'dv');
     var divisions;
     if (TAX && TAX.divisions && TAX.divisions.length) {
-      // Ordered by division number and complete, so an unused division still
-      // shows (disabled at 0) rather than vanishing from the vocabulary.
-      divisions = TAX.divisions.filter(function (d) {
-        return !d.reserved;
-      }).map(function (d) {
+      // Complete canonical list (including the ALL DIVISIONS wildcard row),
+      // so an unused division still shows (disabled at 0) instead of
+      // vanishing from the vocabulary.
+      divisions = TAX.divisions.map(function (d) {
         var label = d.number + ' – ' + d.name;
         return { value: label, label: label, count: dvCounts[label] || 0 };
       });
     } else {
-      divisions = Object.keys(dvCounts).map(function (d) {
-        return { value: d, label: d, count: dvCounts[d] };
-      }).sort(function (a, b) { return b.count - a.count; });
+      divisions = toSortedList(dvCounts);
     }
 
-    // MASTER GROUPS (UI label since 2026-09-13, was "Major Groups"; field
-    // key still `mt`) — the client's validated 12 groups (HX-09), counted
-    // from each vendor's own classification. Groups with no vendors render
-    // disabled rather than filtering to an empty table.
-    var mtCounts = {};
-    tools.forEach(function (t) { if (t.mt) mtCounts[t.mt] = (mtCounts[t.mt] || 0) + 1; });
+    // MASTER GROUPS (field key still `mt`) — the client's 12 validated
+    // groups plus the ALL MASTER GROUPS wildcard, complete canonical list
+    // like Divisions above. Multi-valued per vendor now.
+    var mtCounts = countArrayField(tools, 'mt');
     var masterTrades;
-    if (TAX && TAX.masterTrades && TAX.masterTrades.length) {
-      masterTrades = TAX.masterTrades.map(function (m) {
+    if (TAX && TAX.masterGroups && TAX.masterGroups.length) {
+      masterTrades = TAX.masterGroups.map(function (m) {
         var count = mtCounts[m.name] || 0;
         return { value: m.name, label: m.name, count: count, pending: count === 0 };
       });
     } else {
-      masterTrades = Object.keys(mtCounts).map(function (m) {
-        return { value: m, label: m, count: mtCounts[m] };
-      }).sort(function (a, b) { return b.count - a.count; });
+      masterTrades = toSortedList(mtCounts);
+    }
+
+    // TRADES (field key `trd`) — real CSI-coded trades, brand new
+    // 2026-09-19. 425 possible values is too many for a fixed always-shown
+    // list (unlike Divisions/Master Groups' ~12–51), so this facet is built
+    // from live data only, same as Divisions/Master Groups were before the
+    // client's hierarchy data arrived.
+    var trades = toSortedList(countArrayField(tools, 'trd'));
+
+    // MARKET SECTOR (field key `mkt`) — brand new 2026-09-19, replaces the
+    // "MARKETS SERVED" stub that rendered invented values at a fixed 0
+    // count on Search/Results and Advanced Search.
+    var mktCounts = countArrayField(tools, 'mkt');
+    var marketSectors;
+    if (TAX && TAX.marketSectors && TAX.marketSectors.length) {
+      marketSectors = TAX.marketSectors.map(function (m) {
+        var count = mktCounts[m.name] || 0;
+        return { value: m.name, label: m.name, count: count, pending: count === 0 };
+      });
+    } else {
+      marketSectors = toSortedList(mktCounts);
     }
 
     var availCounts = {};
@@ -118,28 +152,46 @@ window.CTD_FILTERS = (function () {
     }).sort(function (a, b) { return b.count - a.count; });
 
     return {
-      categories: categories, subcategories: subcategories, trades: trades,
-      divisions: divisions, masterTrades: masterTrades, availableOn: availableOn, sizes: sizes,
+      categories: categories, subcategories: subcategories, products: products,
+      trades: trades, divisions: divisions, masterTrades: masterTrades,
+      marketSectors: marketSectors, availableOn: availableOn, sizes: sizes,
       CM: CM
     };
   }
 
-  // filters: { q, cat:[], sub:[], tr:[], div:[], mt:[], avail:[] }
+  // Every classification field is now multi-valued (a vendor can carry more
+  // than one category, subcategory, master group, division, trade or
+  // product) — so filtering means "does the active selection intersect the
+  // vendor's array", same test already used for cat/tr.
+  function hasAny(arr, selected) {
+    return (arr || []).some(function (v) { return selected.indexOf(v) > -1; });
+  }
+
+  // filters: { q, cat:[], sub:[], prod:[], div:[], mt:[], trd:[], mkt:[], avail:[], sz:[] }
+  // tr (old contractor-type data) is intentionally not a filterable
+  // dimension — imported but never surfaced, per the 2026-09-18 decision.
   function apply(tools, filters, vocab) {
     filters = filters || {};
     var q = (filters.q || '').trim().toLowerCase();
     return (tools || []).filter(function (t) {
       if (q) {
-        var hay = ((t.n || '') + ' ' + (t.x || '') + ' ' + (t.sub || '') + ' ' + (t.c || []).join(' ')).toLowerCase();
+        var prodNames = (t.products || []).map(function (p) { return p.n; }).join(' ');
+        var hay = ((t.n || '') + ' ' + (t.x || '') + ' ' + (t.subs || []).join(' ') + ' ' +
+          prodNames + ' ' + (t.c || []).join(' ')).toLowerCase();
         if (hay.indexOf(q) === -1) return false;
       }
-      if (filters.cat && filters.cat.length && !(t.c || []).some(function (c) { return filters.cat.indexOf(c) > -1; })) return false;
-      if (filters.sub && filters.sub.length && filters.sub.indexOf(t.sub) === -1) return false;
-      if (filters.tr && filters.tr.length && !(t.tr || []).some(function (tr) { return filters.tr.indexOf(tr) > -1; })) return false;
-      // Both read the vendor's own classification now, not a guess made from
-      // its software category.
-      if (filters.div && filters.div.length && filters.div.indexOf(t.dv) === -1) return false;
-      if (filters.mt && filters.mt.length && filters.mt.indexOf(t.mt) === -1) return false;
+      if (filters.cat && filters.cat.length && !hasAny(t.c, filters.cat)) return false;
+      if (filters.sub && filters.sub.length && !hasAny(t.subs, filters.sub)) return false;
+      if (filters.prod && filters.prod.length) {
+        var names = (t.products || []).map(function (p) { return p.n; });
+        if (!hasAny(names, filters.prod)) return false;
+      }
+      // All four read the vendor's own real classification from the merged
+      // database now, not a guess made from its software category.
+      if (filters.div && filters.div.length && !hasAny(t.dv, filters.div)) return false;
+      if (filters.mt && filters.mt.length && !hasAny(t.mt, filters.mt)) return false;
+      if (filters.trd && filters.trd.length && !hasAny(t.trd, filters.trd)) return false;
+      if (filters.mkt && filters.mkt.length && !hasAny(t.mkt, filters.mkt)) return false;
       if (filters.avail && filters.avail.length) {
         var av = avail(t.sz);
         if (!filters.avail.some(function (a) { return av.indexOf(a) > -1; })) return false;
@@ -149,16 +201,21 @@ window.CTD_FILTERS = (function () {
     });
   }
 
-  // Reads repeated query-string keys (?cat=a&cat=b) into arrays.
+  // Reads repeated query-string keys (?cat=a&cat=b) into arrays. `tr` stays
+  // readable so an old shared/bookmarked URL doesn't error out, even though
+  // it's no longer applied as a filter (2026-09-18 decision).
   function readParams(search) {
     var sp = new URLSearchParams(search);
     return {
       q: sp.get('q') || '',
       cat: sp.getAll('cat'),
       sub: sp.getAll('sub'),
+      prod: sp.getAll('prod'),
       tr: sp.getAll('tr'),
       div: sp.getAll('div'),
       mt: sp.getAll('mt'),
+      trd: sp.getAll('trd'),
+      mkt: sp.getAll('mkt'),
       avail: sp.getAll('avail'),
       sz: sp.getAll('sz')
     };
@@ -167,7 +224,7 @@ window.CTD_FILTERS = (function () {
   function toParams(filters) {
     var sp = new URLSearchParams();
     if (filters.q) sp.set('q', filters.q);
-    ['cat', 'sub', 'tr', 'div', 'mt', 'avail', 'sz'].forEach(function (k) {
+    ['cat', 'sub', 'prod', 'tr', 'div', 'mt', 'trd', 'mkt', 'avail', 'sz'].forEach(function (k) {
       (filters[k] || []).forEach(function (v) { sp.append(k, v); });
     });
     return sp;

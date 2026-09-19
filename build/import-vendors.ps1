@@ -1,32 +1,38 @@
-﻿# ─────────────────────────────────────────────────────────────────────────────
-# CTD — import the client's vendor master + construction taxonomy.
+# ─────────────────────────────────────────────────────────────────────────────
+# CTD — import the merged vendor/product database (real multi-product vendors,
+# CSI-coded Master Groups > Divisions > Trades, and Market Sector).
 #
-# Reads:  the two workbooks the client supplies (paths below)
-# Writes: assets/tools-data.js          window.TOOLS, all 1,463 vendors
-#         data/construction-taxonomy.json   Master Trade > Division > Trade > Subtrade
+# Reads:  CTD_Complete_Vendor_Product_Database_1_1381.xlsx (client data, not in
+#         this repo — see CTD-product-db/out/), plus the *current*
+#         assets/tools-data.js, to carry forward the four fields the new
+#         database does not contain (Company Size, Pricing Model, Free Trial,
+#         Description) by domain match.
+# Writes: assets/tools-data.js        window.TOOLS, one record per company
+#         assets/taxonomy-data.js     Master Groups / Divisions / Market Sectors
+#
+# Supersedes the HX-01..HX-09 hierarchy-classified workbook import
+# (specs/hierarchy-import.md) — that data model (one row = one product = one
+# company, single mt/dv/sub) is retired. See specs/product-db-site-integration-
+# 2026-09-19.md for the full plan and the decisions this script implements.
 #
 # Re-runnable: always regenerates both outputs from scratch. When a newer
-# workbook arrives, drop it in and re-run — do not hand-edit the outputs.
+# merged database arrives, drop it in and re-run — do not hand-edit the
+# outputs.
 #
 # Run: powershell -ExecutionPolicy Bypass -File build\import-vendors.ps1
 # ─────────────────────────────────────────────────────────────────────────────
 param(
-  [string]$VendorXlsx    = "$env:USERPROFILE\OneDrive\Desktop\CTD\CTD_Combined_Vendor_Master_1463_HIERARCHY_CLASSIFIED.xlsx",
-  [string]$TaxonomyXlsx  = "$env:USERPROFILE\Downloads\CTD_Master_Trades_Divisions_Trades_Subtrades (1).xlsx",
-  # HX-09 - the client's correction, 2026-09-02. Supersedes $TaxonomyXlsx for
-  # everything except the division-number lookup - see the HX-09 block below.
-  [string]$HierarchyXlsx = "$env:USERPROFILE\OneDrive\Desktop\CTD\CTD_Construction_Hierarchy_VALIDATED_4_LEVEL.xlsx",
+  [string]$VendorDbXlsx = "$env:USERPROFILE\Desktop\Claude\CTD-product-db\out\CTD_Complete_Vendor_Product_Database_1_1381.xlsx",
   [string]$Root         = (Resolve-Path "$PSScriptRoot\..").Path
 )
 
 $ErrorActionPreference = 'Stop'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 
-foreach ($p in @($VendorXlsx, $TaxonomyXlsx, $HierarchyXlsx)) {
-  if (-not (Test-Path $p)) { throw "Missing workbook: $p" }
-}
+if (-not (Test-Path $VendorDbXlsx)) { throw "Missing workbook: $VendorDbXlsx" }
 
-# ── xlsx reading ─────────────────────────────────────────────────────────────
+# ── xlsx reading (unchanged from the prior importer — generic zip/XML reader,
+#    no client-specific logic lives here) ────────────────────────────────────
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 function Open-Xlsx($path) {
@@ -53,7 +59,6 @@ function Get-SharedStrings($dir) {
   return $out
 }
 
-# Sheet name -> sheetN.xml, resolved through the workbook rels.
 function Get-SheetPath($dir, $sheetName) {
   $wb = New-Object System.Xml.XmlDocument
   $wb.Load((Join-Path $dir 'xl\workbook.xml'))
@@ -69,17 +74,12 @@ function Get-SheetPath($dir, $sheetName) {
   foreach ($rel in $rels.DocumentElement.ChildNodes) {
     if ($rel.Id -ne $rid) { continue }
     $target = $rel.Target
-    # Targets come both ways: "worksheets/sheet2.xml" (relative to xl/) and
-    # "/xl/worksheets/sheet2.xml" (absolute from the package root). The two
-    # client workbooks differ, so handle both.
     if ($target.StartsWith('/')) { return (Join-Path $dir $target.TrimStart('/').Replace('/', '\')) }
     return (Join-Path $dir ('xl\' + $target.Replace('/', '\')))
   }
   throw "Could not resolve relationship $rid"
 }
 
-# Rows as hashtables keyed by header name. Handles shared strings and inline
-# strings — the taxonomy workbook uses inline, the vendor workbook uses shared.
 function Read-Sheet($dir, $sheetName, [int]$headerRow = 1) {
   $shared = Get-SharedStrings $dir
   $doc = New-Object System.Xml.XmlDocument
@@ -125,209 +125,354 @@ function Val($rec, $key) {
   return ''
 }
 
-# ── 1. Construction taxonomy ─────────────────────────────────────────────────
-Write-Host 'Reading taxonomy workbook...' -ForegroundColor Cyan
-$taxDir = Open-Xlsx $TaxonomyXlsx
+# ── Deryck's final 12-category mapping (CTD_12_Categories_Subcategories_
+#    Tooltips.docx, 2026-09-19) — every one of the 77 subcategories, keyed by
+#    Subcategory_ID, mapped to the category slug that survives. Specialty
+#    Solutions (the former 13th category) is retired; its six subcategories
+#    are folded into the categories below (see product-db-site-integration-
+#    2026-09-19.md §3a). This table is the single source of truth for the
+#    remap — it replaces PRODUCT_CATEGORY, which still encodes the old
+#    13-category assignment. ─────────────────────────────────────────────────
+$SUBCAT_TO_CAT_SLUG = @{
+  10 = 'project-management'; 11 = 'project-management'; 16 = 'project-management'
+  24 = 'project-management'; 48 = 'project-management'; 77 = 'project-management'
 
-# These sheets carry a title row above the real header.
-$trades       = Read-Sheet $taxDir 'TRADES'        2
+  3 = 'ai-automation'; 4 = 'ai-automation'; 6 = 'ai-automation'; 29 = 'ai-automation'
+  46 = 'ai-automation'; 71 = 'ai-automation'; 76 = 'ai-automation'
 
-# HX-09 - correction, 2026-09-02. CTD_Construction_Hierarchy_VALIDATED_4_LEVEL
-# supersedes the workbook above for everything except one lookup (below): its
-# own DEVELOPER_NOTES Rule 6 states "the former 1,000 synthetic Trade rows
-# must not be imported into production", and its 12 Master Trades replace the
-# 11 above - several renamed, two split apart (old "Mechanical" -> Plumbing /
-# HVAC & Mechanical; old "Electrical & Technology" -> Electrical /
-# Communications & Security). See specs/hierarchy-import.md HX-09.
-Write-Host 'Reading validated hierarchy workbook...' -ForegroundColor Cyan
-$hierDir        = Open-Xlsx $HierarchyXlsx
-$masterTrades12 = Read-Sheet $hierDir 'MASTER_TRADES' 2
-$divisions50    = Read-Sheet $hierDir 'DIVISIONS'     2
+  9 = 'safety-compliance'; 12 = 'safety-compliance'; 32 = 'safety-compliance'
+  33 = 'safety-compliance'; 56 = 'safety-compliance'; 66 = 'safety-compliance'
 
-$taxonomy = [ordered]@{
-  generatedFrom = [System.IO.Path]::GetFileName($HierarchyXlsx)
-  generatedAt   = (Get-Date -Format 'yyyy-MM-dd')
-  note          = 'Master Trade > Division, validated. Trade/Subtrade await a licensed MasterFormat 2026 dataset - see HX-09.'
-  masterTrades  = @($masterTrades12 | ForEach-Object {
-      [ordered]@{
-        id          = [int](Val $_ 'Master Trade #')
-        name        = (Val $_ 'Master Trade')
-        description = (Val $_ 'Description')
-      } })
-  divisions     = @($divisions50 | ForEach-Object {
-      [ordered]@{
-        number        = (Val $_ 'Division #')
-        name          = (Val $_ 'Division')
-        masterTradeId = [int](Val $_ 'Master Trade #')
-        masterTrade   = (Val $_ 'Master Trade')
-        reserved      = ((Val $_ 'Status') -like '*Reserved*')
-      } })
+  13 = 'estimating-takeoff'; 23 = 'estimating-takeoff'; 52 = 'estimating-takeoff'
+  61 = 'estimating-takeoff'; 65 = 'estimating-takeoff'
+
+  5 = 'fleet-equipment'; 20 = 'fleet-equipment'; 26 = 'fleet-equipment'
+  31 = 'fleet-equipment'; 40 = 'fleet-equipment'; 63 = 'fleet-equipment'
+
+  1 = 'accounting-payroll'; 21 = 'accounting-payroll'; 35 = 'accounting-payroll'
+  36 = 'accounting-payroll'; 44 = 'accounting-payroll'; 64 = 'accounting-payroll'
+
+  34 = 'procurement-purchasing'; 43 = 'procurement-purchasing'; 47 = 'procurement-purchasing'
+  51 = 'procurement-purchasing'; 60 = 'procurement-purchasing'; 67 = 'procurement-purchasing'
+
+  18 = 'document-management'; 19 = 'document-management'; 22 = 'document-management'
+  25 = 'document-management'; 28 = 'document-management'; 68 = 'document-management'
+  73 = 'document-management'; 74 = 'document-management'; 75 = 'document-management'
+
+  17 = 'field-service-dispatch'; 55 = 'field-service-dispatch'; 58 = 'field-service-dispatch'
+  59 = 'field-service-dispatch'; 62 = 'field-service-dispatch'; 70 = 'field-service-dispatch'
+  72 = 'field-service-dispatch'
+
+  14 = 'crm-sales'; 15 = 'crm-sales'; 27 = 'crm-sales'; 38 = 'crm-sales'
+  50 = 'crm-sales'; 57 = 'crm-sales'
+
+  7 = 'construction-leads'; 8 = 'construction-leads'; 30 = 'construction-leads'
+  37 = 'construction-leads'; 41 = 'construction-leads'; 45 = 'construction-leads'
+  49 = 'construction-leads'
+
+  2 = 'marketing-reputation'; 39 = 'marketing-reputation'; 42 = 'marketing-reputation'
+  53 = 'marketing-reputation'; 54 = 'marketing-reputation'; 69 = 'marketing-reputation'
 }
 
-$taxPath = Join-Path $Root 'data\construction-taxonomy.json'
-[System.IO.File]::WriteAllText($taxPath, ($taxonomy | ConvertTo-Json -Depth 6), $utf8)
-
-# Browser-side copy for the facet lists.
-$taxJs = [ordered]@{
-  masterTrades = @($taxonomy.masterTrades | ForEach-Object { [ordered]@{ id = $_.id; name = $_.name } })
-  divisions    = @($taxonomy.divisions    | ForEach-Object { [ordered]@{ number = $_.number; name = $_.name; masterTrade = $_.masterTrade; reserved = $_.reserved } })
+# On-screen category names. Slugs are the site's existing URL/filter keys and
+# stay unchanged even where Deryck renamed the category (confirmed via his own
+# ChatGPT check, screenshotted 2026-09-19: keep old links, change only the
+# displayed name).
+$CAT_NAME = [ordered]@{
+  'project-management'      = 'Project Management'
+  'ai-automation'            = 'AI & Automation'
+  'safety-compliance'        = 'Safety & Compliance'
+  'estimating-takeoff'       = 'Estimating & Takeoff'
+  'fleet-equipment'          = 'Fleet & Equipment'
+  'accounting-payroll'       = 'Finance & Payroll'
+  'procurement-purchasing'   = 'Procurement'
+  'document-management'      = 'BIM & Documents'
+  'field-service-dispatch'   = 'Field Operations'
+  'crm-sales'                = 'CRM & Sales'
+  'construction-leads'       = 'Leads & Bids'
+  'marketing-reputation'     = 'Marketing & Reputation'
 }
-$taxJsPath = Join-Path $Root 'assets\taxonomy-data.js'
-[System.IO.File]::WriteAllText($taxJsPath, ("window.CTD_TAXONOMY = " + ($taxJs | ConvertTo-Json -Depth 5 -Compress) + ";`n"), $utf8)
-Write-Host ("  master trades {0} | divisions {1}" -f $taxonomy.masterTrades.Count, $taxonomy.divisions.Count)
 
-# The one thing still read from the retired workbook: which division number a
-# vendor's primary_trade value belongs to. That's arithmetic, not vocabulary -
-# each of the old 50 "trade" rows names exactly one division - and is
-# independent of the synthetic Trade list Rule 6 retires; it is never exposed
-# to the site. Division number -> official name/master trade both come from
-# the validated workbook, never from this one.
-$TRADE_DIV = @{}
-foreach ($t in $trades) { $TRADE_DIV[(Val $t 'trade_name')] = (Val $t 'division_number') }
-
-$DIV_NAME = @{}
-$DIV_MT   = @{}
-foreach ($d in $taxonomy.divisions) { $DIV_NAME[$d.number] = $d.name; $DIV_MT[$d.number] = $d.masterTrade }
-
-# ── 2. Vendors ───────────────────────────────────────────────────────────────
-Write-Host 'Reading vendor workbook...' -ForegroundColor Cyan
-$venDir  = Open-Xlsx $VendorXlsx
-$vendors = Read-Sheet $venDir 'Combined_Vendors_1463' 1
-
-# Workbook category label -> site slug. The site's display labels differ for two
-# of these (construction-leads shows as "Leads, Bids & Estimates",
-# procurement-purchasing as "Back Office Operations") - that mapping lives in
-# filters.js CM and is deliberately not duplicated here.
-$CAT_SLUG = @{
-  'Estimating & Takeoff'     = 'estimating-takeoff'
-  'Construction Leads'       = 'construction-leads'
-  'CRM & Sales'              = 'crm-sales'
-  'Field Service & Dispatch' = 'field-service-dispatch'
-  'Project Management'       = 'project-management'
-  'Accounting & Payroll'     = 'accounting-payroll'
-  'Safety & Compliance'      = 'safety-compliance'
-  'Fleet & Equipment'        = 'fleet-equipment'
-  'Marketing & Reputation'   = 'marketing-reputation'
-  'AI & Automation'          = 'ai-automation'
-  'Document Management'      = 'document-management'
-  'Procurement & Purchasing' = 'procurement-purchasing'
+function Normalize-Name($s) {
+  if (-not $s) { return '' }
+  return ([string]$s).ToLower() -replace '[^a-z0-9]', ''
 }
 
 function Get-Domain($url) {
   if ([string]::IsNullOrWhiteSpace($url)) { return '' }
   $u = $url.Trim() -replace '^https?://', '' -replace '^www\.', ''
-  return ($u -replace '/.*$', '').Trim()
+  return ($u -replace '/.*$', '').Trim().ToLower()
 }
 
-function Get-Slug($seoSlug, $name) {
-  $s = $seoSlug.Trim('/')
-  if ($s) { return ($s -split '/')[-1] }
+function Get-Slug($name) {
   $n = $name.ToLower() -replace '[^a-z0-9]+', '-'
   return $n.Trim('-')
 }
 
+# ── 1. Read the merged database ──────────────────────────────────────────────
+Write-Host 'Reading merged vendor/product database...' -ForegroundColor Cyan
+$dbDir = Open-Xlsx $VendorDbXlsx
+
+$subRows   = Read-Sheet $dbDir 'SUBCATEGORIES_NORM'   1
+$vendRows  = Read-Sheet $dbDir 'VENDORS_NORM'         1
+$prodRows  = Read-Sheet $dbDir 'PRODUCTS_NORM'        1
+$pSubRows  = Read-Sheet $dbDir 'PRODUCT_SUBCATEGORY'  1
+$mgRows    = Read-Sheet $dbDir 'MASTER_GROUPS_NORM'   1
+$pMgRows   = Read-Sheet $dbDir 'PRODUCT_MASTER_GROUP' 1
+$divRows   = Read-Sheet $dbDir 'DIVISIONS_NORM'       1
+$pDivRows  = Read-Sheet $dbDir 'PRODUCT_DIVISION'     1
+$trdRows   = Read-Sheet $dbDir 'TRADES_NORM'          1
+$pTrdRows  = Read-Sheet $dbDir 'PRODUCT_TRADE'        1
+$msRows    = Read-Sheet $dbDir 'MARKET_SECTORS_NORM'  1
+$vMsRows   = Read-Sheet $dbDir 'VENDOR_MARKET_SECTOR' 1
+
+Write-Host ("  vendors {0} | products {1}" -f $vendRows.Count, $prodRows.Count)
+
+# ── 2. Lookups ────────────────────────────────────────────────────────────────
+$SUB_NAME = @{}
+foreach ($r in $subRows) { $SUB_NAME[[int](Val $r 'Subcategory_ID')] = (Val $r 'Subcategory_Name') }
+
+$MG_NAME = @{}
+foreach ($r in $mgRows) { $MG_NAME[[int](Val $r 'master_group_id')] = (Val $r 'master_group_name') }
+
+# En dash built from its code point, not typed literally — a literal
+# non-ASCII character in this .ps1 source file gets misread through the
+# system codepage (Windows PowerShell 5.1 has no way to know this file is
+# UTF-8 without a BOM) and silently corrupts into mojibake in the output.
+$ENDASH = [char]0x2013
+
+$DIV_LABEL = @{}
+foreach ($r in $divRows) {
+  $id = [int](Val $r 'division_id')
+  $DIV_LABEL[$id] = (Val $r 'CSI_Division_Number') + ' ' + $ENDASH + ' ' + (Val $r 'division_name')
+}
+
+$TRD_LABEL = @{}
+foreach ($r in $trdRows) {
+  $id = [int](Val $r 'trade_id')
+  $TRD_LABEL[$id] = (Val $r 'CSI_Trade_Number') + ' ' + $ENDASH + ' ' + (Val $r 'trade_name')
+}
+
+$MS_NAME = @{}
+foreach ($r in $msRows) { $MS_NAME[[int](Val $r 'market_sector_id')] = (Val $r 'market_sector_name') }
+
+# Missing-mapping check — fail loudly rather than silently drop a subcategory.
+$missingSubcatMap = @($subRows | Where-Object { -not $SUBCAT_TO_CAT_SLUG.ContainsKey([int](Val $_ 'Subcategory_ID')) })
+if ($missingSubcatMap.Count) {
+  throw ("Subcategories with no category mapping: " + (($missingSubcatMap | ForEach-Object { Val $_ 'Subcategory_Name' }) -join ', '))
+}
+
+# Product-level junctions -> arrays of IDs, keyed by Vendor_Product_ID.
+function Build-Junction($rows, $vpKey, $idKey) {
+  $out = @{}
+  foreach ($r in $rows) {
+    $vp = Val $r $vpKey
+    if (-not $vp) { continue }
+    $id = [int](Val $r $idKey)
+    if (-not $out.ContainsKey($vp)) { $out[$vp] = New-Object System.Collections.Generic.List[int] }
+    $out[$vp].Add($id)
+  }
+  return $out
+}
+$vpSubIds = Build-Junction $pSubRows 'Vendor_Product_ID' 'Subcategory_ID'
+$vpMgIds  = Build-Junction $pMgRows  'Vendor_Product_ID' 'Master_Group_ID'
+$vpDivIds = Build-Junction $pDivRows 'Vendor_Product_ID' 'Division_ID'
+$vpTrdIds = Build-Junction $pTrdRows 'Vendor_Product_ID' 'Trade_ID'
+
+# Vendor-level Market Sector junction, keyed by Vendor_ID (not Vendor_Product_ID
+# — this is a company-level fact, not a per-product one).
+$vidMsIds = @{}
+foreach ($r in $vMsRows) {
+  $vid = Val $r 'Vendor_ID'
+  if (-not $vid) { continue }
+  $id = [int](Val $r 'Market_Sector_ID')
+  if (-not $vidMsIds.ContainsKey($vid)) { $vidMsIds[$vid] = New-Object System.Collections.Generic.List[int] }
+  $vidMsIds[$vid].Add($id)
+}
+
+# ── 3. Carry forward the four fields the new database does not have
+#      (Company Size, Pricing Model, Free Trial, Description), plus the old
+#      contractor-type array and rank, by domain match against the *current*
+#      tools-data.js — see product-db-site-integration-2026-09-19.md §6. ─────
+$oldByDomain = @{}
+$oldToolsPath = Join-Path $Root 'assets\tools-data.js'
+if (Test-Path $oldToolsPath) {
+  $oldText = [System.IO.File]::ReadAllText($oldToolsPath)
+  $oldJson = $oldText -replace '^\s*window\.TOOLS\s*=\s*', '' -replace ';\s*$', ''
+  if ($oldJson.Trim()) {
+    $oldTools = $oldJson | ConvertFrom-Json
+    foreach ($o in $oldTools) {
+      $d = ([string]$o.d).ToLower()
+      if ($d -and -not $oldByDomain.ContainsKey($d)) { $oldByDomain[$d] = $o }
+    }
+  }
+}
+Write-Host ("  prior site data available for carry-forward: {0} domains" -f $oldByDomain.Count)
+
+# ── 4. Vendor identity + Vendor_ID -> row lookup ─────────────────────────────
+$vendorById = @{}
+foreach ($v in $vendRows) { $vendorById[(Val $v 'Vendor_ID')] = $v }
+
+function VendorNum($vid) {
+  $n = 0
+  [void][int]::TryParse(($vid -replace '\D', ''), [ref]$n)
+  return $n
+}
+
+# ── 5. Group products by normalized Parent_Vendor (a company may span several
+#      Vendor_IDs — e.g. Autodesk's 13 acquired products each got their own
+#      Vendor_ID in the original audit). See §4 of the spec for why. ─────────
+$groups = [ordered]@{}
+foreach ($p in $prodRows) {
+  $parent = Val $p 'Parent_Vendor'
+  if (-not $parent) { $parent = Val $p 'Vendor_Name' }
+  $key = Normalize-Name $parent
+  if (-not $groups.Contains($key)) { $groups[$key] = New-Object System.Collections.Generic.List[hashtable] }
+  $groups[$key].Add($p)
+}
+
 $tools = New-Object System.Collections.Generic.List[object]
-$missingTrade = 0
-$missingMt = 0
-$unknownCats = @{}
 $slugSeen = @{}
+$withProducts = 0
 
-foreach ($v in $vendors) {
-  $name = Val $v 'company_name'
-  if (-not $name) { continue }
+foreach ($key in $groups.Keys) {
+  $rows = $groups[$key]
 
-  $catLabel = Val $v 'primary_category'
-  $catSlug  = $null
-  if ($catLabel -and $CAT_SLUG.ContainsKey($catLabel)) { $catSlug = $CAT_SLUG[$catLabel] }
-  elseif ($catLabel) { $unknownCats[$catLabel] = $true }
+  # Canonical identity = the row belonging to the lowest Vendor_ID in the
+  # group (CTD's own "first-seen" convention from the audit) — but for the
+  # domain, use whichever domain is *most common* across the group. A
+  # company acquired piecemeal (Autodesk: 15 Vendor_IDs) often has its own
+  # domain on most rows but a legacy/acquired-product domain (e.g.
+  # proest.com) on the single lowest-numbered one; picking by frequency
+  # instead of "first" avoids surfacing the wrong company website.
+  $canon = $rows | Sort-Object { VendorNum (Val $_ 'Vendor_ID') } | Select-Object -First 1
+  $name = Val $canon 'Parent_Vendor'
+  if (-not $name) { $name = Val $canon 'Vendor_Name' }
 
-  # slugs must be unique - vendor-profile.html looks vendors up by ?s=<slug>
-  $slug = Get-Slug (Val $v 'seo_slug') $name
-  if ($slugSeen.ContainsKey($slug)) {
-    $slugSeen[$slug]++
-    $slug = "$slug-$($slugSeen[$slug])"
-  } else { $slugSeen[$slug] = 1 }
+  $vendorIdsInGroup = @($rows | ForEach-Object { Val $_ 'Vendor_ID' } | Select-Object -Unique)
+  $domainCounts = @{}
+  foreach ($vid in $vendorIdsInGroup) {
+    $vv = $vendorById[$vid]
+    if (-not $vv) { continue }
+    $d = Get-Domain (Val $vv 'Normalized_Domain')
+    if ($d) { $domainCounts[$d] = ($domainCounts[$d] + 1) }
+  }
+  $domain = ''
+  if ($domainCounts.Count -gt 0) {
+    $domain = ($domainCounts.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 1).Key
+  }
 
-  $desc = Val $v 'company_description'
-  if (-not $desc) { $desc = Val $v 'what_it_does' }
+  $catSlugs = New-Object System.Collections.Generic.HashSet[string]
+  $subNames = New-Object System.Collections.Generic.HashSet[string]
+  $mgNames  = New-Object System.Collections.Generic.HashSet[string]
+  $divLbls  = New-Object System.Collections.Generic.HashSet[string]
+  $trdLbls  = New-Object System.Collections.Generic.HashSet[string]
+  $products = New-Object System.Collections.Generic.List[object]
+  $productNamesSeen = New-Object System.Collections.Generic.HashSet[string]
 
-  $trades = @()
-  $trRaw = Val $v 'trades_served'
-  if ($trRaw) { $trades = @($trRaw -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ }) }
+  foreach ($p in $rows) {
+    $vp = Val $p 'Vendor_Product_ID'
+    $pname = Val $p 'Product_Name'
+    # LEGACY_DUPLICATES (see the merge spec) — the original ChatGPT-authored
+    # segments repeat the same product under more than one Vendor_ID for the
+    # same company (e.g. Autodesk's V0039 and V0049 both list an identical
+    # 20-product list). The underlying database rows are left alone (that
+    # cleanup is a separate, still-open decision), but the site must not
+    # visibly show "ProEst, ProEst" or double a vendor's product count.
+    if ($pname -and $productNamesSeen.Add((Normalize-Name $pname))) {
+      $products.Add([ordered]@{ n = $pname; u = (Val $p 'Source_URL') })
+    }
 
-  $rankRaw = Val $v 'category_rank'
-  $rank = 999
-  if ($rankRaw -and [int]::TryParse($rankRaw, [ref]$null)) { $rank = [int]$rankRaw }
+    if ($vpSubIds.ContainsKey($vp)) {
+      foreach ($sid in $vpSubIds[$vp]) {
+        if ($SUB_NAME.ContainsKey($sid)) { [void]$subNames.Add($SUB_NAME[$sid]) }
+        if ($SUBCAT_TO_CAT_SLUG.ContainsKey($sid)) { [void]$catSlugs.Add($SUBCAT_TO_CAT_SLUG[$sid]) }
+      }
+    }
+    if ($vpMgIds.ContainsKey($vp)) {
+      foreach ($id in $vpMgIds[$vp]) { if ($MG_NAME.ContainsKey($id)) { [void]$mgNames.Add($MG_NAME[$id]) } }
+    }
+    if ($vpDivIds.ContainsKey($vp)) {
+      foreach ($id in $vpDivIds[$vp]) { if ($DIV_LABEL.ContainsKey($id)) { [void]$divLbls.Add($DIV_LABEL[$id]) } }
+    }
+    if ($vpTrdIds.ContainsKey($vp)) {
+      foreach ($id in $vpTrdIds[$vp]) { if ($TRD_LABEL.ContainsKey($id)) { [void]$trdLbls.Add($TRD_LABEL[$id]) } }
+    }
+  }
 
-  # HX-02/HX-09 - the client's per-vendor hierarchy, at division granularity.
-  # dv is resolved through the division-number lookup then rendered with the
-  # validated workbook's official name, so the CSI number and the name can
-  # never drift apart. mt is recomputed from that same division number
-  # against the validated 12 Master Trades - the vendor workbook's own
-  # master_trade column is not used; it still carries the old 11-name
-  # taxonomy HX-09 retires. A primary_trade the lookup doesn't know is a hard
-  # error - silently dropping it is how a facet quietly empties.
-  $pt = Val $v 'primary_trade'
-  $dv = ''
-  $mt = ''
-  if ($pt) {
-    if (-not $TRADE_DIV.ContainsKey($pt)) { throw "Unknown primary_trade '$pt' on $name (row $(Val $v 'vendor_row_id')) - not in the taxonomy workbook." }
-    $divNum = $TRADE_DIV[$pt]
-    if (-not $DIV_NAME.ContainsKey($divNum)) { throw "Division '$divNum' (from primary_trade '$pt' on $name) not in the validated hierarchy workbook." }
-    $dv = ("{0} – {1}" -f $divNum, $DIV_NAME[$divNum])
-    $mt = $DIV_MT[$divNum]
-  } else { $missingTrade++ }
-  if (-not $mt) { $missingMt++ }
+  $mktNames = New-Object System.Collections.Generic.HashSet[string]
+  foreach ($vid in $vendorIdsInGroup) {
+    if ($vidMsIds.ContainsKey($vid)) {
+      foreach ($id in $vidMsIds[$vid]) { if ($MS_NAME.ContainsKey($id)) { [void]$mktNames.Add($MS_NAME[$id]) } }
+    }
+  }
 
-  # HX-03 - "All Sizes / Verify" is the client's internal workflow note, not a
-  # size. Strip it so the facet reads cleanly and the Verify rows merge with
-  # the plain ones already present.
-  $sz = (Val $v 'company_size_served') -replace '\s*/\s*Verify\s*$', ''
+  # slug — unique, dedupe collisions the way the prior importer did
+  $slug = Get-Slug $name
+  if ($slugSeen.ContainsKey($slug)) { $slugSeen[$slug]++; $slug = "$slug-$($slugSeen[$slug])" }
+  else { $slugSeen[$slug] = 1 }
 
-  # HX-07 - only real answers cross into the site. free_trial_available is
-  # "Unknown / Verify" on 1,402 of 1,463 rows; the vendor page used to print
-  # "Free Trial: Yes" for every one of them. Emit it only where the workbook
-  # actually knows, and let the page drop the row when it's absent.
-  $ftRaw = Val $v 'free_trial_available'
-  $ft = ''
-  if     ($ftRaw -match '^Yes')          { $ft = 'Yes' }
-  elseif ($ftRaw -match '^No')           { $ft = 'No'  }
-  # pricing_model is populated for all 1,463 and needs no verification flag,
-  # so the page can stop deriving it from company size.
-  $pm = Val $v 'pricing_model'
+  $old = $null
+  if ($domain -and $oldByDomain.ContainsKey($domain)) { $old = $oldByDomain[$domain] }
+
+  $oldX  = ''; $oldSz = ''; $oldPm = ''; $oldFt = ''; $oldRk = 999
+  $oldTr = New-Object System.Collections.Generic.List[string]
+  if ($old) {
+    if ($old.x)  { $oldX  = [string]$old.x }
+    if ($old.sz) { $oldSz = [string]$old.sz }
+    if ($old.pm) { $oldPm = [string]$old.pm }
+    if ($old.ft) { $oldFt = [string]$old.ft }
+    if ($old.rk) { $oldRk = [int]$old.rk }
+    if ($old.tr) { foreach ($v in @($old.tr)) { $oldTr.Add([string]$v) } }
+  }
+
+  if ($products.Count -gt 0) { $withProducts++ }
 
   $rec = [ordered]@{
-    n   = $name
-    s   = $slug
-    d   = Get-Domain (Val $v 'website_url')
-    x   = $desc
-    c   = @(if ($catSlug) { $catSlug })
-    sub = Val $v 'subcategory'
-    tr  = $trades
-    sz  = $sz
-    mt  = $mt
-    dv  = $dv
-    pm  = $pm
-    ft  = $ft
-    rk  = $rank
+    n        = $name
+    s        = $slug
+    d        = $domain
+    x        = $oldX
+    c        = [string[]]$catSlugs
+    subs     = [string[]]$subNames
+    tr       = $oldTr.ToArray()
+    mt       = [string[]]$mgNames
+    dv       = [string[]]$divLbls
+    trd      = [string[]]$trdLbls
+    mkt      = [string[]]$mktNames
+    products = $products.ToArray()
+    sz       = $oldSz
+    pm       = $oldPm
+    ft       = $oldFt
+    rk       = $oldRk
   }
   $tools.Add([pscustomobject]$rec)
 }
 
-if ($unknownCats.Count) {
-  Write-Warning ("Unmapped primary_category values: " + (($unknownCats.Keys) -join '; '))
-}
-
-$json = $tools | ConvertTo-Json -Depth 4 -Compress
+$json = $tools | ConvertTo-Json -Depth 6 -Compress
 $js   = "window.TOOLS = $json;`n"
 $outPath = Join-Path $Root 'assets\tools-data.js'
 [System.IO.File]::WriteAllText($outPath, $js, $utf8)
 
-# ── 3. Cache-bust every local script and stylesheet ──────────────────────────
-# Without this a returning visitor keeps the previously cached asset and still
-# sees the old vendor count — or worse, new data running against old filter
-# code. Stamping all local .js/.css (not just the data files) means one rule
-# covers every asset the pages depend on.
+# ── 6. Taxonomy — Master Groups, Divisions, Market Sectors. Full canonical
+#      lists (including the ALL/wildcard row, a real filterable value in this
+#      database) so an unused value still renders disabled at 0 rather than
+#      vanishing — same "Fire Protection -> 0" precedent as before. Trades
+#      (425 rows) are not injected wholesale; the facet is built from live
+#      data only, same as Division/Master Group were before HX-09 arrived —
+#      a fixed 425-checkbox list would not be usable UI. ────────────────────
+$taxonomy = [ordered]@{
+  generatedFrom = [System.IO.Path]::GetFileName($VendorDbXlsx)
+  generatedAt   = (Get-Date -Format 'yyyy-MM-dd')
+  note          = 'Master Groups / Divisions / Market Sectors, complete. Trades are CSI-coded and real (t.trd) but built from live data only, not injected as a fixed list - see product-db-site-integration-2026-09-19.md.'
+  masterGroups  = @($mgRows | ForEach-Object { [ordered]@{ id = [int](Val $_ 'master_group_id'); name = (Val $_ 'master_group_name') } } | Sort-Object id)
+  divisions     = @($divRows | ForEach-Object { [ordered]@{ id = [int](Val $_ 'division_id'); number = (Val $_ 'CSI_Division_Number'); name = (Val $_ 'division_name'); masterGroup = (Val $_ 'master_group_name') } } | Sort-Object id)
+  marketSectors = @($msRows | ForEach-Object { [ordered]@{ id = [int](Val $_ 'market_sector_id'); name = (Val $_ 'market_sector_name') } } | Sort-Object id)
+}
+$taxJsPath = Join-Path $Root 'assets\taxonomy-data.js'
+[System.IO.File]::WriteAllText($taxJsPath, ("window.CTD_TAXONOMY = " + ($taxonomy | ConvertTo-Json -Depth 5 -Compress) + ";`n"), $utf8)
+
+# ── 7. Cache-bust every local script and stylesheet ──────────────────────────
 $stamp = Get-Date -Format 'yyyyMMddHHmm'
 $stamped = 0
 foreach ($page in (Get-ChildItem -Path $Root -Filter '*.html' -File)) {
@@ -339,21 +484,30 @@ foreach ($page in (Get-ChildItem -Path $Root -Filter '*.html' -File)) {
   }
 }
 
-$withDomain = @($tools | Where-Object { $_.d }).Count
-$withCat    = @($tools | Where-Object { $_.c.Count -gt 0 }).Count
-$withMt     = @($tools | Where-Object { $_.mt }).Count
-$withDv     = @($tools | Where-Object { $_.dv }).Count
-if ($missingTrade -or $missingMt) { Write-Warning ("Rows without a hierarchy: primary_trade {0}, master_trade {1}" -f $missingTrade, $missingMt) }
+# ── 8. Report ─────────────────────────────────────────────────────────────
+$withDomain  = @($tools | Where-Object { $_.d }).Count
+$withCat     = @($tools | Where-Object { $_.c.Count -gt 0 }).Count
+$withMt      = @($tools | Where-Object { $_.mt.Count -gt 0 }).Count
+$withDv      = @($tools | Where-Object { $_.dv.Count -gt 0 }).Count
+$withTrd     = @($tools | Where-Object { $_.trd.Count -gt 0 }).Count
+$withMkt     = @($tools | Where-Object { $_.mkt.Count -gt 0 }).Count
+$withCarried = @($tools | Where-Object { $_.x }).Count
+$multiProd   = @($tools | Where-Object { $_.products.Count -gt 1 }).Count
+
 Write-Host ''
 Write-Host '=== Done ===' -ForegroundColor Green
-Write-Host ("  vendors written : {0}" -f $tools.Count)
-Write-Host ("  with a domain   : {0}  (no domain: {1})" -f $withDomain, ($tools.Count - $withDomain))
-Write-Host ("  with a category : {0}" -f $withCat)
-Write-Host ("  with master trd : {0}" -f $withMt)
-Write-Host ("  with trade/div  : {0}" -f $withDv)
-Write-Host ("  unique slugs    : {0}" -f (@($tools | Select-Object -ExpandProperty s -Unique).Count))
-Write-Host ("  cache stamp     : {0}  ({1} pages updated)" -f $stamp, $stamped)
+Write-Host ("  companies written    : {0}  (grouped from {1} product rows)" -f $tools.Count, $prodRows.Count)
+Write-Host ("  with 2+ products     : {0}" -f $multiProd)
+Write-Host ("  with a domain        : {0}" -f $withDomain)
+Write-Host ("  with a category      : {0}" -f $withCat)
+Write-Host ("  with master group    : {0}" -f $withMt)
+Write-Host ("  with division        : {0}" -f $withDv)
+Write-Host ("  with real trade      : {0}" -f $withTrd)
+Write-Host ("  with market sector   : {0}" -f $withMkt)
+Write-Host ("  carried-forward desc : {0}  (from prior site data by domain match)" -f $withCarried)
+Write-Host ("  unique slugs         : {0}" -f (@($tools | Select-Object -ExpandProperty s -Unique).Count))
+Write-Host ("  cache stamp          : {0}  ({1} pages updated)" -f $stamp, $stamped)
 Write-Host ("  -> {0}" -f $outPath)
-Write-Host ("  -> {0}" -f $taxPath)
+Write-Host ("  -> {0}" -f $taxJsPath)
 
-Remove-Item $taxDir, $hierDir, $venDir -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item $dbDir -Recurse -Force -ErrorAction SilentlyContinue

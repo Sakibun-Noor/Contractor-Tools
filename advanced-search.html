@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/ctd-scale.js?v=202609180100"></script>
+  <script src="assets/ctd-scale.js?v=202609191601"></script>
   <title>Advanced Search — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609061200">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609191601">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -276,18 +276,16 @@
     </div>
   </div>
 
-  <!-- 6 Selector Cards — populated at load from real tools-data.js
-       values (see the script at the end of this file). Product and
-       Subcategory both key off the same t.sub field: the dataset has
-       no separate "product" attribute, so rather than show fake
-       product names that filter nothing, Product reuses the one real
-       field that's the closest match. -->
+  <!-- 6 Selector Cards — populated at load from real tools-data.js values
+       (see the script at the end of this file). Product and Subcategory are
+       independent real fields as of 2026-09-19 (each vendor's actual
+       product list vs. its subcategories). -->
   <div class="selector-grid">
 
     <div class="sel-group-bar">About the Product</div>
     <div class="sel-group-bar">About the Buyer</div>
 
-    <div class="sel-card" data-filter="sub">
+    <div class="sel-card" data-filter="prod">
       <div class="sel-card-hd">
         <div class="hd-l"><h3>PRODUCT</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort PRODUCT list" onclick="CTD_sortCard(this)"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -317,7 +315,7 @@
       <div class="sel-clear-row"><button type="button" class="sel-clear" onclick="CTD_clearCard(this)" aria-label="Clear Categories">Clear</button></div>
     </div>
 
-    <div class="sel-card" data-filter="tr">
+    <div class="sel-card" data-filter="trd">
       <div class="sel-card-hd">
         <div class="hd-l"><h3>TRADES</h3><button type="button" class="sel-sort" title="Sort A-Z / Z-A" aria-label="Sort TRADES list" onclick="CTD_sortCard(this)"><svg class="sort-ic" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="up" d="M5 13V3M2.6 5.4L5 3l2.4 2.4"/><path class="dn" d="M11 3v10M8.6 10.6L11 13l2.4-2.4"/></svg></button></div>
         <svg class="info-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -444,9 +442,9 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609020216"></script>
-<script src="assets/taxonomy-data.js?v=202609020216"></script>
-<script src="assets/filters.js?v=202609020216"></script>
+<script src="assets/tools-data.js?v=202609191601"></script>
+<script src="assets/taxonomy-data.js?v=202609191601"></script>
+<script src="assets/filters.js?v=202609191601"></script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];
@@ -470,10 +468,10 @@
     }).join('');
   }
 
-  renderList(document.getElementById('sel-list-prod'), vocab.subcategories, 'sub');
+  renderList(document.getElementById('sel-list-prod'), vocab.products, 'prod');
   renderList(document.getElementById('sel-list-sub'), vocab.subcategories, 'sub');
   renderList(document.getElementById('sel-list-cat'), vocab.categories, 'cat');
-  renderList(document.getElementById('sel-list-tr'), vocab.trades, 'tr');
+  renderList(document.getElementById('sel-list-tr'), vocab.trades, 'trd');
   renderList(document.getElementById('sel-list-div'), vocab.divisions, 'div');
   renderList(document.getElementById('sel-list-mt'), vocab.masterTrades, 'mt');
   renderList(document.getElementById('af-size'), vocab.sizes, 'sz');
@@ -491,18 +489,16 @@
   renderList(document.getElementById('af-purchase'), stub([
     'Subscription','One-Time Purchase','Contract Or Quote'
   ]), 'purchase');
-  renderList(document.getElementById('af-markets'), stub([
-    'Col/Varsity Sports','Commercial','Education','Energy / Utilities',
-    'Government / Public Sector','Healthcare','Nonprofit','Manufacturing',
-    'Residential','Retail / Hospitality'
-  ]), 'market');
+  // Real Market Sector data as of 2026-09-19 — replaces the stub that
+  // rendered invented, always-zero values.
+  renderList(document.getElementById('af-markets'), vocab.marketSectors, 'mkt');
   // Advanced-filter checkboxes render smaller than selector-card ones
   document.querySelectorAll('#af-body .sel-item').forEach(function(el){
     el.className='af-item'+(el.classList.contains('is-pending')?' is-pending':'');
   });
 
   function collectFilters(){
-    var f={cat:[],sub:[],tr:[],div:[],mt:[],avail:[],sz:[]};
+    var f={cat:[],sub:[],prod:[],div:[],mt:[],trd:[],mkt:[],avail:[],sz:[]};
     document.querySelectorAll('[data-filter]:checked').forEach(function(cb){
       var k=cb.getAttribute('data-filter');
       if(f[k] && f[k].indexOf(cb.value)===-1) f[k].push(cb.value);
@@ -514,7 +510,7 @@
     return CTD_FILTERS.apply(TOOLS, f, vocab).length;
   }
 
-  var LABELS={cat:'Category',sub:'Product/Subcategory',tr:'Trades',div:'Divisions',mt:'Master Groups',avail:'Available On',sz:'Company Size'};
+  var LABELS={cat:'Category',sub:'Subcategory',prod:'Product',div:'Divisions',mt:'Master Groups',trd:'Trades',mkt:'Market Sector',avail:'Available On',sz:'Company Size'};
 
   function refresh(){
     var f=collectFilters();
