@@ -272,3 +272,76 @@ than adjusted unilaterally; worth another look if he flags it.
   with no domain match in the prior site (mostly the 561–1381 continuation
   vendors) show "—" / blank, same as any other unverified field on this site
   (HX-07 precedent). Not fabricated.
+
+## 10. Build log — 2026-09-20 (client round-2 fixes)
+
+Deryck's 2026-09-19 review notes (`Notes_260919_165719.docx`) contained 20 items.
+Per the client's own "we'll discuss later" split, 13 straightforward items (no
+open design question) were implemented; 3 explicit "let's discuss" items were
+left alone (BIM & Documents center-search click-through, Advanced Results Quick
+Facts realignment, and predictive search — scoped as a separate future feature).
+
+### Done this round
+
+1. **Hide CSI codes everywhere a Division/Trade displays.** Added
+   `CTD_FILTERS.stripCode()` (strips the `"NN NN NN – "` prefix) — applied to
+   `results.html`, `advanced-results.html` table cells and `vendor-profile.html`'s
+   Divisions/Trades cards. The raw coded value is kept as the underlying data,
+   CSV export, and (on `results.html`/`advanced-results.html`) the `title` tooltip
+   / filter value — only the visible label changes.
+2. **Replace "ALL…" wildcard display with the real individual values, each
+   clickable.** Added `CTD_FILTERS.isAllValue()` / `expandAll()` — when a
+   vendor's only Division/Master Group/Trade value is the ALL wildcard, the full
+   real list for that dimension is shown instead. Applied to `results.html` and
+   `advanced-results.html`. **Vendor Page is the deliberate exception** (client,
+   same round): it keeps the plain "ALL DIVISIONS" / "ALL TRADES" text and does
+   not expand — `stripCode` still runs there so it reads "ALL DIVISIONS" not
+   "ALL – ALL DIVISIONS".
+3. **Advanced Filters (5 sections): centered, rollup count badges, small Clear
+   buttons.** Evaluation Options, Purchase Options, Available On, Markets
+   Served, Company Size on `advanced-search.html` — each `<h4>` now shows an
+   "N selected" badge that updates live with `refresh()`, and each section has
+   its own Clear button that only unchecks that section's boxes.
+4. **Search bar placeholder → "Start your search here"** on `advanced-search.html`.
+5. **Advanced Results: fixed the Categories/Subcategories/Key Products
+   misalignment.** Root cause: the table's one-line-ellipsis CSS rule
+   (`table.res td div, table.res td > a.bl, table.res td.desc-cell`) only matched
+   `a.bl` when it was a *direct child* of `<td>` — true for no column. Master
+   Groups/Divisions/Trades use plain `<div>`s (matched via the plain descendant
+   selector) and always truncated to one line; Categories/Subcategories/Key
+   Products wrap their links in a `.cell-scroll` div, so their `<a class="bl">`
+   never matched and could wrap onto multiple lines, throwing off row height
+   versus the other columns. Added `table.res td .cell-scroll a.bl` to the rule.
+6. **Advanced Results: applied `stripCode`/`expandAll`** to the Master
+   Groups/Divisions/Trades cells (same treatment as item 1/2).
+7. **Vendor Page: removed the "> Vendor Profile" breadcrumb segment** (the
+   arrow + text after "Back to Advanced Results") — client confirmed the page
+   doesn't need to repeat its own name in the breadcrumb.
+8. **Vendor Page: unbolded the "Back to Advanced Results" breadcrumb link** —
+   `.crumbs` was `font-weight:500` while every other page's back-link uses `600`
+   (semi-bold) but reads lighter next to the vendor page's bold section
+   headers; client wanted it to match the site's other plain-text links, set to
+   `400`.
+
+### One data-level thing surfaced, not fixed (out of scope for this round)
+
+While testing `expandAll`, found a handful of vendors (e.g. Salesforce) whose
+`mt`/`dv`/`trd` arrays hold the "ALL …" wildcard **and** specific real values in
+the same array (e.g. `["ALL MASTER GROUPS","Plumbing","HVAC & Mechanical",
+"Electrical"]`) — a data inconsistency from the merged database, not something
+introduced by this round's code. `expandAll()` only replaces the wildcard when
+it's the *sole* entry, so these vendors still show the literal "ALL MASTER
+GROUPS" text alongside their real values. This existed already on `results.html`
+(same `expandAll` call, same underlying data) before this round touched
+anything — confirmed by testing that page's live data directly. Left alone
+pending Deryck's own promised list on the "ALL…" issue generally — see
+[[ctd-csi-and-all-values-feedback]].
+
+### Verification
+
+Manual server (`build/serve.ps1 8777`) checked in-browser for all 4 pages:
+console clean, `advanced-search.html` rollup badges/Clear buttons/centering/
+placeholder confirmed live via DOM inspection, `advanced-results.html`
+alignment fix and `expandAll` (both the pure-wildcard and mixed-array cases)
+confirmed, `vendor-profile.html` breadcrumb removal/unbold and `stripCode`
+confirmed on a CSI-coded vendor (Salesforce).

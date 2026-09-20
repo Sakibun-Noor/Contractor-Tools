@@ -76,7 +76,7 @@
        long descriptions/division names truncate with an ellipsis
        instead of wrapping, which is what let a stray long value blow
        out the fixed-height table budget on some viewports */
-    table.res td div, table.res td > a.bl, table.res td.desc-cell{
+    table.res td div, table.res td > a.bl, table.res td .cell-scroll a.bl, table.res td.desc-cell{
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
     }
     /* FC-06 - Advanced Results is the last list before the Vendor Page, so its
@@ -338,6 +338,9 @@
 (function(){
   var vocab=CTD_FILTERS.build(window.TOOLS||[]);
   var CM=vocab.CM, avail=CTD_FILTERS.avail;
+  var allDivs=vocab.divisions.map(function(d){return d.value;});
+  var allMts=vocab.masterTrades.map(function(m){return m.value;});
+  var allTrds=vocab.trades.map(function(r){return r.value;});
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   var DATA=[],page=1,rpp=10,sortCol='rk',sortAsc=true,activeFilters={};
 
@@ -456,9 +459,9 @@
       var catNames=catPairs.map(function(p){return p.name;});
       var subs=t.subs||[];
       var prods=productsOf(t);
-      var divs=divsOf(t);
-      var mts=mtsOf(t);
-      var trd=trdOf(t);
+      var divs=CTD_FILTERS.expandAll(divsOf(t),allDivs);
+      var mts=CTD_FILTERS.expandAll(mtsOf(t),allMts);
+      var trd=CTD_FILTERS.expandAll(trdOf(t),allTrds);
       var av=avail(t.sz);
       var desc=(t.x||'').slice(0,85)+(t.x&&t.x.length>85?'…':'');
       h+='<tr>';
@@ -468,8 +471,8 @@
       h+='<td data-fmt="link"><div class="cell-scroll">'+subs.map(function(sName){return'<a class="bl" style="display:block;margin-bottom:1px" href="advanced-results.html?sub='+encodeURIComponent(sName)+'">'+esc(sName)+'</a>';}).join('')+'</div></td>';
       h+='<td data-fmt="link"><div class="cell-scroll">'+prods.map(function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="advanced-results.html?prod='+encodeURIComponent(p.n)+'">'+esc(p.n)+'</a>';}).join('')+'</div></td>';
       h+='<td data-fmt="text"><div class="cell-scroll">'+mts.map(function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';}).join('')+'</div></td>';
-      h+='<td data-fmt="text"><div class="cell-scroll">'+divs.map(function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(d)+'</div>';}).join('')+'</div></td>';
-      h+='<td data-fmt="text"><div class="cell-scroll">'+trd.map(function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(r)+'</div>';}).join('')+'</div></td>';
+      h+='<td data-fmt="text"><div class="cell-scroll">'+divs.map(function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(CTD_FILTERS.stripCode(d))+'</div>';}).join('')+'</div></td>';
+      h+='<td data-fmt="text"><div class="cell-scroll">'+trd.map(function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(CTD_FILTERS.stripCode(r))+'</div>';}).join('')+'</div></td>';
       h+='<td><div class="cell-scroll">'+av.map(function(a){return'<div class="avl"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+'</div></td>';
       h+='<td style="min-width:88px">'+actionsCell(t)+'</td>';
       h+='</tr>';

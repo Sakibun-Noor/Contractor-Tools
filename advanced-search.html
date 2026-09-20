@@ -63,8 +63,15 @@
     .af-body{padding:8px 18px;display:grid;grid-template-columns:.95fr .95fr 2fr 1fr .95fr;gap:6px 20px;max-height:none;overflow:visible}
     .af-col{min-width:0;display:flex;flex-direction:column;gap:9px}
     .af-col:not(:last-child){border-right:1px solid var(--line);padding-right:24px}
-    .af-grp{min-width:0}
-    .af-grp h4{margin:0 0 5px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink)}
+    /* 2026-09-19 client round: "Please center each section of Advanced
+       Filters." Each group's header and its checkbox list are centered as a
+       block within their column. */
+    .af-grp{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+    .af-grp h4{margin:0 0 5px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:5px;width:100%}
+    .af-grp > div{width:100%}
+    .af-rollup{font-weight:600;color:var(--vlink);font-size:9px;letter-spacing:0}
+    .af-clear{margin-top:4px;font-size:9.5px;font-weight:600;color:var(--vlink);background:none;border:none;cursor:pointer;padding:2px 4px}
+    .af-clear:hover{text-decoration:underline}
     /* VC-15 — Markets Served is one column now; it keeps to the height of the
        other groups (5 rows) and scrolls inside its own box. */
     .af-scroll{max-height:112px;overflow-y:auto;padding-right:4px}
@@ -163,7 +170,7 @@
 
     <form class="global-search" role="search" onsubmit="doSearch();return false;">
       <input type="search" name="q" id="hdr-q"
-        placeholder="Search Company, Product, Category, Trade or Keyword"
+        placeholder="Start your search here"
         autocomplete="off" aria-label="Search the directory">
       <button type="submit" aria-label="Search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -238,8 +245,9 @@
            five-column layout. -->
       <div class="af-col">
         <div class="af-grp">
-          <h4>EVALUATION OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <h4>EVALUATION OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="af-rollup" id="af-eval-rollup"></span></h4>
           <div id="af-eval"></div>
+          <button type="button" class="af-clear" data-clear-target="af-eval">Clear</button>
         </div>
       </div>
       <div class="af-col">
@@ -251,26 +259,30 @@
           <div id="af-ctype"></div>
         </div>
         <div class="af-grp">
-          <h4>COMPANY SIZE <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <h4>COMPANY SIZE <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="af-rollup" id="af-size-rollup"></span></h4>
           <div id="af-size"></div>
+          <button type="button" class="af-clear" data-clear-target="af-size">Clear</button>
         </div>
       </div>
       <div class="af-col">
         <div class="af-grp">
-          <h4>MARKETS SERVED <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <h4>MARKETS SERVED <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="af-rollup" id="af-markets-rollup"></span></h4>
           <div id="af-markets" class="af-scroll"></div>
+          <button type="button" class="af-clear" data-clear-target="af-markets">Clear</button>
         </div>
       </div>
       <div class="af-col">
         <div class="af-grp">
-          <h4>PURCHASE OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <h4>PURCHASE OPTIONS <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="af-rollup" id="af-purchase-rollup"></span></h4>
           <div id="af-purchase"></div>
+          <button type="button" class="af-clear" data-clear-target="af-purchase">Clear</button>
         </div>
       </div>
       <div class="af-col">
         <div class="af-grp">
-          <h4>AVAILABLE ON <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></h4>
+          <h4>AVAILABLE ON <svg width="11" height="11" style="vertical-align:middle;opacity:.45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="af-rollup" id="af-avail-rollup"></span></h4>
           <div id="af-avail"></div>
+          <button type="button" class="af-clear" data-clear-target="af-avail">Clear</button>
         </div>
       </div>
     </div>
@@ -512,10 +524,28 @@
 
   var LABELS={cat:'Category',sub:'Subcategory',prod:'Product',div:'Divisions',mt:'Master Groups',trd:'Trades',mkt:'Market Sector',avail:'Available On',sz:'Company Size'};
 
+  var AF_SECTIONS=['af-eval','af-size','af-markets','af-purchase','af-avail'];
+  function updateRollups(){
+    AF_SECTIONS.forEach(function(sel){
+      var n=document.querySelectorAll('#'+sel+' [data-filter]:checked').length;
+      var badge=document.getElementById(sel+'-rollup');
+      if(badge) badge.textContent=n?n+' selected':'';
+    });
+  }
+  document.querySelectorAll('.af-clear').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var sel=btn.getAttribute('data-clear-target');
+      var any=false;
+      document.querySelectorAll('#'+sel+' [data-filter]:checked').forEach(function(cb){cb.checked=false; any=true;});
+      if(any) refresh(); else updateRollups();
+    });
+  });
+
   function refresh(){
     var f=collectFilters();
     var n=countMatches(f);
     document.getElementById('live-count').textContent=n.toLocaleString()+' Vendor match'+(n===1?'':'es');
+    updateRollups();
 
     var checked=document.querySelectorAll('[data-filter]:checked');
     var chipsRow=document.getElementById('chips-row');

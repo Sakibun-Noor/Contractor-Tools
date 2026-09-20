@@ -855,21 +855,32 @@
     var start = (page-1)*rpp, end = Math.min(start+rpp, total);
     var h = '';
 
+    // 2026-09-19 client round: "Remove 'All....'. It is meaningless...
+    // Replace 'ALL...' with the individual data." A vendor whose only
+    // Master Group / Division / Trade is the ALL wildcard applies broadly,
+    // so it expands to every real value in that dimension instead of
+    // printing the meaningless token. CSI codes are stripped from Division/
+    // Trade labels at the same time ("hide all CSI codes... for data
+    // organization purposes only").
+    var allDivs  = vocab.divisions.map(function (d) { return d.value; });
+    var allMts   = vocab.masterTrades.map(function (m) { return m.value; });
+    var allTrds  = vocab.trades.map(function (r) { return r.value; });
+
     DATA.slice(start, end).forEach(function(t, i){
       var cats  = (t.c||[]).map(function(c){ return { slug:c, name:CM[c]||c }; });
       var subs  = t.subs || [];
       var prods = productsOf(t);
-      var mts   = mtsOf(t);
-      var divs  = divsOf(t);
-      var trds  = trdOf(t);
+      var mts   = CTD_FILTERS.expandAll(mtsOf(t), allMts);
+      var divs  = CTD_FILTERS.expandAll(divsOf(t), allDivs);
+      var trds  = CTD_FILTERS.expandAll(trdOf(t), allTrds);
       h += '<tr>';
       h += '<td>' + vendorCell(t) + '</td>';
-      h += '<td>' + moreCell(cats, 1, function(c){ return '<a class="bl cval" href="results.html?cat=' + encodeURIComponent(c.slug) + '">' + esc(c.name) + '</a>'; }) + '</td>';
-      h += '<td>' + moreCell(subs, 1, function(s){ return '<a class="bl cval" href="results.html?sub=' + encodeURIComponent(s) + '">' + esc(s) + '</a>'; }) + '</td>';
-      h += '<td>' + moreCell(prods, 1, function(p){ return '<a class="bl cval" href="results.html?prod=' + encodeURIComponent(p.n) + '">' + esc(p.n) + '</a>'; }) + '</td>';
-      h += '<td>' + moreCell(mts, 1, function(m){ return '<span class="cval">' + esc(m) + '</span>'; }) + '</td>';
-      h += '<td>' + moreCell(divs, 2, function(d){ return '<span class="cval">' + esc(d) + '</span>'; }) + '</td>';
-      h += '<td>' + moreCell(trds, 1, function(r){ return '<span class="cval">' + esc(r) + '</span>'; }) + '</td>';
+      h += '<td>' + moreCell(cats, 2, function(c){ return '<a class="bl cval" href="results.html?cat=' + encodeURIComponent(c.slug) + '">' + esc(c.name) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(subs, 2, function(s){ return '<a class="bl cval" href="results.html?sub=' + encodeURIComponent(s) + '">' + esc(s) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(prods, 2, function(p){ return '<a class="bl cval" href="results.html?prod=' + encodeURIComponent(p.n) + '">' + esc(p.n) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(mts, 2, function(m){ return '<span class="cval">' + esc(m) + '</span>'; }) + '</td>';
+      h += '<td>' + moreCell(divs, 2, function(d){ return '<span class="cval">' + esc(CTD_FILTERS.stripCode(d)) + '</span>'; }) + '</td>';
+      h += '<td>' + moreCell(trds, 2, function(r){ return '<span class="cval">' + esc(CTD_FILTERS.stripCode(r)) + '</span>'; }) + '</td>';
       h += '<td>' + actionsCell(t) + '</td>';
       h += '</tr>';
     });

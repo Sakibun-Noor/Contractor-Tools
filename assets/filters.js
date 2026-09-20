@@ -36,6 +36,38 @@ window.CTD_FILTERS = (function () {
   // Trades) is still imported but deliberately never shown, per the
   // 2026-09-18 decision — t.trd replaces it as the displayed "Trades" data.
 
+  // 2026-09-19 client round (Notes_260919_165719.docx): "Please hide all CSI
+  // codes. They are for data organization purposes only." Division/Trade
+  // labels come off the merged database as "<CSI code> – <name>" (e.g.
+  // "26 05 00 – Electrical Contractors"); this strips the code and leaves
+  // just the name, for every place a division/trade is displayed. The
+  // underlying t.dv / t.trd values (and CSV export) are untouched — only
+  // on-screen rendering changes, so the code is still there if a developer
+  // needs it.
+  var CODE_PREFIX = /^\S+(?:\s\S+){0,2}\s–\s/;
+  function stripCode(label) {
+    return label ? label.replace(CODE_PREFIX, '') : label;
+  }
+
+  // Same round: "Remove 'All....'. It is meaningless." — true for both the
+  // ALL-wildcard entries in Divisions/Master Groups/Trades/Market Sector.
+  function isAllValue(v) {
+    return /^ALL(\s|$)/.test(v || '');
+  }
+
+  // "Replace 'ALL...' with the individual data" (Search/Results, Advanced
+  // Search, Advanced Results). A vendor whose only Division/Master Group/
+  // Trade/Market Sector value is the ALL wildcard applies broadly rather
+  // than to nothing — expand it to every real value in that dimension
+  // instead of printing the meaningless "ALL ..." token. `full` is the
+  // complete list of real values for that dimension (ALL-row excluded).
+  // The Vendor Page is the one deliberate exception (client, same round) —
+  // it keeps the plain wildcard display and does not call this.
+  function expandAll(values, full) {
+    if (values && values.length === 1 && isAllValue(values[0])) return full;
+    return values || [];
+  }
+
   function avail(sz) {
     var r = ['Cloud-Based'];
     if (/Enterprise|Mid/i.test(sz || '')) r.push('Mobile App (iOS/Android)');
@@ -89,54 +121,67 @@ window.CTD_FILTERS = (function () {
 
     // DIVISIONS — the vendor's own classification (t.dv, real CSI-coded
     // divisions from the merged database, e.g. "26 00 00 – Electrical").
-    // Multi-valued per vendor now.
+    // Multi-valued per vendor now. 2026-09-19: the ALL DIVISIONS wildcard
+    // row is dropped from the checkable list ("meaningless" as a filter —
+    // client) and every label has its CSI code stripped for display; `value`
+    // keeps the full raw string so filtering against t.dv still works.
     var dvCounts = countArrayField(tools, 'dv');
     var divisions;
     if (TAX && TAX.divisions && TAX.divisions.length) {
-      // Complete canonical list (including the ALL DIVISIONS wildcard row),
-      // so an unused division still shows (disabled at 0) instead of
-      // vanishing from the vocabulary.
-      divisions = TAX.divisions.map(function (d) {
-        var label = d.number + ' – ' + d.name;
-        return { value: label, label: label, count: dvCounts[label] || 0 };
+      // Complete canonical list, so an unused division still shows
+      // (disabled at 0) instead of vanishing from the vocabulary.
+      divisions = TAX.divisions.filter(function (d) {
+        return !isAllValue(d.number) && !isAllValue(d.name);
+      }).map(function (d) {
+        var value = d.number + ' – ' + d.name;
+        return { value: value, label: stripCode(value), count: dvCounts[value] || 0 };
       });
     } else {
-      divisions = toSortedList(dvCounts);
+      divisions = toSortedList(dvCounts).filter(function (d) { return !isAllValue(d.value); })
+        .map(function (d) { return { value: d.value, label: stripCode(d.value), count: d.count }; });
     }
 
     // MASTER GROUPS (field key still `mt`) — the client's 12 validated
-    // groups plus the ALL MASTER GROUPS wildcard, complete canonical list
-    // like Divisions above. Multi-valued per vendor now.
+    // groups, complete canonical list like Divisions above, ALL MASTER
+    // GROUPS wildcard excluded from the checkable list (2026-09-19).
     var mtCounts = countArrayField(tools, 'mt');
     var masterTrades;
     if (TAX && TAX.masterGroups && TAX.masterGroups.length) {
-      masterTrades = TAX.masterGroups.map(function (m) {
+      masterTrades = TAX.masterGroups.filter(function (m) {
+        return !isAllValue(m.name);
+      }).map(function (m) {
         var count = mtCounts[m.name] || 0;
         return { value: m.name, label: m.name, count: count, pending: count === 0 };
       });
     } else {
-      masterTrades = toSortedList(mtCounts);
+      masterTrades = toSortedList(mtCounts).filter(function (m) { return !isAllValue(m.value); });
     }
 
     // TRADES (field key `trd`) — real CSI-coded trades, brand new
     // 2026-09-19. 425 possible values is too many for a fixed always-shown
     // list (unlike Divisions/Master Groups' ~12–51), so this facet is built
     // from live data only, same as Divisions/Master Groups were before the
-    // client's hierarchy data arrived.
-    var trades = toSortedList(countArrayField(tools, 'trd'));
+    // client's hierarchy data arrived. ALL TRADES wildcard excluded from the
+    // checkable list and CSI codes stripped for display, same as Divisions.
+    var trades = toSortedList(countArrayField(tools, 'trd'))
+      .filter(function (t) { return !isAllValue(t.value); })
+      .map(function (t) { return { value: t.value, label: stripCode(t.value), count: t.count }; });
 
     // MARKET SECTOR (field key `mkt`) — brand new 2026-09-19, replaces the
     // "MARKETS SERVED" stub that rendered invented values at a fixed 0
-    // count on Search/Results and Advanced Search.
+    // count on Search/Results and Advanced Search. ALL MARKET SECTORS
+    // wildcard excluded from the checkable list, same reasoning.
     var mktCounts = countArrayField(tools, 'mkt');
     var marketSectors;
     if (TAX && TAX.marketSectors && TAX.marketSectors.length) {
-      marketSectors = TAX.marketSectors.map(function (m) {
+      marketSectors = TAX.marketSectors.filter(function (m) {
+        return !isAllValue(m.name);
+      }).map(function (m) {
         var count = mktCounts[m.name] || 0;
         return { value: m.name, label: m.name, count: count, pending: count === 0 };
       });
     } else {
-      marketSectors = toSortedList(mktCounts);
+      marketSectors = toSortedList(mktCounts).filter(function (m) { return !isAllValue(m.value); });
     }
 
     var availCounts = {};
@@ -230,5 +275,8 @@ window.CTD_FILTERS = (function () {
     return sp;
   }
 
-  return { CM: CM, avail: avail, build: build, apply: apply, readParams: readParams, toParams: toParams };
+  return {
+    CM: CM, avail: avail, build: build, apply: apply, readParams: readParams, toParams: toParams,
+    stripCode: stripCode, isAllValue: isAllValue, expandAll: expandAll
+  };
 })();
