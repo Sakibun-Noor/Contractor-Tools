@@ -345,3 +345,61 @@ placeholder confirmed live via DOM inspection, `advanced-results.html`
 alignment fix and `expandAll` (both the pure-wildcard and mixed-array cases)
 confirmed, `vendor-profile.html` breadcrumb removal/unbold and `stripCode`
 confirmed on a CSI-coded vendor (Salesforce).
+
+## 11. Build log — 2026-09-22 (vendor biographies)
+
+Deryck sent `09.20.26_CTD_Vendor_Biographies_RECONCILED_1381.xlsx` — one
+~100-word company biography per original `Vendor_ID` (V0001–V1381), verified
+against each vendor's own website, generated from the same
+`CTD_Complete_Vendor_Product_Database_1_1381.xlsx` we delivered him
+2026-09-19 ("Controlling master" per the file's own README tab — confirmed by
+matching `Vendor_ID`/`Vendor_Name`/domain against our `VENDORS_NORM` sheet
+before trusting the join). 1,319 of 1,381 IDs have a complete bio; the other
+62 are marked `BLANK - OFFICIAL SOURCE UNVERIFIED` (mostly excluded/
+consolidated vendors) and are simply skipped, same as any other missing field.
+All 1,088 ACTIVE `Vendor_ID`s have one.
+
+**Where it lives now:** `CTD-product-db/inputs/09.20.26_CTD_Vendor_Biographies_
+RECONCILED_1381.xlsx` (sibling data folder, same convention as the other
+client workbooks — not committed to this repo).
+
+**Build:** `build/import-vendors.ps1` gained a `$BiographyXlsx` param and a new
+step 1b that reads `VENDOR_BIOGRAPHIES` into a `Vendor_ID -> bio` map. Per
+company group, the bio is picked with the same precedence already used for
+the canonical domain (§4): prefer the `Vendor_ID` whose own domain matches the
+group's chosen domain, else the canon row's own `Vendor_ID`, else the first
+bio found in the group. The result becomes `t.x` (`$descX`), replacing the old
+carry-forward-by-domain value as the primary source — carry-forward is now
+only a fallback for the handful of vendors with no bio. Result: all 938
+grouped companies now carry a real description (`938/938`, up from `405/556`
+carried-forward domains before this round).
+
+**Site wiring:** `vendor-profile.html`'s Company Biography card previously
+read `FACTS[t.s].bio` — a hardcoded object with exactly 2 example entries
+(`procore`, `autodesk`), neither of which even had a `bio` key, so the card
+showed "No company biography on file yet." for literally every vendor. Fixed
+to read `t.x` instead. `t.x` already fed the banner's short description and
+the Results/Advanced Results "Description" table column, and the CSV
+export's "Description" field, so all of those got richer for free — no
+separate change needed anywhere else.
+
+**Verification:** ran the import, checked STACK's and Salesforce's bios read
+correctly end to end (including a curly-apostrophe character in the source
+text — confirmed U+2019 survives the PowerShell xlsx-read/UTF-8-write pipeline
+intact; the odd glyph seen mid-investigation was only a terminal font
+rendering issue, not real data corruption). Confirmed `0` vendors are missing
+a description (`938/938`). Spot-checked `results.html` and
+`advanced-results.html` Description columns render the new text single-line,
+no layout break. No console errors on any page.
+
+**Second file received alongside this, not yet actioned:**
+`09.20.26_CTD_191_Excluded_Vendor_Placement_Review.xlsx` — Deryck's re-review
+of the 191 vendors currently in `EXCLUDED_VENDORS`, recommending where each
+could be placed if it now qualifies. Breakdown: 76 `KEEP EXCLUDED` (no
+qualifying product), 35 `ADD TO CTD` + 3 `ADD / CONSOLIDATE` (ready to place —
+38 vendors total), 20 `CONDITIONAL / SCOPE REVIEW` + 56 `IDENTITY NOT
+VERIFIED` (needs more research before any placement — these two together are
+the `RESEARCH_QUEUE` sheet's 76 rows), 1 `LEGACY / DISCONTINUED`. The client
+said "not modify the master database" in the file's own SUMMARY tab, so this
+is a recommendation to review, not something to import automatically. Sitting
+until the user decides how to proceed — see [[ctd-round2-fixes-2026-09-20]].

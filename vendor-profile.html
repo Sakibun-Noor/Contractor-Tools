@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/ctd-scale.js?v=202609191601"></script>
+  <script src="assets/ctd-scale.js?v=202609221334"></script>
   <title>Vendor Profile — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609191601">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221334">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;
       --t-orange:#F26A1B;--t-blue:#1B5FD0;--t-green:#16A34A;--t-purple:#7C3AED;--t-red:#E11D48;--t-teal:#0D9488;}
@@ -431,10 +431,10 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609191601"></script>
-<script src="assets/taxonomy-data.js?v=202609191601"></script>
-<script src="assets/filters.js?v=202609191601"></script>
-<script src="assets/actions.js?v=202609191601"></script>
+<script src="assets/tools-data.js?v=202609221334"></script>
+<script src="assets/taxonomy-data.js?v=202609221334"></script>
+<script src="assets/filters.js?v=202609221334"></script>
+<script src="assets/actions.js?v=202609221334"></script>
 <script>
 (function(){
   var CM = CTD_FILTERS.CM;
@@ -528,8 +528,11 @@
     // vendor's own site rather than a guessed /demo path.
     ['btn-visit', 'btn-demo'].forEach(function(id){ var a = document.getElementById(id); if (site) a.href = site; });
     text('p-customers', CUSTOMERS[t.sz] || t.sz);
+    // 2026-09-20 client round: real per-vendor biographies (t.x, ~100 words,
+    // verified against the vendor's own site) replace the FACTS[slug].bio
+    // stub, which only ever covered 2 example vendors.
     var bio = document.getElementById('p-bio');
-    if (f.bio) { bio.textContent = f.bio; bio.className = ''; }
+    if (t.x) { bio.textContent = t.x; bio.className = ''; }
     else { bio.textContent = 'No company biography on file yet.'; bio.className = 'muted'; }
 
     // Facts strip

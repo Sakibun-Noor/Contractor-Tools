@@ -3,10 +3,14 @@
 # CSI-coded Master Groups > Divisions > Trades, and Market Sector).
 #
 # Reads:  CTD_Complete_Vendor_Product_Database_1_1381.xlsx (client data, not in
-#         this repo — see CTD-product-db/out/), plus the *current*
-#         assets/tools-data.js, to carry forward the four fields the new
-#         database does not contain (Company Size, Pricing Model, Free Trial,
-#         Description) by domain match.
+#         this repo — see CTD-product-db/out/), the vendor biographies workbook
+#         (CTD-product-db/inputs/, 2026-09-20 client round — one ~100-word bio
+#         per Vendor_ID, joined in by that ID), plus the *current*
+#         assets/tools-data.js, to carry forward the three fields neither
+#         database contains (Company Size, Pricing Model, Free Trial) by domain
+#         match. Description (t.x) now comes from the biography workbook first,
+#         falling back to the old carried-forward value only when a vendor has
+#         no biography.
 # Writes: assets/tools-data.js        window.TOOLS, one record per company
 #         assets/taxonomy-data.js     Master Groups / Divisions / Market Sectors
 #
@@ -22,8 +26,9 @@
 # Run: powershell -ExecutionPolicy Bypass -File build\import-vendors.ps1
 # ─────────────────────────────────────────────────────────────────────────────
 param(
-  [string]$VendorDbXlsx = "$env:USERPROFILE\Desktop\Claude\CTD-product-db\out\CTD_Complete_Vendor_Product_Database_1_1381.xlsx",
-  [string]$Root         = (Resolve-Path "$PSScriptRoot\..").Path
+  [string]$VendorDbXlsx  = "$env:USERPROFILE\Desktop\Claude\CTD-product-db\out\CTD_Complete_Vendor_Product_Database_1_1381.xlsx",
+  [string]$BiographyXlsx = "$env:USERPROFILE\Desktop\Claude\CTD-product-db\inputs\09.20.26_CTD_Vendor_Biographies_RECONCILED_1381.xlsx",
+  [string]$Root          = (Resolve-Path "$PSScriptRoot\..").Path
 )
 
 $ErrorActionPreference = 'Stop'
@@ -228,6 +233,26 @@ $vMsRows   = Read-Sheet $dbDir 'VENDOR_MARKET_SECTOR' 1
 
 Write-Host ("  vendors {0} | products {1}" -f $vendRows.Count, $prodRows.Count)
 
+# ── 1b. Read the vendor biographies (2026-09-20 client round) — one ~100-word
+#      company bio per original Vendor_ID, keyed the same way the merged
+#      database is (V0001..V1381). Only COMPLETE ones carry text; 62 of 1381
+#      are BLANK (unverifiable source) and are skipped, same as a missing field
+#      anywhere else on this site. ─────────────────────────────────────────────
+$bioByVendorId = @{}
+if (Test-Path $BiographyXlsx) {
+  Write-Host 'Reading vendor biographies...' -ForegroundColor Cyan
+  $bioDir = Open-Xlsx $BiographyXlsx
+  $bioRows = Read-Sheet $bioDir 'VENDOR_BIOGRAPHIES' 1
+  foreach ($r in $bioRows) {
+    $vid = Val $r 'Vendor_ID'
+    $bio = Val $r 'Biography_100_Words'
+    if ($vid -and $bio) { $bioByVendorId[$vid] = $bio }
+  }
+  Write-Host ("  biographies available: {0}" -f $bioByVendorId.Count)
+} else {
+  Write-Host "  no biography workbook found at $BiographyXlsx - skipping (t.x falls back to prior carry-forward)" -ForegroundColor Yellow
+}
+
 # ── 2. Lookups ────────────────────────────────────────────────────────────────
 $SUB_NAME = @{}
 foreach ($r in $subRows) { $SUB_NAME[[int](Val $r 'Subcategory_ID')] = (Val $r 'Subcategory_Name') }
@@ -334,6 +359,7 @@ foreach ($p in $prodRows) {
 $tools = New-Object System.Collections.Generic.List[object]
 $slugSeen = @{}
 $withProducts = 0
+$withNewBio = 0
 
 foreach ($key in $groups.Keys) {
   $rows = $groups[$key]
@@ -360,6 +386,28 @@ foreach ($key in $groups.Keys) {
   $domain = ''
   if ($domainCounts.Count -gt 0) {
     $domain = ($domainCounts.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 1).Key
+  }
+
+  # Biography — same "which Vendor_ID actually represents this company"
+  # question as the domain above, so the same answer: prefer whichever
+  # Vendor_ID's own domain matches the canonical domain (that's the one
+  # actually describing the live site), then fall back to the canon row's
+  # own Vendor_ID, then to any bio present in the group at all.
+  $bio = ''
+  foreach ($vid in $vendorIdsInGroup) {
+    $vv = $vendorById[$vid]
+    if ($vv -and $domain -and (Get-Domain (Val $vv 'Normalized_Domain')) -eq $domain -and $bioByVendorId.ContainsKey($vid)) {
+      $bio = $bioByVendorId[$vid]; break
+    }
+  }
+  if (-not $bio) {
+    $canonVid = Val $canon 'Vendor_ID'
+    if ($bioByVendorId.ContainsKey($canonVid)) { $bio = $bioByVendorId[$canonVid] }
+  }
+  if (-not $bio) {
+    foreach ($vid in ($vendorIdsInGroup | Sort-Object { VendorNum $_ })) {
+      if ($bioByVendorId.ContainsKey($vid)) { $bio = $bioByVendorId[$vid]; break }
+    }
   }
 
   $catSlugs = New-Object System.Collections.Generic.HashSet[string]
@@ -428,11 +476,17 @@ foreach ($key in $groups.Keys) {
 
   if ($products.Count -gt 0) { $withProducts++ }
 
+  # 2026-09-20 client round: the new official biography (verified against the
+  # vendor's own site) supersedes the old carry-forward-by-domain description,
+  # which was a weaker prior-site value covering far fewer vendors.
+  $descX = if ($bio) { $bio } else { $oldX }
+  if ($bio) { $withNewBio++ }
+
   $rec = [ordered]@{
     n        = $name
     s        = $slug
     d        = $domain
-    x        = $oldX
+    x        = $descX
     c        = [string[]]$catSlugs
     subs     = [string[]]$subNames
     tr       = $oldTr.ToArray()
@@ -504,10 +558,12 @@ Write-Host ("  with master group    : {0}" -f $withMt)
 Write-Host ("  with division        : {0}" -f $withDv)
 Write-Host ("  with real trade      : {0}" -f $withTrd)
 Write-Host ("  with market sector   : {0}" -f $withMkt)
-Write-Host ("  carried-forward desc : {0}  (from prior site data by domain match)" -f $withCarried)
+Write-Host ("  with new biography   : {0}  (2026-09-20 client round, by Vendor_ID)" -f $withNewBio)
+Write-Host ("  with any description : {0}  (new biography, else prior carry-forward)" -f $withCarried)
 Write-Host ("  unique slugs         : {0}" -f (@($tools | Select-Object -ExpandProperty s -Unique).Count))
 Write-Host ("  cache stamp          : {0}  ({1} pages updated)" -f $stamp, $stamped)
 Write-Host ("  -> {0}" -f $outPath)
 Write-Host ("  -> {0}" -f $taxJsPath)
 
 Remove-Item $dbDir -Recurse -Force -ErrorAction SilentlyContinue
+if ($bioDir) { Remove-Item $bioDir -Recurse -Force -ErrorAction SilentlyContinue }
