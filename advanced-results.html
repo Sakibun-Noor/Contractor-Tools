@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/ctd-scale.js?v=202609221334"></script>
+  <script src="assets/ctd-scale.js?v=202609221524"></script>
   <title>Advanced Results — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221334">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221524">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -76,8 +76,16 @@
        long descriptions/division names truncate with an ellipsis
        instead of wrapping, which is what let a stray long value blow
        out the fixed-height table budget on some viewports */
-    table.res td div, table.res td > a.bl, table.res td .cell-scroll a.bl, table.res td.desc-cell{
+    table.res td div, table.res td > a.bl, table.res td .cell-scroll a.bl{
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;
+    }
+    /* 2026-09-20 client round: "Description column needs to be wrapped. If
+       Description goes beyond box, tooltip comes up." Wraps instead of a
+       single truncated line, clamped to the row's height budget; the cell's
+       title attribute (full untruncated bio) supplies the tooltip. */
+    table.res td.desc-cell{
+      white-space:normal; overflow:hidden; max-width:100%;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
     }
     /* FC-06 - Advanced Results is the last list before the Vendor Page, so its
        multi-value cells show every value in a small scroll box rather than
@@ -90,15 +98,20 @@
     .cell-scroll::-webkit-scrollbar{width:4px}
     .cell-scroll::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
     table.res tr:nth-child(even) td{background:var(--cream)}
-    table.res tr:hover td{background:#eff3ff}
+    table.res tbody tr{cursor:pointer}
+    /* 2026-09-20 client round: row hover highlight "does not apply to
+       Vendor, Description, Quick Facts and Actions" on this page - only
+       Categories/Subcategories/Key Products/Master Groups/Divisions/Trades
+       (columns 3-8) tint on hover. */
+    table.res tr:hover td:nth-child(n+3):nth-child(-n+8){background:#eff3ff}
     .vcell{display:flex;align-items:center;gap:6px;min-width:0}
     .vmeta{min-width:0;overflow:hidden}
     .vico{width:22px;height:22px;flex:none;border-radius:3px;object-fit:contain;background:#fff}
     .vico-fb{display:grid;place-items:center;background:var(--navy);color:#fff;font-size:9px;font-weight:700;line-height:1}
     .vn{font-weight:700;font-size:clamp(9.5px,1.1vh,11px);color:var(--ink);display:block;margin-bottom:1px}
     .vd{color:var(--vlink);font-size:clamp(8.5px,.95vh,9.5px)}
-    .bl{color:var(--vlink)}.bl:hover{text-decoration:underline}
-    .avl{display:flex;align-items:center;gap:4px;font-size:clamp(8.5px,.95vh,9.5px);color:var(--muted);margin-bottom:1px}
+    .bl{color:var(--vlink);text-decoration:underline}
+    .avl{font-size:clamp(8.5px,.95vh,9.5px);color:var(--muted);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .act-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:5px}
     .act-ic{display:grid;place-items:center;width:22px;height:22px;padding:0;border:0;background:none;color:var(--blue);cursor:pointer;border-radius:3px;text-decoration:none}
     .act-ic:hover{color:var(--navy);background:var(--cream)}
@@ -330,10 +343,12 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609221334"></script>
-<script src="assets/taxonomy-data.js?v=202609221334"></script>
-<script src="assets/filters.js?v=202609221334"></script>
-<script src="assets/actions.js?v=202609221334"></script>
+<script src="assets/tools-data.js?v=202609221524"></script>
+<script src="assets/taxonomy-data.js?v=202609221524"></script>
+<script src="assets/filters.js?v=202609221524"></script>
+<script src="assets/actions.js?v=202609221524"></script>
+<script src="assets/autosuggest.js?v=202609221524"></script>
+<script>CTD_AUTOSUGGEST.init('hdr-q');</script>
 <script>
 (function(){
   var vocab=CTD_FILTERS.build(window.TOOLS||[]);
@@ -463,17 +478,19 @@
       var mts=CTD_FILTERS.expandAll(mtsOf(t),allMts);
       var trd=CTD_FILTERS.expandAll(trdOf(t),allTrds);
       var av=avail(t.sz);
-      var desc=(t.x||'').slice(0,85)+(t.x&&t.x.length>85?'…':'');
-      h+='<tr>';
+      var desc=t.x||'';
+      var site=t.d?'https://'+t.d:'';
+      var rowGo=site||('vendor-profile.html?s='+encodeURIComponent(t.s));
+      h+='<tr data-go="'+esc(rowGo)+'" data-go-external="'+(site?'1':'0')+'">';
       h+='<td>'+vendorCell(t)+'</td>';
-      h+='<td class="desc-cell" style="font-size:9px;line-height:1.2;color:#4a5568">'+esc(desc)+'</td>';
-      h+='<td data-fmt="link"><div class="cell-scroll">'+catPairs.map(function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="advanced-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';}).join('')+'</div></td>';
-      h+='<td data-fmt="link"><div class="cell-scroll">'+subs.map(function(sName){return'<a class="bl" style="display:block;margin-bottom:1px" href="advanced-results.html?sub='+encodeURIComponent(sName)+'">'+esc(sName)+'</a>';}).join('')+'</div></td>';
-      h+='<td data-fmt="link"><div class="cell-scroll">'+prods.map(function(p){return'<a class="bl" style="display:block;margin-bottom:1px" href="advanced-results.html?prod='+encodeURIComponent(p.n)+'">'+esc(p.n)+'</a>';}).join('')+'</div></td>';
-      h+='<td data-fmt="text"><div class="cell-scroll">'+mts.map(function(m){return'<div style="font-size:9px;margin-bottom:1px">'+esc(m)+'</div>';}).join('')+'</div></td>';
-      h+='<td data-fmt="text"><div class="cell-scroll">'+divs.map(function(d){return'<div style="font-size:9px;margin-bottom:1px">'+esc(CTD_FILTERS.stripCode(d))+'</div>';}).join('')+'</div></td>';
-      h+='<td data-fmt="text"><div class="cell-scroll">'+trd.map(function(r){return'<div style="font-size:9px;margin-bottom:1px">'+esc(CTD_FILTERS.stripCode(r))+'</div>';}).join('')+'</div></td>';
-      h+='<td><div class="cell-scroll">'+av.map(function(a){return'<div class="avl"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>'+esc(a)+'</div>';}).join('')+'</div></td>';
+      h+='<td class="desc-cell" title="'+esc(desc)+'" style="font-size:9px;line-height:1.2;color:#4a5568">'+esc(desc)+'</td>';
+      h+='<td data-fmt="link"><div class="cell-scroll">'+catPairs.map(function(p){return'<a class="bl" title="'+esc(p.name)+'" style="display:block;margin-bottom:1px" href="advanced-results.html?cat='+encodeURIComponent(p.slug)+'">'+esc(p.name)+'</a>';}).join('')+'</div></td>';
+      h+='<td data-fmt="link"><div class="cell-scroll">'+subs.map(function(sName){return'<a class="bl" title="'+esc(sName)+'" style="display:block;margin-bottom:1px" href="advanced-results.html?sub='+encodeURIComponent(sName)+'">'+esc(sName)+'</a>';}).join('')+'</div></td>';
+      h+='<td data-fmt="link"><div class="cell-scroll">'+prods.map(function(p){return'<a class="bl" title="'+esc(p.n)+'" style="display:block;margin-bottom:1px" href="advanced-results.html?prod='+encodeURIComponent(p.n)+'">'+esc(p.n)+'</a>';}).join('')+'</div></td>';
+      h+='<td data-fmt="link"><div class="cell-scroll">'+mts.map(function(m){return'<a class="bl" title="'+esc(m)+'" style="display:block;margin-bottom:1px;font-size:9px" href="advanced-results.html?mt='+encodeURIComponent(m)+'">'+esc(m)+'</a>';}).join('')+'</div></td>';
+      h+='<td data-fmt="link"><div class="cell-scroll">'+divs.map(function(d){var lbl=CTD_FILTERS.stripCode(d);return'<a class="bl" title="'+esc(lbl)+'" style="display:block;margin-bottom:1px;font-size:9px" href="advanced-results.html?div='+encodeURIComponent(d)+'">'+esc(lbl)+'</a>';}).join('')+'</div></td>';
+      h+='<td data-fmt="link"><div class="cell-scroll">'+trd.map(function(r){var lbl=CTD_FILTERS.stripCode(r);return'<a class="bl" title="'+esc(lbl)+'" style="display:block;margin-bottom:1px;font-size:9px" href="advanced-results.html?trd='+encodeURIComponent(r)+'">'+esc(lbl)+'</a>';}).join('')+'</div></td>';
+      h+='<td><div class="cell-scroll">'+av.map(function(a){return'<div class="avl" title="'+esc(a)+'">'+esc(a)+'</div>';}).join('')+'</div></td>';
       h+='<td style="min-width:88px">'+actionsCell(t)+'</td>';
       h+='</tr>';
     });
@@ -552,6 +569,19 @@
     ], 'ctd-vendor-results.csv');
   };
   window.CTD_shareResults=function(){ CTD_ACTIONS.shareUrl(window.location.href); };
+
+  // Same row-click-to-website behavior as Search/Results, applied here too
+  // for consistency between the two result tables. Delegated so it survives
+  // every render()'s innerHTML replacement.
+  document.getElementById('res-tbody').addEventListener('click', function(e){
+    if (e.target.closest('a, button')) return;
+    var tr = e.target.closest('tr[data-go]');
+    if (!tr) return;
+    var go = tr.getAttribute('data-go');
+    if (!go) return;
+    if (tr.getAttribute('data-go-external') === '1') window.open(go, '_blank', 'noopener');
+    else location.href = go;
+  });
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',prep);else prep();
 })();

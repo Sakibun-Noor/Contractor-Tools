@@ -403,3 +403,106 @@ the `RESEARCH_QUEUE` sheet's 76 rows), 1 `LEGACY / DISCONTINUED`. The client
 said "not modify the master database" in the file's own SUMMARY tab, so this
 is a recommendation to review, not something to import automatically. Sitting
 until the user decides how to proceed — see [[ctd-round2-fixes-2026-09-20]].
+
+## 12. Build log — 2026-09-22 (final corrections doc)
+
+Deryck's `102026 CTD Corrections_260920_200619.docx` — 20 items across 5
+pages, read in full (text + all 17 screenshots) before building anything.
+Three needed a decision first; the user resolved all three: (1) add the
+missing Markets Served items and expect to source real vendor data for them
+later, (2) treat "click a result → vendor's site, or profile if none" as
+resolved, (3) start the main-search autosuggest now rather than deferring it
+again.
+
+**Markets Served taxonomy expansion.** Added 8 new rows to
+`MARKET_SECTORS_NORM` in the master xlsx (`CTD-product-db/out/CTD_Complete_
+Vendor_Product_Database_1_1381.xlsx`): Col/Varsity Sports, Education, Energy
+/ Utilities, Government / Public Sector, Healthcare, Manufacturing,
+Nonprofit, Retail / Hospitality (ids 8-15). Re-ran `import-vendors.ps1` to
+regenerate `taxonomy-data.js` — same "complete canonical list, unused entries
+render disabled at 0" precedent already used for Divisions/Master Groups
+(Fire Protection). All 8 show on both Search/Results' and Advanced Search's
+Markets Served panel automatically (both build from the same generated
+taxonomy) at 0/disabled until real vendor-level tagging data arrives from
+Deryck — no vendor data was invented to make this land.
+
+**Autosuggest (`assets/autosuggest.js`, new file).** A single shared module,
+`CTD_AUTOSUGGEST.init('hdr-q')`, wired into all 5 pages' header search bar
+(index.html didn't load any data/filter scripts before this — added
+tools-data.js/taxonomy-data.js/filters.js there too, since autosuggest needs
+`window.TOOLS`). Suggests matching Vendors, Products and Categories as the
+user types (prefix matches ranked above substring matches, capped at 8),
+arrow-key navigable, Enter selects the highlighted suggestion or falls
+through to the page's own existing search submit when nothing is
+highlighted — no page's search behavior needed to change.
+
+**Search/Results (`results.html`).**
+- Links keep their underline always (was hover-only).
+- Row hover: background highlight already existed: added `.vn` (vendor name)
+  turning blue on row hover, and the whole row is click-to-website (opens
+  the vendor's site in a new tab, or `vendor-profile.html` in the same tab
+  if no domain) — except clicks on an actual link/button in the row, which
+  keep their own behavior.
+- Master Groups/Divisions/Trades cell values are now clickable links
+  (`?mt=`/`?div=`/`?trd=`), matching how Categories/Subcategories/Products
+  already worked. Every truncated cell value got a `title` tooltip.
+- Advanced Filters panel (the right-sidebar one, `sr-af-*` — distinct from
+  Advanced Search's own panel) had no Clear control at all; added one red
+  button at its base that clears only that panel's checkboxes.
+- Chips row "Clear All" → "Clear". Left-nav search placeholder → "Search
+  Keyword".
+
+**Advanced Search (`advanced-search.html`).**
+- The 6 big selector cards (Product/Subcategory/Category/Trades/Divisions/
+  Master Groups) and the Markets Served mini-list now show a persistent
+  scrollbar (`overflow-y:auto` → `scroll`) even when content currently fits,
+  per the client's "might shrink on smaller displays" reasoning. Scoped to
+  those — the other 4 mini Advanced-Filter sections (Eval/Purchase/Avail/
+  Size) are short, unscrolled lists by design and weren't given a scroll
+  wrapper.
+- The 5 mini Advanced Filters' Clear buttons were landing at different
+  heights depending on each section's list length (client's screenshot showed
+  this directly). `.af-grp` now fills its grid-stretched column height and
+  `.af-clear` uses `margin-top:auto` to sit on one shared baseline regardless
+  of content height — confirmed all 5 at the same pixel offset.
+- "Clear All" chip → "Clear".
+
+**Advanced Results (`advanced-results.html`).**
+- Description column now wraps (3-line clamp) instead of a single truncated
+  line; the cell's `title` carries the full untruncated biography for a
+  native tooltip when it's still cut off.
+- Master Groups/Divisions/Trades converted from plain text to clickable
+  links, same as Search/Results, with tooltips on every truncated value.
+- Row hover highlight scoped to just Categories/Subcategories/Key Products/
+  Master Groups/Divisions/Trades (columns 3-8) — client's explicit exception:
+  "does not apply to Vendor, Description, Quick Facts and Actions."
+- Quick Facts (Available On) bullet-circle icons removed; each value gets a
+  `title` tooltip instead.
+- Same row-click-to-website behavior added as Search/Results, for
+  consistency between the two result tables (not explicitly requested for
+  this page in the doc, but the two tables are otherwise built the same way
+  and an asymmetry here would be confusing).
+- Links keep their underline always, same as Search/Results.
+
+**Vendor Page (`vendor-profile.html`).**
+- Quick Facts strip (Founded/HQ/Employees/Deployment/Market Sector)
+  `justify-content:center` added so each fact's icon+label+value group
+  centers in its column.
+- Market Sector value gets a `title` tooltip with the full list when it
+  truncates.
+
+**Not built — data-dependent, not code:** "Need Contact Info" — same as the
+prior round, no verified contact data exists yet; nothing to build until
+Deryck's contact-info file lands.
+
+**Verification:** manual server, all 5 pages, console clean throughout.
+Autosuggest tested end-to-end (typed "stack", saw Vendor/Product suggestions,
+clicked one, landed on the right vendor page). Confirmed via DOM inspection:
+row `data-go`/`data-go-external` attributes, Master Groups/Divisions/Trades
+`href`+`title`, red Clear button clears only its own panel, all 5 mini
+Advanced Filters Clear buttons at an identical pixel offset, `.sel-list`/
+`.af-scroll` computed `overflow-y: scroll`, Advanced Results' hover rule
+scoped to `nth-child(n+3):nth-child(-n+8)`, Description `title` carries the
+full ~760-character bio, Quick Facts icons gone, row-click opens the site in
+a new tab but a real link inside the row does not trigger it, all 15 real
+Market Sectors (7 original + 8 new) present in both pages' filter lists.

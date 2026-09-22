@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/ctd-scale.js?v=202609221334"></script>
+  <script src="assets/ctd-scale.js?v=202609221524"></script>
   <title>Advanced Search — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221334">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221524">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -66,15 +66,23 @@
     /* 2026-09-19 client round: "Please center each section of Advanced
        Filters." Each group's header and its checkbox list are centered as a
        block within their column. */
-    .af-grp{min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
+    /* 2026-09-20 client round: "Move all clear buttons to bottom of
+       selection row box... so it maintains a line" - the 5 mini-sections
+       have different list lengths (Markets Served now scrolls, Available
+       On is 2 items), so their Clear buttons landed at different heights.
+       .af-col is already a flex column stretched to the tallest column in
+       the grid row; af-grp now fills that stretched height and pushes
+       af-clear to a shared bottom line with margin-top:auto regardless of
+       how tall its own middle content is. */
+    .af-grp{min-width:0;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center}
     .af-grp h4{margin:0 0 5px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:5px;width:100%}
     .af-grp > div{width:100%}
     .af-rollup{font-weight:600;color:var(--vlink);font-size:9px;letter-spacing:0}
-    .af-clear{margin-top:4px;font-size:9.5px;font-weight:600;color:var(--vlink);background:none;border:none;cursor:pointer;padding:2px 4px}
+    .af-clear{margin-top:auto;padding-top:4px;font-size:9.5px;font-weight:600;color:var(--vlink);background:none;border:none;cursor:pointer;padding-left:4px;padding-right:4px;padding-bottom:2px}
     .af-clear:hover{text-decoration:underline}
     /* VC-15 — Markets Served is one column now; it keeps to the height of the
        other groups (5 rows) and scrolls inside its own box. */
-    .af-scroll{max-height:112px;overflow-y:auto;padding-right:4px}
+    .af-scroll{max-height:112px;overflow-y:scroll;padding-right:4px}
     .af-item{display:flex;align-items:center;gap:7px;font-size:11px;padding:2px 0;min-width:0}
     .af-item label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .af-item .ct,.sel-item .ct{flex:none;margin-left:auto;padding-left:6px;color:var(--muted);font-size:11px}
@@ -103,7 +111,7 @@
     .sel-search-wrap{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:6px;padding:5px 9px;background:#f8fafc}
     .sel-search-wrap input{border:none;background:none;font-size:12px;outline:none;flex:1;color:var(--ink);min-width:0}
     .sel-search-wrap svg{flex:none;color:var(--muted)}
-    .sel-list{flex:1;min-height:0;overflow-y:auto;padding:6px 10px}
+    .sel-list{flex:1;min-height:0;overflow-y:scroll;padding:6px 10px}
     /* VC-14 — scroll bars wide and dark enough to see (were 5px light grey) */
     .sel-list,.af-scroll{scrollbar-width:auto;scrollbar-color:#8A97AD #EEF2F7}
     .sel-list::-webkit-scrollbar,.af-scroll::-webkit-scrollbar{width:10px}
@@ -225,7 +233,7 @@
   <div class="chips-row is-empty" id="chips-row">
     <span class="chips-label">ACTIVE FILTERS:</span>
     <div id="chips-list" style="display:contents"></div>
-    <span class="clear-all" onclick="CTD_clearAll()">Clear All</span>
+    <span class="clear-all" onclick="CTD_clearAll()">Clear</span>
   </div>
 
   <!-- Advanced Filters Panel -->
@@ -454,9 +462,11 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609221334"></script>
-<script src="assets/taxonomy-data.js?v=202609221334"></script>
-<script src="assets/filters.js?v=202609221334"></script>
+<script src="assets/tools-data.js?v=202609221524"></script>
+<script src="assets/taxonomy-data.js?v=202609221524"></script>
+<script src="assets/filters.js?v=202609221524"></script>
+<script src="assets/autosuggest.js?v=202609221524"></script>
+<script>CTD_AUTOSUGGEST.init('hdr-q');</script>
 <script>
 (function(){
   var TOOLS=window.TOOLS||[];

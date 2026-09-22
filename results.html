@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/ctd-scale.js?v=202609221334"></script>
+  <script src="assets/ctd-scale.js?v=202609221524"></script>
   <title>Search Results — The Construction Technology Directory</title>
   <meta name="description" content="Search 1,463 construction software vendors by category, subcategory and product, or by the construction trades they serve.">
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221334">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221524">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--cream:#FBF6EF;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;}
     *{box-sizing:border-box}html,body{margin:0;padding:0;width:100%}
@@ -135,6 +135,9 @@
     .af-hd .chev{font-size:12px;transition:transform .2s}
     .af-body{padding:8px 12px;display:flex;flex-direction:column;gap:10px}
     .af-body.is-collapsed{display:none}
+    .af-body.is-collapsed+.af-clear-all{display:none}
+    .af-clear-all{display:block;width:100%;margin:0;padding:7px 12px;border:0;border-top:1px solid var(--line);background:#fff;color:#C0362C;font-size:11px;font-weight:700;letter-spacing:.02em;cursor:pointer}
+    .af-clear-all:hover{background:#FDEDEC}
     .af-grp{min-width:0}
     .af-grp+.af-grp{border-top:1px solid var(--line);padding-top:9px}
     .af-grp h4{margin:0 0 6px;font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--ink)}
@@ -194,9 +197,15 @@
     #desc-tip.on{opacity:1;visibility:visible}
     .vico{width:22px;height:22px;flex:none;border-radius:3px;object-fit:contain;background:#fff;margin-top:1px}
     .vico-fb{display:grid;place-items:center;background:var(--navy);color:#fff;font-size:10px;font-weight:700;line-height:1}
-    .bl{color:var(--vlink)}
-    .bl:hover{text-decoration:underline}
+    .bl{color:var(--vlink);text-decoration:underline}
     .cval{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    /* 2026-09-20 client round: row hover highlights blue, and the vendor
+       name text also switches to blue (doesn't apply to Actions - those
+       icons/button already have their own hover state). Rows are also
+       click-to-visit (see the delegated click handler below) except when
+       the click lands on an actual link/button inside the row. */
+    table.res tbody tr{cursor:pointer}
+    table.res tr:hover .vn{color:var(--blue)}
     .more{display:block;color:#4C9BE0;font-weight:600;font-size:10px;margin-top:2px;cursor:pointer}
     .more:hover{text-decoration:underline}
     .tpend{color:var(--muted)}
@@ -313,7 +322,7 @@
     <!-- VC-08 (09.17) - one search box that filters all six lists as you type -->
     <label class="sb-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input type="search" id="sb-q" placeholder="Search the lists below…" autocomplete="off" aria-label="Search categories, subcategories, products, master groups, divisions and trades">
+      <input type="search" id="sb-q" placeholder="Search Keyword" autocomplete="off" aria-label="Search categories, subcategories, products, master groups, divisions and trades">
     </label>
 
     <div class="q-group-bar">About the Product</div>
@@ -481,6 +490,7 @@
           <div id="sr-af-size"></div>
         </div>
       </div>
+      <button type="button" class="af-clear-all" onclick="CTD_clearAdvancedFilters()">Clear</button>
     </div>
   </aside>
 
@@ -573,10 +583,12 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609221334"></script>
-<script src="assets/taxonomy-data.js?v=202609221334"></script>
-<script src="assets/filters.js?v=202609221334"></script>
-<script src="assets/actions.js?v=202609221334"></script>
+<script src="assets/tools-data.js?v=202609221524"></script>
+<script src="assets/taxonomy-data.js?v=202609221524"></script>
+<script src="assets/filters.js?v=202609221524"></script>
+<script src="assets/actions.js?v=202609221524"></script>
+<script src="assets/autosuggest.js?v=202609221524"></script>
+<script>CTD_AUTOSUGGEST.init('hdr-q');</script>
 <script>
 (function(){
   'use strict';
@@ -709,8 +721,7 @@
   // A filter checkbox changing rewrites `filters` from whatever is ticked,
   // then goes through the page's existing apply/render path so chips, the
   // URL and the table all stay in step.
-  document.addEventListener('change', function(e){
-    if (!e.target.matches('[data-filter]')) return;
+  function rebuildFiltersFromCheckboxes(){
     var f = { cat:[], sub:[], prod:[], div:[], mt:[], trd:[], mkt:[], avail:[], sz:[] };
     document.querySelectorAll('[data-filter]:checked').forEach(function(cb){
       var k = cb.getAttribute('data-filter');
@@ -720,7 +731,18 @@
     if (filters.q) f.q = filters.q;
     filters = f;
     applyAndRender(true);
+  }
+  document.addEventListener('change', function(e){
+    if (!e.target.matches('[data-filter]')) return;
+    rebuildFiltersFromCheckboxes();
   });
+  // 2026-09-20 client round: "Red 'Clear' button at base of Advanced
+  // Filters" - clears only this panel's checkboxes (Categories/Master
+  // Groups/etc in the left sidebar are untouched), then re-renders.
+  window.CTD_clearAdvancedFilters = function(){
+    document.querySelectorAll('#af-body [data-filter]:checked').forEach(function(cb){ cb.checked = false; });
+    rebuildFiltersFromCheckboxes();
+  };
 
   // Re-tick boxes to match `filters` — needed after a chip is dropped or
   // "Clear all" is pressed, since those change `filters` directly.
@@ -747,7 +769,7 @@
       });
     });
     if (any) html = '<span class="chips-label">Your selection:</span>' + html +
-                    '<button class="clear-all" onclick="CTD_clearAll()">Clear all</button>';
+                    '<button class="clear-all" onclick="CTD_clearAll()">Clear</button>';
     row.innerHTML = html;
     row.classList.toggle('is-empty', !any);
   }
@@ -802,7 +824,7 @@
     tip.textContent = btn.getAttribute('data-desc');
     tip.classList.add('on');
     btn.setAttribute('aria-expanded', 'true');
-    // On large screens the page is scaled (assets/ctd-scale.js?v=202609221334): the button's
+    // On large screens the page is scaled (assets/ctd-scale.js?v=202609221524): the button's
     // on-screen rect is in scaled pixels while the tooltip's left/top are in
     // page pixels, so convert everything to page pixels first.
     var z = window.CTD_zoom ? window.CTD_zoom() : 1;
@@ -873,14 +895,16 @@
       var mts   = CTD_FILTERS.expandAll(mtsOf(t), allMts);
       var divs  = CTD_FILTERS.expandAll(divsOf(t), allDivs);
       var trds  = CTD_FILTERS.expandAll(trdOf(t), allTrds);
-      h += '<tr>';
+      var site = t.d ? 'https://' + t.d : '';
+      var rowGo = site || ('vendor-profile.html?s=' + encodeURIComponent(t.s));
+      h += '<tr data-go="' + esc(rowGo) + '" data-go-external="' + (site ? '1' : '0') + '">';
       h += '<td>' + vendorCell(t) + '</td>';
-      h += '<td>' + moreCell(cats, 2, function(c){ return '<a class="bl cval" href="results.html?cat=' + encodeURIComponent(c.slug) + '">' + esc(c.name) + '</a>'; }) + '</td>';
-      h += '<td>' + moreCell(subs, 2, function(s){ return '<a class="bl cval" href="results.html?sub=' + encodeURIComponent(s) + '">' + esc(s) + '</a>'; }) + '</td>';
-      h += '<td>' + moreCell(prods, 2, function(p){ return '<a class="bl cval" href="results.html?prod=' + encodeURIComponent(p.n) + '">' + esc(p.n) + '</a>'; }) + '</td>';
-      h += '<td>' + moreCell(mts, 2, function(m){ return '<span class="cval">' + esc(m) + '</span>'; }) + '</td>';
-      h += '<td>' + moreCell(divs, 2, function(d){ return '<span class="cval">' + esc(CTD_FILTERS.stripCode(d)) + '</span>'; }) + '</td>';
-      h += '<td>' + moreCell(trds, 2, function(r){ return '<span class="cval">' + esc(CTD_FILTERS.stripCode(r)) + '</span>'; }) + '</td>';
+      h += '<td>' + moreCell(cats, 2, function(c){ return '<a class="bl cval" title="' + esc(c.name) + '" href="results.html?cat=' + encodeURIComponent(c.slug) + '">' + esc(c.name) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(subs, 2, function(s){ return '<a class="bl cval" title="' + esc(s) + '" href="results.html?sub=' + encodeURIComponent(s) + '">' + esc(s) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(prods, 2, function(p){ return '<a class="bl cval" title="' + esc(p.n) + '" href="results.html?prod=' + encodeURIComponent(p.n) + '">' + esc(p.n) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(mts, 2, function(m){ return '<a class="bl cval" title="' + esc(m) + '" href="results.html?mt=' + encodeURIComponent(m) + '">' + esc(m) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(divs, 2, function(d){ var lbl = CTD_FILTERS.stripCode(d); return '<a class="bl cval" title="' + esc(lbl) + '" href="results.html?div=' + encodeURIComponent(d) + '">' + esc(lbl) + '</a>'; }) + '</td>';
+      h += '<td>' + moreCell(trds, 2, function(r){ var lbl = CTD_FILTERS.stripCode(r); return '<a class="bl cval" title="' + esc(lbl) + '" href="results.html?trd=' + encodeURIComponent(r) + '">' + esc(lbl) + '</a>'; }) + '</td>';
       h += '<td>' + actionsCell(t) + '</td>';
       h += '</tr>';
     });
@@ -958,6 +982,22 @@
     applyAndRender(true);
   };
   if (filters.q) document.getElementById('hdr-q').value = filters.q;
+
+  // 2026-09-20 client round: "If we click a Results in Center Content, it
+  // will go to that vendor's website. If no website is listed, then we go
+  // to vendor page." Delegated so it survives every render()'s innerHTML
+  // replacement — attached once here, not per row. Clicking an actual link
+  // or button inside the row (category/product/trade links, more…, the
+  // globe/bookmark/View Profile actions) keeps that element's own behavior.
+  document.getElementById('res-tbody').addEventListener('click', function(e){
+    if (e.target.closest('a, button')) return;
+    var tr = e.target.closest('tr[data-go]');
+    if (!tr) return;
+    var go = tr.getAttribute('data-go');
+    if (!go) return;
+    if (tr.getAttribute('data-go-external') === '1') window.open(go, '_blank', 'noopener');
+    else location.href = go;
+  });
 
   applyAndRender(false);
 })();
