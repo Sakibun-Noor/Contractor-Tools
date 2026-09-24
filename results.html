@@ -197,16 +197,13 @@
     #desc-tip.on{opacity:1;visibility:visible}
     .vico{width:22px;height:22px;flex:none;border-radius:3px;object-fit:contain;background:#fff;margin-top:1px}
     .vico-fb{display:grid;place-items:center;background:var(--navy);color:#fff;font-size:10px;font-weight:700;line-height:1}
-    .bl{color:var(--vlink)}
-    .bl:hover{text-decoration:underline}
+    .bl{color:var(--ink)}
+    .bl:hover{color:var(--vlink);text-decoration:underline}
     .cval{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    /* 2026-09-20 client round: row hover highlights blue, and the vendor
-       name text also switches to blue (doesn't apply to Actions - those
-       icons/button already have their own hover state). Rows are also
-       click-to-visit (see the delegated click handler below) except when
-       the click lands on an actual link/button inside the row. */
+    /* Table link text is black; only the hovered text turns blue + underlined
+       (client, 2026-09-24). Rows are click-to-visit (see the delegated click
+       handler below) except when the click lands on a link/button inside. */
     table.res tbody tr{cursor:pointer}
-    table.res tr:hover .vn{color:var(--blue)}
     .more{display:block;color:#4C9BE0;font-weight:600;font-size:10px;margin-top:2px;cursor:pointer}
     .more:hover{text-decoration:underline}
     .tpend{color:var(--muted)}
