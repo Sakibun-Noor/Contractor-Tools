@@ -506,3 +506,32 @@ scoped to `nth-child(n+3):nth-child(-n+8)`, Description `title` carries the
 full ~760-character bio, Quick Facts icons gone, row-click opens the site in
 a new tab but a real link inside the row does not trigger it, all 15 real
 Market Sectors (7 original + 8 new) present in both pages' filter lists.
+
+## 13. Build log — 2026-09-24 (vendor contact directory)
+
+Deryck's `09.25.26 Final Dara File.xlsx` (stored as `CTD-product-db/inputs/
+09.25.26_CTD_Vendor_Contact_Directory_FINAL.xlsx`): one row per original
+`Vendor_ID` with office city/state, business phone, business email, and the
+official page each came from. This is the data the "Need Contact Info" item on
+the Vendor Page was blocked on. His QA tab: 1,287 of 1,381 rows verified
+(93%), 94 left blank deliberately rather than guessed.
+
+**Build.** `import-vendors.ps1` gained a `$ContactXlsx` param and step 1c, and
+each grouped company now carries `t.ci = {city, st, ph, em, src}`. Which
+`Vendor_ID`'s contact wins for a multi-ID company: domain-matching ID first
+(same rule as the domain and biography), then the row with the most fields
+filled, then the lowest ID. 916 of 938 companies got contact details; 22 have
+none in the file and show "—" as before.
+
+**Vendor Page.** The Contact Information card now shows location (City, ST),
+phone (`tel:` link), email (`mailto:` link), and "Contact via website" (the
+official contact page from the file, falling back to the company site).
+Missing fields still show "—". CSV export gained Location/Phone/Email.
+
+**Decision to confirm with Deryck:** the file's field is `Office_City`, so I
+used it only in the Contact card. The "Headquarters" fact in the Facts strip is
+still "—" because an office city is not necessarily the headquarters.
+
+**Verified:** STACK (city/phone/website, no email) and PlanSwift (all four)
+render correctly; the 4-row card fits on one screen at 1600x900 with no inner
+scroll; no console errors.

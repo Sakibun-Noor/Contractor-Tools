@@ -28,6 +28,7 @@
 param(
   [string]$VendorDbXlsx  = "$env:USERPROFILE\Desktop\Claude\CTD-product-db\out\CTD_Complete_Vendor_Product_Database_1_1381.xlsx",
   [string]$BiographyXlsx = "$env:USERPROFILE\Desktop\Claude\CTD-product-db\inputs\09.20.26_CTD_Vendor_Biographies_RECONCILED_1381.xlsx",
+  [string]$ContactXlsx   = "$env:USERPROFILE\Desktop\Claude\CTD-product-db\inputs\09.25.26_CTD_Vendor_Contact_Directory_FINAL.xlsx",
   [string]$Root          = (Resolve-Path "$PSScriptRoot\..").Path
 )
 
@@ -253,6 +254,29 @@ if (Test-Path $BiographyXlsx) {
   Write-Host "  no biography workbook found at $BiographyXlsx - skipping (t.x falls back to prior carry-forward)" -ForegroundColor Yellow
 }
 
+# ── 1c. Read the vendor contact directory (2026-09-25 client file) — published
+#      business contact details per Vendor_ID (office city/state, phone, email,
+#      the official page they came from). Only what the client verified is
+#      present; blanks stay blank. ───────────────────────────────────────────
+$contactByVendorId = @{}
+if (Test-Path $ContactXlsx) {
+  Write-Host 'Reading vendor contact directory...' -ForegroundColor Cyan
+  $ctDir = Open-Xlsx $ContactXlsx
+  foreach ($r in (Read-Sheet $ctDir 'VENDOR_CONTACT_DIRECTORY' 1)) {
+    $vid = Val $r 'Vendor_ID'
+    if (-not $vid) { continue }
+    $c = [ordered]@{
+      city = (Val $r 'Office_City'); st = (Val $r 'State_Province')
+      ph   = (Val $r 'Business_Phone'); em = (Val $r 'Business_Email')
+      src  = (Val $r 'Contact_Source_URL')
+    }
+    if ($c.city -or $c.st -or $c.ph -or $c.em) { $contactByVendorId[$vid] = $c }
+  }
+  Write-Host ("  vendors with contact details: {0}" -f $contactByVendorId.Count)
+} else {
+  Write-Host "  no contact workbook found at $ContactXlsx - skipping" -ForegroundColor Yellow
+}
+
 # ── 2. Lookups ────────────────────────────────────────────────────────────────
 $SUB_NAME = @{}
 foreach ($r in $subRows) { $SUB_NAME[[int](Val $r 'Subcategory_ID')] = (Val $r 'Subcategory_Name') }
@@ -360,6 +384,7 @@ $tools = New-Object System.Collections.Generic.List[object]
 $slugSeen = @{}
 $withProducts = 0
 $withNewBio = 0
+$withContact = 0
 
 foreach ($key in $groups.Keys) {
   $rows = $groups[$key]
@@ -408,6 +433,24 @@ foreach ($key in $groups.Keys) {
     foreach ($vid in ($vendorIdsInGroup | Sort-Object { VendorNum $_ })) {
       if ($bioByVendorId.ContainsKey($vid)) { $bio = $bioByVendorId[$vid]; break }
     }
+  }
+
+  # Contact — same "which Vendor_ID represents this company" rule: among the
+  # group's Vendor_IDs that have contact details, prefer the one whose domain
+  # matches the canonical domain, then the one with the most fields filled,
+  # then the lowest Vendor_ID.
+  $contact = $null
+  $cands = @($vendorIdsInGroup | Where-Object { $contactByVendorId.ContainsKey($_) } | ForEach-Object {
+    $cv = $contactByVendorId[$_]
+    $vv2 = $vendorById[$_]
+    $match = if ($vv2 -and $domain -and (Get-Domain (Val $vv2 'Normalized_Domain')) -eq $domain) { 1 } else { 0 }
+    $n = @($cv.city, $cv.st, $cv.ph, $cv.em | Where-Object { $_ }).Count
+    [pscustomobject]@{ id = $_; match = $match; n = $n; num = (VendorNum $_) }
+  })
+  if ($cands.Count -gt 0) {
+    $best = $cands | Sort-Object @{Expression='match';Descending=$true}, @{Expression='n';Descending=$true}, @{Expression='num';Descending=$false} | Select-Object -First 1
+    $contact = $contactByVendorId[$best.id]
+    $withContact++
   }
 
   $catSlugs = New-Object System.Collections.Generic.HashSet[string]
@@ -500,6 +543,7 @@ foreach ($key in $groups.Keys) {
     ft       = $oldFt
     rk       = $oldRk
   }
+  if ($contact) { $rec['ci'] = $contact }
   $tools.Add([pscustomobject]$rec)
 }
 
@@ -559,6 +603,7 @@ Write-Host ("  with division        : {0}" -f $withDv)
 Write-Host ("  with real trade      : {0}" -f $withTrd)
 Write-Host ("  with market sector   : {0}" -f $withMkt)
 Write-Host ("  with new biography   : {0}  (2026-09-20 client round, by Vendor_ID)" -f $withNewBio)
+Write-Host ("  with contact details : {0}  (2026-09-25 client file, by Vendor_ID)" -f $withContact)
 Write-Host ("  with any description : {0}  (new biography, else prior carry-forward)" -f $withCarried)
 Write-Host ("  unique slugs         : {0}" -f (@($tools | Select-Object -ExpandProperty s -Unique).Count))
 Write-Host ("  cache stamp          : {0}  ({1} pages updated)" -f $stamp, $stamped)
@@ -567,3 +612,4 @@ Write-Host ("  -> {0}" -f $taxJsPath)
 
 Remove-Item $dbDir -Recurse -Force -ErrorAction SilentlyContinue
 if ($bioDir) { Remove-Item $bioDir -Recurse -Force -ErrorAction SilentlyContinue }
+if ($ctDir) { Remove-Item $ctDir -Recurse -Force -ErrorAction SilentlyContinue }

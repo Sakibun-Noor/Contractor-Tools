@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="assets/ctd-scale.js?v=202609221524"></script>
+  <script src="assets/ctd-scale.js?v=202609242046"></script>
   <title>Vendor Profile — The Construction Technology Directory</title>
   <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609221524">
+  <link rel="stylesheet" href="assets/ctd-chrome.css?v=202609242046">
   <style>
     :root{--navy:#00164B;--navy-deep:#001238;--orange:#F26A1B;--blue:#1B5FD0;--vlink:#1C57B8;--green:#158526;--line:#E4E9F0;--muted:#6B7793;--ink:#0F1B2D;
       --t-orange:#F26A1B;--t-blue:#1B5FD0;--t-green:#16A34A;--t-purple:#7C3AED;--t-red:#E11D48;--t-teal:#0D9488;}
@@ -431,11 +431,11 @@
   </div>
 </footer>
 
-<script src="assets/tools-data.js?v=202609221524"></script>
-<script src="assets/taxonomy-data.js?v=202609221524"></script>
-<script src="assets/filters.js?v=202609221524"></script>
-<script src="assets/actions.js?v=202609221524"></script>
-<script src="assets/autosuggest.js?v=202609221524"></script>
+<script src="assets/tools-data.js?v=202609242046"></script>
+<script src="assets/taxonomy-data.js?v=202609242046"></script>
+<script src="assets/filters.js?v=202609242046"></script>
+<script src="assets/actions.js?v=202609242046"></script>
+<script src="assets/autosuggest.js?v=202609242046"></script>
 <script>CTD_AUTOSUGGEST.init('hdr-q');</script>
 <script>
 (function(){
@@ -466,7 +466,8 @@
     'API Available': '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
     pin:   '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>',
     globe: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>',
-    mail:  '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/>'
+    mail:  '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/>',
+    phone: '<path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/>'
   };
 
   function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -563,10 +564,16 @@
 
     // Bottom row
     document.getElementById('p-avail').innerHTML = avail.map(function(a){ return row(ICON[a] || ICON.globe, '<span>' + esc(a) + '</span>'); }).join('');
+    // 2026-09-25 client contact file (t.ci): published business contact only,
+    // blank where the client could not verify it.
+    var ci = t.ci || {};
+    var where = [ci.city, ci.st].filter(Boolean).join(', ');
+    var telHref = (ci.ph || '').replace(/[^0-9+]/g, '');
     document.getElementById('p-contact').innerHTML =
-      row(ICON.pin, '<span>' + esc(f.hq || '—') + '</span>') +
-      row(ICON.globe, site ? '<a href="' + esc(site) + '" target="_blank" rel="noopener">Contact via website</a>' : '<span>—</span>') +
-      row(ICON.mail, f.email ? '<a href="mailto:' + esc(f.email) + '">' + esc(f.email) + '</a>' : '<span>—</span>');
+      row(ICON.pin, '<span>' + esc(where || f.hq || '—') + '</span>') +
+      row(ICON.phone, ci.ph ? '<a href="tel:' + esc(telHref) + '">' + esc(ci.ph) + '</a>' : '<span>—</span>') +
+      row(ICON.mail, (ci.em || f.email) ? '<a href="mailto:' + esc(ci.em || f.email) + '">' + esc(ci.em || f.email) + '</a>' : '<span>—</span>') +
+      row(ICON.globe, (ci.src || site) ? '<a href="' + esc(ci.src || site) + '" target="_blank" rel="noopener">Contact via website</a>' : '<span>—</span>');
     text('qf-pricing', t.pm);
     text('qf-industries', f.industries);
     text('qf-customers', CUSTOMERS[t.sz] || t.sz);
@@ -632,6 +639,9 @@
       { label:'Company Size',      get:function(){ return t.sz; } },
       { label:'Pricing Model',     get:function(){ return t.pm; } },
       { label:'Available On',      get:function(){ return CTD_FILTERS.avail(t.sz).join('; '); } },
+      { label:'Location',          get:function(){ return [(t.ci||{}).city,(t.ci||{}).st].filter(Boolean).join(', '); } },
+      { label:'Phone',             get:function(){ return (t.ci||{}).ph || ''; } },
+      { label:'Email',             get:function(){ return (t.ci||{}).em || ''; } },
       { label:'Founded',           get:function(){ return f.founded || ''; } },
       { label:'Headquarters',      get:function(){ return f.hq || ''; } }
     ], t.s + '-profile.csv');
