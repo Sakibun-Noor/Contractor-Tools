@@ -25,7 +25,7 @@ Autosuggest is a portrait copy inside `m.js` because `assets/autosuggest.js` lin
 - **CSI codes hidden: confirmed.** Deryck: division numbers are meaningless to the user; use only the text name for the first four digits (Divisions = xx 00 00, Trades = xx xx 00). Our data already follows this. Only 5 trades carry a six-digit code (Surveyors, Selective Demolition, Green Roof Contractors, TAB, Dewatering); the code is hidden, so they show as names.
 - **Link color: black.** Result values and descriptions are black. There is no hover on touch, so a pressed link turns blue + underlined. "+N more..." and domain links stay blue, as on landscape.
 - **Bottom tabs: confirmed** (Directory = Advanced Search, Vendors = Advanced Results, Content = coming-soon message).
-- Deryck asked for an explanation or screenshots on (a) Quick Facts and Save Vendor appearing twice, and (b) link color on touch. Annotated image: `Desktop\ctdor-deryckendor-page-duplicates.png`.
+- Deryck asked for an explanation or screenshots on (a) Quick Facts and Save Vendor appearing twice, and (b) link color on touch. Annotated image: C:\Users\User\Desktop\ctd\for-deryck\vendor-page-duplicates.png.
 
 ## Decisions made without an answer (change on request)
 
