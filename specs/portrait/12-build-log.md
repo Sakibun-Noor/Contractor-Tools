@@ -19,11 +19,19 @@ are byte-identical. `git status` shows only `m/` and `specs/portrait/`.
 Shared data/logic is read-only: `tools-data.js`, `taxonomy-data.js`, `filters.js`, `actions.js`.
 Autosuggest is a portrait copy inside `m.js` because `assets/autosuggest.js` links to landscape pages.
 
+## Update 2026-10-06 (client answers)
+
+- **Phone redirect: approved.** `vercel.json` now redirects phone user agents (iPhone, iPod, Android phones, Windows Phone, BlackBerry) from `/`, `/index.html`, `/results.html`, `/advanced-search.html`, `/advanced-results.html`, `/vendor-profile.html` to the matching `/m/` page (temporary 307). Tablets and desktops are not redirected. **Untested on Vercel** (cannot run Vercel routing locally); test on a real phone right after the push. To undo, delete the six new entries at the top of `redirects`.
+- **CSI codes hidden: confirmed.** Deryck: division numbers are meaningless to the user; use only the text name for the first four digits (Divisions = xx 00 00, Trades = xx xx 00). Our data already follows this. Only 5 trades carry a six-digit code (Surveyors, Selective Demolition, Green Roof Contractors, TAB, Dewatering); the code is hidden, so they show as names.
+- **Link color: black.** Result values and descriptions are black. There is no hover on touch, so a pressed link turns blue + underlined. "+N more..." and domain links stay blue, as on landscape.
+- **Bottom tabs: confirmed** (Directory = Advanced Search, Vendors = Advanced Results, Content = coming-soon message).
+- Deryck asked for an explanation or screenshots on (a) Quick Facts and Save Vendor appearing twice, and (b) link color on touch. Annotated image: `Desktop\ctdor-deryckendor-page-duplicates.png`.
+
 ## Decisions made without an answer (change on request)
 
-1. CSI codes hidden (names only), as told to the client for landscape. Templates show them.
-2. Result values are blue links, as drawn (no hover on touch).
-3. Bottom tabs: Home = home, Search = Search / Results, Directory = Advanced Search, Vendors = Advanced Results (all vendors), Content = "coming soon" message (no page exists).
+1. (answered) CSI codes hidden.
+2. (answered) Result values are black.
+3. (answered) Bottom tabs: Home = home, Search = Search / Results, Directory = Advanced Search, Vendors = Advanced Results (all vendors), Content = "coming soon" message (no page exists).
 4. Vendor Page section titles follow the template ("Divisions of Work", "Construction Trades").
 5. Vendor Page keeps the "ALL ..." wildcard for Master Groups / Divisions / Trades, as landscape's Vendor Page does.
 6. Advanced Filters group checkbox = select / clear every option in that group.
@@ -35,7 +43,7 @@ Autosuggest is a portrait copy inside `m.js` because `assets/autosuggest.js` lin
 - **Descriptions** under list items exist only for the items the template shows, plus the 12 categories. Seven category one-liners are drafted by us from the client's tooltips (marked in `m-desc.js`). All other subcategories, products, divisions and trades show no description line.
 - **Hero** is taller than the template (2.7:1 vs about 3.2:1) because our art cannot be cropped to the template's shape without losing the workers or the AI icons.
 - **Vendor logos** are small favicons scaled up, so they look soft (same data as landscape).
-- **Phones are not redirected yet.** `vercel.json` is untouched. Until a rewrite rule is added, portrait is reachable only at `/m/`.
+- **Phone redirect** is in `vercel.json` but untested on Vercel until it is pushed.
 
 ## Verified
 
