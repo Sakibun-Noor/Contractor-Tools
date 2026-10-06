@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Search / Results — The Construction Technology Directory</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../assets/ctd/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="m.css">
+</head>
+<body>
+<div id="m-hdr"></div>
+<main class="m-main">
+  <a class="m-back" href="index.html" id="back"></a>
+  <h1 class="m-h1">Search <span class="sl">/</span> Results</h1>
+  <div class="m-tabs" id="tabs" style="margin-top:14px"></div>
+  <div id="sels"></div>
+  <button class="m-go" id="go" type="button"></button>
+  <a class="m-adv" id="adv" href="advanced-search.html">Advanced Search ›</a>
+  <div class="m-bar"><h2 id="found"></h2>
+    <label class="m-sort"><span id="sortic"></span><select id="sort" aria-label="Sort">
+      <option value="rel">Sort: Relevance</option><option value="az">Sort: Name A–Z</option><option value="za">Sort: Name Z–A</option></select></label></div>
+  <div id="list"></div>
+  <div class="m-pg"><div class="m-pgn" id="pgn"></div>
+    <div class="m-rpp">Results per page:<select id="rpp" aria-label="Results per page"><option>10</option><option selected>25</option><option>50</option></select></div></div>
+</main>
+<div id="m-nav"></div>
+
+<script src="../assets/tools-data.js"></script>
+<script src="../assets/taxonomy-data.js"></script>
+<script src="../assets/filters.js"></script>
+<script src="m.js"></script>
+<script>
+(function(){
+  M.shell({placeholder:'Search everything', active:'search'});
+  var E=M.esc, I=M.icon;
+  document.getElementById('back').innerHTML=I('chevl')+'Back to Home Page';
+  document.getElementById('sortic').innerHTML=I('sort');
+
+  var sp=new URLSearchParams(location.search);
+  var f=M.params();
+  var tab=sp.get('tab')==='work'?'work':'vendors';
+  var page=1, rpp=25, sortMode='rel', open=null, MAXROWS={};
+
+  var CFG={
+    vendors:{keys:['cat','sub','prod'],names:['Category','Subcategory','Product'],ico:['list','layers','cube'],btn:'Search Vendors',
+      order:[['cat','CATEGORIES'],['sub','SUBCATEGORIES'],['prod','PRODUCTS'],['mt','MASTER GROUPS'],['div','DIVISIONS'],['trd','TRADES']]},
+    work:{keys:['mt','div','trd'],names:['Master Group','Division','Trade'],ico:['list','layers','cube'],btn:'Search By Construction Work',
+      order:[['mt','MASTER GROUPS'],['div','DIVISIONS'],['trd','TRADES'],['cat','CATEGORIES'],['sub','SUBCATEGORIES'],['prod','PRODUCTS']]}
+  };
+  var VOC={cat:M.vocab.categories,sub:M.vocab.subcategories,prod:M.vocab.products,mt:M.vocab.masterTrades,div:M.vocab.divisions,trd:M.vocab.trades};
+  ['cat','sub','prod','mt','div','trd','mkt','avail','sz'].forEach(function(k){ if(!f[k]) f[k]=[]; });
+
+  function clean(){ var o={}; Object.keys(f).forEach(function(k){ if(k==='q'){ if(f.q) o.q=f.q; } else if(f[k].length) o[k]=f[k].slice(); }); return o; }
+  function qs(){ var s=M.toQS(clean()); if(tab==='work') s+=(s?'&':'')+'tab=work'; return s; }
+
+  function drawTabs(){
+    var t=document.getElementById('tabs');
+    t.innerHTML='<button type="button" data-t="vendors"'+(tab==='vendors'?' class="on"':'')+'>Search Vendors</button>'+
+      '<button type="button" data-t="work"'+(tab==='work'?' class="on"':'')+'>'+(tab==='work'?'Search by Construction Work':'Search By Construction Work')+'</button>';
+    document.getElementById('go').innerHTML=I('search')+'<span>'+CFG[tab].btn+'</span>';
+  }
+  document.getElementById('tabs').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b||b.getAttribute('data-t')===tab) return;
+    tab=b.getAttribute('data-t'); open=null; page=1; drawTabs(); drawSels(); render(); sync();
+  });
+
+  // ---- the three selectors ----
+  function drawSels(){
+    var c=CFG[tab], h='';
+    c.keys.forEach(function(k,i){
+      var n=f[k].length, isOpen=open===k;
+      h+='<div class="m-sel'+(isOpen?' open':'')+'" data-k="'+k+'"><button type="button" aria-expanded="'+isOpen+'">'+
+        '<span class="lead">'+I(c.ico[i])+'</span><span class="lab">'+c.names[i]+(n?' <span style="color:var(--blue);font-weight:800;font-size:14px">('+n+')</span>':'')+'</span><span class="chev">'+I('chevd')+'</span></button>'+
+        (isOpen?'<div class="body" id="body-'+k+'"></div>':'')+'</div>';
+    });
+    document.getElementById('sels').innerHTML=h;
+    if(open) drawList(open,'');
+  }
+  function drawList(k,q){
+    var body=document.getElementById('body-'+k); if(!body) return;
+    if(!body.firstChild){
+      body.innerHTML='<div class="m-lp"><div class="srch">'+I('search')+'<input type="search" placeholder="Search '+CFG[tab].names[CFG[tab].keys.indexOf(k)].toLowerCase()+'..." autocomplete="off"></div><div class="scroll" id="rows-'+k+'"></div><div class="ft" id="ft-'+k+'"></div></div>';
+      body.querySelector('input').addEventListener('input',function(){ MAXROWS[k]=40; drawList(k,this.value); });
+    }
+    q=(q||'').trim().toLowerCase();
+    var all=VOC[k].filter(function(o){ return !q||o.label.toLowerCase().indexOf(q)>-1; });
+    var max=MAXROWS[k]||40, shown=all.slice(0,max);
+    document.getElementById('rows-'+k).innerHTML=shown.map(function(o){
+      var on=f[k].indexOf(o.value)>-1;
+      return '<div class="row" data-v="'+E(o.value)+'"><span class="m-cb'+(on?' on':'')+'">'+I('check')+'</span><span class="tx"><span class="nm">'+E(o.label)+'</span></span><span class="ct">'+o.count+'</span></div>';
+    }).join('')||'<div class="m-empty" style="padding:14px">No matches</div>';
+    document.getElementById('ft-'+k).innerHTML=(all.length>max?'<a data-more="1">+ more...</a>':'<span></span>')+'<button type="button" data-clear="1">Clear</button>';
+  }
+  document.getElementById('sels').addEventListener('click',function(e){
+    var sel=e.target.closest('.m-sel'); if(!sel) return; var k=sel.getAttribute('data-k');
+    if(e.target.closest('.m-sel>button')){ open=(open===k?null:k); drawSels(); return; }
+    var row=e.target.closest('.row');
+    if(row){ var v=row.getAttribute('data-v'), i=f[k].indexOf(v); if(i>-1) f[k].splice(i,1); else f[k].push(v);
+      row.querySelector('.m-cb').classList.toggle('on',i===-1); var lab=sel.querySelector('.lab'); var n=f[k].length;
+      lab.innerHTML=CFG[tab].names[CFG[tab].keys.indexOf(k)]+(n?' <span style="color:var(--blue);font-weight:800;font-size:14px">('+n+')</span>':''); return; }
+    if(e.target.closest('[data-more]')){ MAXROWS[k]=(MAXROWS[k]||40)+40; drawList(k,sel.querySelector('input').value); return; }
+    if(e.target.closest('[data-clear]')){ f[k]=[]; drawSels(); }
+  });
+  document.getElementById('go').addEventListener('click',function(){ page=1; render(); sync(); document.getElementById('found').scrollIntoView({behavior:'smooth',block:'start'}); });
+
+  // ---- result cards ----
+  var reg=[];
+  function cell(key,label,t,all){
+    var v=M.vals[key](t), shown=all?v:v.slice(0,2), tg=(key==='mt'||key==='div'||key==='trd')?'&tab=work':'';
+    var h='<div class="m-cell" data-k="'+key+'" data-s="'+E(t.s)+'"><div class="m-lab">'+label+'</div>';
+    if(!v.length) h+='<span class="m-v none">—</span>';
+    shown.forEach(function(x){ h+=M.link('search.html',key,x.v,x.l,tg); });
+    if(!all&&v.length>2) h+='<a class="m-more" data-x="1">+'+(v.length-2)+' more...</a>';
+    else if(all&&v.length>2) h+='<a class="m-more" data-x="0">show less</a>';
+    return h+'</div>';
+  }
+  function card(t){
+    var order=CFG[tab].order;
+    return '<article class="m-vc"><div class="m-vtop">'+M.logo(t)+'<div class="m-vname"><b>'+E(t.n)+'</b>'+
+      (t.d?'<a href="https://'+E(t.d)+'" target="_blank" rel="noopener">'+E(t.d)+'</a>':'')+'</div>'+
+      '<a class="m-vp" href="vendor.html?s='+encodeURIComponent(t.s)+'">View Profile</a></div><div class="m-g3">'+
+      order.map(function(o){ return cell(o[0],o[1],t,false); }).join('')+'</div></article>';
+  }
+  document.getElementById('list').addEventListener('click',function(e){
+    var m=e.target.closest('.m-more'); if(!m) return; e.preventDefault();
+    var c=m.closest('.m-cell'), t=M.bySlug(c.getAttribute('data-s')), k=c.getAttribute('data-k');
+    var lbl=CFG[tab].order.filter(function(o){return o[0]===k;})[0][1];
+    c.outerHTML=cell(k,lbl,t,m.getAttribute('data-x')==='1');
+  });
+
+  var data=[];
+  function render(){
+    data=M.apply(clean());
+    if(sortMode==='az') data=data.slice().sort(function(a,b){return a.n.localeCompare(b.n);});
+    if(sortMode==='za') data=data.slice().sort(function(a,b){return b.n.localeCompare(a.n);});
+    var pages=Math.max(1,Math.ceil(data.length/rpp)); if(page>pages) page=pages;
+    document.getElementById('found').textContent=data.length.toLocaleString()+' Vendors Found';
+    var s=(page-1)*rpp;
+    document.getElementById('list').innerHTML=data.slice(s,s+rpp).map(card).join('')||'<div class="m-empty">No vendors match your search criteria.</div>';
+    document.getElementById('pgn').innerHTML=M.pagerNums(page,pages);
+    var a=document.getElementById('adv'); var q=M.toQS(clean()); a.href='advanced-search.html'+(q?'?'+q:'');
+  }
+  document.getElementById('pgn').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b||b.disabled) return; page=+b.getAttribute('data-p'); render();
+    document.getElementById('found').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  document.getElementById('rpp').addEventListener('change',function(){ rpp=+this.value; page=1; render(); });
+  document.getElementById('sort').addEventListener('change',function(){ sortMode=this.value; page=1; render(); });
+  function sync(){ var s=qs(); history.replaceState(null,'','search.html'+(s?'?'+s:'')); }
+
+  drawTabs(); drawSels(); render();
+})();
+</script>
+</body>
+</html>
