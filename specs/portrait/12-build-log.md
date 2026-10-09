@@ -49,3 +49,36 @@ Autosuggest is a portrait copy inside `m.js` because `assets/autosuggest.js` lin
 
 Chrome emulation at 320, 360, 390 and 430 px wide: no horizontal overflow on any page (320 clips the four Advanced Results buttons slightly before the final font fix; rechecked at 360-430 clean).
 No console errors on any page. Flow tested: Advanced Search filters (26 matches) -> Advanced Results (26). Counts match the template's sample data (categories 284/219/217/172/125, master groups 90/67/79/24/24, trades 87/83/76/74/74).
+
+
+---
+
+# Round 2 build log (2026-10-09): client corrections of 2026-10-08
+
+Analysis and interpretation: [13-corrections-2026-10-08.md](13-corrections-2026-10-08.md).
+
+## Built
+- **Home:** tiles scale with the screen height; all 12 are above the fold (checked at 360x640, 375x667, 390x844, 412x915). Hotspot on the AI graphic -> AI & Automation.
+  FIND and RESEARCH differentiated (RESEARCH uses a bar-chart icon). The four strip items link to the new Content page.
+- **New pages:** `content.html` (FIND/LEARN/RESEARCH/INSIGHTS placeholders), `contact.html`, `update-info.html` (placeholders until the client sends content).
+- **Shared:** footer on every page (same links as landscape), "Please type your search" message on an empty search, menu and tab links updated.
+- **Search / Results:** visible cascading dropdowns, tabs are independent searches, fixed "Sort: Company Name", "Refine These Results" and "Find Similar Vendors" with long right-side arrows,
+  bookmark on each card, labelled rows with "(+N)".
+- **Advanced Search:** three tabs (Vendor Solutions, Construction Work Served, Filters); Category -> Subcategory -> Products and Master Group -> Divisions -> Trades cascades with
+  pruning, breadcrumb, "selected so far" line, search, lazy-loading list; Filters tab with round green options and an "Add-on Services" row (no data yet);
+  collapsible "Selected Criteria (N)" with remove chips; "Clear All Selections".
+- **Advanced Results:** cards collapsed by default, per-card Show/Hide Details, global Expand / Collapse, bookmark, Vendor Solutions / Construction Work Served / Additional Filters.
+- **Vendor Page:** bookmark top-right, Visit Website + Request a Demo, Expand / Collapse (global and per section, default collapsed), new section order,
+  single merged Quick Facts, contact details, footer. Export Profile and Share are not in the new templates and were dropped.
+- **Data:** `build/portrait-hierarchy.py` generates `m/m-hier.js` (subcategory->category, product->subcategories, division->master group, trade->division).
+  Coverage check: 0 missing for every value the site uses. Re-run it whenever the database changes.
+
+## Verified
+No JavaScript errors on any of the 11 portrait pages. No sideways overflow or clipped buttons at 320, 360, 390 and 430 px wide (11 pages each).
+Cascade, criteria list, filters, empty-search message, expand/collapse (card, section and global) and the Search -> Refine -> Advanced Search -> Advanced Results flow tested.
+Landscape and shared files unchanged (git shows only `m/`, `build/portrait-hierarchy.py`, `specs/portrait/`).
+
+## Still needs the client
+- Content for Contact Us, Update Info, and the Content page (FIND, LEARN, RESEARCH, INSIGHTS); wording that separates FIND from RESEARCH.
+- One-line descriptions for list items (the new Advanced Search templates no longer show them, so none are displayed now).
+- Confirm "Please type your search" is meant as the empty-search message (not a placeholder), and that "Remove drop down" means the Sort control.

@@ -14,7 +14,6 @@
 <div id="m-hdr"></div>
 <main class="m-main">
   <a class="m-back" href="results.html" id="back"></a>
-  <h1 class="m-h1" style="font-size:25px;color:#0C2A6B;margin-bottom:8px">VENDOR PAGE</h1>
   <div id="vp"></div>
 </main>
 <div id="m-nav"></div>
@@ -26,83 +25,78 @@
 <script src="m.js"></script>
 <script>
 (function(){
-  M.shell({placeholder:'Search by Keyword', active:''});
+  M.shell({placeholder:'Search construction technology vendors…', active:'vendors'});
   var E=M.esc, I=M.icon, A=window.CTD_ACTIONS;
   document.getElementById('back').innerHTML=I('chevl')+'Back to Advanced Results';
   var slug=new URLSearchParams(location.search).get('s');
-  var t=M.bySlug(slug)||(window.TOOLS||[])[0]; if(!t){ document.getElementById('vp').innerHTML='<div class="m-empty">Vendor not found.</div>'; return; }
+  var t=M.bySlug(slug)||(window.TOOLS||[])[0];
+  if(!t){ document.getElementById('vp').innerHTML='<div class="m-empty">Vendor not found.</div>'; return; }
   document.title=t.n+' — The Construction Technology Directory';
   var site=t.d?'https://'+t.d:'', ci=t.ci||{};
   var cats=M.vals.cat(t).map(function(x){return x.l;});
   var strip=function(a){ return (a||[]).map(M.strip); };
-  var mk=(t.mkt||[]).join(', ');
-  var av=M.avail(t.sz);
+  var mk=(t.mkt||[]).join(', '), av=M.avail(t.sz);
+  var open={}, ext={};
 
-  function list(items,n){            // summary: first n values joined by "; ", rest behind a toggle
-    if(!items.length) return '<span>—</span>';
-    if(items.length<=n) return E(items.join('; '));
-    return '<span class="s">'+E(items.slice(0,n).join('; '))+'</span> <a class="mo" data-all="'+E(JSON.stringify(items))+'">+'+(items.length-n)+' more</a>';
+  // sections, in the client's order: Categories > Subcategories > Products, then Master Groups > Divisions > Trades
+  var SEC=[
+    {id:'cust',t:'Typical Customers',ico:'users',bg:'#EDE7FA',ic:'#7B4FD6',items:function(){ var c=M.customers(t); return c?[c]:[]; }},
+    {id:'bio',t:'Company Biography',ico:'doc',bg:'#DCEAFA',ic:'#1B5FD0',bio:true},
+    {id:'cat',t:'Categories',ico:'grid',bg:'#DDF7E3',ic:'#2F9E3F',items:function(){ return cats; }},
+    {id:'sub',t:'Subcategories',ico:'layers',bg:'#DDF7E3',ic:'#2F9E3F',items:function(){ return t.subs||[]; }},
+    {id:'prod',t:'Products',ico:'gear',bg:'#DDF7E3',ic:'#2F9E3F',items:function(){ return (t.products||[]).map(function(p){return p.n;}); }},
+    {id:'mt',t:'Master Groups',ico:'users',bg:'#FDE8D5',ic:'#F2751F',items:function(){ return t.mt||[]; }},
+    {id:'div',t:'Divisions',ico:'sitemap',bg:'#FDE8D5',ic:'#F2751F',items:function(){ return strip(t.dv); }},
+    {id:'trd',t:'Trades',ico:'wrench',bg:'#FDE8D5',ic:'#F2751F',items:function(){ return strip(t.trd); }},
+    {id:'avail',t:'Available On',ico:'cloud',bg:'#DCEAFA',ic:'#1B5FD0',items:function(){ return av; }},
+    {id:'ctc',t:'Contact Information',ico:'info',bg:'#DCEAFA',ic:'#1B5FD0',contact:true},
+    {id:'qf',t:'Quick Facts',ico:'barchart',bg:'#DCEAFA',ic:'#1B5FD0',facts:true}
+  ];
+  function qfRows(){ // the old Quick Facts strip + pricing, merged into one section (client request)
+    return [['Founded','—'],['Headquarters','—'],['Employees','—'],['Deployment',av[0]||'—'],['Market Sector',mk||'—'],['Pricing Model',t.pm||'—']];
   }
-  function sec(bg,ico,col,title,body,extra){
-    return '<section class="m-sec" style="background:'+bg+'"><div class="mn"><span class="ico" style="color:'+col+'">'+I(ico)+'</span><div class="tx"><h3>'+title+'</h3>'+body+'</div></div>'+
-      '<div class="tg"><button type="button" aria-label="Expand or collapse '+title+'">'+I('chevu')+'</button></div></section>';
+  function body(s){
+    var o=!!open[s.id], h;
+    if(s.bio){
+      var b=t.x||'No company biography on file yet.';
+      return o?'<div>'+E(b)+'</div>':'<div class="sm"><div class="clamp">'+E(b)+'</div><a class="n" data-more="'+s.id+'">[+]</a></div>';
+    }
+    if(s.contact){
+      var rows=[[ 'pin',[ci.city,ci.st].filter(Boolean).join(', ')||'—'],['phone',ci.ph||'—'],['mail',ci.em||'—']];
+      function line(r){ var v=r[1]; if(v==='—') return '<div>'+I(r[0])+'<span>—</span></div>';
+        if(r[0]==='phone') return '<div>'+I('phone')+'<a href="tel:'+E(v.replace(/[^0-9+]/g,''))+'">'+E(v)+'</a></div>';
+        if(r[0]==='mail') return '<div>'+I('mail')+'<a href="mailto:'+E(v)+'">'+E(v)+'</a></div>'; return '<div>'+I('pin')+'<span>'+E(v)+'</span></div>'; }
+      return o?'<div class="ct">'+rows.map(line).join('')+'</div>':'<div class="sm"><div>'+E(rows[0][1])+'<br>'+E(rows[1][1])+'</div><a class="n" data-more="'+s.id+'">[+1]</a></div>';
+    }
+    if(s.facts){
+      var q=qfRows();
+      return o?'<div class="qf">'+q.map(function(r){return '<b>'+r[0]+':</b><span>'+E(r[1])+'</span>';}).join('')+'</div>':
+        '<div class="sm"><div>'+E(q[3][0]+': '+q[3][1])+'<br>'+E(q[4][0]+': '+q[4][1])+'</div><a class="n" data-more="'+s.id+'">[+'+(q.length-2)+']</a></div>';
+    }
+    var it=s.items();
+    if(!it.length) return '<span>—</span>';
+    if(o) return '<ul>'+it.map(function(x){return '<li>'+E(x)+'</li>';}).join('')+'</ul>';
+    return '<div class="sm"><div>'+E(it.slice(0,2).join(', '))+'</div>'+(it.length>2?'<a class="n" data-more="'+s.id+'">[+'+(it.length-2)+']</a>':'')+'</div>';
   }
-  function qf5(){
-    function c(ic,val,cap){ return '<div><div class="vl">'+I(ic)+'<span>'+E(val)+'</span></div><div class="cp">'+cap+'</div></div>'; }
-    return '<section class="m-sec qf" style="background:#CCE6FB"><div class="mn" style="flex-direction:column;gap:4px">'+
-      '<div style="display:flex;align-items:center;gap:11px"><span class="ico" style="color:var(--blue)">'+I('info')+'</span><h3>QUICK FACTS</h3></div>'+
-      '<div class="m-qf5 qfc">'+c('calendar','-','Founded')+c('pin','-','Headquarters')+c('users','-','Employees')+c('cloud',av[0]||'-','Deployment')+
-      '<div><div class="vl" title="'+E(mk)+'">'+I('alert')+'<span style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:10.5px">'+E(mk||'-')+'</span></div><div class="cp">Market Sector</div></div></div></div>'+
-      '<div class="tg"><button type="button" aria-label="Expand or collapse Quick Facts">'+I('chevu')+'</button></div></section>';
+  function secHtml(s){
+    var o=!!open[s.id];
+    return '<section class="m-vs" data-id="'+s.id+'"><button class="hd" type="button" style="background:'+s.bg+'" aria-expanded="'+o+'"><span class="ico" style="color:'+s.ic+'">'+I(s.ico)+'</span><b>'+s.t+'</b><span class="chev">'+I(o?'chevu':'chevd')+'</span></button><div class="bd">'+body(s)+'</div></section>';
   }
   var saved=A.isVendorSaved(t.s);
-  var html=
-    '<div class="m-idc"><div class="m-idtop">'+M.logo(t,true)+
-      '<div class="m-idname"><b title="'+E(t.n)+'">'+E(t.n)+'</b>'+(t.d?'<a href="'+E(site)+'" target="_blank" rel="noopener">'+I('globe')+'<span>www.'+E(t.d.replace(/^www\./,''))+'</span></a>':'')+'</div>'+
-      '<div class="m-idcat"><b>'+E(cats[0]||'')+'</b><span>CATEGORY</span></div>'+
-      '<button class="m-idsave'+(saved?' on':'')+'" type="button" data-save="1" aria-label="Save vendor">'+I('bookmark')+'</button></div>'+
-    '<p class="m-iddesc">'+E(t.x||'')+'</p>'+
-    '<div class="m-idb three"><button class="m-btn" data-a="save" type="button">'+I('bookmark')+'<span>Save Vendor</span></button><button class="m-btn" data-a="export" type="button">'+I('download')+'<span>Export Profile</span></button><button class="m-btn" data-a="share" type="button">'+I('share')+'<span>Share</span></button></div>'+
-    '<div class="m-idb two"><a class="m-btn solid" '+(site?'href="'+E(site)+'" target="_blank" rel="noopener"':'')+'>'+I('globe')+'Visit Website</a><a class="m-btn" '+(site?'href="'+E(site)+'" target="_blank" rel="noopener"':'')+'>'+I('monitor')+'Request a Demo</a></div></div>'+
-    '<div class="m-hint">Tap any section to expand or collapse.</div>'+
-    qf5()+
-    sec('#FDDFC5','users','var(--blue)','TYPICAL CUSTOMERS','<div class="sm">'+E(M.customers(t)||'—')+'</div>')+
-    sec('#C5EFF3','doc','var(--blue)','COMPANY BIOGRAPHY','<div class="sm clamp" data-bio="1">'+E(t.x||'No company biography on file yet.')+'</div>')+
-    sec('#E1D3FC','flower','#8A2BE2','KEY PRODUCTS','<div class="sm">'+list((t.products||[]).map(function(p){return p.n;}),3)+'</div>')+
-    sec('#FEDCEA','cube','#E1337A','SUBCATEGORIES','<div class="sm">'+list(t.subs||[],3)+'</div>')+
-    sec('#E8E8E8','tag','#1B9AAA','CATEGORIES','<div class="sm">'+list(cats,3)+'</div>')+
-    sec('#C8FCD2','users','#2F9E3F','MASTER GROUPS','<div class="sm">'+list(t.mt||[],3)+'</div>')+
-    sec('#F4E3C2','doc','#F2751F','DIVISIONS OF WORK','<div class="sm">'+list(strip(t.dv),3)+'</div>')+
-    sec('#C7D8FE','wrench','#3F6FD8','CONSTRUCTION TRADES','<div class="sm">'+list(strip(t.trd),3)+'</div>')+
-    sec('#FDF2B6','monitor','#F2751F','AVAILABLE ON','<div class="sm">'+E(av.join('; '))+'</div>')+
-    sec('#FECDD0','info','#E1337A','CONTACT INFORMATION','<div class="m-ct ct"><div>'+I('pin')+'<span>'+E([ci.city,ci.st].filter(Boolean).join(', ')||'—')+'</span></div>'+
-      '<div>'+I('phone')+(ci.ph?'<a href="tel:'+E(ci.ph.replace(/[^0-9+]/g,''))+'">'+E(ci.ph)+'</a>':'<span>—</span>')+'</div>'+
-      '<div>'+I('mail')+(ci.em?'<a href="mailto:'+E(ci.em)+'">'+E(ci.em)+'</a>':'<span>—</span>')+'</div></div>')+
-    sec('#E3CFE8','info','#8A2BE2','QUICK FACTS','<div class="m-qf2 qfc"><b>Pricing Model</b><span>'+E(t.pm||'—')+'</span><b>Market Sector</b><span>'+E(mk||'—')+'</span></div>');
-  document.getElementById('vp').innerHTML=html;
-
-  var vp=document.getElementById('vp');
-  vp.addEventListener('click',function(e){
-    var tg=e.target.closest('.tg button'); if(tg){ tg.closest('.m-sec').classList.toggle('shut'); return; }
-    var mo=e.target.closest('.mo');
-    if(mo){ var sm=mo.closest('.sm'); sm.textContent=''; sm.appendChild(document.createTextNode(JSON.parse(mo.getAttribute('data-all')).join('; '))); return; }
-    var sv=e.target.closest('[data-save],[data-a="save"]');
-    if(sv){ var on=A.toggleSaveVendor(t.s,t.n); document.querySelector('.m-idsave').classList.toggle('on',on);
-      var lab=document.querySelector('[data-a="save"] span'); if(lab) lab.textContent=on?'Saved':'Save Vendor'; return; }
-    var a=e.target.closest('[data-a]'); if(!a) return; a=a.getAttribute('data-a');
-    if(a==='share') A.shareUrl(location.href);
-    if(a==='export') A.exportCsv([t],[
-      {label:'Vendor',get:function(){return t.n;}},{label:'Website',get:function(){return t.d;}},{label:'Description',get:function(){return t.x;}},
-      {label:'Categories',get:function(){return cats.join('; ');}},{label:'Subcategories',get:function(){return (t.subs||[]).join('; ');}},
-      {label:'Products',get:function(){return (t.products||[]).map(function(p){return p.n;}).join('; ');}},
-      {label:'Master Groups',get:function(){return (t.mt||[]).join('; ');}},{label:'Divisions',get:function(){return (t.dv||[]).join('; ');}},
-      {label:'Trades',get:function(){return (t.trd||[]).join('; ');}},{label:'Market Sector',get:function(){return mk;}},
-      {label:'Company Size',get:function(){return t.sz;}},{label:'Pricing Model',get:function(){return t.pm;}},
-      {label:'Available On',get:function(){return av.join('; ');}},
-      {label:'Location',get:function(){return [ci.city,ci.st].filter(Boolean).join(', ');}},{label:'Phone',get:function(){return ci.ph||'';}},{label:'Email',get:function(){return ci.em||'';}}
-    ],t.s+'-profile.csv');
+  function draw(){
+    document.getElementById('vp').innerHTML=
+      '<div class="m-vh"><h1 class="m-h1" style="font-size:25px;text-transform:uppercase">Vendor Page</h1><button class="m-bm'+(saved?' on':'')+'" type="button" data-save="1" aria-label="Save vendor">'+I('bookmark')+'</button></div>'+
+      '<div class="m-vid">'+M.logo(t,true)+'<div class="nm"><b>'+E(t.n)+'</b>'+(t.d?'<a href="'+E(site)+'" target="_blank" rel="noopener">www.'+E(t.d.replace(/^www\./,''))+'</a>':'')+'<span>'+E(cats[0]||'')+'</span></div></div>'+
+      '<div class="m-vbtn"><a class="m-btn orange" '+(site?'href="'+E(site)+'" target="_blank" rel="noopener"':'')+'>'+I('globe')+'Visit Website</a><a class="m-btn line" '+(site?'href="'+E(site)+'" target="_blank" rel="noopener"':'')+'>'+I('monitor')+'Request a Demo</a></div>'+
+      '<button class="m-xc" type="button" data-all="1">Expand / Collapse</button>'+SEC.map(secHtml).join('');
+  }
+  document.getElementById('vp').addEventListener('click',function(e){
+    if(e.target.closest('[data-save]')){ saved=A.toggleSaveVendor(t.s,t.n); e.target.closest('[data-save]').classList.toggle('on',saved); return; }
+    if(e.target.closest('[data-all]')){ var anyShut=SEC.some(function(s){return !open[s.id];}); SEC.forEach(function(s){ open[s.id]=anyShut; }); draw(); return; }
+    var sec=e.target.closest('.m-vs'); if(!sec) return; var id=sec.getAttribute('data-id');
+    if(e.target.closest('.hd')||e.target.closest('[data-more]')){ open[id]=!open[id]; var s=SEC.filter(function(x){return x.id===id;})[0]; sec.outerHTML=secHtml(s); }
   });
-  if(saved){ var lab=document.querySelector('[data-a="save"] span'); if(lab) lab.textContent='Saved'; }
+  draw();
 })();
 </script>
 </body>

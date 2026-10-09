@@ -37,6 +37,12 @@
     list: '<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
     cap: '<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5M22 9v6"/>',
     bulb: '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
+    arrowl: '<path d="M21 12H3m5-5-5 5 5 5"/>',
+    arrowlong: '<path d="M3 12h18m-5-5 5 5-5 5"/>',
+    hammer: '<path d="m14 6 4 4M4 20l9-9M11 4l4-1 6 6-1 4-4 1z"/>',
+    hardhat: '<path d="M4 17v-1a8 8 0 0 1 16 0v1M2 17h20v2H2zM10 8v4M14 8v4"/>',
+    gear: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+    barchart: '<path d="M5 21V11M12 21V4M19 21v-7"/>',
     flower: '<path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/>',
     check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>'
   };
@@ -79,10 +85,10 @@
 
   // ---- shell: header, menu, bottom nav ----
   var TABS = [['home', 'Home', 'index.html', 'home'], ['search', 'Search', 'search.html', 'search'], ['directory', 'Directory', 'advanced-search.html', 'grid'],
-    ['vendors', 'Vendors', 'results.html', 'building'], ['content', 'Content', '#', 'book']];
+    ['vendors', 'Vendors', 'results.html', 'building'], ['content', 'Content', 'content.html', 'book']];
   M.toast = function (msg) {
     var d = document.createElement('div'); d.className = 'm-toast'; d.textContent = msg; document.body.appendChild(d);
-    setTimeout(function () { d.remove(); }, 1800);
+    setTimeout(function () { d.remove(); }, 2200);
   };
   M.shell = function (o) {
     var h = document.getElementById('m-hdr');
@@ -90,7 +96,7 @@
       '<form class="m-hsearch" role="search" action="search.html" method="get"><span class="m-hs-ic">' + M.icon('search') + '</span>' +
       '<input id="hdr-q" name="q" type="search" autocomplete="off" placeholder="' + M.esc(o.placeholder) + '" aria-label="Search"></form>' +
       '<button class="m-burger" type="button" aria-label="Menu" aria-expanded="false">' + M.icon('menu') + '</button></header>' +
-      '<nav class="m-menu" id="m-menu" hidden><a href="#">About Us</a><a href="#">Contact Us</a><a href="#">Update Info</a><a href="index.html">Home</a></nav>';
+      '<nav class="m-menu" id="m-menu" hidden><a href="#">About Us</a><a href="contact.html">Contact Us</a><a href="update-info.html">Update Info</a><a href="index.html">Home</a></nav>';
     var n = document.getElementById('m-nav');
     if (n) n.outerHTML = '<nav class="m-nav" aria-label="Primary">' + TABS.map(function (t) {
       return '<a href="' + t[2] + '" data-tab="' + t[0] + '"' + (t[0] === o.active ? ' class="on"' : '') + '>' + M.icon(t[3]) + '<span>' + t[1] + '</span></a>';
@@ -100,9 +106,42 @@
       var open = menu.hidden; menu.hidden = !open; b.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
     document.addEventListener('click', function (e) { if (!menu.hidden && !e.target.closest('.m-burger,#m-menu')) menu.hidden = true; });
-    document.querySelector('a[data-tab="content"]').addEventListener('click', function (e) { e.preventDefault(); M.toast('Content is coming soon'); });
+    document.querySelector('.m-hsearch').addEventListener('submit', function (e) {
+      var i = document.getElementById('hdr-q');
+      if (!i.value.trim()) { e.preventDefault(); i.value = ''; M.toast('Please type your search'); i.focus(); }
+    });
+    M.footer();
     var q = M.params().q; if (q) document.getElementById('hdr-q').value = q;
     M.suggest(document.getElementById('hdr-q'));
+  };
+
+
+  // ---- footer (same links as the landscape footer) ----
+  var SOC = [['LinkedIn', '#0A66C2', '<path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>', 'f'],
+    ['Facebook', '#1877F2', '<path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>', 'f'],
+    ['YouTube', '#FF0000', '<polygon points="9,7 19,12 9,17"/>', 'f'],
+    ['Instagram', '#C13584', '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/>', 's'],
+    ['TikTok', '#010101', '<path d="M19.6 6.7a4.8 4.8 0 01-3.8-4.3V2h-3.4v13.7a2.9 2.9 0 01-2.9 2.5 2.9 2.9 0 112.9-2.9c.3 0 .5 0 .8.1V9a6.3 6.3 0 00-.8-.1 6.3 6.3 0 106.3 6.3V8.7a8.2 8.2 0 004.8 1.5V6.8a4.9 4.9 0 01-1-.1z"/>', 'f'],
+    ['Houzz', '#4DBC15', '<path d="M12 2 2 8v14h8v-6h4v6h8V8z"/>', 'f'],
+    ['Pinterest', '#BD081C', '<path d="M12 0a12 12 0 00-4.4 23.2c-.1-.9-.2-2.4 0-3.4l1.5-6.2s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 1 0 1.6.8 1.6 1.7 0 1.1-.7 2.6-1 4.1-.3 1.2.6 2.2 1.8 2.2 2.2 0 3.9-2.3 3.9-5.6 0-2.9-2.1-5-5.1-5-3.5 0-5.5 2.6-5.5 5.3 0 1.1.4 2.2.9 2.8a.4.4 0 01.1.4l-.3 1.4c-.1.2-.2.3-.4.2-1.6-.7-2.6-3-2.6-4.9 0-4 2.9-7.6 8.3-7.6 4.4 0 7.8 3.1 7.8 7.2 0 4.3-2.7 7.8-6.5 7.8-1.3 0-2.5-.7-2.9-1.4l-.8 2.9c-.3 1.1-1 2.5-1.6 3.3A12 12 0 1012 0z"/>', 'f'],
+    ['X', '#010101', '<path d="M18.2 2.3h3.3l-7.2 8.3 8.5 11.2h-6.7l-4.7-6.2-5.4 6.2H2.7l7.7-8.8L2.3 2.3h6.8l4.3 5.7zm-1.2 17.5h1.8L7.1 4.1H5.1z"/>', 'f']];
+  var FOOT = [['Company', [['About Us', '#'], ['Contact Us', 'contact.html'], ['Add / Modify Info', 'update-info.html'], ['Marketing', '#']]],
+    ['Directory', [['Categories', 'index.html'], ['Products', 'search.html'], ['Master Groups', 'search.html?tab=work'], ['Trades', 'search.html?tab=work']]],
+    ['Resources', [['Technology Guides', 'content.html'], ['Learn', 'content.html#learn'], ['FAQ', 'content.html'], ['Glossary', 'content.html']]],
+    ['Explore', [['Find', 'search.html'], ['Search', 'advanced-search.html'], ['Research', 'content.html#research'], ['Insights', 'content.html#insights']]],
+    ['Site Info', [['Privacy Policy', '#'], ['Terms of Use', '#'], ['Site Map', '#'], ['Disclaimer', '#']]]];
+  M.footer = function () {
+    var n = document.querySelector('.m-nav'); if (!n || document.querySelector('.m-foot')) return;
+    var f = document.createElement('footer'); f.className = 'm-foot';
+    f.innerHTML = '<a href="index.html" class="fl"><img src="../assets/ctd/logo.png" alt="The Construction Technology Directory"></a>' +
+      '<div class="fc">' + FOOT.map(function (c) {
+        return '<div><h4>' + c[0] + '</h4>' + c[1].map(function (l) { return '<a href="' + l[1] + '">' + l[0] + '</a>'; }).join('') + '</div>';
+      }).join('') + '<div><h4>Follow Us</h4><div class="soc">' + SOC.map(function (x) {
+        var st = x[3] === 's' ? 'fill="none" stroke="#fff" stroke-width="2"' : 'fill="#fff"';
+        return '<a href="#" aria-label="' + x[0] + '" style="background:' + x[1] + '"><svg viewBox="0 0 24 24" ' + st + '>' + x[2] + '</svg></a>';
+      }).join('') + '</div></div></div>' +
+      '<p>© 2026 The Construction Technology Directory, LLC. All rights reserved.</p>';
+    n.parentNode.insertBefore(f, n);
   };
 
   // ---- autosuggest (portrait copy: links go to /m/ pages) ----

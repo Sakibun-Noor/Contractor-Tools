@@ -14,13 +14,10 @@
 <div id="m-hdr"></div>
 <main class="m-main">
   <a class="m-back" href="advanced-search.html" id="back"></a>
-  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;margin-bottom:10px">
-    <h1 class="m-h1" style="font-size:23px">Advanced Results</h1>
-    <div class="m-count" id="cnt" style="margin:0;font-size:14px;font-weight:600"></div>
-  </div>
+  <h1 class="m-h1" style="font-size:25px;text-transform:uppercase">Advanced Results</h1>
+  <div class="m-count" id="cnt" style="margin:4px 0 10px;font-size:16px;font-weight:600"></div>
   <div class="m-r4" id="r4"></div>
-  <div class="m-dsel-l">Show details by (select one):</div>
-  <div class="m-dsel" id="dsel"></div>
+  <button class="m-xc" id="xc" type="button">Expand / Collapse</button>
   <div id="list"></div>
   <div class="m-pg2" id="pg2"></div>
 </main>
@@ -33,58 +30,60 @@
 <script src="m.js"></script>
 <script>
 (function(){
-  M.shell({placeholder:'Search by Keyword', active:'search'});
+  M.shell({placeholder:'Search Company, Product, Category, Trade or Keyword', active:'vendors'});
   var E=M.esc, I=M.icon, A=window.CTD_ACTIONS;
   document.getElementById('back').innerHTML=I('chevl')+'Back to Advanced Search';
 
-  var f=M.params(), PER=5, page=1, detail='cat', DATA=[];
+  var f=M.params(), PER=10, page=1, open={}, ext={}, DATA=[];
   var QS=(function(){ var o={}; Object.keys(f).forEach(function(k){ if(k==='q'){ if(f.q) o.q=f.q; } else if(f[k].length) o[k]=f[k]; }); return o; })();
   var qstr=M.toQS(QS);
-
   document.getElementById('r4').innerHTML=
     '<button class="m-btn" data-a="save">'+I('star')+'Save Search</button>'+
     '<button class="m-btn" data-a="export">'+I('download')+'Export Results</button>'+
     '<button class="m-btn" data-a="share">'+I('share')+'Share Results</button>'+
     '<a class="m-btn navy" href="advanced-search.html'+(qstr?'?'+qstr:'')+'">'+I('funnel')+'Change Search</a>';
-  var DET=[['cat','Category','doc','#F2751F'],['sub','Subcategory','doc','#8B3FD0'],['prod','Product','cube','#2F9E3F'],
-           ['mt','Master Group','users','#F2751F'],['div','Divisions','sitemap','#1B5FD0'],['trd','Trades','wrench','#F2751F']];
-  function drawDsel(){
-    document.getElementById('dsel').innerHTML=DET.map(function(d){
-      return '<button type="button" data-d="'+d[0]+'"'+(detail===d[0]?' class="on"':'')+'><span style="color:'+d[3]+'">'+I(d[2])+'</span>'+d[1]+'</button>';
-    }).join('');
-  }
-  document.getElementById('dsel').addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b) return; detail=b.getAttribute('data-d'); drawDsel(); render();
-  });
 
-  function facts(t){
-    var av=M.avail(t.sz), quick=av.filter(function(a){return a==='Cloud-Based'||a==='API Available';}),
-        plat=av.filter(function(a){return a!=='Cloud-Based'&&a!=='API Available';});
-    return {q:quick.join(', '),p:plat.join(', ')};
+  function platform(t){ return M.avail(t.sz); }        // Available On: Cloud-Based / Web Access or Mobile App / API Available
+  function link(k,x){ return '<a class="v" href="results.html?'+encodeURIComponent(k)+'='+encodeURIComponent(x.v)+'">'+E(x.l)+'</a>'; }
+  function vals(t,k){ return k==='avail'?platform(t).map(function(a){return {v:a,l:a};}):M.vals[k](t); }
+  function inline(t,k,id){
+    var v=vals(t,k), all=ext[id], sh=all?v:v.slice(0,2);
+    return {html:sh.length?sh.map(function(x){return k==='avail'?E(x.l):link(k,x);}).join(', '):'—', more:v.length>2?(all?'less':'+'+(v.length-2)):''};
   }
-  function drow(t){
-    var d=DET.filter(function(x){return x[0]===detail;})[0], v=M.vals[detail](t), tg='';
-    var links=v.map(function(x){ return '<a href="results.html?'+encodeURIComponent(detail)+'='+encodeURIComponent(x.v)+'">'+E(x.l)+'</a>'; }).join(', ');
-    return '<div class="m-drow k-'+detail+'"><span style="color:'+d[3]+'">'+I(d[2])+'</span><span class="lb">'+d[1]+'</span><div class="vals"><span class="txt">'+(links||'—')+'</span>'+
-      (v.length>2?'<a class="mo" data-more="1">... more...</a>':'')+'</div></div>';
+  // collapsed summary line
+  function cl(t,lab,k){
+    var id=t.s+':'+k+':c', r=inline(t,k,id);
+    return '<div class="m-cl"><span><b>'+lab+':</b> '+r.html+'</span>'+(r.more?'<a class="n" data-x="'+E(id)+'">['+r.more+']</a>':'')+'</div>';
+  }
+  // expanded row
+  function rr(t,cls,ico,lab,k){
+    var id=t.s+':'+k+':e', r=inline(t,k,id);
+    return '<div class="m-rr k-'+cls+'">'+I(ico)+'<b>'+lab+':</b><span>'+r.html+'</span>'+(r.more?'<a class="n" data-x="'+E(id)+'">['+r.more+']</a>':'<span></span>')+'</div>';
   }
   function card(t){
-    var fa=facts(t), saved=A.isVendorSaved(t.s);
-    return '<article class="m-rc" data-s="'+E(t.s)+'"><div class="m-rtop">'+M.logo(t)+'<div class="m-vname"><b>'+E(t.n)+'</b>'+
-      (t.d?'<a href="https://'+E(t.d)+'" target="_blank" rel="noopener">'+E(t.d)+'</a>':'')+'<span class="m-rdesc">'+E(t.x||'')+'</span></div>'+
-      '<div class="m-ract"><div class="ics">'+(t.d?'<a href="https://'+E(t.d)+'" target="_blank" rel="noopener" aria-label="Visit website">'+I('globe')+'</a>':'')+
-      '<button type="button" data-save="1" class="'+(saved?'on':'')+'" aria-label="Save vendor">'+I('bookmark')+'</button></div>'+
-      '<a class="vpl" href="vendor.html?s='+encodeURIComponent(t.s)+'">View Profile</a></div></div>'+
-      drow(t)+
-      '<div class="m-frow2"><div>'+I('cloud')+'<span><b>Quick Facts:</b> '+E(fa.q||'—')+'</span></div><div>'+I('phone')+'<span><b>Available On:</b> '+E(fa.p||'—')+'</span></div></div></article>';
+    var o=!!open[t.s], saved=A.isVendorSaved(t.s);
+    var h='<article class="m-ac" data-s="'+E(t.s)+'"><div class="top">'+M.logo(t,true)+'<div class="m-vname"><b>'+E(t.n)+'</b>'+(t.d?'<a href="https://'+E(t.d)+'" target="_blank" rel="noopener">'+E(t.d)+'</a>':'')+'</div>'+
+      '<button class="m-bm'+(saved?' on':'')+'" type="button" data-save="1" aria-label="Save vendor">'+I('bookmark')+'</button></div>';
+    if(!o){
+      h+=cl(t,'Vendor Solutions','cat')+cl(t,'Construction Work Served','mt')+cl(t,'Additional Filters','avail');
+    }else{
+      h+='<div class="m-rsh v">Vendor Solutions</div>'+rr(t,'v','layers','Category','cat')+rr(t,'v','doc','Subcategory','sub')+rr(t,'v','cube','Products','prod')+
+         '<div class="m-rsh w">Construction Work Served</div>'+rr(t,'w','hammer','Master Group','mt')+rr(t,'w','hardhat','Division','div')+rr(t,'w','gear','Trade','trd')+
+         '<div class="m-rsh a">Additional Filters</div>'+rr(t,'a','funnel','Available On','avail');
+    }
+    return h+'<div class="m-af"><button type="button" data-tg="1">'+(o?'Hide Details':'Show Details')+I(o?'chevu':'chevd')+'</button>'+
+      '<a href="vendor.html?s='+encodeURIComponent(t.s)+'">View Profile'+I('chevr')+'</a></div></article>';
   }
-  document.getElementById('list').addEventListener('click',function(e){
-    var c=e.target.closest('.m-rc'); if(!c) return;
-    var mo=e.target.closest('[data-more]');
-    if(mo){ var r=mo.closest('.m-drow'); var ex=r.classList.toggle('exp'); mo.textContent=ex?'less':'... more...'; return; }
-    if(e.target.closest('[data-save]')){
-      var t=M.bySlug(c.getAttribute('data-s')), on=A.toggleSaveVendor(t.s,t.n), b=e.target.closest('[data-save]');
-      b.classList.toggle('on',on); return; }
+  var list=document.getElementById('list');
+  list.addEventListener('click',function(e){
+    var c=e.target.closest('.m-ac'); if(!c) return; var slug=c.getAttribute('data-s'), t=M.bySlug(slug);
+    var x=e.target.closest('[data-x]'); if(x){ var id=x.getAttribute('data-x'); ext[id]=!ext[id]; c.outerHTML=card(t); return; }
+    if(e.target.closest('[data-tg]')){ open[slug]=!open[slug]; c.outerHTML=card(t); return; }
+    var b=e.target.closest('[data-save]'); if(b) b.classList.toggle('on',A.toggleSaveVendor(t.s,t.n));
+  });
+  document.getElementById('xc').addEventListener('click',function(){
+    var pageItems=DATA.slice((page-1)*PER,(page-1)*PER+PER), anyClosed=pageItems.some(function(t){return !open[t.s];});
+    pageItems.forEach(function(t){ open[t.s]=anyClosed; }); render();
   });
 
   function render(){
@@ -92,7 +91,7 @@
     var pages=Math.max(1,Math.ceil(DATA.length/PER)); if(page>pages) page=pages;
     document.getElementById('cnt').innerHTML=I('users')+'<span>'+DATA.length.toLocaleString()+' vendors found</span>';
     var s=(page-1)*PER, e=Math.min(DATA.length,s+PER);
-    document.getElementById('list').innerHTML=DATA.slice(s,e).map(card).join('')||'<div class="m-empty">No vendors found.</div>';
+    list.innerHTML=DATA.slice(s,e).map(card).join('')||'<div class="m-empty">No vendors found.</div>';
     document.getElementById('pg2').innerHTML=
       '<button class="pgb" data-p="1" aria-label="First page"'+(page<=1?' disabled':'')+'>'+I('dchevl')+'</button>'+
       '<button class="pgb" data-p="'+(page-1)+'" aria-label="Previous page"'+(page<=1?' disabled':'')+'>'+I('chevl')+'</button>'+
@@ -104,7 +103,7 @@
   }
   document.getElementById('pg2').addEventListener('click',function(e){
     var b=e.target.closest('[data-p]'); if(!b||b.disabled) return; page=+b.getAttribute('data-p'); render();
-    window.scrollTo({top:document.getElementById('dsel').offsetTop-70,behavior:'smooth'});
+    window.scrollTo({top:document.getElementById('r4').offsetTop-70,behavior:'smooth'});
   });
   document.getElementById('r4').addEventListener('click',function(e){
     var b=e.target.closest('[data-a]'); if(!b) return; var a=b.getAttribute('data-a');
@@ -112,13 +111,12 @@
     else if(a==='share') A.shareUrl(location.href);
     else A.exportCsv(DATA,[
       {label:'Vendor',get:function(t){return t.n;}},{label:'Website',get:function(t){return t.d;}},{label:'Description',get:function(t){return t.x;}},
-      {label:'Subcategories',get:function(t){return (t.subs||[]).join('; ');}},{label:'Products',get:function(t){return (t.products||[]).map(function(p){return p.n;}).join('; ');}},
-      {label:'Categories',get:function(t){return M.vals.cat(t).map(function(x){return x.l;}).join('; ');}},
-      {label:'Divisions',get:function(t){return (t.dv||[]).join('; ');}},{label:'Trades',get:function(t){return (t.trd||[]).join('; ');}},
-      {label:'Master Groups',get:function(t){return (t.mt||[]).join('; ');}},{label:'Market Sector',get:function(t){return (t.mkt||[]).join('; ');}},
-      {label:'Available On',get:function(t){return M.avail(t.sz).join('; ');}}],'ctd-vendor-results.csv');
+      {label:'Categories',get:function(t){return M.vals.cat(t).map(function(x){return x.l;}).join('; ');}},{label:'Subcategories',get:function(t){return (t.subs||[]).join('; ');}},
+      {label:'Products',get:function(t){return (t.products||[]).map(function(p){return p.n;}).join('; ');}},
+      {label:'Master Groups',get:function(t){return (t.mt||[]).join('; ');}},{label:'Divisions',get:function(t){return (t.dv||[]).join('; ');}},{label:'Trades',get:function(t){return (t.trd||[]).join('; ');}},
+      {label:'Market Sector',get:function(t){return (t.mkt||[]).join('; ');}},{label:'Available On',get:function(t){return M.avail(t.sz).join('; ');}}],'ctd-vendor-results.csv');
   });
-  drawDsel(); render();
+  render();
 })();
 </script>
 </body>

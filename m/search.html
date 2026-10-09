@@ -15,13 +15,12 @@
 <main class="m-main">
   <a class="m-back" href="index.html" id="back"></a>
   <h1 class="m-h1">Search <span class="sl">/</span> Results</h1>
-  <div class="m-tabs" id="tabs" style="margin-top:14px"></div>
-  <div id="sels"></div>
-  <button class="m-go" id="go" type="button"></button>
-  <a class="m-adv" id="adv" href="advanced-search.html">Advanced Search ›</a>
-  <div class="m-bar"><h2 id="found"></h2>
-    <label class="m-sort"><span id="sortic"></span><select id="sort" aria-label="Sort">
-      <option value="rel">Sort: Relevance</option><option value="az">Sort: Name A–Z</option><option value="za">Sort: Name Z–A</option></select></label></div>
+  <div class="m-sbox">
+    <div class="tabs" id="tabs"></div>
+    <div class="pan"><div id="flds"></div><button class="m-go" id="go" type="button"></button></div>
+  </div>
+  <div class="m-bar"><h2 id="found"></h2><span class="m-sortl">Sort: Company Name</span></div>
+  <a class="m-refine" id="refine" href="advanced-search.html">Refine These Results</a>
   <div id="list"></div>
   <div class="m-pg"><div class="m-pgn" id="pgn"></div>
     <div class="m-rpp">Results per page:<select id="rpp" aria-label="Results per page"><option>10</option><option selected>25</option><option>50</option></select></div></div>
@@ -31,127 +30,125 @@
 <script src="../assets/tools-data.js"></script>
 <script src="../assets/taxonomy-data.js"></script>
 <script src="../assets/filters.js"></script>
+<script src="../assets/actions.js"></script>
+<script src="m-hier.js"></script>
 <script src="m.js"></script>
 <script>
 (function(){
-  M.shell({placeholder:'Search everything', active:'search'});
-  var E=M.esc, I=M.icon;
-  document.getElementById('back').innerHTML=I('chevl')+'Back to Home Page';
-  document.getElementById('sortic').innerHTML=I('sort');
+  M.shell({placeholder:'Search everything…', active:'search'});
+  var E=M.esc, I=M.icon, H=window.M_HIER, A=window.CTD_ACTIONS;
+  document.getElementById('back').innerHTML=I('arrowl')+'Back to Home Page';
+  document.getElementById('refine').insertAdjacentHTML('beforeend',I('arrowlong'));
 
-  var sp=new URLSearchParams(location.search);
-  var f=M.params();
-  var tab=sp.get('tab')==='work'?'work':'vendors';
-  var page=1, rpp=25, sortMode='rel', open=null, MAXROWS={};
+  var sp=new URLSearchParams(location.search), f=M.params(), applied;
+  var tab=sp.get('tab')==='work'?'work':'vendors', page=1, rpp=25, expanded={};
+  ['cat','sub','prod','mt','div','trd','mkt','avail','sz'].forEach(function(k){ if(!f[k]) f[k]=[]; });
+  applied=JSON.parse(JSON.stringify(f));
 
   var CFG={
-    vendors:{keys:['cat','sub','prod'],names:['Category','Subcategory','Product'],ico:['list','layers','cube'],btn:'Search Vendors',
-      order:[['cat','CATEGORIES'],['sub','SUBCATEGORIES'],['prod','PRODUCTS'],['mt','MASTER GROUPS'],['div','DIVISIONS'],['trd','TRADES']]},
-    work:{keys:['mt','div','trd'],names:['Master Group','Division','Trade'],ico:['list','layers','cube'],btn:'Search By Construction Work',
-      order:[['mt','MASTER GROUPS'],['div','DIVISIONS'],['trd','TRADES'],['cat','CATEGORIES'],['sub','SUBCATEGORIES'],['prod','PRODUCTS']]}
+    vendors:{keys:['cat','sub','prod'],names:['Category','Subcategory','Product'],all:['All categories','All subcategories','All products'],btn:'Search Vendors'},
+    work:{keys:['mt','div','trd'],names:['Master Group','Division','Trade'],all:['All master groups','All divisions','All trades'],btn:'Search By Construction Work'}
   };
-  var VOC={cat:M.vocab.categories,sub:M.vocab.subcategories,prod:M.vocab.products,mt:M.vocab.masterTrades,div:M.vocab.divisions,trd:M.vocab.trades};
-  ['cat','sub','prod','mt','div','trd','mkt','avail','sz'].forEach(function(k){ if(!f[k]) f[k]=[]; });
-
-  function clean(){ var o={}; Object.keys(f).forEach(function(k){ if(k==='q'){ if(f.q) o.q=f.q; } else if(f[k].length) o[k]=f[k].slice(); }); return o; }
-  function qs(){ var s=M.toQS(clean()); if(tab==='work') s+=(s?'&':'')+'tab=work'; return s; }
-
+  var CHILD={cat:['sub','prod'],sub:['prod'],mt:['div','trd'],div:['trd']};
+  function byLabel(a,b){ return a[1].localeCompare(b[1]); }
+  function options(k){
+    var o=[];
+    if(k==='cat') o=M.vocab.categories.map(function(x){return [x.value,x.label];}).sort(byLabel);
+    if(k==='sub'){ o=M.vocab.subcategories.filter(function(x){ return !f.cat.length||f.cat.indexOf(H.subCat[x.value])>-1; }).map(function(x){return [x.value,x.label];}).sort(byLabel); }
+    if(k==='prod'){
+      var subs=f.sub.length?f.sub:(f.cat.length?Object.keys(H.subCat).filter(function(s){return f.cat.indexOf(H.subCat[s])>-1;}):null);
+      if(subs) o=M.vocab.products.filter(function(x){ return (H.prodSubs[x.value]||[]).some(function(s){return subs.indexOf(s)>-1;}); }).map(function(x){return [x.value,x.label];}).sort(byLabel);
+    }
+    if(k==='mt') o=M.vocab.masterTrades.map(function(x){return [x.value,x.label];});
+    if(k==='div') o=M.vocab.divisions.filter(function(x){ return !f.mt.length||f.mt.indexOf(H.divMg[x.value])>-1; }).map(function(x){return [x.value,x.label];});
+    if(k==='trd'){
+      var ds=f.div.length?f.div:(f.mt.length?Object.keys(H.divMg).filter(function(d){return f.mt.indexOf(H.divMg[d])>-1;}):null);
+      if(ds) o=M.vocab.trades.filter(function(x){ return ds.indexOf(H.trdDiv[x.value])>-1; }).map(function(x){return [x.value,x.label];}).sort(byLabel);
+    }
+    return o;
+  }
+  function drawFields(){
+    var c=CFG[tab];
+    document.getElementById('flds').innerHTML=c.keys.map(function(k,i){
+      var o=options(k), cur=f[k], dis=(k==='prod'||k==='trd')&&!o.length&&!cur.length;
+      var h='<label class="m-fld"><span>'+c.names[i]+':</span><select data-k="'+k+'"'+(dis?' disabled':'')+'><option value="">'+c.all[i]+'</option>';
+      if(cur.length>1) h+='<option value="__multi__" selected>Multiple selected ('+cur.length+')</option>';
+      h+=o.map(function(x){ return '<option value="'+E(x[0])+'"'+(cur.length===1&&cur[0]===x[0]?' selected':'')+'>'+E(x[1])+'</option>'; }).join('');
+      if(cur.length===1&&!o.some(function(x){return x[0]===cur[0];})) h+='<option value="'+E(cur[0])+'" selected>'+E(M.strip(cur[0]))+'</option>';
+      return h+'</select></label>';
+    }).join('');
+    document.getElementById('go').innerHTML=I('search')+'<span>'+c.btn+'</span>';
+  }
+  document.getElementById('flds').addEventListener('change',function(e){
+    var s=e.target.closest('select'); if(!s) return; var k=s.getAttribute('data-k');
+    if(s.value==='__multi__') return;
+    f[k]=s.value?[s.value]:[];
+    (CHILD[k]||[]).forEach(function(c){ f[c]=[]; });
+    drawFields();
+  });
   function drawTabs(){
-    var t=document.getElementById('tabs');
-    t.innerHTML='<button type="button" data-t="vendors"'+(tab==='vendors'?' class="on"':'')+'>Search Vendors</button>'+
-      '<button type="button" data-t="work"'+(tab==='work'?' class="on"':'')+'>'+(tab==='work'?'Search by Construction Work':'Search By Construction Work')+'</button>';
-    document.getElementById('go').innerHTML=I('search')+'<span>'+CFG[tab].btn+'</span>';
+    document.getElementById('tabs').innerHTML='<button type="button" data-t="vendors"'+(tab==='vendors'?' class="on"':'')+'>Search Vendors</button>'+
+      '<button type="button" data-t="work"'+(tab==='work'?' class="on"':'')+'>Search By Construction Work</button>';
   }
   document.getElementById('tabs').addEventListener('click',function(e){
     var b=e.target.closest('button'); if(!b||b.getAttribute('data-t')===tab) return;
-    tab=b.getAttribute('data-t'); open=null; page=1; drawTabs(); drawSels(); render(); sync();
+    CFG[tab].keys.forEach(function(k){ f[k]=[]; applied[k]=[]; });   // each tab is its own search
+    tab=b.getAttribute('data-t'); drawTabs(); drawFields(); page=1; render(); sync();
+  });
+  document.getElementById('go').addEventListener('click',function(){
+    applied=JSON.parse(JSON.stringify(f)); page=1; render(); sync();
+    document.getElementById('found').scrollIntoView({behavior:'smooth',block:'start'});
   });
 
-  // ---- the three selectors ----
-  function drawSels(){
-    var c=CFG[tab], h='';
-    c.keys.forEach(function(k,i){
-      var n=f[k].length, isOpen=open===k;
-      h+='<div class="m-sel'+(isOpen?' open':'')+'" data-k="'+k+'"><button type="button" aria-expanded="'+isOpen+'">'+
-        '<span class="lead">'+I(c.ico[i])+'</span><span class="lab">'+c.names[i]+(n?' <span style="color:var(--blue);font-weight:800;font-size:14px">('+n+')</span>':'')+'</span><span class="chev">'+I('chevd')+'</span></button>'+
-        (isOpen?'<div class="body" id="body-'+k+'"></div>':'')+'</div>';
-    });
-    document.getElementById('sels').innerHTML=h;
-    if(open) drawList(open,'');
-  }
-  function drawList(k,q){
-    var body=document.getElementById('body-'+k); if(!body) return;
-    if(!body.firstChild){
-      body.innerHTML='<div class="m-lp"><div class="srch">'+I('search')+'<input type="search" placeholder="Search '+CFG[tab].names[CFG[tab].keys.indexOf(k)].toLowerCase()+'..." autocomplete="off"></div><div class="scroll" id="rows-'+k+'"></div><div class="ft" id="ft-'+k+'"></div></div>';
-      body.querySelector('input').addEventListener('input',function(){ MAXROWS[k]=40; drawList(k,this.value); });
-    }
-    q=(q||'').trim().toLowerCase();
-    var all=VOC[k].filter(function(o){ return !q||o.label.toLowerCase().indexOf(q)>-1; });
-    var max=MAXROWS[k]||40, shown=all.slice(0,max);
-    document.getElementById('rows-'+k).innerHTML=shown.map(function(o){
-      var on=f[k].indexOf(o.value)>-1;
-      return '<div class="row" data-v="'+E(o.value)+'"><span class="m-cb'+(on?' on':'')+'">'+I('check')+'</span><span class="tx"><span class="nm">'+E(o.label)+'</span></span><span class="ct">'+o.count+'</span></div>';
-    }).join('')||'<div class="m-empty" style="padding:14px">No matches</div>';
-    document.getElementById('ft-'+k).innerHTML=(all.length>max?'<a data-more="1">+ more...</a>':'<span></span>')+'<button type="button" data-clear="1">Clear</button>';
-  }
-  document.getElementById('sels').addEventListener('click',function(e){
-    var sel=e.target.closest('.m-sel'); if(!sel) return; var k=sel.getAttribute('data-k');
-    if(e.target.closest('.m-sel>button')){ open=(open===k?null:k); drawSels(); return; }
-    var row=e.target.closest('.row');
-    if(row){ var v=row.getAttribute('data-v'), i=f[k].indexOf(v); if(i>-1) f[k].splice(i,1); else f[k].push(v);
-      row.querySelector('.m-cb').classList.toggle('on',i===-1); var lab=sel.querySelector('.lab'); var n=f[k].length;
-      lab.innerHTML=CFG[tab].names[CFG[tab].keys.indexOf(k)]+(n?' <span style="color:var(--blue);font-weight:800;font-size:14px">('+n+')</span>':''); return; }
-    if(e.target.closest('[data-more]')){ MAXROWS[k]=(MAXROWS[k]||40)+40; drawList(k,sel.querySelector('input').value); return; }
-    if(e.target.closest('[data-clear]')){ f[k]=[]; drawSels(); }
-  });
-  document.getElementById('go').addEventListener('click',function(){ page=1; render(); sync(); document.getElementById('found').scrollIntoView({behavior:'smooth',block:'start'}); });
+  function clean(o){ var r={}; Object.keys(o).forEach(function(k){ if(k==='q'){ if(o.q) r.q=o.q; } else if(o[k].length) r[k]=o[k].slice(); }); return r; }
+  function qs(){ var s=M.toQS(clean(applied)); if(tab==='work') s+=(s?'&':'')+'tab=work'; return s; }
+  function sync(){ var s=qs(); history.replaceState(null,'','search.html'+(s?'?'+s:'')); }
 
-  // ---- result cards ----
-  var reg=[];
-  function cell(key,label,t,all){
-    var v=M.vals[key](t), shown=all?v:v.slice(0,2), tg=(key==='mt'||key==='div'||key==='trd')?'&tab=work':'';
-    var h='<div class="m-cell" data-k="'+key+'" data-s="'+E(t.s)+'"><div class="m-lab">'+label+'</div>';
-    if(!v.length) h+='<span class="m-v none">—</span>';
-    shown.forEach(function(x){ h+=M.link('search.html',key,x.v,x.l,tg); });
-    if(!all&&v.length>2) h+='<a class="m-more" data-x="1">+'+(v.length-2)+' more...</a>';
-    else if(all&&v.length>2) h+='<a class="m-more" data-x="0">show less</a>';
-    return h+'</div>';
+  var ROWS={vendors:[['cat','Category'],['sub','Subcategory'],['prod','Product']],work:[['mt','Master Group'],['div','Division'],['trd','Trade']]};
+  function rowHtml(t,k,label){
+    var v=M.vals[k](t), id=t.s+':'+k, all=expanded[id], shown=all?v:v.slice(0,2), tg=(k==='mt'||k==='div'||k==='trd')?'&tab=work':'';
+    var h='<div class="rw"><b>'+label+':</b><span>';
+    h+=shown.length?shown.map(function(x){ return '<a class="v" href="search.html?'+encodeURIComponent(k)+'='+encodeURIComponent(x.v)+tg+'">'+E(x.l)+'</a>'; }).join(', '):'—';
+    if(!all&&v.length>2) h+=' <a class="cnt" data-x="'+E(id)+'">(+'+(v.length-2)+')</a>';
+    else if(all&&v.length>2) h+=' <a class="cnt" data-x="'+E(id)+'">(less)</a>';
+    return h+'</span></div>';
   }
   function card(t){
-    var order=CFG[tab].order;
-    return '<article class="m-vc"><div class="m-vtop">'+M.logo(t)+'<div class="m-vname"><b>'+E(t.n)+'</b>'+
+    var sim, c0=(t.c||[])[0], s0=(t.subs||[])[0], m0=(t.mt||[])[0], d0=(t.dv||[])[0];
+    if(tab==='vendors') sim='search.html?'+(c0?'cat='+encodeURIComponent(c0):'')+(s0?'&sub='+encodeURIComponent(s0):'');
+    else sim='search.html?tab=work'+(m0?'&mt='+encodeURIComponent(m0):'')+(d0&&d0.indexOf('ALL')!==0?'&div='+encodeURIComponent(d0):'');
+    return '<article class="m-sc" data-s="'+E(t.s)+'"><div class="top">'+M.logo(t,true)+'<div class="m-vname"><b>'+E(t.n)+'</b>'+
       (t.d?'<a href="https://'+E(t.d)+'" target="_blank" rel="noopener">'+E(t.d)+'</a>':'')+'</div>'+
-      '<a class="m-vp" href="vendor.html?s='+encodeURIComponent(t.s)+'">View Profile</a></div><div class="m-g3">'+
-      order.map(function(o){ return cell(o[0],o[1],t,false); }).join('')+'</div></article>';
+      '<button class="m-bm'+(A.isVendorSaved(t.s)?' on':'')+'" type="button" data-save="1" aria-label="Save vendor">'+I('bookmark')+'</button>'+
+      '<a class="m-vp" href="vendor.html?s='+encodeURIComponent(t.s)+'">View Profile</a></div>'+
+      '<div class="rows">'+ROWS[tab].map(function(r){ return rowHtml(t,r[0],r[1]); }).join('')+'</div>'+
+      '<a class="m-sim" href="'+sim+'">Find Similar Vendors'+I('arrowlong')+'</a></article>';
   }
   document.getElementById('list').addEventListener('click',function(e){
-    var m=e.target.closest('.m-more'); if(!m) return; e.preventDefault();
-    var c=m.closest('.m-cell'), t=M.bySlug(c.getAttribute('data-s')), k=c.getAttribute('data-k');
-    var lbl=CFG[tab].order.filter(function(o){return o[0]===k;})[0][1];
-    c.outerHTML=cell(k,lbl,t,m.getAttribute('data-x')==='1');
+    var x=e.target.closest('[data-x]');
+    if(x){ var id=x.getAttribute('data-x'); expanded[id]=!expanded[id]; var c=x.closest('.m-sc'); var t=M.bySlug(c.getAttribute('data-s'));
+      var r=x.closest('.rw'), key=id.split(':')[1], lbl=ROWS[tab].filter(function(q){return q[0]===key;})[0][1];
+      r.outerHTML=rowHtml(t,key,lbl); return; }
+    var b=e.target.closest('[data-save]');
+    if(b){ var t2=M.bySlug(b.closest('.m-sc').getAttribute('data-s')); b.classList.toggle('on',A.toggleSaveVendor(t2.s,t2.n)); }
   });
 
-  var data=[];
   function render(){
-    data=M.apply(clean());
-    if(sortMode==='az') data=data.slice().sort(function(a,b){return a.n.localeCompare(b.n);});
-    if(sortMode==='za') data=data.slice().sort(function(a,b){return b.n.localeCompare(a.n);});
+    var data=M.apply(clean(applied)).slice().sort(function(a,b){ return a.n.localeCompare(b.n,undefined,{sensitivity:'base'}); });
     var pages=Math.max(1,Math.ceil(data.length/rpp)); if(page>pages) page=pages;
     document.getElementById('found').textContent=data.length.toLocaleString()+' Vendors Found';
     var s=(page-1)*rpp;
     document.getElementById('list').innerHTML=data.slice(s,s+rpp).map(card).join('')||'<div class="m-empty">No vendors match your search criteria.</div>';
     document.getElementById('pgn').innerHTML=M.pagerNums(page,pages);
-    var a=document.getElementById('adv'); var q=M.toQS(clean()); a.href='advanced-search.html'+(q?'?'+q:'');
+    var q=M.toQS(clean(applied)); document.getElementById('refine').setAttribute('href','advanced-search.html'+(q?'?'+q:''));
   }
   document.getElementById('pgn').addEventListener('click',function(e){
     var b=e.target.closest('button'); if(!b||b.disabled) return; page=+b.getAttribute('data-p'); render();
     document.getElementById('found').scrollIntoView({behavior:'smooth',block:'start'});
   });
   document.getElementById('rpp').addEventListener('change',function(){ rpp=+this.value; page=1; render(); });
-  document.getElementById('sort').addEventListener('change',function(){ sortMode=this.value; page=1; render(); });
-  function sync(){ var s=qs(); history.replaceState(null,'','search.html'+(s?'?'+s:'')); }
 
-  drawTabs(); drawSels(); render();
+  drawTabs(); drawFields(); render();
 })();
 </script>
 </body>

@@ -31,6 +31,12 @@ the page looks after the user presses an arrow and that list opens. Pressing **A
 Category; pressing **About the Buyer** opens Master Group / Divisions / Trades. Build one page whose sections expand, not six pages.
 The Advanced Filters rows have arrows too, but no template shows them open. Pages 02 and 03 are two tabs of one page, Search / Results.
 
+## Round 2 (2026-10-08): updated templates and corrections
+
+The client's updated templates and corrections document **supersede specs 02-04 and 05-11** for Search, Advanced Search, Advanced Results and the
+Vendor Page. Home (01) is unchanged. Read [13-corrections-2026-10-08.md](13-corrections-2026-10-08.md) first; it lists every correction, how it was interpreted,
+and the conflicts between templates. Old specs are kept for history only.
+
 ## Shared elements (the same on every page)
 
 **Header (top, navy).** Logo at left (building icon, "THE / CONSTRUCTION / TECHNOLOGY / — DIRECTORY —", "TECHNOLOGY" in orange).

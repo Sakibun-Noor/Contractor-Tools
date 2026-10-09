@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Content — The Construction Technology Directory</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../assets/ctd/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="m.css">
+</head>
+<body>
+<div id="m-hdr"></div>
+<main class="m-main">
+  <a class="m-back" href="index.html" id="back"></a>
+  <h1 class="m-h1" style="margin-bottom:12px">Content</h1>
+  <section class="m-ph" id="find"><h2><span style="color:#2E8BFF" id="i1"></span>FIND</h2><p>Locate construction technology providers.</p><span class="soon">Content coming soon</span></section>
+  <section class="m-ph" id="learn"><h2><span style="color:#FF7A1A" id="i2"></span>LEARN</h2><p>Understand software before you buy.</p><span class="soon">Content coming soon</span></section>
+  <section class="m-ph" id="research"><h2><span style="color:#34C759" id="i3"></span>RESEARCH</h2><p>Research trusted technology providers.</p><span class="soon">Content coming soon</span></section>
+  <section class="m-ph" id="insights"><h2><span style="color:#E0A800" id="i4"></span>INSIGHTS</h2><p>Stay informed about construction technology.</p><span class="soon">Content coming soon</span></section>
+</main>
+<div id="m-nav"></div>
+<script src="../assets/tools-data.js"></script>
+<script src="../assets/taxonomy-data.js"></script>
+<script src="../assets/filters.js"></script>
+<script src="m.js"></script>
+<script>
+M.shell({placeholder:'Search everything…', active:'content'});
+document.getElementById('back').innerHTML=M.icon('arrowl')+'Back to Home Page';
+[['i1','search'],['i2','cap'],['i3','barchart'],['i4','bulb']].forEach(function(x){ document.getElementById(x[0]).innerHTML=M.icon(x[1]); });
+</script>
+</body>
+</html>
