@@ -113,6 +113,7 @@
     M.footer();
     var q = M.params().q; if (q) document.getElementById('hdr-q').value = q;
     M.suggest(document.getElementById('hdr-q'));
+    M.scrollHint();
   };
 
 
@@ -210,4 +211,51 @@
   var CUST = { 'All Sizes': 'Construction firms of all sizes', 'Small Business': 'Small construction firms', 'Small / Mid-Market': 'Small to mid-size construction firms',
     'Mid-Market / Enterprise': 'Mid-size to enterprise construction firms', 'Enterprise': 'Enterprise construction firms' };
   M.customers = function (t) { return CUST[t.sz] || t.sz || ''; };
+
+  // ---- one-time "Scroll for more" hint: shown once per page view, only when content is cut off ----
+  // Inner scroll lists (.m-lst, .m-lp .scroll) take priority; otherwise the page itself is checked.
+  // Goes away on tap, on the first scroll, or after 10 seconds.
+  M.scrollHint = function () {
+    if (M._hinted) return; M._hinted = true;
+    var done = false, tries = [300, 900, 1800], el, timer;
+    function box() {
+      var l = document.querySelectorAll('.m-lst, .m-lp .scroll');
+      for (var i = 0; i < l.length; i++) {
+        var r = l[i].getBoundingClientRect();
+        if (l[i].scrollHeight > l[i].clientHeight + 8 && l[i].scrollTop < 8 && r.height && r.top < window.innerHeight - 60) return l[i];
+      }
+      return null;
+    }
+    function hide() {
+      if (!el) return; clearTimeout(timer);
+      document.removeEventListener('scroll', hide, true);
+      var e = el; el = null; e.classList.remove('on'); setTimeout(function () { e.remove(); }, 250);
+    }
+    function show(target) {
+      done = true;
+      var bar = document.querySelector('.m-actionbar'), nav = document.querySelector('.m-nav');
+      var top = (bar && bar.offsetHeight ? bar : nav).getBoundingClientRect().top;
+      el = document.createElement('button'); el.type = 'button'; el.className = 'm-more';
+      el.setAttribute('aria-label', 'Scroll for more');
+      el.style.bottom = Math.round(window.innerHeight - top + 10) + 'px';
+      el.innerHTML = M.icon('chevd') + '<span>Scroll for more</span>';
+      document.body.appendChild(el);
+      requestAnimationFrame(function () { el.classList.add('on'); });
+      el.addEventListener('click', function () {
+        hide();
+        if (target) target.scrollBy({ top: target.clientHeight * 0.8, behavior: 'smooth' });
+        else window.scrollBy({ top: window.innerHeight * 0.7, behavior: 'smooth' });
+      });
+      document.addEventListener('scroll', hide, true);
+      timer = setTimeout(hide, 10000);
+    }
+    function check() {
+      if (done) return;
+      var b = box();
+      if (b) return show(b);
+      var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      if (!document.querySelector('.m-lst') && window.scrollY < 8 && h > window.innerHeight + 140) show(null);
+    }
+    tries.forEach(function (ms) { setTimeout(check, ms); });
+  };
 })();
